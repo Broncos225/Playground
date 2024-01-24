@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <title>Calculadora de Integrales</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="Calculadora.html">Calculadora de notas</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+                <li><a href="Escalamientos.html">Calculadora de integrales</a></li>
+                <li><a href="#">Pagina 4</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <h1 id="Titulo">Escalamientos</h1>
+        <div id="Selects">
+            <select class="select" id="Tipo">
+                <option value="">Filtrar por tipo de caso</option>
+                <option value="Requerimiento">Requerimiento</option>
+                <option value="Incidente">Incidente</option>
+            </select>
+            <select class="select" id="Area">
+                <option value="">Filtrar por área del servicio</option>
+                <option value="Aplicaciones de negocio">Aplicaciones de negocio</option>
+                <option value="Dispositivos tecnológicos">Dispositivos tecnológicos</option>
+                <option value="Servicios de Infraestructura TI">Servicios de Infraestructura TI</option>
+                <option value="Servicios de seguridad TI">Servicios de seguridad TI</option>
+                <option value="Servicios de Office 365">Servicios de Office 365</option>
+            </select>
+            <select class="select" id="CategoriaMadre">
+                <option value="">Filtrar por categoria madre</option>
+                <option value="Antivirus">Antivirus</option>
+                <option value="CEGID">CEGID</option>
+                <option value="Correo">Correo</option>
+                <option value="Crédito">Crédito</option>
+                <option value="Datáfono">Datáfono</option>
+                <option value="Emisora">Emisora</option>
+                <option value="Equipos de computo">Equipos de computo</option>
+                <option value="Impresoras">Impresoras</option>
+                <option value="Internet">Internet</option>
+                <option value="Intranet">Intranet</option>
+                <option value="JAVA">JAVA</option>
+                <option value="Lectores">Lectores</option>
+                <option value="Medios de pago - Bonos Big pass">Medios de pago - Bonos Big pass</option>
+                <option value="Medios de pago - Bonos Sodexo Convexo">Medios de pago - Bonos Sodexo Convexo</option>
+                <option value="Office">Office</option>
+                <option value="One Drive">One Drive</option>
+                <option value="Otras aplicaciones / Software">Otras aplicaciones / Software</option>
+                <option value="Portal de procesos">Portal de procesos</option>
+                <option value="Puestos de trabajo">Puestos de trabajo</option>
+                <option value="Red interna">Red interna</option>
+                <option value="STOPING">STOPING</option>
+                <option value="Seguridad">Seguridad</option>
+                <option value="Sharepoint">Sharepoint</option>
+                <option value="Tarjeta recaudo">Tarjeta recaudo</option>
+                <option value="Teams">Teams</option>
+                <option value="Telefonia IP">Telefonía IP</option>
+                <option value="UPS">UPS</option>
+                <option value="Video Beam">Video Beam</option>
+                <option value="WORKMANAGER">WORKMANAGER</option>
+            </select>
+            <select class="select" id="CategoriaHijo">
+                <option value="">Filtrar por categoria hijo</option>
+
+            </select>
+            <select class="select" id="Escalar">
+                <option value="">Filtrar por persona a escalar</option>
+
+            </select>
+            
+        </div>
+        <input type="file" id="excel-file" />
+        <table id="excel-table"></table>
+        
+    </section>
+    <!-- Asegúrate de incluir la biblioteca SheetJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
+    <script src="scriptEscalamientos copy.js"></script>
+</body>
+</html>

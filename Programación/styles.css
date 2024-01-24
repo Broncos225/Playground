@@ -1,0 +1,151 @@
+body {
+    font-family: 'Nunito', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+section {
+    padding: 20px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+#notas input[type="number"] {
+    width: 158px; 
+}
+
+#Minima input[type="number"] {
+    width: 334px;
+
+}
+
+#notas {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+}
+
+#notas div {
+    display: flex;
+    gap: 10px;
+}
+
+#botones {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3d3d3d;
+}
+
+#notaFinal {
+    font-size: 20px;
+    
+}
+
+#notaFaltante {
+    font-size: 20px;
+}
+
+#Porcentajes {
+    font-size: 20px;
+}
+
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#texto{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#Titulo{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 34px;
+}
+
+.select {
+    font-family: Arial, Helvetica, sans-serif, sans-serif;
+    outline: 0;
+    background: transparent;
+    color:#000000;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 4px;
+}
+
+#Selects{
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
