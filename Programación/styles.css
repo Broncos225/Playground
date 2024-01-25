@@ -61,24 +61,7 @@ body {
     gap: 10px;
 }
 
-#botones {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-}
 
-button {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #000000;
-    color: white;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #3d3d3d;
-}
 
 #notaFinal {
     font-size: 20px;
@@ -119,20 +102,21 @@ section{
     color:#000000;
     border: 1px solid rgb(0, 0, 0);
     padding: 4px;
+    font-size: 16px;
 }
 
 #Selects{
     display: flex;
     flex-direction: row;
+    gap: 20px;
     text-align: left;
-    gap: 10px;
-    margin: 0;
+    margin: 10px;
     padding: 0;
-    width: 100%;
 }
 
 table {
     border-collapse: collapse;
+    font-size: small;
     width: 100%;
 }
 
@@ -140,6 +124,7 @@ th, td {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
+    width: 16.67%; /* Ajustado para 6 columnas */
 }
 
 th {
@@ -149,3 +134,53 @@ th {
 tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+#botones {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #000000;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3d3d3d;
+}
+
+.file-select {
+    position: relative;
+    display: inline-block;
+    width: 235px;
+    height: 32px;
+    content: "Seleccionar matriz";
+  }
+  
+  .file-select::before {
+    background-color: #000000;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+    border-radius: 4px;
+    content: attr(data-file-name); /* testo por defecto */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  
+  .file-select input[type="file"] {
+    opacity: 0;
+    width: auto;
+    height: 32px;
+    display: inline-block;
+  }

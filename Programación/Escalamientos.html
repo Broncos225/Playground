@@ -19,15 +19,22 @@
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="Calculadora.html">Calculadora de notas</a></li>
-                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
                 <li><a href="Escalamientos.html">Escalamientos</a></li>
                 <li><a href="#">Pagina 4</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
             </ul>
         </nav>
     </header>
 
     <section>
         <h1 id="Titulo">Escalamientos</h1>
+        <div class="file-select" data-file-name="Seleccionar matriz">
+            <input type="file" id="excelFileInput">
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button style="width: 153px;" id="miBoton" onclick="cargarArchivoExcel()">Cargar archivo Excel</button>
+            <button onclick="colocarOpciones()">Reiniciar</button>
+        </div>
         <div id="Selects">
             <select class="select" id="Tipo" onchange="filtrarSelect('Tipo')">
                 <option value="">Filtrar por tipo de caso</option>
@@ -303,50 +310,8 @@
                 <option value="Traslado de OP (Orden de producción)">Traslado de OP (Orden de producción)</option>
                 <option value="Traslado de personal">Traslado de personal</option>             
             </select>
-            <select class="select" id="Escalar1" onchange="filtrarSelect('Escalar1')">
-                <option value="">Filtrar por persona a escalar 1</option>
-                <option value="Alexandra Beltran - Coordinador BI">Alexandra Beltran - Coordinador BI</option>
-                <option value="Alexandra Mejia - Soporte">Alexandra Mejia - Soporte</option>
-                <option value="Camilo Florian - Analista de infraestructura">Camilo Florian - Analista de infraestructura</option>
-                <option value="Carlos Bustamante - Analista BI">Carlos Bustamante - Analista BI</option>
-                <option value="Daniel Morales - Coordinador aplicaciones">Daniel Morales - Coordinador aplicaciones</option>
-                <option value="Daniel Meneses - Soporte en sitio">Daniel Meneses - Soporte en sitio</option>
-                <option value="Juan David Jaramillo - Analista de Aplicaciones">Juan David Jaramillo - Analista de Aplicaciones</option>
-                <option value="Juan Diego Mercado - Analista de aplicaciones">Juan Diego Mercado - Analista de aplicaciones</option>
-                <option value="Juan Esteban Gutierrez - Analista de infraestructura">Juan Esteban Gutierrez - Analista de infraestructura</option>
-                <option value="Juan Jaramillo - Analista de aplicaciones">Juan Jaramillo - Analista de aplicaciones</option>
-                <option value="Juan José Agudelo - Soporte en sitio">Juan José Agudelo - Soporte en sitio</option>
-                <option value="Lina Gaviria - Auxiliar de créditos">Lina Gaviria - Auxiliar de créditos</option>
-                <option value="Mateo Herrera - Analista de infraestructura">Mateo Herrera - Analista de infraestructura</option>
-                <option value="Mesa de ayuda">Mesa de ayuda</option>
-                <option value="Nada">Nada</option>
-                <option value="Sara Sanchez Moreno - ssanchez@stop.com.co">Sara Sanchez Moreno - ssanchez@stop.com.co</option>
-                <option value="contabilidad@stop.com.co">contabilidad@stop.com.co</option>
-                <option value="tesoreria@stop.com.co">tesoreria@stop.com.co</option>
-            </select>
-            <select class="select" id="Escalar2" onchange="filtrarSelect('Escalar2')">
-                <option value="">Filtrar por persona a escalar 2</option>
-                <option value="Andres Arbelaez - Auxiliar de centro de servicios">Andres Arbelaez - Auxiliar de centro de servicios</option>
-                <option value="Camilo Florian - Analista de infraestructura">Camilo Florian - Analista de infraestructura</option>
-                <option value="Carlos Bustamante - Analista BI">Carlos Bustamante - Analista BI</option>
-                <option value="Daniel Morales - Coordinador aplicaciones">Daniel Morales - Coordinador aplicaciones</option>
-                <option value="Daniel meneses - soporte en sitio">Daniel meneses - soporte en sitio</option>
-                <option value="Hernan Posada">Hernan Posada</option>
-                <option value="Hernan Posada - Analista de desarrollo">Hernan Posada - Analista de desarrollo</option>
-                <option value="Juan David Jaramillo - Analista de Aplicaciones">Juan David Jaramillo - Analista de Aplicaciones</option>
-                <option value="Juan Diego Mercado - Analista de aplicaciones">Juan Diego Mercado - Analista de aplicaciones</option>
-                <option value="Juan Esteban Gutierrez - Analista de Infraestructura">Juan Esteban Gutierrez - Analista de Infraestructura</option>
-                <option value="Juan Jaramillo - Analista de aplicaciones">Juan Jaramillo - Analista de aplicaciones</option>
-                <option value="Mateo Herrera - Analista de infraestructura">Mateo Herrera - Analista de infraestructura</option>
-                <option value="Mesa de ayuda">Mesa de ayuda</option>
-                <option value="Nada">Nada</option>                
-            </select>
         </div>
-        <input type="file" id="excelFileInput" />
-        <div style="display: flex; gap: 10px;">
-            <button onclick="cargarArchivoExcel()">Cargar Archivo Excel</button>
-            <button onclick="colocarOpciones()">Reiniciar</button>
-        </div>
+        
         <div id="tablaContainer"></div>
     </section>
     <!-- Asegúrate de incluir la biblioteca SheetJS -->

@@ -53,6 +53,10 @@ function procesarArchivoExcel(contenido) {
     var tablaContainer = document.getElementById('tablaContainer');
     tablaContainer.innerHTML = ''; // Limpiar contenido anterior
     tablaContainer.appendChild(tabla);
+    var boton = document.getElementById('miBoton');
+    boton.disabled = true;
+    boton.style.backgroundColor = '#b3b3b3';
+    boton.style.cursor = 'default';
 }
 
 function filtrarSelect(campo) {
@@ -112,4 +116,14 @@ function colocarOpciones() {
 $(document).ready(function() {
     // Aplica select2 a tu elemento select
     $('select').select2();
-  });
+});
+
+document.getElementById("excelFileInput").addEventListener("change", function() {
+    var fileName = this.files[0].name;
+    var fileSelect = this.parentElement;
+    fileSelect.dataset.fileName = fileName;
+    var boton = document.getElementById('miBoton');
+    boton.disabled = false;
+    boton.style.backgroundColor = '#000000';
+    boton.style.cursor = 'pointer';
+});
