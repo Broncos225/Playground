@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Calculadora de notas</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="Calculadora.html">Calculadora de notas</a></li>
+                <li><a href="Escalamientos.html">Escalamientos</a></li>
+                <li><a href="#">Pagina 4</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <!-- Contenido de la página -->
+        <h1 id="Titulo">Calculadora de notas</h1>
+        <p id="texto">Ingrese las notas con sus porcentajes para calcularlos.</p>
+        <p id="texto">Nota minima para ganar: </p> 
+        <div id="Minima"><input type="number" placeholder="Nota minima" min="0" max="100"></div>
+        
+        
+        <div id="botones">
+            <button id="agregarNota">Agregar nota</button>
+            <button id="eliminarNota">Eliminar nota</button>
+            <button id="calcular">Calcular nota final</button>
+        </div>
+        <div id="notas">
+            
+            <!-- Aquí se añadirán los campos de entrada para las notas y los porcentajes -->
+        </div>
+        <p style="margin: 0;" id="notaFinal"></p>
+        <p style="margin: 0;" id="Porcentajes"></p>
+        <p style="margin: 0;" id="notaFaltante"></p>
+        <button style="width: 340px;" id="Refresh">Reiniciar</button>
+    </section>
+
+
+    <script src="scriptCalculadora.js"></script>
+</body>
+</html>
