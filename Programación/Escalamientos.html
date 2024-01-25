@@ -69,7 +69,6 @@
             </select>
             <select class="select" id="CategoriaHijo" onchange="filtrarSelect('CategoriaHijo')">
                 <option value="">Filtrar por categoria hijo</option>
-                <option value="">Filtrar por tipo de caso</option>
                 <option value="Abrir OC (Orden compra)">Abrir OC (Orden compra)</option>
                 <option value="Acceso a Cegid">Acceso a Cegid</option>
                 <option value="Acceso a red o ruta compartida">Acceso a red o ruta compartida</option>
@@ -340,7 +339,7 @@
         <input type="file" id="excelFileInput" />
         <div style="display: flex; gap: 10px;">
             <button onclick="cargarArchivoExcel()">Cargar Archivo Excel</button>
-            <button id="Refresh">Reiniciar</button>
+            <button onclick="colocarOpciones()">Reiniciar</button>
         </div>
         <div id="tablaContainer"></div>
     </section>

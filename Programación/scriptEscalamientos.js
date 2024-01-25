@@ -97,25 +97,13 @@ function indexDeCampo(campo) {
     }
 }
 
-function ordenarOpcionesAlfabeticamente(idSelect) {
-    var select = document.getElementById(idSelect);
-    var opciones = Array.from(select.options);
-    
-    opciones.sort(function(a, b) {
-        return a.text.localeCompare(b.text);
-    });
-
-    // Limpiar las opciones actuales
-    select.innerHTML = '';
-
-    // Agregar las opciones ordenadas al select
-    opciones.forEach(function(opcion) {
-        select.add(opcion);
-    });
-}
 
 // Llama a esta función para ordenar alfabéticamente las opciones del select con ID 'Area'
-ordenarOpcionesAlfabeticamente('Area');
-document.getElementById('Refresh').addEventListener('click', function() {
-    location.reload();
-});
+function colocarOpciones() {
+    var selects = document.querySelectorAll('.select');
+
+    selects.forEach(function (select) {
+        // Establecer el valor del select en el valor de la primera opción
+        select.value = select.options[0].value;
+    });
+}
