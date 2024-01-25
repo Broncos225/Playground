@@ -103,7 +103,13 @@ function colocarOpciones() {
     var selects = document.querySelectorAll('.select');
 
     selects.forEach(function (select) {
-        // Establecer el valor del select en el valor de la primera opción
-        select.value = select.options[0].value;
+        // Reinicializar Select2 y establecer el valor
+        $(select).val($(select).find('option:first').val()).trigger('change.select2');
     });
 }
+
+
+$(document).ready(function() {
+    // Aplica select2 a tu elemento select
+    $('select').select2();
+  });
