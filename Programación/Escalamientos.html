@@ -14,7 +14,7 @@
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="Calculadora.html">Calculadora de notas</a></li>
                 <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
-                <li><a href="Escalamientos.html">Calculadora de integrales</a></li>
+                <li><a href="Escalamientos.html">Escalamientos</a></li>
                 <li><a href="#">Pagina 4</a></li>
             </ul>
         </nav>
@@ -23,20 +23,20 @@
     <section>
         <h1 id="Titulo">Escalamientos</h1>
         <div id="Selects">
-            <select class="select" id="Tipo">
+            <select class="select" id="Tipo" onchange="filtrarSelect('Tipo')">
                 <option value="">Filtrar por tipo de caso</option>
-                <option value="Requerimiento">Requerimiento</option>
                 <option value="Incidente">Incidente</option>
+                <option value="Solicitud">Solicitud</option>
             </select>
-            <select class="select" id="Area">
+            <select class="select" id="Area" onchange="filtrarSelect('Area')">
                 <option value="">Filtrar por área del servicio</option>
                 <option value="Aplicaciones de negocio">Aplicaciones de negocio</option>
-                <option value="Dispositivos tecnológicos">Dispositivos tecnológicos</option>
                 <option value="Servicios de Infraestructura TI">Servicios de Infraestructura TI</option>
                 <option value="Servicios de seguridad TI">Servicios de seguridad TI</option>
                 <option value="Servicios de Office 365">Servicios de Office 365</option>
+                <option value="Dispositivos tecnológicos">Dispositivos tecnológicos</option>
             </select>
-            <select class="select" id="CategoriaMadre">
+            <select class="select" id="CategoriaMadre" onchange="filtrarSelect('CategoriaMadre')">
                 <option value="">Filtrar por categoria madre</option>
                 <option value="Antivirus">Antivirus</option>
                 <option value="CEGID">CEGID</option>
@@ -45,45 +45,308 @@
                 <option value="Datáfono">Datáfono</option>
                 <option value="Emisora">Emisora</option>
                 <option value="Equipos de computo">Equipos de computo</option>
-                <option value="Impresoras">Impresoras</option>
                 <option value="Internet">Internet</option>
                 <option value="Intranet">Intranet</option>
                 <option value="JAVA">JAVA</option>
                 <option value="Lectores">Lectores</option>
                 <option value="Medios de pago - Bonos Big pass">Medios de pago - Bonos Big pass</option>
                 <option value="Medios de pago - Bonos Sodexo Convexo">Medios de pago - Bonos Sodexo Convexo</option>
+                <option value="Otras aplicaciones / Software">Otras aplicaciones / Software</option>
                 <option value="Office">Office</option>
                 <option value="One Drive">One Drive</option>
-                <option value="Otras aplicaciones / Software">Otras aplicaciones / Software</option>
                 <option value="Portal de procesos">Portal de procesos</option>
                 <option value="Puestos de trabajo">Puestos de trabajo</option>
                 <option value="Red interna">Red interna</option>
-                <option value="STOPING">STOPING</option>
                 <option value="Seguridad">Seguridad</option>
                 <option value="Sharepoint">Sharepoint</option>
-                <option value="Tarjeta recaudo">Tarjeta recaudo</option>
+                <option value="STOPING">STOPING</option>
                 <option value="Teams">Teams</option>
-                <option value="Telefonia IP">Telefonía IP</option>
+                <option value="Telefonia IP">Telefonia IP</option>
+                <option value="Tarejta recaudo">Tarejta recaudo</option>
                 <option value="UPS">UPS</option>
                 <option value="Video Beam">Video Beam</option>
                 <option value="WORKMANAGER">WORKMANAGER</option>
             </select>
-            <select class="select" id="CategoriaHijo">
+            <select class="select" id="CategoriaHijo" onchange="filtrarSelect('CategoriaHijo')">
                 <option value="">Filtrar por categoria hijo</option>
-
+                <option value="">Filtrar por tipo de caso</option>
+                <option value="Abrir OC (Orden compra)">Abrir OC (Orden compra)</option>
+                <option value="Acceso a Cegid">Acceso a Cegid</option>
+                <option value="Acceso a red o ruta compartida">Acceso a red o ruta compartida</option>
+                <option value="Activar VPN a usuario">Activar VPN a usuario</option>
+                <option value="Actualización de Firewall">Actualización de Firewall</option>
+                <option value="Actualizar antivirus">Actualizar antivirus</option>
+                <option value="Actualizar cliente">Actualizar cliente</option>
+                <option value="Actualizar herramienta">Actualizar herramienta</option>
+                <option value="Actualizar sistema operativo">Actualizar sistema operativo</option>
+                <option value="Agragar tienda a grupo de distribución">Agragar tienda a grupo de distribución</option>
+                <option value="Agregar flete a factura">Agregar flete a factura</option>
+                <option value="Ampliación de canal">Ampliación de canal</option>
+                <option value="Anular abono - Kaiowa">Anular abono - Kaiowa</option>
+                <option value="Anular credito - kaiowa">Anular credito - kaiowa</option>
+                <option value="Aplicar descuento en agotamiento">Aplicar descuento en agotamiento</option>
+                <option value="Archivo sospechoso">Archivo sospechoso</option>
+                <option value="Asesoría / Acompañamiento">Asesoría / Acompañamiento</option>
+                <option value="Asignación de dispositivo">Asignación de dispositivo</option>
+                <option value="Asignación de extensión">Asignación de extensión</option>
+                <option value="Asignación de teléfono">Asignación de teléfono</option>
+                <option value="Asignar PIN de llamadas">Asignar PIN de llamadas</option>
+                <option value="Atasco o bloqueo de impresora">Atasco o bloqueo de impresora</option>
+                <option value="Aumento de memoria">Aumento de memoria</option>
+                <option value="Back up de informacion">Back up de informacion</option>
+                <option value="Bloqueo de equipo">Bloqueo de equipo</option>
+                <option value="Bloqueo de página de internet / aplicativo">Bloqueo de página de internet / aplicativo</option>
+                <option value="Bloqueo de usuario">Bloqueo de usuario</option>
+                <option value="Borrar historial crediticio">Borrar historial crediticio</option>
+                <option value="Buzón lleno">Buzón lleno</option>
+                <option value="Cambiar cédula cliente">Cambiar cédula cliente</option>
+                <option value="Cambiar tienda a control de inventario">Cambiar tienda a control de inventario</option>
+                <option value="Cambio Concepto Caja Menor">Cambio Concepto Caja Menor</option>
+                <option value="Cambio de Fecha OC (Orden de compra)">Cambio de Fecha OC (Orden de compra)</option>
+                <option value="Cambio de Grupo contable">Cambio de Grupo contable</option>
+                <option value="Cambio de Precios">Cambio de Precios</option>
+                <option value="Cambio de Referencia">Cambio de Referencia</option>
+                <option value="Cambio de Talla - Retallado">Cambio de Talla - Retallado</option>
+                <option value="Cambio de asesora">Cambio de asesora</option>
+                <option value="Cambio de cargo">Cambio de cargo</option>
+                <option value="Cambio de cliente generico a real">Cambio de cliente generico a real</option>
+                <option value="Cambio de consecutivo">Cambio de consecutivo</option>
+                <option value="Cambio de factura">Cambio de factura</option>
+                <option value="Cambio de fecha">Cambio de fecha</option>
+                <option value="Cambio de mes">Cambio de mes</option>
+                <option value="Cambio de nit">Cambio de nit</option>
+                <option value="Cambio de partes">Cambio de partes</option>
+                <option value="Cambio de trimestre">Cambio de trimestre</option>
+                <option value="Carga de PLU en NumRot">Carga de PLU en NumRot</option>
+                <option value="Cargar nota de entrega de bolsas">Cargar nota de entrega de bolsas</option>
+                <option value="Cargar notas de entrega">Cargar notas de entrega</option>
+                <option value="Cargue de información de otra tienda">Cargue de información de otra tienda</option>
+                <option value="Compra Memoria RAM">Compra Memoria RAM</option>
+                <option value="Compra Mouse">Compra Mouse</option>
+                <option value="Compra Scaner Zebra">Compra Scaner Zebra</option>
+                <option value="Compra base ergonómica">Compra base ergonómica</option>
+                <option value="Compra conversor HDMI">Compra conversor HDMI</option>
+                <option value="Compra cámara web">Compra cámara web</option>
+                <option value="Compra de Polycom">Compra de Polycom</option>
+                <option value="Compra de UPS">Compra de UPS</option>
+                <option value="Compra de Video Beam">Compra de Video Beam</option>
+                <option value="Compra de cajones monederos">Compra de cajones monederos</option>
+                <option value="Compra de diadema">Compra de diadema</option>
+                <option value="Compra de disco externo">Compra de disco externo</option>
+                <option value="Compra de lector de huella">Compra de lector de huella</option>
+                <option value="Compra de licencias">Compra de licencias</option>
+                <option value="Compra de parlante">Compra de parlante</option>
+                <option value="Compra de terminal MC330">Compra de terminal MC330</option>
+                <option value="Compra de wacon">Compra de wacon</option>
+                <option value="Compra disco SSD">Compra disco SSD</option>
+                <option value="Compra impresora POS">Compra impresora POS</option>
+                <option value="Compra impresora multifuncional">Compra impresora multifuncional</option>
+                <option value="Compra pantalla">Compra pantalla</option>
+                <option value="Compra portatil">Compra portatil</option>
+                <option value="Compra switches">Compra switches</option>
+                <option value="Compra teclado">Compra teclado</option>
+                <option value="Configuración de cuenta">Configuración de cuenta</option>
+                <option value="Configuración de herramienta">Configuración de herramienta</option>
+                <option value="Configuración de la herramienta">Configuración de la herramienta</option>
+                <option value="Configuración de teléfono">Configuración de teléfono</option>
+                <option value="Configuración del dispositivo">Configuración del dispositivo</option>
+                <option value="Configuración del servicio">Configuración del servicio</option>
+                <option value="Configurar Antivirus">Configurar Antivirus</option>
+                <option value="Configurar conexión VPN Forticlient">Configurar conexión VPN Forticlient</option>
+                <option value="Configurar dispositivo">Configurar dispositivo</option>
+                <option value="Configurar dispositivo - Crediban">Configurar dispositivo - Crediban</option>
+                <option value="Configurar dispositivo - Redeban">Configurar dispositivo - Redeban</option>
+                <option value="Configurar hora del sistema">Configurar hora del sistema</option>
+                <option value="Confirmación de abonos por PSE">Confirmación de abonos por PSE</option>
+                <option value="Correo sospechoso">Correo sospechoso</option>
+                <option value="Corta Duracion de Bateria">Corta Duracion de Bateria</option>
+                <option value="Creación de huella">Creación de huella</option>
+                <option value="Creación de usuario">Creación de usuario</option>
+                <option value="Crear PLU faltante Cedi">Crear PLU faltante Cedi</option>
+                <option value="Crear PlU faltante Recuperación">Crear PlU faltante Recuperación</option>
+                <option value="Crear Usuario Stoping">Crear Usuario Stoping</option>
+                <option value="Crear cuenta">Crear cuenta</option>
+                <option value="Crear grupos de distribución">Crear grupos de distribución</option>
+                <option value="Crear nuevo cargo en CEGID">Crear nuevo cargo en CEGID</option>
+                <option value="Crear usuario">Crear usuario</option>
+                <option value="Daño físico">Daño físico</option>
+                <option value="Daño físico de CPU">Daño físico de CPU</option>
+                <option value="Daño físico de Mouse">Daño físico de Mouse</option>
+                <option value="Daño físico de pantalla">Daño físico de pantalla</option>
+                <option value="Daño físico de teclado">Daño físico de teclado</option>
+                <option value="Devolución de crédito empleado">Devolución de crédito empleado</option>
+                <option value="Devolución de prendas en préstamo">Devolución de prendas en préstamo</option>
+                <option value="Devolución de ticket">Devolución de ticket</option>
+                <option value="Diferencia en cierre de caja">Diferencia en cierre de caja</option>
+                <option value="Diferencia precio - Etiqueta">Diferencia precio - Etiqueta</option>
+                <option value="Dispositivo no enciende">Dispositivo no enciende</option>
+                <option value="Duplicidad de información">Duplicidad de información</option>
+                <option value="Eliminar Plus dobles">Eliminar Plus dobles</option>
+                <option value="Eliminar asesor">Eliminar asesor</option>
+                <option value="Eliminar documento de recepción">Eliminar documento de recepción</option>
+                <option value="Eliminar documento transferencia">Eliminar documento transferencia</option>
+                <option value="Eliminar nota crédito">Eliminar nota crédito</option>
+                <option value="Eliminar reserva cliente">Eliminar reserva cliente</option>
+                <option value="Entrada extraordinaria">Entrada extraordinaria</option>
+                <option value="Equipo de computo">Equipo de computo</option>
+                <option value="Error FOS 5">Error FOS 5</option>
+                <option value="Error Procesos">Error Procesos</option>
+                <option value="Error condición comercial">Error condición comercial</option>
+                <option value="Error configuración">Error configuración</option>
+                <option value="Error de conexión a la VPN">Error de conexión a la VPN</option>
+                <option value="Error desconocido">Error desconocido</option>
+                <option value="Error desconocidos - Kaiowa">Error desconocidos - Kaiowa</option>
+                <option value="Error dispositivo fiscal">Error dispositivo fiscal</option>
+                <option value="Error en informe diario de ventas">Error en informe diario de ventas</option>
+                <option value="Error notas entrega">Error notas entrega</option>
+                <option value="Falla al cargar abono">Falla al cargar abono</option>
+                <option value="Falla al cargar crédito">Falla al cargar crédito</option>
+                <option value="Falla al compartir documentos">Falla al compartir documentos</option>
+                <option value="Falla al compartir pantalla">Falla al compartir pantalla</option>
+                <option value="Falla de conexión a reunión">Falla de conexión a reunión</option>
+                <option value="Falla de sonido">Falla de sonido</option>
+                <option value="Falla de video">Falla de video</option>
+                <option value="Fallas al adjuntar documentos">Fallas al adjuntar documentos</option>
+                <option value="Fallas al cargar documentos">Fallas al cargar documentos</option>
+                <option value="Fallas de autenticación">Fallas de autenticación</option>
+                <option value="Fallas en UPS">Fallas en UPS</option>
+                <option value="Fallas en copiado">Fallas en copiado</option>
+                <option value="Fallas en digitacilización de documento">Fallas en digitacilización de documento</option>
+                <option value="Fallas en la calidad de impresión">Fallas en la calidad de impresión</option>
+                <option value="Fallas en sincronización">Fallas en sincronización</option>
+                <option value="Forzar punteo">Forzar punteo</option>
+                <option value="Generar permisos de punteo con contraseña">Generar permisos de punteo con contraseña</option>
+                <option value="Generar presupuesto del mes">Generar presupuesto del mes</option>
+                <option value="Gestionar acceso a la aplicación">Gestionar acceso a la aplicación</option>
+                <option value="Gestionar capacidad de correo">Gestionar capacidad de correo</option>
+                <option value="Gestión almacenamiento">Gestión almacenamiento</option>
+                <option value="Gestión de permisos">Gestión de permisos</option>
+                <option value="Habilitar OP (Orden de producción)">Habilitar OP (Orden de producción)</option>
+                <option value="Habilitar OT (Orden de trabajo)">Habilitar OT (Orden de trabajo)</option>
+                <option value="Habilitar permisos de llamadas">Habilitar permisos de llamadas</option>
+                <option value="Habilitar punto de red">Habilitar punto de red</option>
+                <option value="Impresora no enciende">Impresora no enciende</option>
+                <option value="Imprimir políticas de privacidad">Imprimir políticas de privacidad</option>
+                <option value="Incidente de seguridad">Incidente de seguridad</option>
+                <option value="Indisponibilidad del servicio">Indisponibilidad del servicio</option>
+                <option value="Indisponibilidad del servicio - Kaiowa">Indisponibilidad del servicio - Kaiowa</option>
+                <option value="Ingresar equipo al dominio">Ingresar equipo al dominio</option>
+                <option value="Ingresar fecha de envío">Ingresar fecha de envío</option>
+                <option value="Instalación de Antivirus">Instalación de Antivirus</option>
+                <option value="Instalación de aplicación">Instalación de aplicación</option>
+                <option value="Instalación de emisora">Instalación de emisora</option>
+                <option value="Instalar CEGID">Instalar CEGID</option>
+                <option value="Instalar JAVA y QZ">Instalar JAVA y QZ</option>
+                <option value="Instalar Open Office">Instalar Open Office</option>
+                <option value="Instalar Software">Instalar Software</option>
+                <option value="Instalar TAXBOX">Instalar TAXBOX</option>
+                <option value="Instalar Teams">Instalar Teams</option>
+                <option value="Instalar servicio">Instalar servicio</option>
+                <option value="Intereses Condonados - SAC">Intereses Condonados - SAC</option>
+                <option value="Lentitud General del Dispositivo">Lentitud General del Dispositivo</option>
+                <option value="Lentitud en la navegación">Lentitud en la navegación</option>
+                <option value="Mantenimiento preventivo">Mantenimiento preventivo</option>
+                <option value="Modificación de medio de pago">Modificación de medio de pago</option>
+                <option value="Modificar concepto de factura">Modificar concepto de factura</option>
+                <option value="Modificar datos de clientes - Kaiowa">Modificar datos de clientes - Kaiowa</option>
+                <option value="Modificar grupos de distribución">Modificar grupos de distribución</option>
+                <option value="Modificar información de tienda en factura">Modificar información de tienda en factura</option>
+                <option value="Modificar vendedor">Modificar vendedor</option>
+                <option value="Movimiento / Traslado de impresora">Movimiento / Traslado de impresora</option>
+                <option value="No aplica abono - Kaiowa">No aplica abono - Kaiowa</option>
+                <option value="No aplica abono - SAC">No aplica abono - SAC</option>
+                <option value="No cargan ventas de CEGID">No cargan ventas de CEGID</option>
+                <option value="No funciona QR">No funciona QR</option>
+                <option value="No imprime Z">No imprime Z</option>
+                <option value="No ingresan correos electrónicos">No ingresan correos electrónicos</option>
+                <option value="No ingresan llamadas">No ingresan llamadas</option>
+                <option value="No inicia Front">No inicia Front</option>
+                <option value="No salen correos eléctrónicos">No salen correos eléctrónicos</option>
+                <option value="No salen llamadas">No salen llamadas</option>
+                <option value="No se genera voucher">No se genera voucher</option>
+                <option value="Novedad en navegación">Novedad en navegación</option>
+                <option value="Papel agotado">Papel agotado</option>
+                <option value="Permisos de Conceptos y Medios de Pago">Permisos de Conceptos y Medios de Pago</option>
+                <option value="Permisos de navegación en sitios web">Permisos de navegación en sitios web</option>
+                <option value="Precios en cero">Precios en cero</option>
+                <option value="Predeterminar impresora">Predeterminar impresora</option>
+                <option value="Pérdida de información">Pérdida de información</option>
+                <option value="Pérdida o daño de la tarjeta recauda">Pérdida o daño de la tarjeta recauda</option>
+                <option value="Quitar fecha de envío">Quitar fecha de envío</option>
+                <option value="Realizar Back up">Realizar Back up</option>
+                <option value="Reimpresión de Z">Reimpresión de Z</option>
+                <option value="Reimpresión de albarán">Reimpresión de albarán</option>
+                <option value="Reimpresión de factura electrónica">Reimpresión de factura electrónica</option>
+                <option value="Reporte Clientes Crédito Mes de Cumpleaños">Reporte Clientes Crédito Mes de Cumpleaños</option>
+                <option value="Reporte de clientes con crédito - Mes de cumpleaños">Reporte de clientes con crédito - Mes de cumpleaños</option>
+                <option value="Reporte de telas mensuales">Reporte de telas mensuales</option>
+                <option value="Restablecer contraseña">Restablecer contraseña</option>
+                <option value="Restablecer contraseña usuario admin.">Restablecer contraseña usuario admin.</option>
+                <option value="Restablecer contraseña usuario de tienda">Restablecer contraseña usuario de tienda</option>
+                <option value="Retiro de personal en tienda">Retiro de personal en tienda</option>
+                <option value="Robo o pérdida de información">Robo o pérdida de información</option>
+                <option value="Sin acceso a la herramienta">Sin acceso a la herramienta</option>
+                <option value="Sin conexión a internet - Cableado">Sin conexión a internet - Cableado</option>
+                <option value="Sin conexión a internet - WIFI">Sin conexión a internet - WIFI</option>
+                <option value="Sincronización de Archivos">Sincronización de Archivos</option>
+                <option value="Solicitar permisos de navegación">Solicitar permisos de navegación</option>
+                <option value="Suministro de papel">Suministro de papel</option>
+                <option value="Suministro de toner / Cartucho">Suministro de toner / Cartucho</option>
+                <option value="Tendida de cableado">Tendida de cableado</option>
+                <option value="Toner / Cartucho agotado">Toner / Cartucho agotado</option>
+                <option value="Transacción fallida - Datafono">Transacción fallida - Datafono</option>
+                <option value="Traslado de OP (Orden de producción)">Traslado de OP (Orden de producción)</option>
+                <option value="Traslado de personal">Traslado de personal</option>             
             </select>
-            <select class="select" id="Escalar">
-                <option value="">Filtrar por persona a escalar</option>
-
+            <select class="select" id="Escalar1" onchange="filtrarSelect('Escalar1')">
+                <option value="">Filtrar por persona a escalar 1</option>
+                <option value="Alexandra Beltran - Coordinador BI">Alexandra Beltran - Coordinador BI</option>
+                <option value="Alexandra Mejia - Soporte">Alexandra Mejia - Soporte</option>
+                <option value="Camilo Florian - Analista de infraestructura">Camilo Florian - Analista de infraestructura</option>
+                <option value="Carlos Bustamante - Analista BI">Carlos Bustamante - Analista BI</option>
+                <option value="Daniel Morales - Coordinador aplicaciones">Daniel Morales - Coordinador aplicaciones</option>
+                <option value="Daniel Meneses - Soporte en sitio">Daniel Meneses - Soporte en sitio</option>
+                <option value="Juan David Jaramillo - Analista de Aplicaciones">Juan David Jaramillo - Analista de Aplicaciones</option>
+                <option value="Juan Diego Mercado - Analista de aplicaciones">Juan Diego Mercado - Analista de aplicaciones</option>
+                <option value="Juan Esteban Gutierrez - Analista de infraestructura">Juan Esteban Gutierrez - Analista de infraestructura</option>
+                <option value="Juan Jaramillo - Analista de aplicaciones">Juan Jaramillo - Analista de aplicaciones</option>
+                <option value="Juan José Agudelo - Soporte en sitio">Juan José Agudelo - Soporte en sitio</option>
+                <option value="Lina Gaviria - Auxiliar de créditos">Lina Gaviria - Auxiliar de créditos</option>
+                <option value="Mateo Herrera - Analista de infraestructura">Mateo Herrera - Analista de infraestructura</option>
+                <option value="Mesa de ayuda">Mesa de ayuda</option>
+                <option value="Nada">Nada</option>
+                <option value="Sara Sanchez Moreno - ssanchez@stop.com.co">Sara Sanchez Moreno - ssanchez@stop.com.co</option>
+                <option value="contabilidad@stop.com.co">contabilidad@stop.com.co</option>
+                <option value="tesoreria@stop.com.co">tesoreria@stop.com.co</option>
             </select>
-            
+            <select class="select" id="Escalar2" onchange="filtrarSelect('Escalar2')">
+                <option value="">Filtrar por persona a escalar 2</option>
+                <option value="Andres Arbelaez - Auxiliar de centro de servicios">Andres Arbelaez - Auxiliar de centro de servicios</option>
+                <option value="Camilo Florian - Analista de infraestructura">Camilo Florian - Analista de infraestructura</option>
+                <option value="Carlos Bustamante - Analista BI">Carlos Bustamante - Analista BI</option>
+                <option value="Daniel Morales - Coordinador aplicaciones">Daniel Morales - Coordinador aplicaciones</option>
+                <option value="Daniel meneses - soporte en sitio">Daniel meneses - soporte en sitio</option>
+                <option value="Hernan Posada">Hernan Posada</option>
+                <option value="Hernan Posada - Analista de desarrollo">Hernan Posada - Analista de desarrollo</option>
+                <option value="Juan David Jaramillo - Analista de Aplicaciones">Juan David Jaramillo - Analista de Aplicaciones</option>
+                <option value="Juan Diego Mercado - Analista de aplicaciones">Juan Diego Mercado - Analista de aplicaciones</option>
+                <option value="Juan Esteban Gutierrez - Analista de Infraestructura">Juan Esteban Gutierrez - Analista de Infraestructura</option>
+                <option value="Juan Jaramillo - Analista de aplicaciones">Juan Jaramillo - Analista de aplicaciones</option>
+                <option value="Mateo Herrera - Analista de infraestructura">Mateo Herrera - Analista de infraestructura</option>
+                <option value="Mesa de ayuda">Mesa de ayuda</option>
+                <option value="Nada">Nada</option>                
+            </select>
         </div>
-        <input type="file" id="excel-file" />
-        <table id="excel-table"></table>
-        
+        <input type="file" id="excelFileInput" />
+        <div style="display: flex; gap: 10px;">
+            <button onclick="cargarArchivoExcel()">Cargar Archivo Excel</button>
+            <button id="Refresh">Reiniciar</button>
+        </div>
+        <div id="tablaContainer"></div>
     </section>
     <!-- Asegúrate de incluir la biblioteca SheetJS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
-    <script src="scriptEscalamientos copy.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script src="scriptEscalamientos.js"></script>
 </body>
 </html>

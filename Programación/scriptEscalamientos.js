@@ -1,67 +1,121 @@
-        // Create table data
-        const tableData = [
-            { tipo: "Incidente", aplicacion: "Aplicaciones de negocio", CatM: "CEGID", CatH: "Error dispositivo fiscal", Esc1: "Mesa de ayuda", Esc2: "Daniel Morales - Coordinador aplicaciones" },
-        ];
+function cargarArchivoExcel() {
+    var inputFile = document.getElementById('excelFileInput');
+    var file = inputFile.files[0];
 
-        // Function to create table rows and cells
-        function createTableRows(data) {
-            const table = document.getElementById('myTable');
-            data.forEach((item) => {
-                const row = document.createElement('tr');
+    if (file) {
+        var lector = new FileReader();
 
-                const Tipo = document.createElement('td');
-                idCell.textContent = item.tipo;
-                row.appendChild(Tipo);
+        lector.onload = function (e) {
+            var contenidoArchivo = e.target.result;
+            procesarArchivoExcel(contenidoArchivo);
+        };
 
-                const Aplicacion = document.createElement('td');
-                nameCell.textContent = item.aplicacion;
-                row.appendChild(Aplicacion);
+        lector.readAsBinaryString(file);
+    } else {
+        console.error('Por favor, selecciona un archivo Excel.');
+    }
+}
 
-                const CategoriaM = document.createElement('td');
-                ageCell.textContent = item.CatM;
-                row.appendChild(CategoriaM);
+function procesarArchivoExcel(contenido) {
+    var libroDeTrabajo = XLSX.read(contenido, { type: 'binary' });
+    var primeraHojaNombre = libroDeTrabajo.SheetNames[0];
+    var hojaDeTrabajo = libroDeTrabajo.Sheets[primeraHojaNombre];
 
-                const CategoriaH = document.createElement('td');
-                cityCell.textContent = item.CatH;
-                row.appendChild(CategoriaH);
+    var datos = XLSX.utils.sheet_to_json(hojaDeTrabajo, { header: 1 });
 
-                const Escala1 = document.createElement('td');
-                cityCell.textContent = item.Esc1;
-                row.appendChild(Escala1);
+    // Crear una tabla HTML dinámicamente
+    var tabla = document.createElement('table');
+    var encabezado = tabla.createTHead();
+    var cuerpo = document.createElement('tbody');
 
-                const Escala2 = document.createElement('td');
-                cityCell.textContent = item.Esc2;
-                row.appendChild(Escala2);
+    // Agregar encabezados a la tabla
+    var encabezadoFila = encabezado.insertRow();
+    datos[0].forEach(function (encabezado) {
+        var th = document.createElement('th');
+        th.appendChild(document.createTextNode(encabezado));
+        encabezadoFila.appendChild(th);
+    });
 
-                table.appendChild(row);
-            });
+    // Agregar filas y celdas de datos a la tabla
+    for (var i = 1; i < datos.length; i++) {
+        var tr = cuerpo.insertRow();
+        datos[i].forEach(function (dato) {
+            var td = tr.insertCell();
+            td.appendChild(document.createTextNode(dato));
+        });
+    }
+
+    tabla.appendChild(encabezado);
+    tabla.appendChild(cuerpo);
+    tabla.id = 'tabla'; // Asignar un ID a la tabla para referencia posterior
+
+    // Agregar la tabla al contenedor en el DOM
+    var tablaContainer = document.getElementById('tablaContainer');
+    tablaContainer.innerHTML = ''; // Limpiar contenido anterior
+    tablaContainer.appendChild(tabla);
+}
+
+function filtrarSelect(campo) {
+    // Obtener el valor seleccionado en el select
+    var valorSeleccionado = document.getElementById(campo).value;
+
+    // Obtener la tabla
+    var tabla = document.getElementById('tabla');
+
+    // Obtener todas las filas de la tabla (excepto la primera que contiene los encabezados)
+    var filas = tabla.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+    // Iterar sobre las filas y ocultar/mostrar según el filtro seleccionado
+    for (var i = 0; i < filas.length; i++) {
+        var celda = filas[i].getElementsByTagName('td')[indexDeCampo(campo)];
+
+        if (valorSeleccionado === '' || celda.innerHTML === valorSeleccionado) {
+            filas[i].style.display = '';
+        } else {
+            filas[i].style.display = 'none';
         }
+    }
+}
 
-        // Call the function with table data
-        createTableRows(tableData);
+function indexDeCampo(campo) {
+    // Mapear el nombre del campo al índice de la columna en la tabla
+    switch (campo) {
+        case 'Tipo':
+            return 0;
+        case 'Area':
+            return 1;
+        case 'CategoriaMadre':
+            return 2;
+        case 'CategoriaHijo':
+            return 3;
+        case 'Escalar1':
+            return 4;
+        case 'Escalar2':
+            return 5;
+        default:
+            return -1; // Campo no encontrado
+    }
+}
 
-        // Function to filter table rows based on the selected values
-        function filterTable() {
-            const filterId = document.getElementById('filterId').value;
-            const filterName = document.getElementById('filterName').value;
+function ordenarOpcionesAlfabeticamente(idSelect) {
+    var select = document.getElementById(idSelect);
+    var opciones = Array.from(select.options);
+    
+    opciones.sort(function(a, b) {
+        return a.text.localeCompare(b.text);
+    });
 
-            const tableRows = document.querySelectorAll('#myTable tr');
+    // Limpiar las opciones actuales
+    select.innerHTML = '';
 
-            tableRows.forEach((row) => {
-                const idCell = row.children[0];
-                const nameCell = row.children[1];
+    // Agregar las opciones ordenadas al select
+    opciones.forEach(function(opcion) {
+        select.add(opcion);
+    });
+}
 
-                if (
-                    (filterId === '' || idCell.textContent.trim() === filterId) &&
-                    (filterName === '' || nameCell.textContent.trim() === filterName)
-                ) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        // Add event listeners to filter dropdowns
-        document.getElementById('filterId').addEventListener('change', filterTable);
-        document.getElementById('filterName').addEventListener('change', filterTable);
+// Llama a esta función para ordenar alfabéticamente las opciones del select con ID 'Area'
+ordenarOpcionesAlfabeticamente('Area');
+document.getElementById('Refresh').addEventListener('click', function() {
+    location.reload();
+});
