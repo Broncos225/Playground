@@ -197,3 +197,15 @@ button:hover {
 button .botonReiniciar:hover {
     background-color: #FF0000;
 }
+
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+th, td {
+    width: 12.5%; /* 100% / 8 columnas */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
