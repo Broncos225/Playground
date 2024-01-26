@@ -55,8 +55,15 @@ function procesarArchivoExcel(contenido) {
     tablaContainer.appendChild(tabla);
     var boton = document.getElementById('miBoton');
     boton.disabled = true;
-    boton.style.backgroundColor = '#b3b3b3';
-    boton.style.cursor = 'default';
+    boton.style.backgroundColor = '#a3a3a3';
+    boton.style.color = '#868686';
+    boton.style.cursor = 'not-allowed';
+    boton.style.borderColor = '#a3a3a3'; 
+    var botonReiniciar = document.getElementById('miBotonReiniciar');
+    botonReiniciar.style.borderColor = '#cb3234'; 
+    botonReiniciar.style.backgroundColor = '#FF0000';
+    botonReiniciar.style.color = '#ffffff';
+
 }
 
 function filtrarSelect(campo) {
@@ -113,6 +120,8 @@ function colocarOpciones() {
 }
 
 
+
+
 $(document).ready(function() {
     // Aplica select2 a tu elemento select
     $('select').select2();
@@ -122,8 +131,14 @@ document.getElementById("excelFileInput").addEventListener("change", function() 
     var fileName = this.files[0].name;
     var fileSelect = this.parentElement;
     fileSelect.dataset.fileName = fileName;
+    fileSelect.style.borderColor = '#008f39';
+    fileSelect.style.backgroundColor = '#e6f5e0';
+    fileSelect.style.borderBlockStyle = 'solid';
     var boton = document.getElementById('miBoton');
+    var botonReiniciar = document.getElementById('miBotonReiniciar');
     boton.disabled = false;
-    boton.style.backgroundColor = '#000000';
+
+    botonReiniciar = '#FF0000';
     boton.style.cursor = 'pointer';
 });
+
