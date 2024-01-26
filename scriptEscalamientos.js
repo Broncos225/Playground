@@ -3,14 +3,20 @@ function cargarArchivoExcel() {
     var file = inputFile.files[0];
 
     if (file) {
-        var lector = new FileReader();
+        var extension = file.name.split('.').pop();
 
-        lector.onload = function (e) {
-            var contenidoArchivo = e.target.result;
-            procesarArchivoExcel(contenidoArchivo);
-        };
+        if (extension === 'xlsx') {
+            var lector = new FileReader();
 
-        lector.readAsBinaryString(file);
+            lector.onload = function (e) {
+                var contenidoArchivo = e.target.result;
+                procesarArchivoExcel(contenidoArchivo);
+            };
+
+            lector.readAsBinaryString(file);
+        } else {
+            console.error('Por favor, selecciona un archivo Excel con formato .xlsx.');
+        }
     } else {
         console.error('Por favor, selecciona un archivo Excel.');
     }
