@@ -209,3 +209,13 @@ th, td {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+#botones-container {
+    display: flex;
+    justify-content: center;
+}
+
+#botones {
+    display: flex;
+    justify-content: space-around;
+}

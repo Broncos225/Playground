@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 
-    <title>Playground</title>
+    <title>Horarios</title>
 </head>
-<body onload="restoreChanges()">
+<body>
     <header>
         <nav>
             <ul>
@@ -22,7 +22,7 @@
     </header>
 
     <section>
-        <h1>Horarios de Trabajadores</h1>
+        <h1 id="Titulo">Horarios de Trabajadores</h1>
         <table id="editableTable">
             <tr>
                 <th>Nombre</th>
@@ -97,6 +97,17 @@
             <!-- Agrega más filas para cada trabajador -->
         </table>
     </section>
-<script src="scriptHorarios.js"></script>
+    <div id="botones-container">
+        <div id="botones">
+            <button onclick="saveChanges()" id="guardar">Guardar</button>
+            <button onclick="restoreChanges()" id="restaurar">Restaurar</button>
+        </div>
+    </div>
+    <!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+
+<!-- Add the Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <script src="scriptHorarios.js"></script>
 </body>
 </html>
