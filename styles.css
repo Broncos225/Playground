@@ -225,3 +225,14 @@ button .botonReiniciar:hover {
 #Table th, #Table td {
     width: auto;
 }
+
+@media screen and (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+    th, td {
+      width: 50px; /* Set a fixed width for table cells */
+      height: 50px; /* Set a fixed height for table cells */
+      text-align: center;
+    }
+  }
