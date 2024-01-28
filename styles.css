@@ -237,5 +237,7 @@ button .botonReiniciar:hover {
 .titulos,.titulos td, .titulos th{
     font-weight: bold;
     font-size: 15px;
-    background-color: #a3a3a3;
+    background-color: #012353;
+    color: #fff;
+    border-color: #f2f2f2;
 }
