@@ -198,17 +198,7 @@ button .botonReiniciar:hover {
     background-color: #FF0000;
 }
 
-table {
-    table-layout: fixed;
-    width: 100%;
-}
 
-th, td {
-    width: 12.5%; /* 100% / 8 columnas */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
 #botones-container {
     display: flex;
@@ -218,4 +208,18 @@ th, td {
 #botones {
     display: flex;
     justify-content: space-around;
+}
+
+#Table {
+    width: 100%;
+    /* El resto de tus estilos de tabla */
+}
+
+#Table th:first-child, #Table td:first-child {
+    width: 1%; /* Esto hace que la primera columna sea lo más pequeña posible, ajustándose al contenido */
+    white-space: nowrap; /* Esto evita que el texto se envuelva a la línea siguiente */
+}
+
+#Table th, #Table td {
+    width: 10px; /* Esto hace que el resto de las columnas tengan el mismo tamaño */
 }
