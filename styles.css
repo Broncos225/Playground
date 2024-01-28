@@ -229,3 +229,7 @@ button .botonReiniciar:hover {
         overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
     }
 }
+
+#Table th, #Table td{
+    text-align: center;
+}
