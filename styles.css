@@ -233,3 +233,9 @@ button .botonReiniciar:hover {
 #Table th, #Table td{
     text-align: center;
 }
+
+.titulos,.titulos td, .titulos th{
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #a3a3a3;
+}
