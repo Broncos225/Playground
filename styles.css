@@ -221,7 +221,7 @@ button .botonReiniciar:hover {
 
 .table-container {
     overflow-x: auto;
-    width: 95%; /* Esto hará que el contenedor de la tabla tenga el mismo ancho que su contenedor padre */
+    width: 100%; /* Esto hará que el contenedor de la tabla tenga el mismo ancho que su contenedor padre */
 }
 
 @media only screen and (max-width: 600px) {
@@ -240,4 +240,27 @@ button .botonReiniciar:hover {
     background-color: #012353;
     color: #fff;
     border-color: #f2f2f2;
+}
+
+.Convenciones {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    align-items: center;
+    gap: 10px;
+    width: 15%;
+}
+
+.Convenciones table th{
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #012353;
+    color: #fff;
+    border-color: #f2f2f2;
+    text-align: center;
+}
+.Convenciones table th:first-child, .Convenciones table td:first-child {
+    width: 1%;
+    overflow-x: auto;
+    text-align: center;
 }

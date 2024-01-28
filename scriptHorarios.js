@@ -33,6 +33,7 @@ celdas.forEach(celda => {
             celda.style.backgroundColor = '#00ff00';
             break;
         case 'D':
+        case 'DF':
             celda.style.backgroundColor = '#white';
             celda.style.color = 'red';
             break;
