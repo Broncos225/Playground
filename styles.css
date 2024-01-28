@@ -232,9 +232,6 @@ button .botonReiniciar:hover {
     .table-container {
         overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
     }
-    .Convenciones{
-        width: auto;
-    }
 }
 
 #Table th, #Table td{
