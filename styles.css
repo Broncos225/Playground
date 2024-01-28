@@ -210,16 +210,18 @@ button .botonReiniciar:hover {
     justify-content: space-around;
 }
 
+.table-container {
+    overflow-x: auto;
+}
+
 #Table {
-    width: 100%;
-    /* El resto de tus estilos de tabla */
+    min-width: 600px; /* Ajusta este valor según tus necesidades */
 }
 
 #Table th:first-child, #Table td:first-child {
-    width: 1%; /* Esto hace que la primera columna sea lo más pequeña posible, ajustándose al contenido */
-    white-space: nowrap; /* Esto evita que el texto se envuelva a la línea siguiente */
+    white-space: nowrap;
 }
 
 #Table th, #Table td {
-    width: 10px; /* Esto hace que el resto de las columnas tengan el mismo tamaño */
+    width: auto;
 }
