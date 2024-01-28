@@ -211,19 +211,15 @@ button .botonReiniciar:hover {
 }
 
 
-#Table {
-    min-width: 600px; /* Ajusta este valor según tus necesidades */
-}
-
 #Table th:first-child, #Table td:first-child {
     white-space: nowrap;
 }
 
 #Table th, #Table td {
-    width: auto;
+    width: 20px;
 }
 
-@media screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) {
     #table-container {
         margin-bottom: 0; 
         overflow-x: auto; 
