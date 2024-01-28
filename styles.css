@@ -228,6 +228,9 @@ button .botonReiniciar:hover {
     .table-container {
         overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
     }
+    .Convenciones{
+        width: auto;
+    }
 }
 
 #Table th, #Table td{
@@ -245,10 +248,9 @@ button .botonReiniciar:hover {
 .Convenciones {
     display: flex;
     flex-direction: column;
-    align-self: start;
     align-items: center;
     gap: 10px;
-    width: 15%;
+    width: 20%;
 }
 
 .Convenciones table th{
