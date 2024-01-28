@@ -219,12 +219,13 @@ button .botonReiniciar:hover {
     width: 20px;
 }
 
+.table-container {
+    overflow-x: auto;
+    width: 100%; /* Esto hará que el contenedor de la tabla tenga el mismo ancho que su contenedor padre */
+}
+
 @media only screen and (max-width: 600px) {
-    #table-container {
-        margin-bottom: 0; 
-        overflow-x: auto; 
-        overflow-y: hidden; 
-        width: 530px; 
-        white-space: nowrap;
+    .table-container {
+        overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
     }
-  }
+}
