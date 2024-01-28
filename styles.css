@@ -227,7 +227,7 @@ button .botonReiniciar:hover {
 }
 
 @media screen and (max-width: 600px) {
-    table, thead, tbody, th, td, tr {
+    #table-container {
         margin-bottom: 0; 
         overflow-x: auto; 
         overflow-y: hidden; 
