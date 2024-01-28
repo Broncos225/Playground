@@ -210,9 +210,6 @@ button .botonReiniciar:hover {
     justify-content: space-around;
 }
 
-.table-container {
-    overflow-x: auto;
-}
 
 #Table {
     min-width: 600px; /* Ajusta este valor según tus necesidades */
