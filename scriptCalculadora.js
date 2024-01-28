@@ -22,6 +22,7 @@ document.getElementById('calcular').addEventListener('click', function() {
     var notas = document.getElementById('notas').getElementsByTagName('input');
     var notaMinima = document.getElementById('Minima').getElementsByTagName('input');
     var notaFinal = 0;
+    var notaRelativa = 0;
     var Porcentajes = 0;
 
 
@@ -38,7 +39,7 @@ document.getElementById('calcular').addEventListener('click', function() {
         } else {
             
             notaFinal += notas[i].valueAsNumber * (notas[i + 1].valueAsNumber / 100);
-        
+            notaRelativa += notas[i].valueAsNumber * (notas[i + 1].valueAsNumber / Porcentajes); // Modifica esta línea
         }
     }
 
@@ -64,10 +65,31 @@ document.getElementById('calcular').addEventListener('click', function() {
         }
     }
 
+    if (notaRelativa >= 4){
+        document.getElementById('notaRelativa').style.color = 'green';
+        document.getElementById('notaRelativa').style.fontWeight = 'bold';
+    } else if (notaRelativa < 4 && notaRelativa >= 3){
+        document.getElementById('notaRelativa').style.color = 'orange';
+        document.getElementById('notaRelativa').style.fontWeight = 'bold';
+    } else if (notaRelativa < 3){
+        document.getElementById('notaRelativa').style.color = 'red';
+        document.getElementById('notaRelativa').style.fontWeight = 'bold';
+    }
+
+    if (notaFinal >= 4){
+        document.getElementById('notaFinal').style.color = 'green';
+        document.getElementById('notaFinal').style.fontWeight = 'bold';
+    } else if (notaFinal < 4 && notaFinal >= 3){
+        document.getElementById('notaFinal').style.color = 'orange';
+        document.getElementById('notaFinal').style.fontWeight = 'bold';
+    } else if (notaFinal < 3){
+        document.getElementById('notaFinal').style.color = 'red';
+        document.getElementById('notaFinal').style.fontWeight = 'bold';
+    }
 
 
-    
-    document.getElementById('notaFinal').innerText = 'Nota final: ' + notaFinal.toFixed(2);
+    document.getElementById('notaRelativa').innerText = 'Nota relativa: ' + notaRelativa.toFixed(2);
+    document.getElementById('notaFinal').innerText = 'Nota absoluta: ' + notaFinal.toFixed(2);
     document.getElementById('Porcentajes').innerText = 'Porcentajes: ' + Porcentajes + "%";
     
 });

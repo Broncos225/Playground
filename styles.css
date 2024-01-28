@@ -68,6 +68,10 @@ body {
     
 }
 
+#notaRelativa {
+    font-size: 20px;
+}
+
 #notaFaltante {
     font-size: 20px;
 }
@@ -250,7 +254,7 @@ button .botonReiniciar:hover {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    width: 20%;
+    width: 200px;
 }
 
 .Convenciones table th{
