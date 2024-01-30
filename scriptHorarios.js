@@ -8,6 +8,7 @@ const firebaseConfig = {
     appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
   };
 
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
   
@@ -67,14 +68,24 @@ function actualizarColorCelda(celda) {
     celda.style.backgroundColor = color;
 }
 
-function guardarCelda(celda) {
-    const texto = celda.textContent.trim();
-    const idCelda = celda.cellIndex + 1; // Obtén el índice de la celda (1-indexed)
-    const nombreFila = celda.parentNode.cells[0].textContent.trim(); // Obtén el nombre del agente
+function guardarCeldas() {
+    var passw = document.getElementById('pass').value;
+    if (passw == "5522") {
+        const celdas = document.querySelectorAll('td');
+        celdas.forEach(celda => {
+            const texto = celda.textContent.trim();
+            const idCelda = celda.cellIndex + 1; // Obtén el índice de la celda (1-indexed)
+            const nombreFila = celda.parentNode.cells[0].textContent.trim(); // Obtén el nombre del agente
 
-    db.ref('celdas/' + nombreFila + '/' + idCelda).set({
-        texto: texto,
-    });
+            db.ref('celdas/' + nombreFila + '/' + idCelda).set({
+                texto: texto,
+            });
+        });
+        alert("Datos guardados");
+        location.reload();
+    } else {
+        alert("Contraseña incorrecta");
+    }
 }
 
 function cargarDatos() {
@@ -98,4 +109,6 @@ function cargarDatos() {
     });
 }
 
-document.getElementById('btnGuardar').addEventListener('click', guardarCelda);
+document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
+
+

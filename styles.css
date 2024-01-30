@@ -267,3 +267,52 @@ button .botonReiniciar:hover {
     overflow-x: auto;
     text-align: center;
 }
+
+
+#miSelector {
+    font-family: Arial, Helvetica, sans-serif, sans-serif;
+    outline: 0;
+    background: transparent;
+    color:#000000;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 4px;
+    font-size: 16px;
+    width: 150px;
+}
+
+#BotonesHorario {
+    display: flex;
+
+    justify-content: center;
+    padding: 20px;
+}
+
+#btnGuardar {
+    padding: auto;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    border: solid 2px #000000;
+}
+
+#btnGuardar:hover {
+    background-color: #a3a3a3;
+}
+
+#pass {
+    font-family: Arial, Helvetica, sans-serif;
+    outline: 0;
+    background: transparent;
+    color:#000000;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 4px;
+    font-size: 16px;
+    height: fit-content;
+    align-self: center;
+    border-radius: 5px;
+    border: solid 2px #000000;
+    width: 100px;
+}
