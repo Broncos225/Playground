@@ -15,7 +15,7 @@ const db = firebase.database();
 window.onload = function () {
     colorCelda();
     cargarDatos();
-    
+    resaltarDiaActual();
 };
 
 function colorCelda() {
@@ -178,4 +178,34 @@ function contDescansos(){
     celdaE.textContent = contE;
     var celdaF = document.getElementById("6");
     celdaF.textContent = contF;
+}
+
+function resaltarDiaActual() {
+    const fechaActual = new Date();
+    const diaActual = fechaActual.getDate();
+
+    const celdas = document.querySelectorAll('td');
+
+    celdas.forEach((celda) => {
+        const idCelda = celda.cellIndex + 1;
+        const nombreFila = celda.parentNode.cells[0].textContent.trim();
+
+        db.ref('celdas/' + nombreFila + '/' + idCelda).once('value')
+            .then(snapshot => {
+                const data = snapshot.val();
+                if (data) {
+                    celda.textContent = data.texto;
+                    actualizarColorCelda(celda);
+
+                    // Resaltar el día actual
+                    if (idCelda === diaActual) {
+                        celda.style.backgroundColor = 'orange';
+                    }
+                }
+                contDescansos();
+            })
+            .catch(error => {
+                console.error("Error al cargar datos:", error);
+            });
+    });
 }
