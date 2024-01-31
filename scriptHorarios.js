@@ -36,10 +36,10 @@ function actualizarColorCelda(celda) {
     var colorT4 = '#c5b4fa';
     var colorT5 = '#fcbdc4';
     var colorT6 = '#fc818d';
-    var colorTSA = '#688ffc';
+    var colorTSA = '#85a5ff';
     var colorAM = '#80eded';
     var colorD = '#white';
-
+    
 
     const texto = celda.textContent.trim();
     let color;
