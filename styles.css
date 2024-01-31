@@ -234,6 +234,9 @@ button .botonReiniciar:hover {
     .table-container {
         overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
     }
+    #TablaDescansos {
+        padding-bottom: 0px;
+    }
 }
 
 #Table th, #Table td{
