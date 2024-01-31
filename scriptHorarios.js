@@ -30,14 +30,14 @@ function colorCelda() {
 }
 
 function actualizarColorCelda(celda) {
-    var colorT1 = '#FFB31F';
-    var colorT2 = '#ffe699';
-    var colorT3 = '#c9c9c9';
-    var colorT4 = '#f4b084';
-    var colorT5 = '#aad18f';
-    var colorT6 = '#00ff00';
-    var colorTSA = '#ffff00';
-    var colorAM = 'cyan';
+    var colorT1 = '#fcfb8d';
+    var colorT2 = '#afed87';
+    var colorT3 = '#87beed';
+    var colorT4 = '#c5b4fa';
+    var colorT5 = '#fcbdc4';
+    var colorT6 = '#fc818d';
+    var colorTSA = '#688ffc';
+    var colorAM = '#80eded';
     var colorD = '#white';
 
 
