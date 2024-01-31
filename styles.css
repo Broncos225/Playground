@@ -224,13 +224,18 @@ button .botonReiniciar:hover {
 }
 
 .table-container {
+    display: flex;
     overflow-x: auto;
-    width: 100%; /* Esto hará que el contenedor de la tabla tenga el mismo ancho que su contenedor padre */
+    width: 100%;
+    flex-direction: row; /* Esto hará que el contenedor de la tabla tenga el mismo ancho que su contenedor padre */
 }
 
 @media only screen and (max-width: 600px) {
     .table-container {
         overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
+    }
+    .TablaDescansos {
+        padding-bottom: 17px;
     }
 }
 
@@ -314,3 +319,12 @@ button .botonReiniciar:hover {
     border: solid 2px #000000;
     width: 100px;
 }
+
+.Contenedor {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    gap: 10px;
+    width: 100%;
+}
+

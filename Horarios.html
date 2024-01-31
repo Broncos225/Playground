@@ -27,9 +27,10 @@
 
 
         <h1 id="Titulo">Horarios de los agentes</h1>
-        
+        <div class="Contenedor">
         <div class="table-container">
-        <table id="Table" >
+
+            <table id="Table" >
             <tr>
                 <th class="titulos" colspan="32" style="text-align: center; font-size: 25px;">Febrero</th>
 
@@ -291,9 +292,21 @@
                 <td contenteditable="true" id="F29"></td>                               
             </tr>
             <!-- Agrega más filas para cada trabajador -->
-        </table>
-
+            </table>
+            </div>
+            <div class="TablaDescansos">
+                <table id="Descansos">
+                    <tr><th class="titulos">Descansos</th></tr>
+                    <tr><td id="1"></td></tr>
+                    <tr><td id="2"></td></tr>
+                    <tr><td id="3"></td></tr>
+                    <tr><td id="4"></td></tr>
+                    <tr><td id="5"></td></tr>
+                    <tr><td id="6"></td></tr>
+                </table>
+            </div>
         </div>
+
         <div id="BotonesHorario">
             <input type="password" id="pass" placeholder="Contraseña">
             <button id="btnGuardar">Guardar</button>
