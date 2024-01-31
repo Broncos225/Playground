@@ -64,6 +64,9 @@ function actualizarColorCelda(celda) {
         case 'TSA':
             color = '#ffff00';
             break;
+        case 'AM':
+            color = 'red';
+            break;
     }
     celda.style.backgroundColor = color;
 }
