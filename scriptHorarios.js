@@ -70,6 +70,7 @@ function actualizarColorCelda(celda) {
             break;
         case 'D':
         case 'DF':
+        case 'S':
             color = colorD;
             celda.style.color = 'red';
             break;
