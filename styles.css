@@ -230,14 +230,7 @@ button .botonReiniciar:hover {
     flex-direction: row; /* Esto hará que el contenedor de la tabla tenga el mismo ancho que su contenedor padre */
 }
 
-@media only screen and (max-width: 600px) {
-    .table-container {
-        overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
-    }
-    .TablaDescansos {
-        padding-bottom: 0px;
-    }
-}
+
 
 #Table th, #Table td{
     text-align: center;
@@ -330,4 +323,14 @@ button .botonReiniciar:hover {
 
 .TablaDescansos {
     padding-bottom: 17px;
+}
+
+@media only screen and (max-width: 600px) {
+    .table-container {
+        overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
+    }
+    .TablaDescansos {
+        padding: 0px;
+        padding-bottom: 0px;
+    }
 }
