@@ -283,9 +283,9 @@ button .botonReiniciar:hover {
     justify-content: center;
 }
 
-#btnGuardar {
+#btnGuardar, #btnExportar {
     padding: auto;
-    margin: 10px;
+    margin-left: 10px;
     border: none;
     border-radius: 4px;
     background-color: transparent;
@@ -294,7 +294,7 @@ button .botonReiniciar:hover {
     border: solid 2px #000000;
 }
 
-#btnGuardar:hover {
+#btnGuardar:hover, #btnExportar:hover {
     background-color: #a3a3a3;
 }
 

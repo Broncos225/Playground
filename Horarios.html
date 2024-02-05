@@ -7,6 +7,12 @@
     <link rel="icon" href="Icono.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
 
+    <script src="./js/xlsx.full.min.js"></script>
+    <script src="./js/FileSaver.min.js"></script>
+    <script src="./js/tableexport.min.js"></script>
+
+
+
     <title>Horarios</title>
 </head>
 <body>
@@ -310,10 +316,11 @@
         <div id="BotonesHorario">
             <input type="password" id="pass" placeholder="Contraseña">
             <button id="btnGuardar">Guardar</button>
+            <button id="btnExportar">Exportar</button>
         </div>
         <div id="Informacion">
     <div class="Convenciones">
-        <h2>Convenciones</h2>
+        <h2>Turnos</h2>
         <table>
             <tr>
                 <th style="font-size: medium;">Turno</th>
@@ -366,7 +373,7 @@
         </table>
     </div>
     <div class="Almuerzos">
-        <h2>Almuerzo</h2>
+        <h2>Almuerzos</h2>
         <table>
             <tr>
                 <th style="font-size: medium;">Turno</th>
