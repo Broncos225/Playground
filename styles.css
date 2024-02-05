@@ -244,7 +244,7 @@ button .botonReiniciar:hover {
     border-color: #f2f2f2;
 }
 
-.Convenciones {
+.Convenciones, .Almuerzos {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -252,7 +252,7 @@ button .botonReiniciar:hover {
     width: 200px;
 }
 
-.Convenciones table th{
+.Convenciones table th, .Almuerzos table th{
     font-weight: bold;
     font-size: 15px;
     background-color: #012353;
@@ -260,7 +260,7 @@ button .botonReiniciar:hover {
     border-color: #f2f2f2;
     text-align: center;
 }
-.Convenciones table th:first-child, .Convenciones table td:first-child {
+.Convenciones table th:first-child, .Almuerzos table td:first-child, .Almuerzos table th:first-child, .Convenciones table td:first-child {
     width: 1%;
     overflow-x: auto;
     text-align: center;
@@ -323,6 +323,14 @@ button .botonReiniciar:hover {
 
 .TablaDescansos {
     padding-bottom: 17px;
+}
+
+#Informacion {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: 10px;
+
 }
 
 @media only screen and (max-width: 600px) {
