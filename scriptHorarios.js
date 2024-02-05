@@ -186,6 +186,7 @@ function resaltarDiaActual() {
     var dia = a.getDate();
     var celda = document.getElementById("Dias");
     celda.cells[dia].style.backgroundColor = "orange";
+    celda.cells[dia].style.color = "black";
 }
 
 
