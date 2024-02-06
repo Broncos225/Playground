@@ -87,7 +87,7 @@ function actualizarColorCelda(celda) {
 function guardarCeldas() {
     var passw = document.getElementById('pass').value;
     if (passw == "5522") {
-        const celdas = document.querySelectorAll('#Table td'); // Modificado aquí
+        const celdas = document.querySelectorAll('#Table td');
         celdas.forEach(celda => {
             const texto = celda.textContent.trim();
             const idCelda = celda.cellIndex + 1; // Obtén el índice de la celda (1-indexed)
@@ -223,3 +223,5 @@ function exportTableToExcel(tableID, filename = ''){
 document.getElementById('btnExportar').addEventListener('click', function() {
     exportTableToExcel('Table', 'Horarios');
 });
+
+
