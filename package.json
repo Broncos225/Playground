@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "file-saverjs": "^1.3.6",
+    "tableexport": "^5.2.0"
+  }
+}
