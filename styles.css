@@ -342,3 +342,10 @@ button .botonReiniciar:hover {
         padding-bottom: 0px;
     }
 }
+
+@media only screen and (min-width: 1511px) {
+    .TablaDescansos {
+        padding: 0px;
+        padding-bottom: 0px;
+    }
+}
