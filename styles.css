@@ -244,7 +244,7 @@ button .botonReiniciar:hover {
     border-color: #f2f2f2;
 }
 
-.Convenciones, .Almuerzos {
+.Turnos, .Almuerzos {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -252,7 +252,7 @@ button .botonReiniciar:hover {
     width: 200px;
 }
 
-.Convenciones table th, .Almuerzos table th{
+.Turnos table th, .Almuerzos table th{
     font-weight: bold;
     font-size: 15px;
     background-color: #012353;
@@ -260,7 +260,7 @@ button .botonReiniciar:hover {
     border-color: #f2f2f2;
     text-align: center;
 }
-.Convenciones table th:first-child, .Almuerzos table td:first-child, .Almuerzos table th:first-child, .Convenciones table td:first-child {
+.Turnos table th:first-child, .Almuerzos table td:first-child, .Almuerzos table th:first-child, .Turnos table td:first-child {
     width: 1%;
     overflow-x: auto;
     text-align: center;
@@ -333,12 +333,18 @@ button .botonReiniciar:hover {
 
 }
 
+#TablaSol {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#TablaSol th {
+    width: auto;
+}
+
 @media only screen and (max-width: 600px) {
     .table-container {
         overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
-    }
-    #Informacion {
-        overflow-x: scroll;
     }
     .TablaDescansos {
         padding: 0px;
