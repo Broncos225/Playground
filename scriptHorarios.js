@@ -39,7 +39,7 @@ function actualizarColorCelda(celda) {
     var colorT6 = '#fc818d';
     var colorTSA = '#85a5ff';
     var colorAM = '#80eded';
-    var colorD = '#000000';
+    var colorD = '#';
 
 
     const texto = celda.textContent.trim();
