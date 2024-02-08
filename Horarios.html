@@ -20,7 +20,6 @@
                 <li><a href="Calculadora.html">Calculadora</a></li>
                 <li><a href="Escalamientos.html">Escalamientos</a></li>
                 <li><a href="Horarios.html">Horarios</a></li>
-                <li><a href="Solicitudes.html">Solicitudes</a></li>
                 <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
             </ul>
         </nav>
@@ -408,6 +407,57 @@
                 <td>12:00 pm - 1:00 pm</td>
             </tr>
         </table>
+    </div>
+    <div id="Solicitudes">
+        <h2 style="margin-bottom: 0">Solicitudes</h2>
+        <section class="Seccion2">
+            <div id="NuevaSolicitud">
+                <form class="Form" method="post">
+                    <div class="Divs">                    
+                        <label for="Solicitante">Solicitante:</label>
+                        <select type="text" id="Solicitante" name="Solicitante" required">
+                            <option value="Anderson Cano Londoño">Anderson Cano Londoño</option>
+                            <option value="Miguel Cadavid Naranjo">Miguel Cadavid Naranjo</option>
+                            <option value="Milton Alexis Calle Londoño">Milton Alexis Calle Londoño</option>
+                            <option value="Yesica Johana Cano Quintero">Yesica Johana Cano Quintero</option>
+                            <option value="Andrés Felipe Vidal Medina">Andrés Felipe Vidal Medina</option>
+                            <option value="Andrés Felipe Yepes Tascón">Andrés Felipe Yepes Tascón</option>
+                        </select>
+                    </div>
+                    <div class="Divs">
+                        <label for="Receptor">Receptor:</label>
+                        <select type="text" id="Receptor" name="Receptor" required>
+                            <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
+                            <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
+                            <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
+                            <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
+                            <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
+                            <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>                    
+                        </select>
+                    </div>
+                    <div class="Divs">
+                        <label for="DiaSolicitado">Día solicitado:</label>
+                        <input type="date" id="DiaSolicitado" name="DiaSolicitado" required>
+                        <input id="btnEnviar" type="submit" value="Enviar">
+                    </div>
+
+                </form>
+            </div>
+            <div id="TablaSol">
+                <table id="Table2">
+                    <tr>
+                        <th>Número de solicitud</th>
+                        <th>Solicitante</th>
+                        <th>Receptor</th>
+                        <th>Turno original</th>
+                        <th>Turno solicitado</th>
+                        <th>Fecha de solicitud</th>
+                        <th>Estado de la solicitud</th>
+                    </tr>
+
+                </table>
+            </div>
+        </section>
     </div>
 </div>
     </section>

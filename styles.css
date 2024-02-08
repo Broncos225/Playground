@@ -227,7 +227,7 @@ button .botonReiniciar:hover {
     display: flex;
     overflow-x: auto;
     width: 100%;
-    flex-direction: row; /* Esto hará que el contenedor de la tabla tenga el mismo ancho que su contenedor padre */
+    flex-direction: row; 
 }
 
 
@@ -252,7 +252,7 @@ button .botonReiniciar:hover {
     width: 200px;
 }
 
-.Turnos table th, .Almuerzos table th{
+.Turnos table th, .Almuerzos table th, #TablaSol table th{
     font-weight: bold;
     font-size: 15px;
     background-color: #012353;
@@ -283,7 +283,7 @@ button .botonReiniciar:hover {
     justify-content: center;
 }
 
-#btnGuardar, #btnExportar {
+#btnGuardar, #btnExportar, #btnEnviar {
     padding: auto;
     margin-left: 10px;
     border: none;
@@ -294,7 +294,7 @@ button .botonReiniciar:hover {
     border: solid 2px #000000;
 }
 
-#btnGuardar:hover, #btnExportar:hover {
+#btnGuardar:hover, #btnExportar:hover, #btnEnviar:hover {
     background-color: #a3a3a3;
 }
 
@@ -325,12 +325,15 @@ button .botonReiniciar:hover {
     padding-bottom: 17px;
 }
 
-#Informacion {
+#Informacion{
     display: flex;
     flex-direction: row;
     align-items: start;
+    align-self: start;
     gap: 10px;
-
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
 }
 
 #TablaSol {
@@ -340,6 +343,54 @@ button .botonReiniciar:hover {
 
 #TablaSol th {
     width: auto;
+}
+
+
+#Solicitudes {
+    text-align: center;
+    border-left: 1px solid #333333;
+    height: fit-content;
+    width: 100%;
+}
+
+
+
+.Form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+    width: 100%;
+
+}
+
+#NuevaSolicitud {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.Form {
+    display: flex;
+    flex-direction: column;
+}
+
+.Form input[type="submit"] {
+    align-self: center;
+}
+
+.Divs {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Seccion2 {
+    padding-top: 10px;
+}
+
+#btnEnviar {
+    padding: 10px;
 }
 
 @media only screen and (max-width: 600px) {
