@@ -249,6 +249,7 @@ let agentes = {
 var contadorRegistros = 0;
 
 function generarSolicitudes() {
+    var contadorRegistros = 0;
     if (document.getElementById('Solicitante').value == "" || document.getElementById('Receptor').value == "" || document.getElementById('DiaSolicitado').value == "") {
         alert("Por favor complete todos los campos");
         return;
@@ -280,7 +281,9 @@ function generarSolicitudes() {
                 turnoSolicitante: celdaSol.textContent,
                 turnoReceptor: celdaRec.textContent,
                 fechaHora: fechaHora.replace(',', ''),
-                estado: "Pendiente"
+                estado: "Pendiente",
+                aprobadaPorReceptor: false, // Nueva propiedad
+                aprobadaPorJefe: false // Nueva propiedad
             }, error => {
                 if (error) {
                     console.error("Error añadiendo el nodo: ", error);
@@ -328,6 +331,8 @@ function mostrarSolicitudes() {
             var celdaTurnoReceptor = document.createElement("td");
             var celdaFechaHora = document.createElement("td");
             var celdaEstado = document.createElement("td");
+            var celdaAprobadaPorReceptor = document.createElement("td");
+            var celdaAprobadaPorJefe = document.createElement("td");
 
             // Añade los datos a las celdas
             celdaId.textContent = solicitud.id;
@@ -337,6 +342,8 @@ function mostrarSolicitudes() {
             celdaTurnoReceptor.textContent = solicitud.turnoReceptor;
             celdaFechaHora.textContent = solicitud.fechaHora;
             celdaEstado.textContent = solicitud.estado;
+            celdaAprobadaPorReceptor.textContent = solicitud.aprobadaPorReceptor ? 'Sí' : 'No';
+            celdaAprobadaPorJefe.textContent = solicitud.aprobadaPorJefe ? 'Sí' : 'No';
 
             // Añade las celdas a la fila
             fila.appendChild(celdaId);
@@ -345,8 +352,15 @@ function mostrarSolicitudes() {
             fila.appendChild(celdaTurnoSolicitante);
             fila.appendChild(celdaTurnoReceptor);
             fila.appendChild(celdaFechaHora);
+            fila.appendChild(celdaAprobadaPorReceptor);
+            fila.appendChild(celdaAprobadaPorJefe);
             fila.appendChild(celdaEstado);
 
+            if (solicitud.aprobadaPorReceptor == true && solicitud.aprobadaPorJefe == true) {
+                celdaEstado.textContent = "Aprobado";
+            } else if (solicitud.aprobadaPorReceptor == false && solicitud.aprobadaPorJefe == false) {
+                celdaEstado.textContent = "Rechazado";
+            }
             // Añade la fila al cuerpo de la tabla
             tabla.appendChild(fila);
             switch (celdaEstado.textContent) {
@@ -355,9 +369,11 @@ function mostrarSolicitudes() {
                     break;
                 case "Aprobado":
                     celdaEstado.style.backgroundColor = "green";
+                    celdaEstado.style.color = "white";
                     break;
                 case "Rechazado":
                     celdaEstado.style.backgroundColor = "red";
+                    celdaEstado.style.color = "white";
                     break;
             }
             var celda = document.querySelectorAll('#Table2 td');
@@ -367,7 +383,10 @@ function mostrarSolicitudes() {
             });
         });
     });
+}
 
+function cambioHorario(){
+    
 }
 
 
