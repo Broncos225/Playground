@@ -240,3 +240,22 @@ let agentes = {
         letra: "F"
     }
 }
+
+function generarSolicitudes(){
+    if (document.getElementById('Solicitante').value == "" || document.getElementById('Receptor').value == "" || document.getElementById('DiaSolicitado').value == "") {
+        alert("Por favor complete todos los campos");
+        return;
+    } else {
+        var solicitante = document.getElementById('Solicitante').value;
+        var receptor = document.getElementById('Receptor').value;
+        var inputFecha = document.getElementById('DiaSolicitado').value;
+        var fecha = new Date(inputFecha); 
+        var dia = fecha.getDate();
+        
+        var diaSol = agentes[solicitante].letra + dia;
+        console.log(solicitante + " " + receptor + " " + diaSol);
+    }
+
+}
+
+document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);

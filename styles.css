@@ -391,6 +391,7 @@ button .botonReiniciar:hover {
 
 #btnEnviar {
     padding: 10px;
+    width: 38px;
 }
 
 @media only screen and (max-width: 600px) {
