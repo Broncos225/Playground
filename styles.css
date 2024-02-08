@@ -430,6 +430,34 @@ button .botonReiniciar:hover {
     text-align: center;
 }
 
+#btnEnviar:disabled {
+    background-color: #a3a3a3;
+    cursor: not-allowed;
+}
+
+.btnRechazar, .btnAprobar {
+    width: 100%;
+    border: 1px solid #000000;
+}
+
+.btnAprobar {
+    background-color: #afed87;
+}
+
+.btnRechazar {
+    background-color: #fc818d;
+    margin-top: 7px;
+}
+
+.btnAprobar:hover {
+    background-color: #a2ff64;
+}
+
+.btnRechazar:hover {
+    background-color: #fa5c6c;
+    margin-top: 7px;
+}
+
 @media only screen and (max-width: 600px) {
     .table-container {
         overflow-x: scroll;
