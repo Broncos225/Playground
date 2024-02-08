@@ -64,9 +64,9 @@ function procesarArchivoExcel(contenido) {
     boton.style.backgroundColor = '#a3a3a3';
     boton.style.color = '#868686';
     boton.style.cursor = 'not-allowed';
-    boton.style.borderColor = '#a3a3a3'; 
+    boton.style.borderColor = '#a3a3a3';
     var botonReiniciar = document.getElementById('miBotonReiniciar');
-    botonReiniciar.style.borderColor = '#cb3234'; 
+    botonReiniciar.style.borderColor = '#cb3234';
     botonReiniciar.style.backgroundColor = '#FF0000';
     botonReiniciar.style.color = '#ffffff';
 
@@ -128,12 +128,12 @@ function colocarOpciones() {
 
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     // Aplica select2 a tu elemento select
     $('select').select2();
 });
 
-document.getElementById("excelFileInput").addEventListener("change", function() {
+document.getElementById("excelFileInput").addEventListener("change", function () {
     var fileName = this.files[0].name;
     var fileSelect = this.parentElement;
     fileSelect.dataset.fileName = fileName;

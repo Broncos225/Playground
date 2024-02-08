@@ -41,7 +41,7 @@ body {
 }
 
 #notas input[type="number"] {
-    width: 158px; 
+    width: 158px;
 }
 
 #Minima input[type="number"] {
@@ -65,7 +65,7 @@ body {
 
 #notaFinal {
     font-size: 20px;
-    
+
 }
 
 #notaRelativa {
@@ -80,20 +80,20 @@ body {
     font-size: 20px;
 }
 
-section{
+section {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-#texto{
+#texto {
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 14px;
 }
 
-#Titulo{
+#Titulo {
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 34px;
@@ -103,13 +103,13 @@ section{
     font-family: Arial, Helvetica, sans-serif, sans-serif;
     outline: 0;
     background: transparent;
-    color:#000000;
+    color: #000000;
     border: 1px solid rgb(0, 0, 0);
     padding: 4px;
     font-size: 16px;
 }
 
-#Selects{
+#Selects {
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -124,11 +124,13 @@ table {
     width: 100%;
 }
 
-th, td {
+th,
+td {
     border: 1px solid black;
     padding: 8px;
     text-align: left;
-    width: 16.67%; /* Ajustado para 6 columnas */
+    width: 16.67%;
+    /* Ajustado para 6 columnas */
 }
 
 th {
@@ -166,38 +168,39 @@ button:hover {
     width: 235px;
     height: 32px;
     content: "Seleccionar matriz";
-    background-color:transparent;
+    background-color: transparent;
     border-radius: 4px;
     border: 2px solid rgb(0, 0, 0);
-  }
+}
 
-  .file-select:hover {
+.file-select:hover {
     background-color: #a3a3a3;
-  }
-  
-  .file-select::before {
+}
+
+.file-select::before {
     color: rgb(0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: small;
     border-radius: 4px;
-    content: attr(data-file-name); /* testo por defecto */
+    content: attr(data-file-name);
+    /* testo por defecto */
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-  }
-  
-  .file-select input[type="file"] {
+}
+
+.file-select input[type="file"] {
     opacity: 0;
     height: 32px;
     width: 235px;
     display: inline-block;
-  }
+}
 
-  
+
 button .botonReiniciar:hover {
     background-color: #FF0000;
 }
@@ -215,11 +218,13 @@ button .botonReiniciar:hover {
 }
 
 
-#Table th:first-child, #Table td:first-child {
+#Table th:first-child,
+#Table td:first-child {
     white-space: nowrap;
 }
 
-#Table th, #Table td {
+#Table th,
+#Table td {
     width: 20px;
 }
 
@@ -227,16 +232,19 @@ button .botonReiniciar:hover {
     display: flex;
     overflow-x: auto;
     width: 100%;
-    flex-direction: row; 
+    flex-direction: row;
 }
 
 
 
-#Table th, #Table td{
+#Table th,
+#Table td {
     text-align: center;
 }
 
-.titulos,.titulos td, .titulos th{
+.titulos,
+.titulos td,
+.titulos th {
     font-weight: bold;
     font-size: 15px;
     background-color: #012353;
@@ -244,15 +252,18 @@ button .botonReiniciar:hover {
     border-color: #f2f2f2;
 }
 
-.Turnos, .Almuerzos {
+.Turnos,
+.Almuerzos {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    width: 200px;
+    width: 20%;
 }
 
-.Turnos table th, .Almuerzos table th, #TablaSol table th{
+.Turnos table th,
+.Almuerzos table th,
+#TablaSol table th {
     font-weight: bold;
     font-size: 15px;
     background-color: #012353;
@@ -260,7 +271,11 @@ button .botonReiniciar:hover {
     border-color: #f2f2f2;
     text-align: center;
 }
-.Turnos table th:first-child, .Almuerzos table td:first-child, .Almuerzos table th:first-child, .Turnos table td:first-child {
+
+.Turnos table th:first-child,
+.Almuerzos table td:first-child,
+.Almuerzos table th:first-child,
+.Turnos table td:first-child {
     width: 1%;
     overflow-x: auto;
     text-align: center;
@@ -271,7 +286,7 @@ button .botonReiniciar:hover {
     font-family: Arial, Helvetica, sans-serif, sans-serif;
     outline: 0;
     background: transparent;
-    color:#000000;
+    color: #000000;
     border: 1px solid rgb(0, 0, 0);
     padding: 4px;
     font-size: 16px;
@@ -283,7 +298,9 @@ button .botonReiniciar:hover {
     justify-content: center;
 }
 
-#btnGuardar, #btnExportar, #btnEnviar {
+#btnGuardar,
+#btnExportar,
+#btnEnviar {
     padding: auto;
     margin-left: 10px;
     border: none;
@@ -294,7 +311,9 @@ button .botonReiniciar:hover {
     border: solid 2px #000000;
 }
 
-#btnGuardar:hover, #btnExportar:hover, #btnEnviar:hover {
+#btnGuardar:hover,
+#btnExportar:hover,
+#btnEnviar:hover {
     background-color: #a3a3a3;
 }
 
@@ -302,7 +321,7 @@ button .botonReiniciar:hover {
     font-family: Arial, Helvetica, sans-serif;
     outline: 0;
     background: transparent;
-    color:#000000;
+    color: #000000;
     border: 1px solid rgb(0, 0, 0);
     padding: 4px;
     font-size: 16px;
@@ -325,7 +344,7 @@ button .botonReiniciar:hover {
     padding-bottom: 17px;
 }
 
-#Informacion{
+#Informacion {
     display: flex;
     flex-direction: row;
     align-items: start;
@@ -394,10 +413,28 @@ button .botonReiniciar:hover {
     width: 38px;
 }
 
+#Table2 {
+    display: block;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#Table2 thead th {
+    position: sticky;
+    top: 0;
+    border-color: #000000;
+}
+
+#Table2 th,
+#Table2 td {
+    text-align: center;
+}
+
 @media only screen and (max-width: 600px) {
     .table-container {
-        overflow-x: scroll; /* Esto permitirá el desplazamiento horizontal en pantallas pequeñas */
+        overflow-x: scroll;
     }
+
     .TablaDescansos {
         padding: 0px;
         padding-bottom: 0px;

@@ -6,16 +6,17 @@ const firebaseConfig = {
     storageBucket: "playgroundbdstop.appspot.com",
     messagingSenderId: "808082296806",
     appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
-  };
+};
 
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-  
+
 window.onload = function () {
     colorCelda();
     cargarDatos();
     resaltarDiaActual();
+    mostrarSolicitudes();
 };
 
 function colorCelda() {
@@ -39,7 +40,7 @@ function actualizarColorCelda(celda) {
     var colorTSA = '#85a5ff';
     var colorAM = '#80eded';
     var colorD = '#white';
-    
+
 
     const texto = celda.textContent.trim();
     let color;
@@ -58,7 +59,7 @@ function actualizarColorCelda(celda) {
             break;
         case 'T4':
         case 'T4R1':
-            color =  colorT4;
+            color = colorT4;
             break;
         case 'T5':
         case 'T5R1':
@@ -128,40 +129,40 @@ function cargarDatos() {
 
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
 
-function contDescansos(){
+function contDescansos() {
     var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
 
-    for (var i=1; i < 30; i++) {
+    for (var i = 1; i < 30; i++) {
         var celda = document.getElementById('A' + i);
         if (celda.textContent == 'D') {
             contA += 1;
         }
     }
-    for (var i=1; i < 30; i++) {
+    for (var i = 1; i < 30; i++) {
         var celda = document.getElementById('B' + i);
         if (celda.textContent == 'D') {
             contB += 1;
         }
     }
-    for (var i=1; i < 30; i++) {
+    for (var i = 1; i < 30; i++) {
         var celda = document.getElementById('C' + i);
         if (celda.textContent == 'D') {
             contC += 1;
         }
     }
-    for (var i=1; i < 30; i++) {
+    for (var i = 1; i < 30; i++) {
         var celda = document.getElementById('D' + i);
         if (celda.textContent == 'D') {
             contD += 1;
         }
     }
-    for (var i=1; i < 30; i++) {
+    for (var i = 1; i < 30; i++) {
         var celda = document.getElementById('E' + i);
         if (celda.textContent == 'D') {
             contE += 1;
         }
     }
-    for (var i=1; i < 30; i++) {
+    for (var i = 1; i < 30; i++) {
         var celda = document.getElementById('F' + i);
         if (celda.textContent == 'D') {
             contF += 1;
@@ -210,38 +211,44 @@ document.getElementById('btnExportar').addEventListener('click', exportarExcel);
 
 let agentes = {
     Anderson_Cano_Londoño: {
-        nombre: "Anderson",
+        nombre: "Anderson Cano Londoño",
         correo: "anderson.cano@arus.com.co",
         letra: "A"
     },
     Miguel_Cadavid_Naranjo: {
-        nombre: "Miguel",
+        nombre: "Miguel Cadavid Naranjo",
         correo: "miguel.cadavid@arus.com.co",
         letra: "B"
     },
     Milton_Alexis_Calle_Londoño: {
-        nombre: "Milton Alexis",
+        nombre: "Milton Alexis Calle Londoño",
         correo: "milton.calle@arus.com.co",
         letra: "C"
     },
     Yesica_Johana_Cano_Quintero: {
-        nombre: "Yesica Johana",
+        nombre: "Yesica Johana Cano Quintero",
         correo: "yesica.cano@arus.com.co",
         letra: "D"
     },
     Andrés_Felipe_Vidal_Medina: {
-        nombre: "Andrés Felipe",
+        nombre: "Andrés Felipe Vidal Medina",
         correo: "andres.vidal@arus.com.co",
         letra: "E"
     },
     Andrés_Felipe_Yepes_Tascón: {
-        nombre: "Andrés Felipe",
+        nombre: "Andrés Felipe Yepes Tascón",
         correo: "andres.yepes@arus.com.co",
         letra: "F"
+    },
+    Oscar_Luis_Cabrera_Pacheco: {
+        nombre: "Oscar Luis Cabrera Pacheco",
+        correo: "oscar.cabrera@arus.com.co"
     }
 }
 
-function generarSolicitudes(){
+var contadorRegistros = 0;
+
+function generarSolicitudes() {
     if (document.getElementById('Solicitante').value == "" || document.getElementById('Receptor').value == "" || document.getElementById('DiaSolicitado').value == "") {
         alert("Por favor complete todos los campos");
         return;
@@ -249,13 +256,119 @@ function generarSolicitudes(){
         var solicitante = document.getElementById('Solicitante').value;
         var receptor = document.getElementById('Receptor').value;
         var inputFecha = document.getElementById('DiaSolicitado').value;
-        var fecha = new Date(inputFecha); 
+        var partes = inputFecha.split('-');
+        var fecha = new Date(partes[0], partes[1] - 1, partes[2]);
         var dia = fecha.getDate();
-        
-        var diaSol = agentes[solicitante].letra + dia;
-        console.log(solicitante + " " + receptor + " " + diaSol);
+        var TurnoSol = agentes[solicitante].letra + dia;
+        var TurnoRec = agentes[receptor].letra + dia;
+        var celdaSol = document.getElementById(TurnoSol);
+        var celdaRec = document.getElementById(TurnoRec);
+
+        var confirmacion = confirm("¿Estás seguro de que quieres enviar la solicitud para el cambio de turno?");
+        if (confirmacion == true) {
+            var fecha = new Date();
+            var opcionesFecha = { year: 'numeric', month: 'numeric', day: 'numeric' };
+            var opcionesHora = { hour: '2-digit', minute: '2-digit', hour12: true };
+            var fechaHora = fecha.toLocaleDateString('es-ES', opcionesFecha) + ' ' + fecha.toLocaleTimeString('es-ES', opcionesHora);
+
+            contadorRegistros++;
+
+            db.ref('solicitudes').push({
+                id: contadorRegistros,
+                solicitante: agentes[solicitante].nombre,
+                receptor: agentes[receptor].nombre,
+                turnoSolicitante: celdaSol.textContent,
+                turnoReceptor: celdaRec.textContent,
+                fechaHora: fechaHora.replace(',', ''),
+                estado: "Pendiente"
+            }, error => {
+                if (error) {
+                    console.error("Error añadiendo el nodo: ", error);
+                } else {
+                    console.log("Nodo añadido con éxito");
+                }
+            });
+
+        } else {
+            return;
+        }
+
     }
 
 }
+
+function mostrarSolicitudes() {
+    // Obtén una referencia al cuerpo de la tabla en tu HTML
+    var tabla = document.getElementById("Table2").getElementsByTagName('tbody')[0];
+
+    // Escucha los cambios en los datos
+    db.ref('solicitudes').on('value', snapshot => {
+        // Limpia el cuerpo de la tabla
+        while (tabla.hasChildNodes()) {
+            tabla.removeChild(tabla.firstChild);
+        }
+
+        // Almacena todas las solicitudes en un array
+        var solicitudes = [];
+        snapshot.forEach(childSnapshot => {
+            solicitudes.push(childSnapshot.val());
+        });
+
+        // Invierte el array
+        solicitudes.reverse();
+
+        // Añade los datos a la tabla
+        solicitudes.forEach(solicitud => {
+            // Crea una nueva fila y celdas
+            var fila = document.createElement("tr");
+            var celdaId = document.createElement("td");
+            var celdaSolicitante = document.createElement("td");
+            var celdaReceptor = document.createElement("td");
+            var celdaTurnoSolicitante = document.createElement("td");
+            var celdaTurnoReceptor = document.createElement("td");
+            var celdaFechaHora = document.createElement("td");
+            var celdaEstado = document.createElement("td");
+
+            // Añade los datos a las celdas
+            celdaId.textContent = solicitud.id;
+            celdaSolicitante.textContent = solicitud.solicitante;
+            celdaReceptor.textContent = solicitud.receptor;
+            celdaTurnoSolicitante.textContent = solicitud.turnoSolicitante;
+            celdaTurnoReceptor.textContent = solicitud.turnoReceptor;
+            celdaFechaHora.textContent = solicitud.fechaHora;
+            celdaEstado.textContent = solicitud.estado;
+
+            // Añade las celdas a la fila
+            fila.appendChild(celdaId);
+            fila.appendChild(celdaSolicitante);
+            fila.appendChild(celdaReceptor);
+            fila.appendChild(celdaTurnoSolicitante);
+            fila.appendChild(celdaTurnoReceptor);
+            fila.appendChild(celdaFechaHora);
+            fila.appendChild(celdaEstado);
+
+            // Añade la fila al cuerpo de la tabla
+            tabla.appendChild(fila);
+            switch (celdaEstado.textContent) {
+                case "Pendiente":
+                    celdaEstado.style.backgroundColor = "yellow";
+                    break;
+                case "Aprobado":
+                    celdaEstado.style.backgroundColor = "green";
+                    break;
+                case "Rechazado":
+                    celdaEstado.style.backgroundColor = "red";
+                    break;
+            }
+            var celda = document.querySelectorAll('#Table2 td');
+
+            celda.forEach(function (celda) {
+                actualizarColorCelda(celda);
+            });
+        });
+    });
+
+}
+
 
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);

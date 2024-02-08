@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <title>Calculadora de notas</title>
 </head>
+
 <body>
     <header>
         <nav>
@@ -25,17 +27,17 @@
         <!-- Contenido de la página -->
         <h1 id="Titulo">Calculadora de notas</h1>
         <p id="texto">Ingrese las notas con sus porcentajes para calcularlos.</p>
-        <p id="texto">Nota minima para ganar: </p> 
+        <p id="texto">Nota minima para ganar: </p>
         <div id="Minima"><input type="number" placeholder="Nota minima" min="0" max="100"></div>
-        
-        
+
+
         <div id="botones" style="gap: 4px;">
             <button id="agregarNota">Agregar nota</button>
             <button id="eliminarNota">Eliminar nota</button>
             <button id="calcular">Calcular nota final</button>
         </div>
         <div id="notas">
-            
+
             <!-- Aquí se añadirán los campos de entrada para las notas y los porcentajes -->
         </div>
         <p style="margin: 0;" id="notaRelativa"></p>
@@ -45,12 +47,13 @@
         <button style="width: 340px;" id="Refresh">Reiniciar</button>
         <div style="width: 340px;">
             <h2>Notas</h3>
-            <p><b>Nota Relativa:</b> Es la nota con respecto al porcentaje evaluado.</p>
-            <p><b>Nota Final:</b> Es la nota con respecto al 100 % de la materia.</p>
+                <p><b>Nota Relativa:</b> Es la nota con respecto al porcentaje evaluado.</p>
+                <p><b>Nota Final:</b> Es la nota con respecto al 100 % de la materia.</p>
         </div>
     </section>
 
 
     <script src="scriptCalculadora.js"></script>
 </body>
+
 </html>
