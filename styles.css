@@ -348,8 +348,7 @@ button .botonReiniciar:hover {
     display: flex;
     flex-direction: row;
     align-self: start;
-    justify-content: center;
-
+    justify-content:space-around;
     gap: 10px;
     height: 100%;
     width: 100%;
