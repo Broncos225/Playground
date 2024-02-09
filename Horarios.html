@@ -333,6 +333,67 @@
             <button id="btnGuardar">Guardar</button>
             <button id="btnExportar">Exportar</button>
         </div>
+        <div id="Solicitudes">
+            <h2 style="margin-bottom: 0">Solicitudes</h2>
+
+            <div id="NuevaSolicitud">
+                <form class="Form" method="post">
+                    <div class="Divs">
+                        <label for="Solicitante">Solicitante:</label>
+                        <select type="text" id="Solicitante" name="Solicitante" required">
+                            <option value=""></option>
+                            <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
+                            <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
+                            <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
+                            <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
+                            <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
+                            <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
+                        </select>
+                    </div>
+                    <div class="Divs">
+                        <label for="Receptor">Receptor:</label>
+                        <select type="text" id="Receptor" name="Receptor" required>
+                            <option value=""></option>
+                            <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
+                            <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
+                            <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
+                            <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
+                            <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
+                            <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
+                        </select>
+                    </div>
+                    <div class="Divs">
+                        <label for="DiaSolicitado">Día solicitado:</label>
+                        <input type="date" id="DiaSolicitado" name="DiaSolicitado" required>
+                        <input id="btnEnviar" value="Enviar">
+                    </div>
+
+                </form>
+            </div>
+            <div id="TablaSol">
+                <table id="Table2">
+                    <thead>
+                        <tr>
+                            <th>Número de solicitud</th>
+                            <th>Solicitante</th>
+                            <th>Receptor</th>
+                            <th>Día Solicitado</th>
+                            <th>Turno del Solicitante</th>
+                            <th>Turno del Receptor</th>
+                            <th>Fecha de solicitud</th>
+                            <th>Aprobación del Receptor</th>
+                            <th>Aprobación del Jefe</th>
+                            <th>Estado de la solicitud</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas de datos irán aquí -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
         <div id="Informacion">
             <div class="Turnos">
                 <h2>Turnos</h2>
@@ -424,67 +485,7 @@
                     </tr>
                 </table>
             </div>
-            <div id="Solicitudes">
-                <h2 style="margin-bottom: 0">Solicitudes</h2>
-                <section class="Seccion2">
-                    <div id="NuevaSolicitud">
-                        <form class="Form" method="post">
-                            <div class="Divs">
-                                <label for="Solicitante">Solicitante:</label>
-                                <select type="text" id="Solicitante" name="Solicitante" required">
-                                    <option value=""></option>
-                                    <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
-                                    <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
-                                    <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
-                                    <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
-                                    <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
-                                    <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
-                                </select>
-                            </div>
-                            <div class="Divs">
-                                <label for="Receptor">Receptor:</label>
-                                <select type="text" id="Receptor" name="Receptor" required>
-                                    <option value=""></option>
-                                    <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
-                                    <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
-                                    <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
-                                    <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
-                                    <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
-                                    <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
-                                </select>
-                            </div>
-                            <div class="Divs">
-                                <label for="DiaSolicitado">Día solicitado:</label>
-                                <input type="date" id="DiaSolicitado" name="DiaSolicitado" required>
-                                <input id="btnEnviar" value="Enviar" disabled>
-                            </div>
 
-                        </form>
-                    </div>
-                    <div id="TablaSol">
-                        <table id="Table2">
-                            <thead>
-                                <tr>
-                                    <th>Número de solicitud</th>
-                                    <th>Solicitante</th>
-                                    <th>Receptor</th>
-                                    <th>Día Solicitado</th>
-                                    <th>Turno del Solicitante</th>
-                                    <th>Turno del Receptor</th>
-                                    <th>Fecha de solicitud</th>
-                                    <th>Aprobación del Receptor</th>
-                                    <th>Aprobación del Jefe</th>
-                                    <th>Estado de la solicitud</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Las filas de datos irán aquí -->
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            </div>
         </div>
     </section>
 

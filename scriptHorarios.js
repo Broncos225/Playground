@@ -372,7 +372,7 @@ function mostrarSolicitudes() {
             } else {
                 celdaAprobadaPorReceptor.textContent = "Sin respuesta";
             }
-            
+
             if (solicitud.aprobadaPorJefe === true) {
                 celdaAprobadaPorJefe.textContent = 'Sí';
             } else if (solicitud.aprobadaPorJefe === false) {
@@ -382,12 +382,12 @@ function mostrarSolicitudes() {
             }
             var btnAprobar = document.createElement("button");
             btnAprobar.textContent = "Aprobar";
-            btnAprobar.addEventListener("click", function() {
+            btnAprobar.addEventListener("click", function () {
                 cambioHorario(solicitud);
             });
             var btnRechazar = document.createElement("button");
             btnRechazar.textContent = "Rechazar";
-            
+
             btnAprobar.style.backgroundColor = "#afed87";
             btnAprobar.style.width = "100%";
             btnAprobar.style.border = "1px solid";
@@ -488,7 +488,7 @@ function cambioHorario(registro) {
     } else {
         alert("Contraseña incorrecta");
     }
-    
+
 
 }
 
