@@ -256,6 +256,7 @@ let agentes = {
 var contadorRegistros = 0;
 
 function generarSolicitudes() {
+
     if (document.getElementById('Solicitante').value == "" || document.getElementById('Receptor').value == "" || document.getElementById('DiaSolicitado').value == "") {
         alert("Por favor complete todos los campos");
         return;
@@ -276,8 +277,8 @@ function generarSolicitudes() {
             var celdaSol = document.getElementById(TurnoSol);
             var celdaRec = document.getElementById(TurnoRec);
 
-            var confirmacion = confirm("¿Estás seguro de que quieres enviar la solicitud para el cambio de turno?");
-            if (confirmacion == true) {
+            var confirmacion = prompt("¿Estás seguro de que quieres enviar la solicitud para el cambio de turno? Ingrese su contraseña para confirmar: " + agentes[solicitante].nombre);
+            if (confirmacion == agentes[solicitante].contraseña) {
                 var fecha = new Date();
                 var opcionesFecha = { year: 'numeric', month: 'numeric', day: 'numeric' };
                 var opcionesHora = { hour: '2-digit', minute: '2-digit', hour12: true };
@@ -311,6 +312,7 @@ function generarSolicitudes() {
                 });
 
             } else {
+                alert("Solicitud cancelada, revise su contraseña e intente de nuevo");
                 return;
             }
         }
@@ -383,18 +385,39 @@ function mostrarSolicitudes() {
             var btnAprobar = document.createElement("button");
             btnAprobar.textContent = "Aprobar";
             btnAprobar.addEventListener("click", function () {
-                cambioHorario(solicitud);
+                aceptarCambio(solicitud);
             });
             var btnRechazar = document.createElement("button");
             btnRechazar.textContent = "Rechazar";
-
+            btnRechazar.addEventListener("click", function () {
+                rechazarCambio(solicitud);
+            });
             btnAprobar.style.backgroundColor = "#afed87";
+            btnAprobar.style.color = "#315e18";
             btnAprobar.style.width = "100%";
-            btnAprobar.style.border = "1px solid";
+            btnAprobar.style.border = "1px solid #315e18";
+            btnAprobar.style.padding = "4px";
             btnRechazar.style.backgroundColor = "#fcbdc4";
+            btnRechazar.style.color = "#6e1f1f";
             btnRechazar.style.width = "100%";
-            btnRechazar.style.border = "1px solid";
+            btnRechazar.style.border = "1px solid #6e1f1f";
             btnRechazar.style.marginTop = "7px";
+            btnRechazar.style.padding = "4px";
+
+            if (solicitud.aprobadaPorReceptor !== "Sin respuesta" && solicitud.aprobadaPorJefe !== "Sin respuesta") {
+                btnAprobar.disabled = true;
+                btnAprobar.style.backgroundColor = "gray";
+                btnAprobar.style.color = "lightgray";
+                btnAprobar.style.border = "1px solid gray";
+                btnAprobar.style.cursor = "not-allowed";
+                btnRechazar.disabled = true;
+                btnRechazar.style.backgroundColor = "gray";
+                btnRechazar.style.color = "lightgray";
+                btnRechazar.style.border = "1px solid gray";
+                btnRechazar.style.cursor = "not-allowed";
+            }
+
+
 
             celdaBotones.appendChild(btnAprobar);
             celdaBotones.appendChild(btnRechazar);
@@ -413,7 +436,7 @@ function mostrarSolicitudes() {
 
             if (solicitud.aprobadaPorReceptor == true && solicitud.aprobadaPorJefe == true) {
                 celdaEstado.textContent = "Aprobado";
-            } else if (solicitud.aprobadaPorReceptor == false && solicitud.aprobadaPorJefe == false) {
+            } else if (solicitud.aprobadaPorReceptor == false || solicitud.aprobadaPorJefe == false) {
                 celdaEstado.textContent = "Rechazado";
             }
             // Añade la fila al cuerpo de la tabla
@@ -440,7 +463,7 @@ function mostrarSolicitudes() {
     });
 }
 
-function cambioHorario(registro) {
+function aceptarCambio(registro) {
     let valor = prompt("Número de solicitud a aprobar: " + registro.id + " por favor ingrese su contraseña: ");
     switch (registro.receptor) {
         case "Anderson Cano Londoño":
@@ -463,10 +486,66 @@ function cambioHorario(registro) {
             break;
     }
 
-    console.log(agentes[receptor].contraseña);
     if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
         db.ref('solicitudes/' + registro.id).update({
             aprobadaPorJefe: true
+        }, error => {
+            if (error) {
+                console.error("Error actualizando el nodo: ", error);
+            } else {
+                console.log("Nodo actualizado con éxito");
+                if (registro.aprobadaPorReceptor == true) {
+                    console.log("Cambio de horario aprobado");
+                    cambioHorario(registro);
+
+                }
+            }
+        });
+    } else if (valor == agentes[receptor].contraseña) {
+        db.ref('solicitudes/' + registro.id).update({
+            aprobadaPorReceptor: true
+        }, error => {
+            if (error) {
+                console.error("Error actualizando el nodo: ", error);
+            } else {
+                console.log("Nodo actualizado con éxito");
+                if (registro.aprobadaPorJefe == true) {
+                    console.log("Cambio de horario aprobado");
+                    cambioHorario(registro);
+                }
+            }
+        });
+    } else {
+        alert("Contraseña incorrecta");
+    }
+}
+
+function rechazarCambio(registro) {
+    let valor = prompt("Número de solicitud a aprobar: " + registro.id + " por favor ingrese su contraseña: ");
+    switch (registro.receptor) {
+        case "Anderson Cano Londoño":
+            var receptor = "Anderson_Cano_Londoño";
+            break;
+        case "Miguel Cadavid Naranjo":
+            var receptor = "Miguel_Cadavid_Naranjo";
+            break;
+        case "Milton Alexis Calle Londoño":
+            var receptor = "Milton_Alexis_Calle_Londoño";
+            break;
+        case "Yesica Johana Cano Quintero":
+            var receptor = "Yesica_Johana_Cano_Quintero";
+            break;
+        case "Andrés Felipe Vidal Medina":
+            var receptor = "Andrés_Felipe_Vidal_Medina";
+            break;
+        case "Andrés Felipe Yepes Tascón":
+            var receptor = "Andrés_Felipe_Yepes_Tascón";
+            break;
+    }
+
+    if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
+        db.ref('solicitudes/' + registro.id).update({
+            aprobadaPorJefe: false
         }, error => {
             if (error) {
                 console.error("Error actualizando el nodo: ", error);
@@ -476,7 +555,7 @@ function cambioHorario(registro) {
         });
     } else if (valor == agentes[receptor].contraseña) {
         db.ref('solicitudes/' + registro.id).update({
-            aprobadaPorReceptor: true
+            aprobadaPorReceptor: false
         }, error => {
             if (error) {
                 console.error("Error actualizando el nodo: ", error);
@@ -492,5 +571,30 @@ function cambioHorario(registro) {
 
 }
 
-document.getElementById('1').addEventListener('click', cambioHorario);
+
+function cambioHorario(solicitud) {
+
+    var dia = solicitud.diaSolicitado.match(/\d+/)[0];
+    dia = parseInt(dia) + 1;
+    var refSolicitante = firebase.database().ref('celdas/' + solicitud.solicitante + '/' + dia);
+    var refReceptor = firebase.database().ref('celdas/' + solicitud.receptor + '/' + dia);
+
+    // Obtener los datos de las celdas del solicitante y del receptor
+    refSolicitante.once('value', function (snapshotSolicitante) {
+        var horarioSolicitante = snapshotSolicitante.val();
+
+        refReceptor.once('value', function (snapshotReceptor) {
+            var horarioReceptor = snapshotReceptor.val();
+
+            // Actualizar los datos de las celdas del receptor con los datos del solicitante
+            refReceptor.set(horarioSolicitante);
+
+            // Actualizar los datos de las celdas del solicitante con los datos del receptor
+            refSolicitante.set(horarioReceptor);
+        });
+    });
+}
+
+
+
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);
