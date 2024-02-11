@@ -601,6 +601,9 @@ function cambioHorario(solicitud) {
             refSolicitante.set(horarioReceptor);
         });
     });
+    setTimeout(function() {
+        location.reload();
+    }, 1000);
 }
 
 
