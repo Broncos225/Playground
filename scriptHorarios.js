@@ -256,14 +256,17 @@ let agentes = {
 var contadorRegistros = 0;
 
 function generarSolicitudes() {
+    var solicitanteElem = document.getElementById('Solicitante');
+    var receptorElem = document.getElementById('Receptor');
+    var fechaElem = document.getElementById('DiaSolicitado');
 
-    if (document.getElementById('Solicitante').value == "" || document.getElementById('Receptor').value == "" || document.getElementById('DiaSolicitado').value == "") {
+    if (solicitanteElem.value == "" || receptorElem.value == "" || fechaElem.value == "") {
         alert("Por favor complete todos los campos");
         return;
     } else {
-        var solicitante = document.getElementById('Solicitante').value;
-        var receptor = document.getElementById('Receptor').value;
-        var inputFecha = document.getElementById('DiaSolicitado').value;
+        var solicitante = solicitanteElem.value;
+        var receptor = receptorElem.value;
+        var inputFecha = fechaElem.value;
         var partes = inputFecha.split('-');
         var fecha = new Date(partes[0], partes[1] - 1, partes[2]);
         var fechaActual = new Date();
@@ -310,9 +313,14 @@ function generarSolicitudes() {
                         console.log("Nodo añadido con éxito");
                     }
                 });
-
+                solicitanteElem.value = "";
+                receptorElem.value = "";
+                fechaElem.value = "";
             } else {
                 alert("Solicitud cancelada, revise su contraseña e intente de nuevo");
+                solicitanteElem.value = "";
+                receptorElem.value = "";
+                fechaElem.value = "";
                 return;
             }
         }
