@@ -214,54 +214,59 @@ let agentes = {
         nombre: "Anderson Cano Londoño",
         correo: "anderson.cano@arus.com.co",
         letra: "A",
-        contraseña: "1"
+        contraseña: "A4825"
     },
     Miguel_Cadavid_Naranjo: {
         nombre: "Miguel Cadavid Naranjo",
         correo: "miguel.cadavid@arus.com.co",
         letra: "B",
-        contraseña: "12"
+        contraseña: "M7193"
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
         correo: "milton.calle@arus.com.co",
         letra: "C",
-        contraseña: "123"
+        contraseña: "M5032"
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
         correo: "yesica.cano@arus.com.co",
         letra: "D",
-        contraseña: "1234"
+        contraseña: "Y8649"
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
         correo: "andres.vidal@arus.com.co",
         letra: "E",
-        contraseña: "12345"
+        contraseña: "A2351"
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
         correo: "andres.yepes@arus.com.co",
         letra: "F",
-        contraseña: "123456"
+        contraseña: "A6790"
     },
     Oscar_Luis_Cabrera_Pacheco: {
         nombre: "Oscar Luis Cabrera Pacheco",
         correo: "oscar.cabrera@arus.com.co",
-        contraseña: "999"
+        contraseña: "O1457"
     }
 }
 
-var contadorRegistros = 0;
+
+
+
 
 function generarSolicitudes() {
     var solicitanteElem = document.getElementById('Solicitante');
     var receptorElem = document.getElementById('Receptor');
     var fechaElem = document.getElementById('DiaSolicitado');
 
-    if (solicitanteElem.value == "" || receptorElem.value == "" || fechaElem.value == "") {
-        alert("Por favor complete todos los campos");
+    if (solicitanteElem.value == "" || receptorElem.value == "" || fechaElem.value == "" || solicitanteElem.value == receptorElem.value) {
+        alert("Por favor complete todos los campos y revise que no se esté solicitando un cambio de turno con el mismo agente");
+        solicitanteElem.value = "";
+        receptorElem.value = "";
+        fechaElem.value = "";
         return;
     } else {
         var solicitante = solicitanteElem.value;
@@ -293,25 +298,40 @@ function generarSolicitudes() {
                 let dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
                 let nombreDia = dias[fecha2.getDay()];
 
-                contadorRegistros++;
+                var contadorRef = firebase.database().ref('contador');
+                contadorRef.once('value').then(function (snapshot) {
+                    var contadorRegistros = snapshot.val();
 
-                db.ref('solicitudes/' + contadorRegistros).set({
-                    id: contadorRegistros,
-                    solicitante: agentes[solicitante].nombre,
-                    receptor: agentes[receptor].nombre,
-                    diaSolicitado: nombreDia + " " + fecha2.getDate(),
-                    turnoSolicitante: celdaSol.textContent,
-                    turnoReceptor: celdaRec.textContent,
-                    fechaHora: fechaHora.replace(',', ''),
-                    estado: "Pendiente",
-                    aprobadaPorReceptor: "Sin respuesta", // Nueva propiedad
-                    aprobadaPorJefe: "Sin respuesta" // Nueva propiedad
-                }, error => {
-                    if (error) {
-                        console.error("Error añadiendo el nodo: ", error);
-                    } else {
-                        console.log("Nodo añadido con éxito");
-                    }
+                    db.ref('solicitudes/' + contadorRegistros).set({
+                        id: contadorRegistros,
+                        solicitante: agentes[solicitante].nombre,
+                        receptor: agentes[receptor].nombre,
+                        diaSolicitado: nombreDia + " " + fecha2.getDate(),
+                        turnoSolicitante: celdaSol.textContent,
+                        turnoReceptor: celdaRec.textContent,
+                        fechaHora: fechaHora.replace(',', ''),
+                        estado: "Pendiente",
+                        aprobadaPorReceptor: "Sin respuesta", // Nueva propiedad
+                        aprobadaPorJefe: "Sin respuesta" // Nueva propiedad
+                    }, error => {
+                        if (error) {
+                            console.error("Error añadiendo el nodo: ", error);
+                        } else {
+                            console.log("Nodo añadido con éxito");
+                            var contadorRef = firebase.database().ref('contador');
+                            contadorRef.transaction(function (contadorRegistros) {
+                                // Si contadorRegistros no existe, inicializarlo a 0, de lo contrario incrementarlo en 1
+                                return (contadorRegistros || 0) + 1;
+                            }).then(function () {
+                                console.log('Incremento de contador realizado con éxito');
+                            }).catch(function (error) {
+                                console.error('Error incrementando contador: ', error);
+                            });
+                        }
+                    });
+
+                }).catch(function (error) {
+                    console.error("Error obteniendo el valor de contador: ", error);
                 });
                 solicitanteElem.value = "";
                 receptorElem.value = "";
@@ -601,7 +621,7 @@ function cambioHorario(solicitud) {
             refSolicitante.set(horarioReceptor);
         });
     });
-    setTimeout(function() {
+    setTimeout(function () {
         location.reload();
     }, 1000);
 }
