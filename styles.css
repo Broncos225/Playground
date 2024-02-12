@@ -282,7 +282,8 @@ button .botonReiniciar:hover {
 
 .Turnos table th,
 .Almuerzos table th,
-#TablaSol table th {
+#TablaSol table th,
+#TablaSol2 table th {
     font-weight: bold;
     font-size: 15px;
     background-color: #012353;
@@ -319,7 +320,8 @@ button .botonReiniciar:hover {
 
 #btnGuardar,
 #btnExportar,
-#btnEnviar {
+#btnEnviar,
+#btnEnviar2 {
     padding: auto;
     margin-left: 10px;
     border: none;
@@ -332,7 +334,8 @@ button .botonReiniciar:hover {
 
 #btnGuardar:hover,
 #btnExportar:hover,
-#btnEnviar:hover {
+#btnEnviar:hover
+#btnEnviar2:hover {
     background-color: #a3a3a3;
 }
 
@@ -374,12 +377,12 @@ button .botonReiniciar:hover {
     overflow-x: auto;
 }
 
-#TablaSol {
+#TablaSol, #TablaSol2 {
     width: 100%;
     table-layout: fixed;
 }
 
-#TablaSol th {
+#TablaSol th, #TablaSol2 th {
     width: auto;
 }
 
@@ -410,6 +413,7 @@ button .botonReiniciar:hover {
 .Form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .Form input[type="submit"] {
@@ -427,12 +431,30 @@ button .botonReiniciar:hover {
     padding-top: 10px;
 }
 
-#btnEnviar {
+#btnIntercambioTurno {
+    margin-top: 10px;
+}
+
+#individual {
+    width: 300px;
+    margin: auto;
+    margin-top: 5px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#individual > div {
+    margin-bottom: 10px; /* Ajusta este valor según tus necesidades */
+}
+
+#btnEnviar,
+#btnEnviar2 {
     padding: 10px;
     width: 38px;
 }
 
-#TablaSol {
+#TablaSol, #TablaSol2 {
     width: 100%;
     /* Ajusta esto según tus necesidades */
     max-height: 400px;
@@ -459,7 +481,8 @@ button .botonReiniciar:hover {
     word-wrap: break-word;
 }
 
-#btnEnviar:disabled {
+#btnEnviar:disabled,
+#btnEnviar2:disabled {
     background-color: #a3a3a3;
     cursor: not-allowed;
 }

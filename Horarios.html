@@ -335,9 +335,10 @@
         </div>
         <div id="Solicitudes">
             <h2 style="margin-bottom: 0">Solicitudes</h2>
-
+            <button id="btnIntercambioTurno"></button>
             <div id="NuevaSolicitud">
                 <form class="Form" method="post">
+                    <h2>Intercambio de turno</h2>
                     <div class="Divs">
                         <label for="Solicitante">Solicitante:</label>
                         <select type="text" id="Solicitante" name="Solicitante" required">
@@ -354,12 +355,19 @@
                         <label for="Receptor">Receptor:</label>
                         <select type="text" id="Receptor" name="Receptor" required>
                             <option value=""></option>
-                            <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
-                            <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
-                            <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
-                            <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
-                            <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
-                            <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
+                            <optgroup label="Agentes">
+                                <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
+                                <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
+                                <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
+                                <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
+                                <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
+                                <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
+                            </optgroup>
+                            <optgroup label="Descansos">
+                                <option value="D">Descanso</option>
+                                <option value="DF">Día de la familia</option>
+                                <option value="AM">Apoyo Marco</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="Divs">
@@ -392,7 +400,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
         <div id="Informacion">
             <div class="Turnos">
