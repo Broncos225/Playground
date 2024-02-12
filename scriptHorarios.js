@@ -417,16 +417,30 @@ function mostrarSolicitudes() {
             } else {
                 celdaAprobadaPorJefe.textContent = "Sin respuesta";
             }
+
+            var fechaActual = new Date().getDate();
+            var fecha = new Date(solicitud.diaSolicitado).getDate();
+
+            if (solicitud.aprobadaPorReceptor == true && solicitud.aprobadaPorJefe == true) {
+                celdaEstado.textContent = "Aprobado";
+            } else if (solicitud.aprobadaPorReceptor == false || solicitud.aprobadaPorJefe == false) {
+                celdaEstado.textContent = "Rechazado";
+            } else if (fecha <= fechaActual) {
+                celdaEstado.textContent = "Expirado";
+            }
+
             var btnAprobar = document.createElement("button");
             btnAprobar.textContent = "Aprobar";
             btnAprobar.addEventListener("click", function () {
                 aceptarCambio(solicitud);
+
             });
             var btnRechazar = document.createElement("button");
             btnRechazar.textContent = "Rechazar";
             btnRechazar.addEventListener("click", function () {
                 rechazarCambio(solicitud);
             });
+
             btnAprobar.style.backgroundColor = "#afed87";
             btnAprobar.style.color = "#315e18";
             btnAprobar.style.width = "100%";
@@ -439,24 +453,26 @@ function mostrarSolicitudes() {
             btnRechazar.style.marginTop = "7px";
             btnRechazar.style.padding = "4px";
 
-            if (solicitud.aprobadaPorReceptor !== "Sin respuesta" && solicitud.aprobadaPorJefe !== "Sin respuesta") {
+            if (celdaEstado.textContent == "Aprobado" || celdaEstado.textContent == "Rechazado" || celdaEstado.textContent == "Expirado") {
                 btnAprobar.disabled = true;
+                btnRechazar.disabled = true;
                 btnAprobar.style.backgroundColor = "gray";
                 btnAprobar.style.color = "lightgray";
+                btnAprobar.style.width = "100%";
                 btnAprobar.style.border = "1px solid gray";
+                btnAprobar.style.padding = "4px";
                 btnAprobar.style.cursor = "not-allowed";
-                btnRechazar.disabled = true;
                 btnRechazar.style.backgroundColor = "gray";
                 btnRechazar.style.color = "lightgray";
+                btnRechazar.style.width = "100%";
                 btnRechazar.style.border = "1px solid gray";
+                btnRechazar.style.padding = "4px";
                 btnRechazar.style.cursor = "not-allowed";
             }
 
-
-
             celdaBotones.appendChild(btnAprobar);
             celdaBotones.appendChild(btnRechazar);
-            // Añade las celdas a la fila
+
             fila.appendChild(celdaId);
             fila.appendChild(celdaSolicitante);
             fila.appendChild(celdaReceptor);
@@ -469,11 +485,7 @@ function mostrarSolicitudes() {
             fila.appendChild(celdaEstado);
             fila.appendChild(celdaBotones);
 
-            if (solicitud.aprobadaPorReceptor == true && solicitud.aprobadaPorJefe == true) {
-                celdaEstado.textContent = "Aprobado";
-            } else if (solicitud.aprobadaPorReceptor == false || solicitud.aprobadaPorJefe == false) {
-                celdaEstado.textContent = "Rechazado";
-            }
+
             // Añade la fila al cuerpo de la tabla
             tabla.appendChild(fila);
             switch (celdaEstado.textContent) {
@@ -524,55 +536,41 @@ function aceptarCambio(registro) {
             var receptor = "Andrés_Felipe_Yepes_Tascón";
             break;
     }
-    var fechaActual = new Date().getDate();
-    var fecha = new Date(registro.diaSolicitado).getDate();
 
-    if (fecha > fechaActual) {
 
-        if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
-            db.ref('solicitudes/' + registro.id).update({
-                aprobadaPorJefe: true
-            }, error => {
-                if (error) {
-                    console.error("Error actualizando el nodo: ", error);
-                } else {
-                    console.log("Nodo actualizado con éxito");
-                    if (registro.aprobadaPorReceptor == true) {
-                        console.log("Cambio de horario aprobado");
-                        cambioHorario(registro);
-
-                    }
-                }
-            });
-        } else if (valor == agentes[receptor].contraseña) {
-            db.ref('solicitudes/' + registro.id).update({
-                aprobadaPorReceptor: true
-            }, error => {
-                if (error) {
-                    console.error("Error actualizando el nodo: ", error);
-                } else {
-                    console.log("Nodo actualizado con éxito");
-                    if (registro.aprobadaPorJefe == true) {
-                        console.log("Cambio de horario aprobado");
-                        cambioHorario(registro);
-                    }
-                }
-            });
-        } else {
-            alert("Contraseña incorrecta");
-        }
-    } else {
-        alert("La fecha de la solicitud ya pasó, no se puede aprobar");
+    if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
         db.ref('solicitudes/' + registro.id).update({
-            estado: "Expirado"
+            aprobadaPorJefe: true
         }, error => {
             if (error) {
                 console.error("Error actualizando el nodo: ", error);
             } else {
                 console.log("Nodo actualizado con éxito");
+                if (registro.aprobadaPorReceptor == true) {
+                    console.log("Cambio de horario aprobado");
+                    cambioHorario(registro);
+
+                }
             }
         });
+    } else if (valor == agentes[receptor].contraseña) {
+        db.ref('solicitudes/' + registro.id).update({
+            aprobadaPorReceptor: true
+        }, error => {
+            if (error) {
+                console.error("Error actualizando el nodo: ", error);
+            } else {
+                console.log("Nodo actualizado con éxito");
+                if (registro.aprobadaPorJefe == true) {
+                    console.log("Cambio de horario aprobado");
+                    cambioHorario(registro);
+                }
+            }
+        });
+    } else {
+        alert("Contraseña incorrecta");
     }
+
 }
 
 function rechazarCambio(registro) {
@@ -597,38 +595,10 @@ function rechazarCambio(registro) {
             var receptor = "Andrés_Felipe_Yepes_Tascón";
             break;
     }
-    var fechaActual = new Date().getDate();
-    var fecha = new Date(registro.diaSolicitado).getDate();
 
-    if (fecha > fechaActual) {
-        if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
-            db.ref('solicitudes/' + registro.id).update({
-                aprobadaPorJefe: false
-            }, error => {
-                if (error) {
-                    console.error("Error actualizando el nodo: ", error);
-                } else {
-                    console.log("Nodo actualizado con éxito");
-                }
-            });
-        } else if (valor == agentes[receptor].contraseña) {
-            db.ref('solicitudes/' + registro.id).update({
-                aprobadaPorReceptor: false
-            }, error => {
-                if (error) {
-                    console.error("Error actualizando el nodo: ", error);
-                } else {
-                    console.log("Nodo actualizado con éxito");
-                }
-            });
-            return;
-        } else {
-            alert("Contraseña incorrecta");
-        }
-    } else {
-        alert("La fecha de la solicitud ya pasó, no se puede rechazar");
+    if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
         db.ref('solicitudes/' + registro.id).update({
-            estado: "Expirado"
+            aprobadaPorJefe: false
         }, error => {
             if (error) {
                 console.error("Error actualizando el nodo: ", error);
@@ -636,8 +606,18 @@ function rechazarCambio(registro) {
                 console.log("Nodo actualizado con éxito");
             }
         });
+    } else if (valor == agentes[receptor].contraseña) {
+        db.ref('solicitudes/' + registro.id).update({
+            aprobadaPorReceptor: false
+        }, error => {
+            if (error) {
+                console.error("Error actualizando el nodo: ", error);
+            } else {
+                console.log("Nodo actualizado con éxito");
+            }
+        });
+        return;
     }
-
 }
 
 
