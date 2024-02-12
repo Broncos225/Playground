@@ -367,7 +367,7 @@ button .botonReiniciar:hover {
     display: flex;
     flex-direction: row;
     align-self: start;
-    justify-content:space-around;
+    justify-content: space-around;
     gap: 10px;
     height: 100%;
     width: 100%;
@@ -433,9 +433,11 @@ button .botonReiniciar:hover {
 }
 
 #TablaSol {
-    width: 100%; /* Ajusta esto según tus necesidades */
+    width: 100%;
+    /* Ajusta esto según tus necesidades */
     max-height: 400px;
-    overflow: auto; /* Habilita el desplazamiento tanto en x como en y */
+    overflow: auto;
+    /* Habilita el desplazamiento tanto en x como en y */
 }
 
 #Table2 {

@@ -255,9 +255,9 @@ let agentes = {
 
 for (let agente in agentes) {
     let contraseña = firebase.database().ref('agentes/' + agente);
-    contraseña.once('value').then(function(snapshot) {
+    contraseña.once('value').then(function (snapshot) {
         agentes[agente].contraseña = snapshot.val();
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.error("Error obteniendo las contraseñas: ", error);
     });
 }
