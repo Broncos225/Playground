@@ -214,46 +214,53 @@ let agentes = {
         nombre: "Anderson Cano Londoño",
         correo: "anderson.cano@arus.com.co",
         letra: "A",
-        contraseña: "A4825"
+        contraseña: ""
     },
     Miguel_Cadavid_Naranjo: {
         nombre: "Miguel Cadavid Naranjo",
         correo: "miguel.cadavid@arus.com.co",
         letra: "B",
-        contraseña: "M7193"
+        contraseña: ""
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
         correo: "milton.calle@arus.com.co",
         letra: "C",
-        contraseña: "M5032"
+        contraseña: ""
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
         correo: "yesica.cano@arus.com.co",
         letra: "D",
-        contraseña: "Y8649"
+        contraseña: ""
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
         correo: "andres.vidal@arus.com.co",
         letra: "E",
-        contraseña: "A2351"
+        contraseña: ""
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
         correo: "andres.yepes@arus.com.co",
         letra: "F",
-        contraseña: "A6790"
+        contraseña: ""
     },
     Oscar_Luis_Cabrera_Pacheco: {
         nombre: "Oscar Luis Cabrera Pacheco",
         correo: "oscar.cabrera@arus.com.co",
-        contraseña: "O1457"
+        contraseña: ""
     }
 }
 
-
+for (let agente in agentes) {
+    let contraseña = firebase.database().ref('agentes/' + agente);
+    contraseña.once('value').then(function(snapshot) {
+        agentes[agente].contraseña = snapshot.val();
+    }).catch(function(error) {
+        console.error("Error obteniendo las contraseñas: ", error);
+    });
+}
 
 
 
