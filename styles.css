@@ -402,7 +402,7 @@ button .botonReiniciar:hover {
     gap: 10px;
     width: 100%;
     margin-bottom: 10px;
-    margin-top: 5px;
+
 }
 
 #NuevaSolicitud {
@@ -435,17 +435,8 @@ button .botonReiniciar:hover {
     margin-top: 10px;
 }
 
-#individual {
-    width: 300px;
-    margin: auto;
-    margin-top: 5px;
-    gap: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-#individual > div {
-    margin-bottom: 10px; /* Ajusta este valor según tus necesidades */
+#btnIntercambioTurno {
+    margin-bottom: 15px;
 }
 
 #btnEnviar,
