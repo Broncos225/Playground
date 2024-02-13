@@ -262,8 +262,8 @@ for (let agente in agentes) {
     });
 }
 
-document.getElementById('NuevaSolicitud').style.display = 'block';
-document.getElementById('TablaSol').style.display = 'block';
+document.getElementById('NuevaSolicitud').style.display = 'none';
+document.getElementById('TablaSol').style.display = 'none';
 document.getElementById('btnIntercambioTurno').textContent = "Generar una nueva solicitud";
 function intercambiarTurnos() {
     if (document.getElementById('NuevaSolicitud').style.display == 'block') {
