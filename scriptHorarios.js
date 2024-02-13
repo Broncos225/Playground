@@ -748,10 +748,13 @@ function cambioHorario(solicitud) {
     var dia = solicitud.diaSolicitado.match(/\d+/)[0];
     dia = parseInt(dia) + 1;
     var refSolicitante = firebase.database().ref('celdas/' + solicitud.solicitante + '/' + dia);
+    var refReceptor = firebase.database().ref('celdas/' + solicitud.receptor + '/' + dia);
 
-    if (solicitud.turnoReceptor !== "Descanso") {
+    console.log(solicitud.turnoReceptor);
+    if (solicitud.turnoReceptor !== "D" && solicitud.turnoReceptor !== "DF" && solicitud.turnoReceptor !== "AM") {
         refSolicitante.once('value', function (snapshotSolicitante) {
             var horarioSolicitante = snapshotSolicitante.val();
+            console.log(snapshotSolicitante.val());
 
             refReceptor.once('value', function (snapshotReceptor) {
                 var horarioReceptor = snapshotReceptor.val();
@@ -760,11 +763,15 @@ function cambioHorario(solicitud) {
             });
         });
     } else {
-        refSolicitante.set(solicitud.turnoReceptor);
+        refSolicitante.set({
+            texto: solicitud.turnoReceptor
+        });
     }
+    
     setTimeout(function () {
         location.reload();
     }, 1000);
+    
 }
 
 
