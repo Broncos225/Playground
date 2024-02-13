@@ -737,6 +737,8 @@ function rechazarCambio(registro) {
             }
         });
         return;
+    } else {
+        alert("Contraseña incorrecta");
     }
 }
 
