@@ -472,14 +472,12 @@ function generarSolicitudes() {
 function mostrarSolicitudes() {
     // Obtén una referencia al cuerpo de la tabla en tu HTML
     var tabla = document.getElementById("Table2").getElementsByTagName('tbody')[0];
-
     // Escucha los cambios en los datos
     db.ref('solicitudes').on('value', snapshot => {
         // Limpia el cuerpo de la tabla
         while (tabla.hasChildNodes()) {
             tabla.removeChild(tabla.firstChild);
         }
-
         // Almacena todas las solicitudes en un array
         var solicitudes = [];
         snapshot.forEach(childSnapshot => {
@@ -596,7 +594,6 @@ function mostrarSolicitudes() {
             fila.appendChild(celdaAprobadaPorJefe);
             fila.appendChild(celdaEstado);
             fila.appendChild(celdaBotones);
-
 
             // Añade la fila al cuerpo de la tabla
             tabla.appendChild(fila);
@@ -742,7 +739,6 @@ function rechazarCambio(registro) {
     }
 }
 
-
 function cambioHorario(solicitud) {
 
     var dia = solicitud.diaSolicitado.match(/\d+/)[0];
@@ -767,14 +763,11 @@ function cambioHorario(solicitud) {
             texto: solicitud.turnoReceptor
         });
     }
-    
+
     setTimeout(function () {
         location.reload();
     }, 1000);
-    
+
 }
-
-
-
 
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);
