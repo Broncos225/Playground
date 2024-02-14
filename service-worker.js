@@ -11,7 +11,10 @@ self.addEventListener("install", (event) => {
         "./scriptCalculadora.js",
         "./scriptEscalamientos.js",
         "./scriptHorarios.js",
-        "./icono.png"
+        "./icono.png",
+        "./package.json",
+        "./manifest.json",
+        
       ]);
     })
   );
