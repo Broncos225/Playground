@@ -2,19 +2,17 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open("PlaygroundCache").then((cache) => {
       return cache.addAll([
-        "./",
-        "./index.html",
-        "./Calculadora.html",
-        "./Escalamientos.html",
-        "./Horarios.html",
-        "./styles.css",
-        "./scriptCalculadora.js",
-        "./scriptEscalamientos.js",
-        "./scriptHorarios.js",
-        "./icono.png",
-        "./package.json",
-        "./manifest.json",
-        
+        "/",
+        "/index.html",
+        "/Calculadora.html",
+        "/Escalamientos.html",
+        "/Horarios.html",
+        "/styles.css",
+        "/scriptCalculadora.js",
+        "/scriptEscalamientos.js",
+        "/scriptHorarios.js",
+        "/icono.png",
+        "/package.json",
       ]);
     })
   );
