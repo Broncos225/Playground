@@ -7,22 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Icono.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-    <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", function () {
-                navigator.serviceWorker
-                    .register("service-worker.js")
-                    .then(
-                        function (registration) {
-                            console.log("Service Worker Registered:", registration);
-                        },
-                        function (err) {
-                            console.log("Service Worker Failed to Register: ", err);
-                        }
-                    );
-            });
-        }
-    </script>
+
 
     <title>Playground</title>
 </head>
