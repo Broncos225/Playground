@@ -334,8 +334,7 @@ button .botonReiniciar:hover {
 
 #btnGuardar:hover,
 #btnExportar:hover,
-#btnEnviar:hover
-#btnEnviar2:hover {
+#btnEnviar:hover #btnEnviar2:hover {
     background-color: #a3a3a3;
 }
 
@@ -377,12 +376,14 @@ button .botonReiniciar:hover {
     overflow-x: auto;
 }
 
-#TablaSol, #TablaSol2 {
+#TablaSol,
+#TablaSol2 {
     width: 100%;
     table-layout: fixed;
 }
 
-#TablaSol th, #TablaSol2 th {
+#TablaSol th,
+#TablaSol2 th {
     width: auto;
 }
 
@@ -445,7 +446,8 @@ button .botonReiniciar:hover {
     width: 38px;
 }
 
-#TablaSol, #TablaSol2 {
+#TablaSol,
+#TablaSol2 {
     width: 100%;
     /* Ajusta esto según tus necesidades */
     max-height: 400px;
@@ -500,6 +502,29 @@ button .botonReiniciar:hover {
 .btnRechazar:hover {
     background-color: #fa5c6c;
     margin-top: 7px;
+}
+
+.Marca {
+    width: 100%;
+    height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+}
+
+.Marca p {
+    margin: 0;
+    margin-top: 3px;
+}
+
+@keyframes marquee {
+    0% {
+        text-indent: 100%
+    }
+
+    100% {
+        text-indent: -100%
+    }
 }
 
 @media only screen and (max-width: 600px) {
