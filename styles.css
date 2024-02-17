@@ -509,7 +509,7 @@ button .botonReiniciar:hover {
     height: 20px;
     overflow: hidden;
     white-space: nowrap;
-    animation: marquee 20s linear infinite;
+    animation: marquee 17s linear infinite;
 }
 
 .Marca p {
