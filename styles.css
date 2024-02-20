@@ -538,6 +538,17 @@ button .botonReiniciar:hover {
     }
 }
 
+@media (max-width: 768px) {
+    nav ul {
+      display: flex;
+      justify-content: space-between;
+    }
+    nav ul li {
+      width: 48%;
+    }
+  }
+  
+
 @media only screen and (min-width: 1511px) {
     .TablaDescansos {
         padding: 0px;
