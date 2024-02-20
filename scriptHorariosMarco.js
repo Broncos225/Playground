@@ -1,12 +1,12 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
-    authDomain: "playgroundbdstop.firebaseapp.com",
-    databaseURL: "https://playgroundbdstop-default-rtdb.firebaseio.com",
-    projectId: "playgroundbdstop",
-    storageBucket: "playgroundbdstop.appspot.com",
-    messagingSenderId: "808082296806",
-    appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
-};
+    apiKey: "AIzaSyC_cUBDeHGQAP87PXMMd0qC0A_vc5NXN3A",
+    authDomain: "playgroundbdmarco.firebaseapp.com",
+    databaseURL: "https://playgroundbdmarco-default-rtdb.firebaseio.com",
+    projectId: "playgroundbdmarco",
+    storageBucket: "playgroundbdmarco.appspot.com",
+    messagingSenderId: "1049257816560",
+    appId: "1:1049257816560:web:ad60c19e86f38477baad35"
+  };
 
 
 firebase.initializeApp(firebaseConfig);
@@ -31,43 +31,27 @@ function colorCelda() {
 }
 
 function actualizarColorCelda(celda) {
-    var colorT1 = '#fcfb8d';
-    var colorT2 = '#afed87';
-    var colorT3 = '#87beed';
-    var colorT4 = '#c5b4fa';
-    var colorT5 = '#fcbdc4';
-    var colorT6 = '#fc818d';
-    var colorTSA = '#85a5ff';
-    var colorAM = '#80eded';
+    var colorT1 = '#dce6f1';
+    var colorT2 = '#ccc0da';
+    var colorT3 = '#c4d79b';
+    var colorT4 = '#da9694';
     var colorD = '#';
 
 
     const texto = celda.textContent.trim();
     let color;
     switch (texto) {
-        case 'T1':
-        case 'T1R1':
+        case '1':
             color = colorT1;
             break;
-        case 'T2':
-        case 'T2R1':
+        case '2':
             color = colorT2;
             break;
-        case 'T3':
-        case 'T3R1':
+        case '3':
             color = colorT3;
             break;
-        case 'T4':
-        case 'T4R1':
+        case '4':
             color = colorT4;
-            break;
-        case 'T5':
-        case 'T5R1':
-            color = colorT5;
-            break;
-        case 'T6':
-        case 'T6R1':
-            color = colorT6;
             break;
         case 'D':
         case 'DF':
@@ -75,12 +59,7 @@ function actualizarColorCelda(celda) {
             color = colorD;
             celda.style.color = 'red';
             break;
-        case 'TSA':
-            color = colorTSA;
-            break;
-        case 'AM':
-            color = colorAM;
-            break;
+
     }
     celda.style.backgroundColor = color;
 }
@@ -130,7 +109,7 @@ function cargarDatos() {
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0;
 
     for (var i = 1; i < 30; i++) {
         var celda = document.getElementById('A' + i);
@@ -156,18 +135,6 @@ function contDescansos() {
             contD += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
-        var celda = document.getElementById('E' + i);
-        if (celda.textContent == 'D') {
-            contE += 1;
-        }
-    }
-    for (var i = 1; i < 30; i++) {
-        var celda = document.getElementById('F' + i);
-        if (celda.textContent == 'D') {
-            contF += 1;
-        }
-    }
     var celdaA = document.getElementById("1");
     celdaA.textContent = contA;
     var celdaB = document.getElementById("2");
@@ -176,10 +143,6 @@ function contDescansos() {
     celdaC.textContent = contC;
     var celdaD = document.getElementById("4");
     celdaD.textContent = contD;
-    var celdaE = document.getElementById("5");
-    celdaE.textContent = contE;
-    var celdaF = document.getElementById("6");
-    celdaF.textContent = contF;
 }
 
 function resaltarDiaActual() {
@@ -210,45 +173,27 @@ function exportarExcel() {
 document.getElementById('btnExportar').addEventListener('click', exportarExcel);
 
 let agentes = {
-    Anderson_Cano_Londoño: {
-        nombre: "Anderson Cano Londoño",
-        correo: "anderson.cano@arus.com.co",
+    Victor_Moreno: {
+        nombre: "Victor Moreno",
         letra: "A",
         contraseña: ""
     },
-    Miguel_Cadavid_Naranjo: {
-        nombre: "Miguel Cadavid Naranjo",
-        correo: "miguel.cadavid@arus.com.co",
+    Karelis_Cataño	: {
+        nombre: "Karelis Cataño",
         letra: "B",
         contraseña: ""
     },
-    Milton_Alexis_Calle_Londoño: {
-        nombre: "Milton Alexis Calle Londoño",
-        correo: "milton.calle@arus.com.co",
+    Katerin_Velez: {
+        nombre: "Katerin Velez",
         letra: "C",
         contraseña: ""
     },
-    Yesica_Johana_Cano_Quintero: {
-        nombre: "Yesica Johana Cano Quintero",
-        correo: "yesica.cano@arus.com.co",
-        letra: "D",
+    Samuel_Ruiz: {
+        nombre: "Samuel Ruiz",
         contraseña: ""
     },
-    Andrés_Felipe_Vidal_Medina: {
-        nombre: "Andrés Felipe Vidal Medina",
-        correo: "andres.vidal@arus.com.co",
-        letra: "E",
-        contraseña: ""
-    },
-    Andrés_Felipe_Yepes_Tascón: {
-        nombre: "Andrés Felipe Yepes Tascón",
-        correo: "andres.yepes@arus.com.co",
-        letra: "F",
-        contraseña: ""
-    },
-    Oscar_Luis_Cabrera_Pacheco: {
-        nombre: "Oscar Luis Cabrera Pacheco",
-        correo: "oscar.cabrera@arus.com.co",
+    Andrea_Buitrago: {
+        nombre: "Andrea Buitrago",
         contraseña: ""
     },
     D: {
@@ -259,13 +204,9 @@ let agentes = {
         nombre: "Día de la familia",
         contraseña: "DF"
     },
-    AM: {
-        nombre: "Apoyo Marco",
-        contraseña: "AM"
-    }
 }
 
-let agentesExcluidos = ["D", "DF", "AM"];
+let agentesExcluidos = ["D", "DF"];
 
 for (let agente in agentes) {
     if (!agentesExcluidos.includes(agente)) {
@@ -626,23 +567,17 @@ function mostrarSolicitudes() {
 function aceptarCambio(registro) {
     let valor = prompt("Número de solicitud a aprobar: " + registro.id + " por favor ingrese su contraseña: ");
     switch (registro.receptor) {
-        case "Anderson Cano Londoño":
-            var receptor = "Anderson_Cano_Londoño";
+        case "Victor Moreno":
+            var receptor = "Victor_Moreno";
             break;
-        case "Miguel Cadavid Naranjo":
-            var receptor = "Miguel_Cadavid_Naranjo";
+        case "Karelis Cataño":
+            var receptor = "Karelis_Cataño";
             break;
-        case "Milton Alexis Calle Londoño":
-            var receptor = "Milton_Alexis_Calle_Londoño";
+        case "Katerin Velez":
+            var receptor = "Katerin_Velez";
             break;
-        case "Yesica Johana Cano Quintero":
-            var receptor = "Yesica_Johana_Cano_Quintero";
-            break;
-        case "Andrés Felipe Vidal Medina":
-            var receptor = "Andrés_Felipe_Vidal_Medina";
-            break;
-        case "Andrés Felipe Yepes Tascón":
-            var receptor = "Andrés_Felipe_Yepes_Tascón";
+        case "Samuel Ruiz":
+            var receptor = "Samuel_Ruiz";
             break;
         case "Descanso":
             var receptor = "D";
@@ -650,12 +585,9 @@ function aceptarCambio(registro) {
         case "Día de la familia":
             var receptor = "DF";
             break;
-        case "Apoyo Marco":
-            var receptor = "AM";
-            break;
     }
 
-    if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
+    if (valor == agentes.Andrea_Buitrago.contraseña) {
         db.ref('solicitudes/' + registro.id).update({
             aprobadaPorJefe: true
         }, error => {
@@ -693,27 +625,27 @@ function aceptarCambio(registro) {
 function rechazarCambio(registro) {
     let valor = prompt("Número de solicitud a aprobar: " + registro.id + " por favor ingrese su contraseña: ");
     switch (registro.receptor) {
-        case "Anderson Cano Londoño":
-            var receptor = "Anderson_Cano_Londoño";
+        case "Victor Moreno":
+            var receptor = "Victor_Moreno";
             break;
-        case "Miguel Cadavid Naranjo":
-            var receptor = "Miguel_Cadavid_Naranjo";
+        case "Karelis Cataño":
+            var receptor = "Karelis_Cataño";
             break;
-        case "Milton Alexis Calle Londoño":
-            var receptor = "Milton_Alexis_Calle_Londoño";
+        case "Katerin Velez":
+            var receptor = "Katerin_Velez";
             break;
-        case "Yesica Johana Cano Quintero":
-            var receptor = "Yesica_Johana_Cano_Quintero";
+        case "Samuel Ruiz":
+            var receptor = "Samuel_Ruiz";
             break;
-        case "Andrés Felipe Vidal Medina":
-            var receptor = "Andrés_Felipe_Vidal_Medina";
+        case "Descanso":
+            var receptor = "D";
             break;
-        case "Andrés Felipe Yepes Tascón":
-            var receptor = "Andrés_Felipe_Yepes_Tascón";
+        case "Día de la familia":
+            var receptor = "DF";
             break;
     }
 
-    if (valor == agentes.Oscar_Luis_Cabrera_Pacheco.contraseña) {
+    if (valor == agentes.Andrea_Buitrago.contraseña) {
         db.ref('solicitudes/' + registro.id).update({
             aprobadaPorJefe: false
         }, error => {
@@ -747,7 +679,7 @@ function cambioHorario(solicitud) {
     var refReceptor = firebase.database().ref('celdas/' + solicitud.receptor + '/' + dia);
 
     console.log(solicitud.turnoReceptor);
-    if (solicitud.turnoReceptor !== "D" && solicitud.turnoReceptor !== "DF" && solicitud.turnoReceptor !== "AM") {
+    if (solicitud.turnoReceptor !== "D" && solicitud.turnoReceptor !== "DF") {
         refSolicitante.once('value', function (snapshotSolicitante) {
             var horarioSolicitante = snapshotSolicitante.val();
             console.log(snapshotSolicitante.val());
