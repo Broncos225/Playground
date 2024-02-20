@@ -538,14 +538,34 @@ button .botonReiniciar:hover {
     }
 }
 
-@media (max-width: 768px) {
-    nav ul {
-      display: flex;
-      justify-content: space-between;
-    }
-    nav ul li {
-      width: 48%;
-    }
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav li {
+    display: inline;
+  }
+  
+  nav a {
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  nav a:hover {
+    background-color: #ddd;
+    color: black;
   }
   
 
