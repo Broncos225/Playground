@@ -283,6 +283,11 @@ button .botonReiniciar:hover {
     width: 15%;
 }
 
+.Almuerzos {
+    width: 25%;
+
+}
+
 .Turnos table th,
 .Almuerzos table th,
 #TablaSol table th,
