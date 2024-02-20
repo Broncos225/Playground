@@ -632,8 +632,16 @@ nav a:hover {
         font-size: 15px;
     }
 
+    .botonesNav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 5px;
+        gap: 5px;
+    }
+
     nav ul.botonesNav li a {
-        font-size: 13px;
+        font-size: 15px;
         /* Aumenta el tamaño del texto para dispositivos móviles */
     }
 
