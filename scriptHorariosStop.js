@@ -13,8 +13,9 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
-    colorCelda();
+
     cargarDatos();
+    colorCelda();
     resaltarDiaActual();
     mostrarSolicitudes();
 };
@@ -84,6 +85,10 @@ function actualizarColorCelda(celda) {
         case 'AM':
             color = colorAM;
             break;
+        case '0':
+            color = 'gray';
+            celda.style.color = 'gray';
+            break;            
     }
     celda.style.backgroundColor = color;
 }

@@ -616,30 +616,27 @@ nav a:hover {
     font-size: 20px;
 }
 
+label {
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+    margin-right: px;
+}
+
 .custom-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: white;
-    border: 1px solid #333;
-    border-radius: 4px;
-    padding: 5px;
-    font-size: 15px;
-    width: auto;
     font-family: 'Nunito', Arial, sans-serif;
-  }
-  
-  .custom-select:focus {
-    outline: none;
-    box-shadow: 0 0 2px 1px #4CAF50;
-  }
-  
-  .custom-select option {
-    background-color: white;
-    color: black;
-    padding: 8px;
-    font-size: 16px;
-  }
+    width: auto;
+}
+
+#Mes option,
+#Año option {
+    padding: 5px 10px;
+}
+
+#Mes.custom-select,
+#Año.custom-select {
+    margin-bottom: 10px;
+}
 
 /* Media queries */
 @media only screen and (min-width: 1511px) {
