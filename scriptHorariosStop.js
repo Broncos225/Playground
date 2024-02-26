@@ -45,6 +45,9 @@ function actualizarColorCelda(celda) {
     const texto = celda.textContent.trim();
     let color;
     switch (texto) {
+        case '':
+            color = 'white';
+            break;
         case 'T1':
         case 'T1R1':
             color = colorT1;
@@ -89,12 +92,15 @@ function guardarCeldas() {
     var passw = document.getElementById('pass').value;
     if (passw == "5522") {
         const celdas = document.querySelectorAll('#Table td');
+        const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
+        const añoSeleccionado = document.getElementById('Año').value;
+
         celdas.forEach(celda => {
             const texto = celda.textContent.trim();
             const idCelda = celda.cellIndex + 1; // Obtén el índice de la celda (1-indexed)
             const nombreFila = celda.parentNode.cells[0].textContent.trim(); // Obtén el nombre del agente
 
-            db.ref('celdas/' + nombreFila + '/' + idCelda).set({
+            db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).set({
                 texto: texto,
             });
         });
@@ -106,13 +112,16 @@ function guardarCeldas() {
 }
 
 function cargarDatos() {
+    const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
+    const añoSeleccionado = document.getElementById('Año').value;
+
     const celdas = document.querySelectorAll('td');
 
     celdas.forEach((celda) => {
         const idCelda = celda.cellIndex + 1;
         const nombreFila = celda.parentNode.cells[0].textContent.trim();
 
-        db.ref('celdas/' + nombreFila + '/' + idCelda).once('value')
+        db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value')
             .then(snapshot => {
                 const data = snapshot.val();
                 if (data) {
@@ -779,4 +788,22 @@ function cambioHorario(solicitud) {
 
 }
 
+const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+var titulo = document.getElementById("titulos");
+var selectMes = document.getElementById('Mes');
+
+// Obtén el mes actual y réstale 1 porque los meses en JavaScript van de 0 (enero) a 11 (diciembre)
+var mesActual = new Date().getMonth();
+
+// Establece el mes actual en el select y actualiza el título
+selectMes.selectedIndex = mesActual;
+titulo.textContent = nombresMeses[mesActual];
+cargarDatos();
+
+selectMes.addEventListener('change', function () {
+    var mesSeleccionado = selectMes.selectedIndex;
+    titulo.textContent = nombresMeses[mesSeleccionado];
+    cargarDatos();
+});
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);
+
