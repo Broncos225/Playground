@@ -32,6 +32,9 @@ function colorCelda() {
 }
 
 function actualizarColorCelda(celda) {
+
+    celda.style.color = '';
+
     var colorT1 = '#fcfb8d';
     var colorT2 = '#afed87';
     var colorT3 = '#87beed';
@@ -40,7 +43,7 @@ function actualizarColorCelda(celda) {
     var colorT6 = '#fc818d';
     var colorTSA = '#85a5ff';
     var colorAM = '#80eded';
-    var colorD = '#';
+    var colorD = '#012353';
 
 
     const texto = celda.textContent.trim();
@@ -48,42 +51,55 @@ function actualizarColorCelda(celda) {
     switch (texto) {
         case '':
             color = 'white';
+            celda.style.color = 'black';
             break;
         case 'T1':
         case 'T1R1':
             color = colorT1;
+            celda.style.color = 'black';
             break;
         case 'T2':
         case 'T2R1':
             color = colorT2;
+            celda.style.color = 'black';
             break;
         case 'T3':
         case 'T3R1':
             color = colorT3;
+            celda.style.color = 'black';
             break;
         case 'T4':
         case 'T4R1':
             color = colorT4;
+            celda.style.color = 'black';
             break;
         case 'T5':
         case 'T5R1':
             color = colorT5;
+            celda.style.color = 'black';
             break;
         case 'T6':
         case 'T6R1':
             color = colorT6;
+            celda.style.color = 'black';
             break;
-        case 'D':
-        case 'DF':
-        case 'S':
-            color = colorD;
-            celda.style.color = 'red';
-            break;
+            case 'D':
+                case 'DF':
+                    if (!celda.classList.contains('titulos')) {
+                        color = 'white';
+                        celda.style.color = 'red';
+                    } else {
+                        color = colorD;
+                        celda.style.color = 'red';
+                    }
+                    break;
         case 'TSA':
             color = colorTSA;
+            celda.style.color = 'black';
             break;
         case 'AM':
             color = colorAM;
+            celda.style.color = 'black';
             break;
         case '0':
             color = 'gray';
