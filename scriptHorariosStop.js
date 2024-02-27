@@ -111,7 +111,7 @@ function actualizarColorCelda(celda) {
 
 function guardarCeldas() {
     var passw = document.getElementById('pass').value;
-    if (passw == "5522") {
+    if (passw == "2255") {
         const celdas = document.querySelectorAll('#Table td');
         const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
         const añoSeleccionado = document.getElementById('Año').value;
