@@ -104,9 +104,9 @@ function actualizarColorCelda(celda) {
             color = colorAM;
             celda.style.color = 'black';
             break;
-        case '-':
+        case 'NN':
             color = 'gray';
-            celda.style.color = 'gray';
+            celda.style.color = 'black';
             break;
     }
     celda.style.backgroundColor = color;
