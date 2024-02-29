@@ -13,12 +13,15 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
-
+    diaSemana();
     cargarDatos();
     colorCelda();
     resaltarDiaActual();
     mostrarSolicitudes();
 };
+
+
+
 
 function colorCelda() {
     const celdas = document.querySelectorAll('td');
@@ -83,16 +86,16 @@ function actualizarColorCelda(celda) {
             color = colorT6;
             celda.style.color = 'black';
             break;
-            case 'D':
-                case 'DF':
-                    if (!celda.classList.contains('titulos')) {
-                        color = 'white';
-                        celda.style.color = 'red';
-                    } else {
-                        color = colorD;
-                        celda.style.color = 'red';
-                    }
-                    break;
+        case 'D':
+        case 'DF':
+            if (!celda.classList.contains('titulos')) {
+                color = 'white';
+                celda.style.color = 'red';
+            } else {
+                color = colorD;
+                celda.style.color = 'red';
+            }
+            break;
         case 'TSA':
             color = colorTSA;
             celda.style.color = 'black';
@@ -101,10 +104,10 @@ function actualizarColorCelda(celda) {
             color = colorAM;
             celda.style.color = 'black';
             break;
-        case '0':
+        case '-':
             color = 'gray';
             celda.style.color = 'gray';
-            break;            
+            break;
     }
     celda.style.backgroundColor = color;
 }
@@ -155,6 +158,7 @@ function cargarDatos() {
                 console.error("Error al cargar datos:", error);
             });
     });
+
 }
 
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
@@ -350,7 +354,7 @@ function generarSolicitudes() {
             var receptor = receptorElem.value;
             var inputFecha = fechaElem.value;
             var partes = inputFecha.split('-');
-            var fecha = new Date(partes[0], partes[1] - 1, partes[2]);
+            var fecha = new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]));
             var fechaActual = new Date();
             var dia = fecha.getDate();
             if (fecha < fechaActual) {
@@ -426,7 +430,7 @@ function generarSolicitudes() {
             var receptor = receptorElem.value;
             var inputFecha = fechaElem.value;
             var partes = inputFecha.split('-');
-            var fecha = new Date(partes[0], partes[1] - 1, partes[2]);
+            var fecha = new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]));
             var fechaActual = new Date();
             var dia = fecha.getDate();
             if (fecha < fechaActual) {
@@ -494,6 +498,48 @@ function generarSolicitudes() {
                     fechaElem.value = "";
                     return;
                 }
+            }
+        }
+    }
+}
+
+function generarSolicitudes2() {
+    var solicitanteElem = document.getElementById('Solicitante');
+    var receptorElem = document.getElementById('Receptor');
+    var fechaElem = document.getElementById('DiaSolicitado');
+    if (solicitanteElem.value == "" || receptorElem.value == "" || fechaElem.value == "" || solicitanteElem.value == receptorElem.value) {
+        alert("Por favor complete todos los campos y revise que no se esté solicitando un cambio de turno con el mismo agente");
+        solicitanteElem.value = "";
+        receptorElem.value = "";
+        fechaElem.value = "";
+        return;
+    } else {
+        const select = document.getElementById('Receptor');
+        const selectedOption = select.options[select.selectedIndex];
+        const group = selectedOption.parentNode.label;
+        if (fecha < fechaActual) {
+            alert("La fecha seleccionada no puede ser anterior ni igual a la fecha actual");
+            return;
+        } else {
+            if (group == "Agentes") {
+            } else {
+                var solicitante = solicitanteElem.value;
+                var receptor = receptorElem.value;
+                var inputFecha = fechaElem.value;
+                var partes = inputFecha.split('-');
+                var fecha = new Date(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]));
+                var fechaActual = new Date();
+                var dia = fecha.getDate();
+
+                db.ref('celdas/' + agentes[solicitante].nombre + '/' + (dia + 1) + '/' + fecha.getFullYear() + '/' + (fecha.getMonth() + 1))
+                    .once('value')
+                    .then((snapshot) => {
+                        var TurnoSol = snapshot.val().texto;
+                        var TurnoRec = select.value;
+
+                        console.log(TurnoSol);
+                        console.log(TurnoRec);
+                    });
             }
         }
     }
@@ -782,6 +828,7 @@ function cambioHorario(solicitud) {
 
     var dia = solicitud.diaSolicitado.match(/\d+/)[0];
     dia = parseInt(dia) + 1;
+    console.log(dia);
     var refSolicitante = firebase.database().ref('celdas/' + solicitud.solicitante + '/' + dia);
     var refReceptor = firebase.database().ref('celdas/' + solicitud.receptor + '/' + dia);
 
@@ -812,19 +859,55 @@ function cambioHorario(solicitud) {
 const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 var titulo = document.getElementById("titulos");
 var selectMes = document.getElementById('Mes');
+var selectAño = document.getElementById('Año');
 
-// Obtén el mes actual y réstale 1 porque los meses en JavaScript van de 0 (enero) a 11 (diciembre)
 var mesActual = new Date().getMonth();
+var currentYear = new Date().getFullYear();
 
-// Establece el mes actual en el select y actualiza el título
 selectMes.selectedIndex = mesActual;
 titulo.textContent = nombresMeses[mesActual];
 cargarDatos();
+
+// Set the current year as the selected option in the "Año" select element
+for (let i = 0; i < selectAño.options.length; i++) {
+    if (+selectAño.options[i].value === currentYear) {
+        selectAño.selectedIndex = i;
+        break;
+    }
+}
+
 
 selectMes.addEventListener('change', function () {
     var mesSeleccionado = selectMes.selectedIndex;
     titulo.textContent = nombresMeses[mesSeleccionado];
     cargarDatos();
+    diaSemana();
 });
-document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);
+
+selectAño.addEventListener('change', function () {
+    cargarDatos();
+});
+
+
+function diaSemana() {
+    var año = document.getElementById('Año').value;
+    var mes = document.getElementById('Mes').value;
+    var dias = ['D', 'L', 'M', 'M', 'J', 'V', 'S']; // Iniciales de los días de la semana
+
+    // Convertir el nombre del mes a un número
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    var mesNumero = meses.indexOf(mes);
+    var celdas = document.getElementsByClassName('DiaSemana');
+    for (var i = 1; i < celdas.length + 1; i++) {
+        var fecha = new Date(año, mesNumero, i);
+        var dia = fecha.getDay();
+        if (celdas[i - 1]) {
+            celdas[i - 1].textContent = dias[dia];
+        } else {
+        }
+    }
+    colorCelda();
+}
+
+document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes2);
 
