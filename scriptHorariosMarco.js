@@ -135,25 +135,25 @@ document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
 function contDescansos() {
     var contA = 0, contB = 0, contC = 0, contD = 0;
 
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
         if (celda.textContent == 'D') {
             contA += 1;
         }
     }
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('B' + i);
         if (celda.textContent == 'D') {
             contB += 1;
         }
     }
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('C' + i);
         if (celda.textContent == 'D') {
             contC += 1;
         }
     }
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('D' + i);
         if (celda.textContent == 'D') {
             contD += 1;
@@ -807,7 +807,7 @@ function contHoras() {
     var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1'];
     var tiposTurno0 = ['NN', 'D'];
 
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
         if (tiposTurno8.includes(celda.textContent)) {
             contA += 8;
@@ -817,7 +817,7 @@ function contHoras() {
             contA += 0;
         }
     }
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('B' + i);
         if (tiposTurno8.includes(celda.textContent)) {
             contB += 8;
@@ -827,7 +827,7 @@ function contHoras() {
             contB += 0;
         }
     }
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('C' + i);
         if (tiposTurno8.includes(celda.textContent)) {
             contC += 8;
@@ -837,7 +837,7 @@ function contHoras() {
             contC += 0;
         }
     }
-    for (var i = 1; i < 31; i++) {
+    for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('D' + i);
         if (tiposTurno8.includes(celda.textContent)) {
             contD += 8;
