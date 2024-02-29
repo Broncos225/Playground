@@ -1057,6 +1057,5 @@ setInterval(() => {
 
 
 
-
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes2);
 

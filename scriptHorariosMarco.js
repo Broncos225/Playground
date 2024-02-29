@@ -34,7 +34,7 @@ function colorCelda() {
 function actualizarColorCelda(celda) {
 
     celda.style.color = '';
-    
+
     var colorT1 = '#dce6f1';
     var colorT2 = '#ccc0da';
     var colorT3 = '#c4d79b';
@@ -127,7 +127,7 @@ function cargarDatos() {
                 console.error("Error al cargar datos:", error);
             });
     });
-    
+
 }
 
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
@@ -860,25 +860,25 @@ function contHoras() {
 
 
 
-const checkInterval = 200; 
+const checkInterval = 200;
 
 
 function checkScrollbar(el) {
-  return el.offsetWidth < el.scrollWidth;
+    return el.offsetWidth < el.scrollWidth;
 }
 
 function cambiarPaddingSegunScroll() {
-  const tabla = document.getElementById('Tabla');
-  const otroDiv = document.getElementById('TablaDescansos');
+    const tabla = document.getElementById('Tabla');
+    const otroDiv = document.getElementById('TablaDescansos');
 
-  otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
+    otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
 }
 
 cambiarPaddingSegunScroll();
 
 setInterval(() => {
-  cambiarPaddingSegunScroll();
+    cambiarPaddingSegunScroll();
 }, checkInterval);
-  
+
 
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);
