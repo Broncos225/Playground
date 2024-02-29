@@ -152,7 +152,8 @@ function cargarDatos() {
                     celda.textContent = data.texto;
                     actualizarColorCelda(celda);
                 }
-                contDescansos(); // Call the function here
+                contDescansos();
+                contHoras(); // Call the function here
             })
             .catch(error => {
                 console.error("Error al cargar datos:", error);
@@ -166,37 +167,37 @@ document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
 function contDescansos() {
     var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
 
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('A' + i);
         if (celda.textContent == 'D') {
             contA += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('B' + i);
         if (celda.textContent == 'D') {
             contB += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('C' + i);
         if (celda.textContent == 'D') {
             contC += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('D' + i);
         if (celda.textContent == 'D') {
             contD += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('E' + i);
         if (celda.textContent == 'D') {
             contE += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('F' + i);
         if (celda.textContent == 'D') {
             contF += 1;
@@ -908,6 +909,108 @@ function diaSemana() {
     }
     colorCelda();
 }
+
+function contHoras() {
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var tiposTurno8 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'AM', 'DF'];
+    var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1'];
+    var tiposTurno0 = ['NN', 'D'];
+
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('A' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contA += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contA += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contA += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('B' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contB += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contB += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contB += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('C' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contC += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contC += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contC += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('D' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contD += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contD += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contD += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('E' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contE += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contE += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contE += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('F' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contF += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contF += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contF += 0;
+        }
+    }
+
+    var celdaA = document.getElementById("11");
+    celdaA.textContent = contA;
+    var celdaB = document.getElementById("12");
+    celdaB.textContent = contB;
+    var celdaC = document.getElementById("13");
+    celdaC.textContent = contC;
+    var celdaD = document.getElementById("14");
+    celdaD.textContent = contD;
+    var celdaE = document.getElementById("15");
+    celdaE.textContent = contE;
+    var celdaF = document.getElementById("16");
+    celdaF.textContent = contF;
+}
+
+const div1 = document.getElementById("Tabla");
+const div2 = document.getElementById("TablaDescansos");
+
+// Make sure that both div1 and div2 are present in the DOM
+if (!div1 || !div2) {
+  console.error("Could not find both div1 and div2 in the DOM");
+}
+
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.attributeName === "style") {
+      div1.style.paddingBottom = div2.style.paddingBottom || '0';
+    }
+  });
+});
+
+// Observe changes to the 'style' attribute of div2
+observer.observe(div2, { attributes: true, attributeFilter: ['style'] });
+
+
 
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes2);
 
