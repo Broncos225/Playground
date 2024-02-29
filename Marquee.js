@@ -36,13 +36,14 @@ let agentes = {
   }
 };
 
+
 function verificarCumpleaños(agentes) {
   const banner = document.getElementById('banner');
   banner.style.display = 'none';
   const hoy = new Date();
   const dia = hoy.getDate();
   const mes = hoy.getMonth() + 1;
-  const emoticonos = ['🎉', '🎂', '🎈', '🎁', '🥳'];
+  const emoticonos = ['🎉', '🎂', '🎈', '🎁', '🥳', '🍰', '🧁', '🍾', '🥂', '🍻', '🍹', '🍬', '🍭', '🍫', '🍦', '🍨', '🍧', '🎊', '🎀', '🎆', '🎇', '🎈', '🎉', '🎁', '🎂', '🎊', '🎉'];
   let intervalo;
 
   for (let agente in agentes) {
