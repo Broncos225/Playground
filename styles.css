@@ -697,3 +697,33 @@ label {
 #Descansos td {
     text-align: center;
 }
+
+#banner {
+    background: #ffd700;
+    color: #000000;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: cambiarColor 3s ease infinite;
+}
+
+@keyframes cambiarColor {
+    0% {
+        background: #ffd700;
+    }
+
+    50% {
+        background: #ff6347;
+    }
+
+    100% {
+        background: #ffd700;
+    }
+}
+
+.aparecer {
+    animation: aparecerAnimacion 0.5s ease-in-out;
+}
