@@ -39,57 +39,86 @@
 
 
         <h1 id="Titulo">Horarios MARCO</h1>
-        <div class="Contenedor">
-            <div class="table-container">
+        <div>
+            <label for="Mes">Mes:</label>
+            <select id="Mes" class="custom-select">
+                <option class="1">Enero</option>
+                <option class="2">Febrero</option>
+                <option class="3">Marzo</option>
+                <option class="4">Abril</option>
+                <option class="5">Mayo</option>
+                <option class="6">Junio</option>
+                <option class="7">Julio</option>
+                <option class="8">Agosto</option>
+                <option class="9">Septiembre</option>
+                <option class="10">Octubre</option>
+                <option class="11">Noviembre</option>
+                <option class="12">Diciembre</option>
+            </select>
+
+            <label for="Año">Año:</label>
+            <select id="Año" class="custom-select">
+                <option class="2024">2024</option>
+                <option class="2025">2025</option>
+                <option class="2026">2026</option>
+                <option class="2027">2027</option>
+                <option class="2028">2028</option>
+            </select>
+        </div>
+        <div class="Contenedor" class="custom-select">
+
+            <div class="table-container" id="Tabla">
 
                 <table id="Table">
                     <tr>
-                        <th class="titulos" colspan="32" style="text-align: center; font-size: 25px;">Febrero</th>
+                        <th class="titulos" id="titulos" colspan="32" style="text-align: center; font-size: 25px;"></th>
 
                     </tr>
                     <tr class="titulos">
                         <th>Días de la semana</th>
-                        <td>J</td>
-                        <td>V</td>
-                        <td>S</td>
-                        <td>D</td>
-                        <td>L</td>
-                        <td>M</td>
-                        <td>M</td>
-                        <td>J</td>
-                        <td>V</td>
-                        <td>S</td>
-                        <td>D</td>
-                        <td>L</td>
-                        <td>M</td>
-                        <td>M</td>
-                        <td>J</td>
-                        <td>V</td>
-                        <td>S</td>
-                        <td>D</td>
-                        <td>L</td>
-                        <td>M</td>
-                        <td>M</td>
-                        <td>J</td>
-                        <td>V</td>
-                        <td>S</td>
-                        <td>D</td>
-                        <td>L</td>
-                        <td>M</td>
-                        <td>M</td>
-                        <td>J</td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
+                        <td class="titulos DiaSemana"></td>
                     </tr>
                     <tr class="titulos" id="Dias">
                         <th>Nombre del agente</th>
-                        <th>01</th>
-                        <th>02</th>
-                        <th>03</th>
-                        <th>04</th>
-                        <th>05</th>
-                        <th>06</th>
-                        <th>07</th>
-                        <th>08</th>
-                        <th>09</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
                         <th>10</th>
                         <th>11</th>
                         <th>12</th>
@@ -110,6 +139,8 @@
                         <th>27</th>
                         <th>28</th>
                         <th>29</th>
+                        <th>30</th>
+                        <th>31</th>
                     </tr>
                     <tbody>
                         <tr>
@@ -143,6 +174,8 @@
                             <td contenteditable="true" id="A27"></td>
                             <td contenteditable="true" id="A28"></td>
                             <td contenteditable="true" id="A29"></td>
+                            <td contenteditable="true" id="A30"></td>
+                            <td contenteditable="true" id="A31"></td>
                         </tr>
                         <tr>
                             <td>Karelis Cataño</td>
@@ -175,6 +208,8 @@
                             <td contenteditable="true" id="B27"></td>
                             <td contenteditable="true" id="B28"></td>
                             <td contenteditable="true" id="B29"></td>
+                            <td contenteditable="true" id="B30"></td>
+                            <td contenteditable="true" id="B31"></td>
                         </tr>
                         <tr>
                             <td>Katerin Velez</td>
@@ -207,6 +242,8 @@
                             <td contenteditable="true" id="C27"></td>
                             <td contenteditable="true" id="C28"></td>
                             <td contenteditable="true" id="C29"></td>
+                            <td contenteditable="true" id="C30"></td>
+                            <td contenteditable="true" id="C31"></td>
                         </tr>
                         <tr>
                             <td>Samuel Ruiz</td>
@@ -239,27 +276,34 @@
                             <td contenteditable="true" id="D27"></td>
                             <td contenteditable="true" id="D28"></td>
                             <td contenteditable="true" id="D29"></td>
+                            <td contenteditable="true" id="D30"></td>
+                            <td contenteditable="true" id="D31"></td>
                         </tr>
                     </tbody>
                     <!-- Agrega más filas para cada trabajador -->
                 </table>
             </div>
-            <div class="TablaDescansos">
+            <div class="TablaDescansos" id="TablaDescansos">
                 <table id="Descansos">
                     <tr>
                         <th class="titulos">D</th>
+                        <th class="titulos">H</th>
                     </tr>
                     <tr>
                         <td id="1"></td>
+                        <td id="11"></td>
                     </tr>
                     <tr>
                         <td id="2"></td>
+                        <td id="12"></td>
                     </tr>
                     <tr>
                         <td id="3"></td>
+                        <td id="13"></td>
                     </tr>
                     <tr>
                         <td id="4"></td>
+                        <td id="14"></td>
                     </tr>
                 </table>
             </div>

@@ -159,7 +159,7 @@ function cargarDatos() {
                 console.error("Error al cargar datos:", error);
             });
     });
-
+    
 }
 
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
@@ -991,24 +991,44 @@ function contHoras() {
     celdaF.textContent = contF;
 }
 
-const div1 = document.getElementById("Tabla");
-const div2 = document.getElementById("TablaDescansos");
+/*function cambiarPaddingSegunScroll() {
+    const tabla = document.getElementById('Tabla');
+    const otroDiv = document.getElementById('TablaDescansos');
+  
+    // Verificar si la tabla tiene un scroll horizontal
+    const tieneScrollHorizontal = tabla.scrollWidth > tabla.clientWidth;
+  
+    // Cambiar el padding del otro div basado en la presencia del scroll horizontal
+    otroDiv.style.paddingBottom = tieneScrollHorizontal ? '0px' : '17px';
+  }*/
 
-// Make sure that both div1 and div2 are present in the DOM
-if (!div1 || !div2) {
-  console.error("Could not find both div1 and div2 in the DOM");
+
+const checkInterval = 200; // Check every 200ms
+
+// Function to check if an element has horizontal scroll
+function checkScrollbar(el) {
+  return el.offsetWidth < el.scrollWidth;
 }
 
-const observer = new MutationObserver((mutations) => {
-  mutations.forEach((mutation) => {
-    if (mutation.attributeName === "style") {
-      div1.style.paddingBottom = div2.style.paddingBottom || '0';
-    }
-  });
-});
+// Function to update padding based on table's scroll
+function cambiarPaddingSegunScroll() {
+  const tabla = document.getElementById('Tabla');
+  const otroDiv = document.getElementById('TablaDescansos');
 
-// Observe changes to the 'style' attribute of div2
-observer.observe(div2, { attributes: true, attributeFilter: ['style'] });
+  // Set padding based on scroll
+  otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
+}
+
+// Initial padding update
+cambiarPaddingSegunScroll();
+
+// Periodically check the table's scroll state
+setInterval(() => {
+  cambiarPaddingSegunScroll();
+}, checkInterval);
+  
+
+
 
 
 

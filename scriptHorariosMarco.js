@@ -6,15 +6,16 @@ const firebaseConfig = {
     storageBucket: "playgroundbdmarco.appspot.com",
     messagingSenderId: "1049257816560",
     appId: "1:1049257816560:web:ad60c19e86f38477baad35"
-  };
+};
 
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
-    colorCelda();
+    diaSemana();
     cargarDatos();
+    colorCelda();
     resaltarDiaActual();
     mostrarSolicitudes();
 };
@@ -31,16 +32,23 @@ function colorCelda() {
 }
 
 function actualizarColorCelda(celda) {
+
+    celda.style.color = '';
+    
     var colorT1 = '#dce6f1';
     var colorT2 = '#ccc0da';
     var colorT3 = '#c4d79b';
     var colorT4 = '#da9694';
-    var colorD = '#';
+    var colorD = '#012353';
 
 
     const texto = celda.textContent.trim();
     let color;
     switch (texto) {
+        case '':
+            color = 'white';
+            celda.style.color = 'black';
+            break;
         case '1':
             color = colorT1;
             break;
@@ -55,9 +63,17 @@ function actualizarColorCelda(celda) {
             break;
         case 'D':
         case 'DF':
-        case 'S':
-            color = colorD;
-            celda.style.color = 'red';
+            if (!celda.classList.contains('titulos')) {
+                color = 'white';
+                celda.style.color = 'red';
+            } else {
+                color = colorD;
+                celda.style.color = 'red';
+            }
+            break;
+        case 'NN':
+            color = 'gray';
+            celda.style.color = 'black';
             break;
 
     }
@@ -66,14 +82,17 @@ function actualizarColorCelda(celda) {
 
 function guardarCeldas() {
     var passw = document.getElementById('pass').value;
-    if (passw == "5522") {
+    if (passw == "2255") {
         const celdas = document.querySelectorAll('#Table td');
+        const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
+        const añoSeleccionado = document.getElementById('Año').value;
+
         celdas.forEach(celda => {
             const texto = celda.textContent.trim();
             const idCelda = celda.cellIndex + 1; // Obtén el índice de la celda (1-indexed)
             const nombreFila = celda.parentNode.cells[0].textContent.trim(); // Obtén el nombre del agente
 
-            db.ref('celdas/' + nombreFila + '/' + idCelda).set({
+            db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).set({
                 texto: texto,
             });
         });
@@ -85,25 +104,30 @@ function guardarCeldas() {
 }
 
 function cargarDatos() {
+    const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
+    const añoSeleccionado = document.getElementById('Año').value;
+
     const celdas = document.querySelectorAll('td');
 
     celdas.forEach((celda) => {
         const idCelda = celda.cellIndex + 1;
         const nombreFila = celda.parentNode.cells[0].textContent.trim();
 
-        db.ref('celdas/' + nombreFila + '/' + idCelda).once('value')
+        db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value')
             .then(snapshot => {
                 const data = snapshot.val();
                 if (data) {
                     celda.textContent = data.texto;
                     actualizarColorCelda(celda);
                 }
-                contDescansos(); // Call the function here
+                contDescansos();
+                contHoras(); // Call the function here
             })
             .catch(error => {
                 console.error("Error al cargar datos:", error);
             });
     });
+    
 }
 
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
@@ -111,25 +135,25 @@ document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
 function contDescansos() {
     var contA = 0, contB = 0, contC = 0, contD = 0;
 
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('A' + i);
         if (celda.textContent == 'D') {
             contA += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('B' + i);
         if (celda.textContent == 'D') {
             contB += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('C' + i);
         if (celda.textContent == 'D') {
             contC += 1;
         }
     }
-    for (var i = 1; i < 30; i++) {
+    for (var i = 1; i < 31; i++) {
         var celda = document.getElementById('D' + i);
         if (celda.textContent == 'D') {
             contD += 1;
@@ -178,7 +202,7 @@ let agentes = {
         letra: "A",
         contraseña: ""
     },
-    Karelis_Cataño	: {
+    Karelis_Cataño: {
         nombre: "Karelis Cataño",
         letra: "B",
         contraseña: ""
@@ -701,5 +725,138 @@ function cambioHorario(solicitud) {
     }, 1000);
 
 }
+
+const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+var titulo = document.getElementById("titulos");
+var selectMes = document.getElementById('Mes');
+var selectAño = document.getElementById('Año');
+
+var mesActual = new Date().getMonth();
+var currentYear = new Date().getFullYear();
+
+selectMes.selectedIndex = mesActual;
+titulo.textContent = nombresMeses[mesActual];
+cargarDatos();
+
+// Set the current year as the selected option in the "Año" select element
+for (let i = 0; i < selectAño.options.length; i++) {
+    if (+selectAño.options[i].value === currentYear) {
+        selectAño.selectedIndex = i;
+        break;
+    }
+}
+
+
+selectMes.addEventListener('change', function () {
+    var mesSeleccionado = selectMes.selectedIndex;
+    titulo.textContent = nombresMeses[mesSeleccionado];
+    cargarDatos();
+    diaSemana();
+});
+
+selectAño.addEventListener('change', function () {
+    cargarDatos();
+});
+
+
+function diaSemana() {
+    var año = document.getElementById('Año').value;
+    var mes = document.getElementById('Mes').value;
+    var dias = ['D', 'L', 'M', 'M', 'J', 'V', 'S']; // Iniciales de los días de la semana
+
+    // Convertir el nombre del mes a un número
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    var mesNumero = meses.indexOf(mes);
+    var celdas = document.getElementsByClassName('DiaSemana');
+    for (var i = 1; i < celdas.length + 1; i++) {
+        var fecha = new Date(año, mesNumero, i);
+        var dia = fecha.getDay();
+        if (celdas[i - 1]) {
+            celdas[i - 1].textContent = dias[dia];
+        } else {
+        }
+    }
+    colorCelda();
+}
+
+function contHoras() {
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var tiposTurno8 = ['1', '2', '3', '4', 'T5', 'T6', 'AM', 'DF'];
+    var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1'];
+    var tiposTurno0 = ['NN', 'D'];
+
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('A' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contA += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contA += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contA += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('B' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contB += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contB += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contB += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('C' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contC += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contC += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contC += 0;
+        }
+    }
+    for (var i = 1; i < 31; i++) {
+        var celda = document.getElementById('D' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contD += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contD += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contD += 0;
+        }
+    }
+
+    var celdaA = document.getElementById("11");
+    celdaA.textContent = contA;
+    var celdaB = document.getElementById("12");
+    celdaB.textContent = contB;
+    var celdaC = document.getElementById("13");
+    celdaC.textContent = contC;
+    var celdaD = document.getElementById("14");
+    celdaD.textContent = contD;
+}
+
+
+
+const checkInterval = 200; 
+
+
+function checkScrollbar(el) {
+  return el.offsetWidth < el.scrollWidth;
+}
+
+function cambiarPaddingSegunScroll() {
+  const tabla = document.getElementById('Tabla');
+  const otroDiv = document.getElementById('TablaDescansos');
+
+  otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
+}
+
+cambiarPaddingSegunScroll();
+
+setInterval(() => {
+  cambiarPaddingSegunScroll();
+}, checkInterval);
+  
 
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes);
