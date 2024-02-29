@@ -8,11 +8,8 @@ const firebaseConfig = {
     appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-
-
 
 window.onload = function () {
     diaSemana();
@@ -21,9 +18,6 @@ window.onload = function () {
     resaltarDiaActual(document.getElementById('Mes').value);
     mostrarSolicitudes();
 };
-
-
-
 
 function colorCelda() {
     const celdas = document.querySelectorAll('td');
@@ -39,7 +33,6 @@ function colorCelda() {
 function actualizarColorCelda(celda) {
 
     celda.style.color = '';
-
     var colorT1 = '#fcfb8d';
     var colorT2 = '#afed87';
     var colorT3 = '#87beed';
@@ -49,8 +42,6 @@ function actualizarColorCelda(celda) {
     var colorTSA = '#85a5ff';
     var colorAM = '#80eded';
     var colorD = '#012353';
-
-
     const texto = celda.textContent.trim();
     let color;
     switch (texto) {
@@ -125,7 +116,6 @@ function guardarCeldas() {
             const texto = celda.textContent.trim();
             const idCelda = celda.cellIndex + 1; // Obtén el índice de la celda (1-indexed)
             const nombreFila = celda.parentNode.cells[0].textContent.trim(); // Obtén el nombre del agente
-
             db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).set({
                 texto: texto,
             });
@@ -140,13 +130,10 @@ function guardarCeldas() {
 function cargarDatos() {
     const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
     const añoSeleccionado = document.getElementById('Año').value;
-
     const celdas = document.querySelectorAll('td');
-
     celdas.forEach((celda) => {
         const idCelda = celda.cellIndex + 1;
         const nombreFila = celda.parentNode.cells[0].textContent.trim();
-
         db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value')
             .then(snapshot => {
                 const data = snapshot.val();
@@ -165,7 +152,6 @@ function cargarDatos() {
 }
 
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
-
 function contDescansos() {
     var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
 
@@ -250,9 +236,6 @@ function resaltarDiaActual() {
     celdaDiaActual.style.color = "black";
 }
 
-
-
-
 function exportarExcel() {
     var table = document.getElementById("Table");
     var wb = XLSX.utils.table_to_book(table);
@@ -272,43 +255,36 @@ document.getElementById('btnExportar').addEventListener('click', exportarExcel);
 let agentes = {
     Anderson_Cano_Londoño: {
         nombre: "Anderson Cano Londoño",
-        correo: "anderson.cano@arus.com.co",
         letra: "A",
         contraseña: ""
     },
     Miguel_Cadavid_Naranjo: {
         nombre: "Miguel Cadavid Naranjo",
-        correo: "miguel.cadavid@arus.com.co",
         letra: "B",
         contraseña: ""
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
-        correo: "milton.calle@arus.com.co",
         letra: "C",
         contraseña: ""
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
-        correo: "yesica.cano@arus.com.co",
         letra: "D",
         contraseña: ""
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
-        correo: "andres.vidal@arus.com.co",
         letra: "E",
         contraseña: ""
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
-        correo: "andres.yepes@arus.com.co",
         letra: "F",
         contraseña: ""
     },
     Oscar_Luis_Cabrera_Pacheco: {
         nombre: "Oscar Luis Cabrera Pacheco",
-        correo: "oscar.cabrera@arus.com.co",
         contraseña: ""
     },
     D: {
@@ -326,7 +302,6 @@ let agentes = {
 }
 
 let agentesExcluidos = ["D", "DF", "AM"];
-
 for (let agente in agentes) {
     if (!agentesExcluidos.includes(agente)) {
         if (agentes[agente].contraseña == "") {
@@ -353,7 +328,6 @@ function intercambiarTurnos() {
     }
 }
 document.getElementById('btnIntercambioTurno').addEventListener('click', intercambiarTurnos);
-
 document.getElementById('btnEnviar').addEventListener('click', function () {
     const select = document.getElementById('Receptor');
     const selectedOption = select.options[select.selectedIndex];
@@ -492,8 +466,8 @@ function generarSolicitudes() {
                             turnoReceptor: celdaRec,
                             fechaHora: fechaHora.replace(',', ''),
                             estado: "Pendiente",
-                            aprobadaPorReceptor: "Sin respuesta", // Nueva propiedad
-                            aprobadaPorJefe: "Sin respuesta" // Nueva propiedad
+                            aprobadaPorReceptor: "Sin respuesta",
+                            aprobadaPorJefe: "Sin respuesta"
                         }, error => {
                             if (error) {
                                 console.error("Error añadiendo el nodo: ", error);
@@ -501,7 +475,6 @@ function generarSolicitudes() {
                                 console.log("Nodo añadido con éxito");
                                 var contadorRef = firebase.database().ref('contador');
                                 contadorRef.transaction(function (contadorRegistros) {
-                                    // Si contadorRegistros no existe, inicializarlo a 0, de lo contrario incrementarlo en 1
                                     return (contadorRegistros || 0) + 1;
                                 }).then(function () {
                                     console.log('Incremento de contador realizado con éxito');
@@ -540,8 +513,7 @@ function generarSolicitudes2() {
         fechaElem.value = "";
         return;
     } else {
-        const select = document.getElementById('Receptor');
-        const selectedOption = select.options[select.selectedIndex];
+        const selectedOption = receptorElem.options[receptorElem.selectedIndex];
         const group = selectedOption.parentNode.label;
         if (fecha < fechaActual) {
             alert("La fecha seleccionada no puede ser anterior ni igual a la fecha actual");
@@ -572,26 +544,19 @@ function generarSolicitudes2() {
 }
 
 function mostrarSolicitudes() {
-    // Obtén una referencia al cuerpo de la tabla en tu HTML
     var tabla = document.getElementById("Table2").getElementsByTagName('tbody')[0];
-    // Escucha los cambios en los datos
     db.ref('solicitudes').on('value', snapshot => {
-        // Limpia el cuerpo de la tabla
         while (tabla.hasChildNodes()) {
             tabla.removeChild(tabla.firstChild);
         }
-        // Almacena todas las solicitudes en un array
         var solicitudes = [];
         snapshot.forEach(childSnapshot => {
             solicitudes.push(childSnapshot.val());
         });
 
-        // Invierte el array
         solicitudes.reverse();
 
-        // Añade los datos a la tabla
         solicitudes.forEach(solicitud => {
-            // Crea una nueva fila y celdas
             var fila = document.createElement("tr");
             var celdaId = document.createElement("td");
             var celdaSolicitante = document.createElement("td");
@@ -605,7 +570,6 @@ function mostrarSolicitudes() {
             var celdaAprobadaPorJefe = document.createElement("td");
             var celdaBotones = document.createElement("td");
 
-            // Añade los datos a las celdas
             celdaId.textContent = solicitud.id;
             celdaSolicitante.textContent = solicitud.solicitante;
             celdaReceptor.textContent = solicitud.receptor;
@@ -684,7 +648,6 @@ function mostrarSolicitudes() {
 
             celdaBotones.appendChild(btnAprobar);
             celdaBotones.appendChild(btnRechazar);
-
             fila.appendChild(celdaId);
             fila.appendChild(celdaSolicitante);
             fila.appendChild(celdaReceptor);
@@ -902,7 +865,6 @@ for (let i = 0; i < selectAño.options.length; i++) {
     }
 }
 
-
 selectMes.addEventListener('change', function () {
     var mesSeleccionado = selectMes.selectedIndex;
     titulo.textContent = nombresMeses[mesSeleccionado];
@@ -915,13 +877,11 @@ selectAño.addEventListener('change', function () {
     cargarDatos();
 });
 
-
 function diaSemana() {
     var año = document.getElementById('Año').value;
     var mes = document.getElementById('Mes').value;
     var dias = ['D', 'L', 'M', 'M', 'J', 'V', 'S']; // Iniciales de los días de la semana
 
-    // Convertir el nombre del mes a un número
     var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     var mesNumero = meses.indexOf(mes);
     var celdas = document.getElementsByClassName('DiaSemana');
@@ -1017,45 +977,23 @@ function contHoras() {
     celdaF.textContent = contF;
 }
 
-/*function cambiarPaddingSegunScroll() {
-    const tabla = document.getElementById('Tabla');
-    const otroDiv = document.getElementById('TablaDescansos');
-  
-    // Verificar si la tabla tiene un scroll horizontal
-    const tieneScrollHorizontal = tabla.scrollWidth > tabla.clientWidth;
-  
-    // Cambiar el padding del otro div basado en la presencia del scroll horizontal
-    otroDiv.style.paddingBottom = tieneScrollHorizontal ? '0px' : '17px';
-  }*/
+const checkInterval = 200;
 
-
-const checkInterval = 200; // Check every 200ms
-
-// Function to check if an element has horizontal scroll
 function checkScrollbar(el) {
     return el.offsetWidth < el.scrollWidth;
 }
 
-// Function to update padding based on table's scroll
 function cambiarPaddingSegunScroll() {
     const tabla = document.getElementById('Tabla');
     const otroDiv = document.getElementById('TablaDescansos');
 
-    // Set padding based on scroll
     otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
 }
 
-// Initial padding update
 cambiarPaddingSegunScroll();
 
-// Periodically check the table's scroll state
 setInterval(() => {
     cambiarPaddingSegunScroll();
 }, checkInterval);
 
-
-
-
-
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes2);
-
