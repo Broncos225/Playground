@@ -12,11 +12,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+
+
 window.onload = function () {
     diaSemana();
     cargarDatos();
     colorCelda();
-    resaltarDiaActual();
+    resaltarDiaActual(document.getElementById('Mes').value);
     mostrarSolicitudes();
 };
 
@@ -159,7 +161,7 @@ function cargarDatos() {
                 console.error("Error al cargar datos:", error);
             });
     });
-    
+
 }
 
 document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
@@ -217,12 +219,35 @@ function contDescansos() {
     celdaF.textContent = contF;
 }
 
+let celdaDiaActual = null;
+
 function resaltarDiaActual() {
-    var a = new Date();
-    var dia = a.getDate();
-    var celda = document.getElementById("Dias");
-    celda.cells[dia].style.backgroundColor = "orange";
-    celda.cells[dia].style.color = "black";
+    const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const mesIndex = nombresMeses.indexOf(document.getElementById('Mes').value);
+    if (mesIndex === -1) {
+        console.error('Nombre de mes no válido');
+        return;
+    }
+    const fecha = new Date();
+    const mesActual = fecha.getMonth();
+    if (mesIndex !== mesActual) {
+        if (celdaDiaActual) {
+            celdaDiaActual.style.backgroundColor = "";
+            celdaDiaActual.style.color = "";
+        }
+        return;
+    }
+    fecha.setMonth(mesIndex);
+    fecha.setFullYear(document.getElementById('Año').value);
+    const dia = fecha.getDate();
+    const celda = document.getElementById("Dias");
+    if (celdaDiaActual) {
+        celdaDiaActual.style.backgroundColor = "";
+        celdaDiaActual.style.color = "";
+    }
+    celdaDiaActual = celda.cells[dia];
+    celdaDiaActual.style.backgroundColor = "orange";
+    celdaDiaActual.style.color = "black";
 }
 
 
@@ -883,6 +908,7 @@ selectMes.addEventListener('change', function () {
     titulo.textContent = nombresMeses[mesSeleccionado];
     cargarDatos();
     diaSemana();
+    resaltarDiaActual(mesSeleccionado);
 });
 
 selectAño.addEventListener('change', function () {
@@ -1007,16 +1033,16 @@ const checkInterval = 200; // Check every 200ms
 
 // Function to check if an element has horizontal scroll
 function checkScrollbar(el) {
-  return el.offsetWidth < el.scrollWidth;
+    return el.offsetWidth < el.scrollWidth;
 }
 
 // Function to update padding based on table's scroll
 function cambiarPaddingSegunScroll() {
-  const tabla = document.getElementById('Tabla');
-  const otroDiv = document.getElementById('TablaDescansos');
+    const tabla = document.getElementById('Tabla');
+    const otroDiv = document.getElementById('TablaDescansos');
 
-  // Set padding based on scroll
-  otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
+    // Set padding based on scroll
+    otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
 }
 
 // Initial padding update
@@ -1024,9 +1050,9 @@ cambiarPaddingSegunScroll();
 
 // Periodically check the table's scroll state
 setInterval(() => {
-  cambiarPaddingSegunScroll();
+    cambiarPaddingSegunScroll();
 }, checkInterval);
-  
+
 
 
 

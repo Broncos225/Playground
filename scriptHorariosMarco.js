@@ -16,7 +16,7 @@ window.onload = function () {
     diaSemana();
     cargarDatos();
     colorCelda();
-    resaltarDiaActual();
+    resaltarDiaActual(document.getElementById('Mes').value);
     mostrarSolicitudes();
 };
 
@@ -168,13 +168,34 @@ function contDescansos() {
     var celdaD = document.getElementById("4");
     celdaD.textContent = contD;
 }
-
+let celdaDiaActual = null;
 function resaltarDiaActual() {
-    var a = new Date();
-    var dia = a.getDate();
-    var celda = document.getElementById("Dias");
-    celda.cells[dia].style.backgroundColor = "orange";
-    celda.cells[dia].style.color = "black";
+    const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const mesIndex = nombresMeses.indexOf(document.getElementById('Mes').value);
+    if (mesIndex === -1) {
+        console.error('Nombre de mes no válido');
+        return;
+    }
+    const fecha = new Date();
+    const mesActual = fecha.getMonth();
+    if (mesIndex !== mesActual) {
+        if (celdaDiaActual) {
+            celdaDiaActual.style.backgroundColor = "";
+            celdaDiaActual.style.color = "";
+        }
+        return;
+    }
+    fecha.setMonth(mesIndex);
+    fecha.setFullYear(document.getElementById('Año').value);
+    const dia = fecha.getDate();
+    const celda = document.getElementById("Dias");
+    if (celdaDiaActual) {
+        celdaDiaActual.style.backgroundColor = "";
+        celdaDiaActual.style.color = "";
+    }
+    celdaDiaActual = celda.cells[dia];
+    celdaDiaActual.style.backgroundColor = "orange";
+    celdaDiaActual.style.color = "black";
 }
 
 
@@ -752,6 +773,7 @@ selectMes.addEventListener('change', function () {
     titulo.textContent = nombresMeses[mesSeleccionado];
     cargarDatos();
     diaSemana();
+    resaltarDiaActual(mesSeleccionado);
 });
 
 selectAño.addEventListener('change', function () {
