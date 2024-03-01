@@ -984,6 +984,11 @@ function checkScrollbar(el) {
 }
 
 function cambiarPaddingSegunScroll() {
+    // Verificar si el usuario está en un dispositivo móvil
+    if (window.innerWidth <= 768) {
+        return;
+    }
+
     const tabla = document.getElementById('Tabla');
     const otroDiv = document.getElementById('TablaDescansos');
 
