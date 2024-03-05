@@ -16,7 +16,7 @@ let agentes = {
   },
   Milton_Alexis_Calle_Londoño: {
     nombre: "Milton",
-    cumpleaños: [,]
+    cumpleaños: [21,9]
   },
   Yesica_Johana_Cano_Quintero: {
     nombre: "Yesica",
