@@ -857,7 +857,6 @@ selectMes.selectedIndex = mesActual;
 titulo.textContent = nombresMeses[mesActual];
 cargarDatos();
 
-// Set the current year as the selected option in the "Año" select element
 for (let i = 0; i < selectAño.options.length; i++) {
     if (+selectAño.options[i].value === currentYear) {
         selectAño.selectedIndex = i;
@@ -978,13 +977,10 @@ function contHoras() {
 }
 
 const checkInterval = 200;
-
 function checkScrollbar(el) {
     return el.offsetWidth < el.scrollWidth;
 }
-
 function cambiarPaddingSegunScroll() {
-    // Verificar si el usuario está en un dispositivo móvil
     if (window.innerWidth <= 768) {
         return;
     }

@@ -12,7 +12,7 @@ let agentes = {
   },
   Miguel_Cadavid_Naranjo: {
     nombre: "Miguel",
-    cumpleaños: [10, 8] // Added a birthday for the example
+    cumpleaños: [5 , 6] // Added a birthday for the example
   },
   Milton_Alexis_Calle_Londoño: {
     nombre: "Milton",
@@ -20,11 +20,11 @@ let agentes = {
   },
   Yesica_Johana_Cano_Quintero: {
     nombre: "Yesica",
-    cumpleaños: [,]
+    cumpleaños: [15,11]
   },
   Andrés_Felipe_Vidal_Medina: {
     nombre: "Andrés",
-    cumpleaños: [,]
+    cumpleaños: [12,3]
   },
   Andrés_Felipe_Yepes_Tascón: {
     nombre: "Andrés",
@@ -32,7 +32,7 @@ let agentes = {
   },
   Oscar_Luis_Cabrera_Pacheco: {
     nombre: "Oscar",
-    cumpleaños: [,]
+    cumpleaños: [5,5]
   }
 };
 
