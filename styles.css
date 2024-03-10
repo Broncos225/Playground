@@ -389,7 +389,7 @@ button .botonReiniciar:hover {
 
 
 
-#Informacion {
+#Informacion, #InformacionVaca {
     display: flex;
     flex-direction: row;
     align-self: start;
@@ -655,7 +655,7 @@ label {
 
 
 
-@media (max-width: 958px) {
+@media (max-width: 800px) {
     nav {
         padding: 0px;
         display: flex;
@@ -708,6 +708,19 @@ label {
         padding: 0px;
         padding-bottom: 0px;
         /* Retained from original code */
+    }
+
+    #InformacionVaca {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+        overflow-x: scroll;
+    }
+
+    .Calculos {
+
+        display: table;
+        width: 100%;
     }
 }
 
@@ -780,8 +793,9 @@ label {
 }
 
 #TiposDias th {
-    padding: 6.5px;
+    padding: 6px;
 }
+
 
 #TablaCalculos th:first-child,
 #TablaCalculos td:first-child {
