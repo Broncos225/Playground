@@ -779,6 +779,9 @@ label {
     text-align: center;
 }
 
+#TiposDias th {
+    padding: 6.5px;
+}
 
 #TablaCalculos th:first-child,
 #TablaCalculos td:first-child {
