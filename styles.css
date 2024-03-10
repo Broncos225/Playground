@@ -275,21 +275,31 @@ button .botonReiniciar:hover {
 }
 
 .Turnos,
-.Almuerzos {
+.Almuerzos,
+.Calculos {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
     width: 15%;
+}
+
+.Informaciones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    margin-right: 110px;
+    margin-left: 42px;
 }
 
 .Almuerzos {
     width: 23%;
-
 }
 
 .Turnos table th,
+.Informaciones table th,
 .Almuerzos table th,
+.Calculos table th,
 #TablaSol table th,
 #TablaSol2 table th {
     font-weight: bold;
@@ -301,9 +311,13 @@ button .botonReiniciar:hover {
 }
 
 .Turnos table th:first-child,
+.Informaciones table th:first-child,
 .Almuerzos table td:first-child,
 .Almuerzos table th:first-child,
-.Turnos table td:first-child {
+.Calculos table td:first-child,
+.Calculos table th:first-child,
+.Turnos table td:first-child,
+.Informaciones table td:first-child{
     width: 1%;
     overflow-x: auto;
     text-align: center;
@@ -380,7 +394,6 @@ button .botonReiniciar:hover {
     flex-direction: row;
     align-self: start;
     justify-content: space-around;
-    gap: 10px;
     height: 100%;
     width: 100%;
     overflow-x: auto;
@@ -686,6 +699,11 @@ label {
         /* Retained from original code */
     }
 
+    #Informacion {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
     .TablaDescansos {
         padding: 0px;
         padding-bottom: 0px;
@@ -726,4 +744,43 @@ label {
 
 .aparecer {
     animation: aparecerAnimacion 0.5s ease-in-out;
+}
+
+.Calculos {
+    width: 60%;
+}
+
+.tablas {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+#TablaCalculos,
+#TiposDias {
+    table-layout: fixed;
+    display: block;
+    text-align: center; /* Añadido para centrar el texto */
+}
+
+#TiposDias {
+    width: 10%;
+    align-self: flex-end;
+    text-align: center; /* Añadido para centrar el texto */
+}
+
+#TablaCalculos th,
+#TablaCalculos td {
+    text-align: center;
+    align-items: center;    
+}
+
+#TiposDias th, #TiposDias td {
+    text-align: center;
+}
+
+
+#TablaCalculos th:first-child,
+#TablaCalculos td:first-child {
+    min-width: 170px; /* Ajusta este valor según tus necesidades */
 }

@@ -8,11 +8,11 @@ window.addEventListener('load', function () {
 let agentes = {
   Anderson_Cano_Londoño: {
     nombre: "Anderson",
-    cumpleaños: [1, 3]
+    cumpleaños: [1,3]
   },
   Miguel_Cadavid_Naranjo: {
     nombre: "Miguel",
-    cumpleaños: [5 , 6] // Added a birthday for the example
+    cumpleaños: [5,6] // Added a birthday for the example
   },
   Milton_Alexis_Calle_Londoño: {
     nombre: "Milton",
