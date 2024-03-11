@@ -329,6 +329,11 @@ async function CalculoDiasAño(agente) {
     const añoSeleccionado = document.getElementById('Año').value;
     const nombreAgente = agentes[agente].nombre;
     var diasAño = 0;
+    var incapacidad = 0;
+    var vacaciones = 0;
+    var medioDia = 0;
+    var tramites = 0;
+
     let promises = [];
     for (var i = 1; i <= 12; i++) {
         for (var j = 2; j <= 32; j++) {
@@ -341,10 +346,19 @@ async function CalculoDiasAño(agente) {
         const data = snapshot.val();
         if (data && (data.texto == 'D' || data.texto == 'I' || data.texto == 'DV' || data.texto == 'T' || data.texto == 'MD')) {
             diasAño += 1;
+            if (data.texto == 'I') {
+                incapacidad += 1;
+            } else if (data.texto == 'DV') {
+                vacaciones += 1;
+            } else if (data.texto == 'T') {
+                tramites += 1;
+            } else if (data.texto == 'MD') {
+                medioDia += 1;
+            }
         }
     });
     console.log(diasAño);
-    return diasAño;
+    return { incapacidad, vacaciones, tramites, medioDia, diasAño };
 }
 
 async function CalculoDiasMes(agente) {
@@ -353,10 +367,6 @@ async function CalculoDiasMes(agente) {
     const nombreAgente = agentes[agente].nombre;
 
     var diasMes = 0;
-    var incapacidad = 0;
-    var vacaciones = 0;
-    var medioDia = 0;
-    var tramites = 0;
 
     let promises = [];
     for (var j = 2; j <= 32; j++) {
@@ -368,26 +378,12 @@ async function CalculoDiasMes(agente) {
     results.forEach(snapshot => {
         const data = snapshot.val();
 
-        if (data.texto == 'I') {
-            console.log(data.texto);
-            incapacidad += 1;
-            diasMes += 1;
-        } else if (data.texto == 'DV') {
-            console.log(data.texto);
-            vacaciones += 1;
-            diasMes += 1;
-        } else if (data.texto == 'T') {
-            console.log(data.texto);
-            tramites += 1;
-            diasMes += 1;
-        } else if (data.texto == 'MD') {
-            console.log(data.texto);
-            medioDia += 1;
+        if (data && (data.texto == 'D' || data.texto == 'I' || data.texto == 'DV' || data.texto == 'T' || data.texto == 'MD')) {
             diasMes += 1;
         }
     });
     console.log(diasMes);
-    return { incapacidad, vacaciones, tramites, medioDia, diasMes };
+    return diasMes;
 }
 
 
@@ -397,8 +393,8 @@ async function cargarVacaciones() {
     for (let index = 0; index < agentesArray.length; index++) {
         const agente = agentesArray[index];
         const diasPendientes = await CalculoDiasPendientes(agente);
-        const diasAño = await CalculoDiasAño(agente);
-        const { incapacidad, vacaciones, tramites, medioDia, diasMes } = await CalculoDiasMes(agente);
+        const diasMes = await CalculoDiasMes(agente);
+        const { incapacidad, vacaciones, tramites, medioDia, diasAño } = await CalculoDiasAño(agente);
         document.getElementById("DP" + (index + 1)).textContent = diasPendientes - diasAño;
         document.getElementById("DenA" + (index + 1)).textContent = diasAño;
         document.getElementById("DenM" + (index + 1)).textContent = diasMes;
