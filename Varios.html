@@ -38,13 +38,9 @@
                 <h2>Escriba la fórmula:</h2>
                 <textarea id="inputText" cols="30" rows="10" style="resize: none;"></textarea>
             </div>
-            <div id="outputContainer">
-                <h2>Resultado en LaTeX:</h2>
-                <pre id="outputText"></pre>
-            </div>
         </div>
         <div style="text-align: center;">
-            <button id="calculateButton">Calcular</button>
+            <button id="calculateButton" onclick="calcularIntegral()">Calcular</button>
         </div>
         <div style="text-align: center;">
             <pre id="resultado"></pre>
@@ -55,9 +51,8 @@
     <footer>
         <p>© 2024 Andrés Felipe Yepes Tascón</p>
     </footer>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
     <script src="scriptVarios.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.2/math.min.js"></script>
 </body>
 
 </html>

@@ -11,50 +11,52 @@ window.addEventListener('load', function () {
         }
     }
 });
+const math = require('mathjs'); // Import `mathjs` before function declarations
 
-document.addEventListener('DOMContentLoaded', function () {
-    const inputText = document.getElementById('inputText');
-    const outputText = document.getElementById('outputText');
-    const calculateButton = document.getElementById('calculateButton');
-    const resultado = document.getElementById('resultado');
+function calcularIntegral() {
+  // Retrieve user input
+  const inputText = document.getElementById("inputText").value.trim();
 
-    // Función para traducir a LaTeX en tiempo real
-    inputText.addEventListener('input', function () {
-        const inputContent = inputText.value;
-        const latexResult = translateToLatex(inputContent);
-        outputText.textContent = latexResult;
-    });
+  // Basic error handling (check for empty input)
+  if (!inputText) {
+    alert("Please enter a valid function to integrate.");
+    return;
+  }
 
-    // Función para ejecutar el cálculo al hacer clic en el botón
-    calculateButton.addEventListener('click', function () {
-        const latexFormula = outputText.textContent;
-        const calculationResult = calculateLatex(latexFormula);
-        resultado.textContent = `Resultado del cálculo: ${calculationResult}`;
-    });
+  try {
+    // Parse the input function using mathjs
+    const f = math.parse(inputText);
 
-    // Función para traducir a LaTeX
-    function translateToLatex(text) {
-        // Reemplaza caracteres especiales por su equivalente en LaTeX
-        const latexText = text.replace(/&/g, '\\&')
-                              .replace(/%/g, '\\%')
-                              .replace(/\$/g, '\\$')
-                              .replace(/_/g, '\\_')
-                              .replace(/#/g, '\\#')
-                              .replace(/\\/g, '\\backslash');
+    // Define lower and upper bounds
+    const lowerBound = parseFloat(prompt("Enter the lower bound of integration:"));
+    const upperBound = parseFloat(prompt("Enter the upper bound of integration:"));
 
-        // Devuelve el texto LaTeX
-        return `\\[${latexText}\\]`;
-    }
+    // Numerical integration using Simpson's rule with default steps
+    const numSteps = 1000;
+    const integralValue = integrateSimpson(f, lowerBound, upperBound, numSteps);
 
-    // Función para realizar el cálculo LaTeX
-    function calculateLatex(latexFormula) {
-        try {
-            // Evalúa la fórmula LaTeX como JavaScript
-            const result = eval(latexFormula.replace(/\\\[|\\\]/g, ''));
-            return result;
-        } catch (error) {
-            return 'Error al calcular la fórmula';
-        }
-    }
-});
-  
+    // Display the result
+    document.getElementById("resultado").textContent = `The approximate integral of f(x) = ${inputText} from ${lowerBound} to ${upperBound} is: ${integralValue.toFixed(4)}`;
+  } catch (error) {
+    const errorMessage = `Error al calcular la integral: ${error.message}`;
+    alert(errorMessage);
+    console.error(error);
+  }
+}
+
+function integrateSimpson(f, a, b, n) {
+  const h = (b - a) / n;
+  let sum = math.evaluate(f, {x: a}) + math.evaluate(f, {x: b});
+
+  for (let i = 1; i < n - 1; i++) {
+    const x = a + i * h;
+    sum += 4 * math.evaluate(f, {x: x});
+  }
+
+  for (let i = 2; i < n; i++) {
+    const x = a + i * h;
+    sum += 2 * math.evaluate(f, {x: x});
+  }
+
+  return (h / 3) * sum;
+}
