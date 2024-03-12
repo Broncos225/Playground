@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Icono.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+
+
+    <title>Playground</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="titulo">
+                <h2><a href="index.html">Playground</a></h2>
+            </div>
+            <ul class="botonesNav">
+                <li><a href="Calculadora.html">Calculadora</a></li>
+                <li><a href="Escalamientos.html">Escalamientos</a></li>
+                <li><a href="VacacionesStop.html">Vacaciones Stop</a></li>
+                <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
+                <li><a href="HorariosMarco.html">Horarios Marco</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="Marca">
+        <p id="Texto"></p>
+    </div>
+    <section>
+        <h1>Conversión de texto normal a LaTeX</h1>
+        <div style="text-align: center; display: flex; gap: 10px; flex-direction: column;">
+            <div>
+                <h2>Escriba la fórmula:</h2>
+                <textarea id="inputText" cols="30" rows="10" style="resize: none;"></textarea>
+            </div>
+            <div id="outputContainer">
+                <h2>Resultado en LaTeX:</h2>
+                <pre id="outputText"></pre>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <button id="calculateButton">Calcular</button>
+        </div>
+        <div style="text-align: center;">
+            <pre id="resultado"></pre>
+        </div>
+    </section>
+
+
+    <footer>
+        <p>© 2024 Andrés Felipe Yepes Tascón</p>
+    </footer>
+
+    <script src="scriptVarios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.2/math.min.js"></script>
+</body>
+
+</html>

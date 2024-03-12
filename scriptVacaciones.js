@@ -13,6 +13,11 @@ const db = firebase.database();
 
 window.onload = function () {
     cargarVacaciones();
+    const selectorMes = document.getElementById('Mes');
+    const selectorAño = document.getElementById('Año');
+
+    selectorMes.addEventListener('change', cargarVacaciones);
+    selectorAño.addEventListener('change', cargarVacaciones);
     diaSemana();
     cargarDatos();
     colorCelda();
@@ -216,19 +221,19 @@ document.getElementById('btnExportar').addEventListener('click', exportarExcel);
 let agentes = {
     Anderson_Cano_Londoño: {
         nombre: "Anderson Cano Londoño",
-        fechaIngreso: "2023-10-17"
+        fechaIngreso: "2023-11-01"
     },
     Miguel_Cadavid_Naranjo: {
         nombre: "Miguel Cadavid Naranjo",
-        fechaIngreso: "2021-01-01"
+        fechaIngreso: "2023-04-17"
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
-        fechaIngreso: "2021-01-01"
+        fechaIngreso: "2023-02-02"
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
-        fechaIngreso: "2021-01-01"
+        fechaIngreso: "2023-11-14"
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
@@ -318,7 +323,16 @@ function CalculoDiasPendientes(agente) {
     var diasVacaciones = 0;
     const [year, month, day] = agentes[agente].fechaIngreso.split('-');
     const fechaIngreso = new Date(year, month - 1, day);
+
+    // Obtener la fecha actual
     const fechaActual = new Date();
+
+    // Establecer el día a '1' dará el primer día del mes actual
+    fechaActual.setDate(1);
+
+    // Restar un día desde el primer día del mes actual te llevará al último día del mes anterior
+    fechaActual.setDate(fechaActual.getDate() - 1);
+
     const diferencia = fechaActual - fechaIngreso;
     const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
     diasVacaciones = Math.floor((dias / 365) * 15);
@@ -344,20 +358,19 @@ async function CalculoDiasAño(agente) {
     let results = await Promise.all(promises);
     results.forEach(snapshot => {
         const data = snapshot.val();
-        if (data && (data.texto == 'D' || data.texto == 'I' || data.texto == 'DV' || data.texto == 'T' || data.texto == 'MD')) {
+        if (data && (data.texto == 'D' || data.texto == 'I' || data.texto == 'DV')) {
             diasAño += 1;
             if (data.texto == 'I') {
                 incapacidad += 1;
             } else if (data.texto == 'DV') {
                 vacaciones += 1;
-            } else if (data.texto == 'T') {
-                tramites += 1;
-            } else if (data.texto == 'MD') {
-                medioDia += 1;
             }
+        } else if (data && data.texto == 'T') {
+            tramites += 1;
+        } else if (data && data.texto == 'MD') {
+            medioDia += 1;
         }
     });
-    console.log(diasAño);
     return { incapacidad, vacaciones, tramites, medioDia, diasAño };
 }
 
@@ -374,15 +387,12 @@ async function CalculoDiasMes(agente) {
         promises.push(promise);
     }
     let results = await Promise.all(promises);
-
     results.forEach(snapshot => {
         const data = snapshot.val();
-
-        if (data && (data.texto == 'D' || data.texto == 'I' || data.texto == 'DV' || data.texto == 'T' || data.texto == 'MD')) {
+        if (data && (data.texto == 'D' || data.texto == 'I' || data.texto == 'DV')) {
             diasMes += 1;
         }
     });
-    console.log(diasMes);
     return diasMes;
 }
 
@@ -404,3 +414,4 @@ async function cargarVacaciones() {
         document.getElementById("MD" + (index + 1)).textContent = medioDia;
     }
 }
+

@@ -97,3 +97,8 @@ document.getElementById('calcular').addEventListener('click', function () {
 document.getElementById('Refresh').addEventListener('click', function () {
     location.reload();
 });
+
+document.getElementById('cambio').addEventListener('click', function () {
+    window.location.href = "Varios.html";
+
+});
