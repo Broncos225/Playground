@@ -23,11 +23,11 @@ let agentes = {
     cumpleaños: [15,11]
   },
   Andrés_Felipe_Vidal_Medina: {
-    nombre: "Andrés",
+    nombre: "Andrés Vidal",
     cumpleaños: [12,3]
   },
   Andrés_Felipe_Yepes_Tascón: {
-    nombre: "Andrés",
+    nombre: "Andrés Yepes",
     cumpleaños: [2,5]
   },
   Oscar_Luis_Cabrera_Pacheco: {
