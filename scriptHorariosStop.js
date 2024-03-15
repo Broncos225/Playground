@@ -318,12 +318,15 @@ for (let agente in agentes) {
 document.getElementById('NuevaSolicitud').style.display = 'none';
 document.getElementById('TablaSol').style.display = 'block';
 document.getElementById('btnIntercambioTurno').textContent = "Generar una nueva solicitud";
+document.getElementById('TablaSol').style.display = 'none';
 function intercambiarTurnos() {
     if (document.getElementById('NuevaSolicitud').style.display == 'block') {
         document.getElementById('NuevaSolicitud').style.display = 'none';
         document.getElementById('btnIntercambioTurno').textContent = "Generar una nueva solicitud";
+        document.getElementById('TablaSol').style.display = 'none';
     } else {
         document.getElementById('NuevaSolicitud').style.display = 'block';
+        document.getElementById('TablaSol').style.display = 'block';
         document.getElementById('btnIntercambioTurno').textContent = "Ocultar formulario de solicitudes";
     }
 }

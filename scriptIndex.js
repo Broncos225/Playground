@@ -6,3 +6,8 @@ function minuta() {
 }
 
 document.getElementById('convertir').addEventListener('click', minuta);
+
+document.getElementById('limpiar').addEventListener('click', function () {
+    document.getElementById('ListaTiendas').value = '';
+    document.getElementById('ListaTiendasJuntas').value = '';
+});
