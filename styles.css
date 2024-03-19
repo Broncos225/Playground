@@ -361,19 +361,23 @@ button .botonReiniciar:hover {
 }
 
 #btnLimpiar {
-    background-color: #f0c8fa; /* Rojo suave */
+    background-color: #f0c8fa;
+    /* Rojo suave */
 }
 
 #btnImportar {
-    background-color: #f5cf97; /* Naranja suave */
+    background-color: #f5cf97;
+    /* Naranja suave */
 }
 
 #btnExportar {
-    background-color: #b2dfdb; /* Verde más claro */
+    background-color: #b2dfdb;
+    /* Verde más claro */
 }
 
 #btnGuardar {
-    background-color: #90caf9; /* Azul más claro */
+    background-color: #90caf9;
+    /* Azul más claro */
 }
 
 #btnGuardar:hover,
@@ -825,4 +829,11 @@ label {
 #TablaCalculos td:first-child {
     min-width: 170px;
     /* Ajusta este valor según tus necesidades */
+}
+
+#BotonesHorario {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
 }
