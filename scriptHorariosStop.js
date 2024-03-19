@@ -1001,3 +1001,65 @@ setInterval(() => {
 }, checkInterval);
 
 document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes2);
+
+
+function Importar() {
+    alert("Asegúrese de que el contenido del portapapeles esté en formato de tabla de Excel")
+    let confirmacion = confirm("¿Está seguro de que desea pegar los datos del portapapeles en la tabla?");
+    if (!confirmacion) {
+        return; // Si el usuario no confirma, termina la función
+    }
+    navigator.clipboard.readText()
+        .then(data => {
+            const dataArray = data.split('\n');
+            const table = document.getElementById("Table");
+            let rows = table.rows;
+            let currentRow = 0;
+            let currentCell = 0;
+            dataArray.forEach(item => {
+                let itemArray = item.split('\t'); // Divide cada línea por el carácter de tabulación
+                itemArray.forEach(subItem => {
+                    while (currentRow < rows.length) {
+                        let cell = rows[currentRow].cells[currentCell]; // Obtiene la celda de la fila y columna actual
+                        if (!cell.textContent.trim()) { // Si la celda está vacía
+                            cell.textContent = subItem; // Agrega el valor en la celda
+                            currentCell++;
+                            if (currentCell >= rows[currentRow].cells.length) {
+                                currentCell = 0;
+                                currentRow++;
+                            }
+                            break;
+                        } else {
+                            currentCell++;
+                            if (currentCell >= rows[currentRow].cells.length) {
+                                currentCell = 0;
+                                currentRow++;
+                            }
+                        }
+                    }
+                    colorCelda()
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Failed to read clipboard data:', error);
+        });
+
+}
+
+document.getElementById("btnImportar").addEventListener("click", Importar);
+
+function limpiarCeldasEditables() {
+    // Obtén todas las celdas editables
+    let celdasEditables = document.querySelectorAll('[contenteditable="true"]');
+
+    // Recorre cada celda editable y límpiala
+    celdasEditables.forEach(function (celda) {
+        celda.textContent = '';
+    });
+    colorCelda()
+}
+
+// Asigna la función al botón de limpiar
+document.getElementById('btnLimpiar').addEventListener('click', limpiarCeldasEditables);
+

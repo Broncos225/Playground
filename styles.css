@@ -317,7 +317,7 @@ button .botonReiniciar:hover {
 .Calculos table td:first-child,
 .Calculos table th:first-child,
 .Turnos table td:first-child,
-.Informaciones table td:first-child{
+.Informaciones table td:first-child {
     width: 1%;
     overflow-x: auto;
     text-align: center;
@@ -344,6 +344,8 @@ button .botonReiniciar:hover {
 
 #btnGuardar,
 #btnExportar,
+#btnImportar,
+#btnLimpiar,
 #btnEnviar,
 #btnEnviar2 {
     padding: auto;
@@ -358,8 +360,26 @@ button .botonReiniciar:hover {
 
 }
 
+#btnLimpiar {
+    background-color: #f0c8fa; /* Rojo suave */
+}
+
+#btnImportar {
+    background-color: #f5cf97; /* Naranja suave */
+}
+
+#btnExportar {
+    background-color: #b2dfdb; /* Verde más claro */
+}
+
+#btnGuardar {
+    background-color: #90caf9; /* Azul más claro */
+}
+
 #btnGuardar:hover,
 #btnExportar:hover,
+#btnLimpiar:hover,
+#btnImportar:hover,
 #btnEnviar:hover #btnEnviar2:hover {
     background-color: #a3a3a3;
 }
@@ -389,7 +409,8 @@ button .botonReiniciar:hover {
 
 
 
-#Informacion, #InformacionVaca {
+#Informacion,
+#InformacionVaca {
     display: flex;
     flex-direction: row;
     align-self: start;
@@ -773,22 +794,25 @@ label {
 #TiposDias {
     table-layout: fixed;
     display: block;
-    text-align: center; /* Añadido para centrar el texto */
+    text-align: center;
+    /* Añadido para centrar el texto */
 }
 
 #TiposDias {
     width: 10%;
     align-self: flex-end;
-    text-align: center; /* Añadido para centrar el texto */
+    text-align: center;
+    /* Añadido para centrar el texto */
 }
 
 #TablaCalculos th,
 #TablaCalculos td {
     text-align: center;
-    align-items: center;    
+    align-items: center;
 }
 
-#TiposDias th, #TiposDias td {
+#TiposDias th,
+#TiposDias td {
     text-align: center;
 }
 
@@ -799,6 +823,6 @@ label {
 
 #TablaCalculos th:first-child,
 #TablaCalculos td:first-child {
-    min-width: 170px; /* Ajusta este valor según tus necesidades */
+    min-width: 170px;
+    /* Ajusta este valor según tus necesidades */
 }
-
