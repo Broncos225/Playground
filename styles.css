@@ -380,8 +380,13 @@ button .botonReiniciar:hover {
     /* Azul más claro */
 }
 
+#btnExportarTexto {
+    background-color: #fac8c8;
+}
+
 #btnGuardar:hover,
 #btnExportar:hover,
+#btnExportarTexto:hover,
 #btnLimpiar:hover,
 #btnImportar:hover,
 #btnEnviar:hover #btnEnviar2:hover {
@@ -436,7 +441,8 @@ button .botonReiniciar:hover {
 }
 
 #Solicitante,
-#Receptor {
+#Receptor,
+#SolExportar {
     font-family: 'Nunito', Arial, sans-serif;
 }
 
@@ -828,7 +834,6 @@ label {
 #TablaCalculos th:first-child,
 #TablaCalculos td:first-child {
     min-width: 170px;
-    /* Ajusta este valor según tus necesidades */
 }
 
 #BotonesHorario {
@@ -836,4 +841,9 @@ label {
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
+}
+
+.vertical-bar {
+    height: 42px; 
+    border-left: solid 2px #000000;
 }

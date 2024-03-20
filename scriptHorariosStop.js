@@ -876,7 +876,11 @@ selectMes.addEventListener('change', function () {
 });
 
 selectAño.addEventListener('change', function () {
+    var mesSeleccionado = selectMes.selectedIndex;
+    titulo.textContent = nombresMeses[mesSeleccionado];
     cargarDatos();
+    diaSemana();
+    resaltarDiaActual(mesSeleccionado);
 });
 
 function diaSemana() {
@@ -1004,7 +1008,6 @@ document.getElementById('btnEnviar').addEventListener('click', generarSolicitude
 
 
 function Importar() {
-    alert("Asegúrese de que el contenido del portapapeles esté en formato de tabla de Excel")
     let confirmacion = confirm("¿Está seguro de que desea pegar los datos del portapapeles en la tabla?");
     if (!confirmacion) {
         return; // Si el usuario no confirma, termina la función
@@ -1050,16 +1053,75 @@ function Importar() {
 document.getElementById("btnImportar").addEventListener("click", Importar);
 
 function limpiarCeldasEditables() {
-    // Obtén todas las celdas editables
+
     let celdasEditables = document.querySelectorAll('[contenteditable="true"]');
 
-    // Recorre cada celda editable y límpiala
     celdasEditables.forEach(function (celda) {
         celda.textContent = '';
     });
     colorCelda()
 }
 
-// Asigna la función al botón de limpiar
 document.getElementById('btnLimpiar').addEventListener('click', limpiarCeldasEditables);
 
+function ExportaraTexto() {
+    if (document.getElementById("SolExportar").value == "") {
+        alert("Por favor seleccione un agente");
+        return;
+    }
+    let confirmacion = confirm("¿Está seguro de que desea copiar los datos de la tabla al portapapeles?");
+    if (!confirmacion) {
+        return;
+    }
+    var Letra = agentes[document.getElementById("SolExportar").value].letra;
+    let texto = "";
+    var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    var horariosTurnos = {
+        "T1": "7:00 - 4:00",
+        "T2": "9:00 - 6:00",
+        "T3": "09:30 - 6:30",
+        "T4": "10:00 - 7:00",
+        "T5": "11:00 - 8:00",
+        "T6": "12:30 - 9:30",
+        "TSA": "8:00 - 4:00",
+        "T2R1": "10:00 - 6:00",
+        "T3R1": "10:30 - 6:30",
+        "T4R1": "11:00 - 7:00",
+        "T5R1": "12:00 - 8:00",
+        "T6R1": "1:30 - 9:30",
+        "NN": "Ninguno",
+        "D": "Descanso",
+        "AM": "Apoyo Marco",
+        "DF": "Día de la familia"
+    }
+    agentes[document.getElementById("SolExportar").value].nombre;
+    var mes = document.getElementById("Mes").value;
+    texto += "Turnos de " + agentes[document.getElementById("SolExportar").value].nombre + " en " + mes + ":" + "\n" + "\n";
+    for (let i = 1; i <= 31; i++) {
+        var turno = document.getElementById(Letra + i).textContent;
+        var horario = horariosTurnos[turno];
+        var dia = document.getElementById("Dia" + i).textContent;
+        var numeroMes = meses.indexOf(mes);
+        var ano = document.getElementById("Año").value;
+        var fecha = new Date(ano, numeroMes, dia);
+        if (isNaN(fecha.getTime())) {
+            alert("Fecha inválida: " + ano + "-" + mes + "-" + dia);
+            return;
+        }
+        var diaSemana = fecha.getDay();
+
+        var diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        diaSemana = diasSemana[diaSemana];
+
+        texto += diaSemana + " " + dia + ": (" + turno + ") " + horario + "\n";
+    }
+    navigator.clipboard.writeText(texto)
+        .then(() => {
+            alert("Datos copiados al portapapeles");
+        })
+        .catch(error => {
+            console.error('Falla en la copia en el portapeles', error);
+        });
+}
+
+document.getElementById("btnExportarTexto").addEventListener("click", ExportaraTexto);
