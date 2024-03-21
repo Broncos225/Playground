@@ -727,7 +727,10 @@ label {
 @media only screen and (max-width: 600px) {
     .table-container {
         overflow-x: scroll;
-        /* Retained from original code */
+    }
+
+    .vertical-bar {
+        display: none;
     }
 
     #Informacion {
