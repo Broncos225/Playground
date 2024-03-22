@@ -15,8 +15,8 @@ window.onload = function () {
     diaSemana();
     cargarDatos();
     colorCelda();
-    resaltarDiaActual(document.getElementById('Mes').value);
     mostrarSolicitudes();
+    Festivos();
 };
 
 function colorCelda() {
@@ -206,35 +206,6 @@ function contDescansos() {
 }
 
 let celdaDiaActual = null;
-
-function resaltarDiaActual() {
-    const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const mesIndex = nombresMeses.indexOf(document.getElementById('Mes').value);
-    if (mesIndex === -1) {
-        console.error('Nombre de mes no válido');
-        return;
-    }
-    const fecha = new Date();
-    const mesActual = fecha.getMonth();
-    if (mesIndex !== mesActual) {
-        if (celdaDiaActual) {
-            celdaDiaActual.style.backgroundColor = "";
-            celdaDiaActual.style.color = "";
-        }
-        return;
-    }
-    fecha.setMonth(mesIndex);
-    fecha.setFullYear(document.getElementById('Año').value);
-    const dia = fecha.getDate();
-    const celda = document.getElementById("Dias");
-    if (celdaDiaActual) {
-        celdaDiaActual.style.backgroundColor = "";
-        celdaDiaActual.style.color = "";
-    }
-    celdaDiaActual = celda.cells[dia];
-    celdaDiaActual.style.backgroundColor = "orange";
-    celdaDiaActual.style.color = "black";
-}
 
 function exportarExcel() {
     var table = document.getElementById("Table");
@@ -872,7 +843,8 @@ selectMes.addEventListener('change', function () {
     titulo.textContent = nombresMeses[mesSeleccionado];
     cargarDatos();
     diaSemana();
-    resaltarDiaActual(mesSeleccionado);
+    Festivos();
+
 });
 
 selectAño.addEventListener('change', function () {
@@ -880,7 +852,7 @@ selectAño.addEventListener('change', function () {
     titulo.textContent = nombresMeses[mesSeleccionado];
     cargarDatos();
     diaSemana();
-    resaltarDiaActual(mesSeleccionado);
+    Festivos();
 });
 
 function diaSemana() {
@@ -1057,7 +1029,11 @@ function limpiarCeldasEditables() {
     let celdasEditables = document.querySelectorAll('[contenteditable="true"]');
 
     celdasEditables.forEach(function (celda) {
-        celda.textContent = '';
+        if (celda.textContent == "NN") {
+            celda.textContent = 'NN';
+        } else {
+            celda.textContent = '';
+        }
     });
     colorCelda()
 }
@@ -1125,3 +1101,44 @@ function ExportaraTexto() {
 }
 
 document.getElementById("btnExportarTexto").addEventListener("click", ExportaraTexto);
+
+function Festivos() {
+    var mes = document.getElementById("Mes").value;
+    var ano = document.getElementById("Año").value;
+    var festivos2024 = {
+        "Enero": [1, 8],
+        "Febrero": [],
+        "Marzo": [25, 28, 29],
+        "Abril": [],
+        "Mayo": [1, 13],
+        "Junio": [3, 10],
+        "Julio": [1, 20],
+        "Agosto": [7, 19],
+        "Septiembre": [],
+        "Octubre": [14],
+        "Noviembre": [4, 11],
+        "Diciembre": [8]
+    }
+    const fecha = new Date();
+    const dia = "Dia" + fecha.getDate();
+    const nombresDeMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const mesActual = nombresDeMeses[fecha.getMonth()];
+    for (let i = 1; i <= 31; i++) {
+        var celda = document.getElementById("Dia" + i);
+        celda.style.backgroundColor = "#012353";
+        celda.style.color = "white";
+        if (festivos2024[mes].includes(i)) {
+            if (dia == "Dia" + i) {
+                celda.style.backgroundColor = "orange";
+                celda.style.color = "red";
+            } else {
+                celda.style.backgroundColor = "red";
+                celda.style.color = "white";
+            }
+        } else if (dia == "Dia" + i && mes == mesActual) {
+            celda.style.backgroundColor = "orange";
+            celda.style.color = "black";
+        }
+    }
+}
+

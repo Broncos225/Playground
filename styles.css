@@ -342,8 +342,12 @@ button .botonReiniciar:hover {
 
 }
 
+.gradient {
+    background: linear-gradient(to right, red, orange);
+    color: white;
+}
+
 #btnGuardar,
-#btnExportar,
 #btnImportar,
 #btnLimpiar,
 #btnEnviar,
