@@ -39,6 +39,7 @@ function actualizarColorCelda(celda) {
     var colorT4 = '#c5b4fa';
     var colorT5 = '#fcbdc4';
     var colorT6 = '#fc818d';
+    var colorT7 = '#FFC85C';
     var colorTSA = '#85a5ff';
     var colorAM = '#80eded';
     var colorD = '#012353';
@@ -77,6 +78,11 @@ function actualizarColorCelda(celda) {
         case 'T6':
         case 'T6R1':
             color = colorT6;
+            celda.style.color = 'black';
+            break;
+        case 'T7':
+        case 'T7R1':
+            color = colorT7;
             celda.style.color = 'black';
             break;
         case 'D':
@@ -876,8 +882,8 @@ function diaSemana() {
 
 function contHoras() {
     var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
-    var tiposTurno8 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'AM', 'DF'];
-    var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1'];
+    var tiposTurno8 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AM', 'DF'];
+    var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1', 'T7R1'];
     var tiposTurno0 = ['NN', 'D'];
 
     for (var i = 1; i < 32; i++) {
@@ -1059,12 +1065,14 @@ function ExportaraTexto() {
         "T4": "10:00 - 7:00",
         "T5": "11:00 - 8:00",
         "T6": "12:30 - 9:30",
+        "T7": "8:00 - 5:00",
         "TSA": "8:00 - 4:00",
         "T2R1": "10:00 - 6:00",
         "T3R1": "10:30 - 6:30",
         "T4R1": "11:00 - 7:00",
         "T5R1": "12:00 - 8:00",
         "T6R1": "1:30 - 9:30",
+        "T7R1": "9:00 - 5:00",
         "NN": "Ninguno",
         "D": "Descanso",
         "AM": "Apoyo Marco",
