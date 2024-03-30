@@ -960,7 +960,7 @@ function checkScrollbar(el) {
     return el.offsetWidth < el.scrollWidth;
 }
 function cambiarPaddingSegunScroll() {
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 810) {
         return;
     }
 

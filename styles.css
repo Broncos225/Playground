@@ -728,13 +728,15 @@ label {
     }
 }
 
+@media only screen and (max-width: 810px) {
+    .vertical-bar {
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .table-container {
         overflow-x: scroll;
-    }
-
-    .vertical-bar {
-        display: none;
     }
 
     #Informacion {
