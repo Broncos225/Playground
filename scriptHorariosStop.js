@@ -113,7 +113,7 @@ function actualizarColorCelda(celda) {
 
 function guardarCeldas() {
     var passw = document.getElementById('pass').value;
-    if (passw == "2255") {
+    if (passw == "8714612092460") {
         const celdas = document.querySelectorAll('#Table td');
         const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
         const añoSeleccionado = document.getElementById('Año').value;
@@ -1025,7 +1025,6 @@ function Importar() {
         .catch(error => {
             console.error('Failed to read clipboard data:', error);
         });
-
 }
 
 document.getElementById("btnImportar").addEventListener("click", Importar);
