@@ -40,7 +40,7 @@ function actualizarColorCelda(celda) {
     var colorT5 = '#fcbdc4';
     var colorT6 = '#fc818d';
     var colorT7 = '#FFC85C';
-    var colorTSA = '#EB701C';
+    var colorTSA = '#FFA500';
     var colorAM = '#80eded';
     var colorD = '#012353';
     const texto = celda.textContent.trim();
@@ -105,6 +105,10 @@ function actualizarColorCelda(celda) {
             break;
         case 'NN':
             color = 'gray';
+            celda.style.color = 'black';
+            break;
+        case 'R1':
+            color = 'white';
             celda.style.color = 'black';
             break;
     }
