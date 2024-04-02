@@ -856,3 +856,15 @@ label {
     height: 42px; 
     border-left: solid 2px #000000;
 }
+
+#Izq, #Der {
+    height: 30x;
+    width: 30px;
+    padding: 3px;
+    background-color: transparent;
+    font-weight: bold;
+}
+
+#Izq:hover, #Der:hover {
+    background-color: #a3a3a3;
+}

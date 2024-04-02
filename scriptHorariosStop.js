@@ -1153,3 +1153,26 @@ function Festivos() {
     }
 }
 
+// Obtén los botones
+var botonIzq = document.getElementById('Izq');
+var botonDer = document.getElementById('Der');
+
+// Añade un controlador de eventos al botón izquierdo
+botonIzq.addEventListener('click', function() {
+    // Disminuye el mes
+    if (selectMes.selectedIndex > 0) {
+        selectMes.selectedIndex--;
+        // Dispara el evento 'change' del selectMes
+        selectMes.dispatchEvent(new Event('change'));
+    }
+});
+
+// Añade un controlador de eventos al botón derecho
+botonDer.addEventListener('click', function() {
+    // Incrementa el mes
+    if (selectMes.selectedIndex < selectMes.options.length - 1) {
+        selectMes.selectedIndex++;
+        // Dispara el evento 'change' del selectMes
+        selectMes.dispatchEvent(new Event('change'));
+    }
+});

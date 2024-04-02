@@ -38,31 +38,40 @@
     <section>
         <h1 id="banner"></h1>
         <h1 id="Titulo">Horarios STOP</h1>
-        <div>
-            <label for="Mes">Mes:</label>
-            <select id="Mes" class="custom-select">
-                <option class="1">Enero</option>
-                <option class="2">Febrero</option>
-                <option class="3">Marzo</option>
-                <option class="4">Abril</option>
-                <option class="5">Mayo</option>
-                <option class="6">Junio</option>
-                <option class="7">Julio</option>
-                <option class="8">Agosto</option>
-                <option class="9">Septiembre</option>
-                <option class="10">Octubre</option>
-                <option class="11">Noviembre</option>
-                <option class="12">Diciembre</option>
-            </select>
+        <div style="display: flex; flex-direction: row; gap: 20px;">
+            <div style="display: flex; flex-direction: column;">
 
-            <label for="Año">Año:</label>
-            <select id="Año" class="custom-select">
-                <option class="2024">2024</option>
-                <option class="2025">2025</option>
-                <option class="2026">2026</option>
-                <option class="2027">2027</option>
-                <option class="2028">2028</option>
-            </select>
+                <label for="Mes" style="display: flex; align-items: flex-start;">Mes:</label>
+                <select id="Mes" class="custom-select">
+                    <option class="1">Enero</option>
+                    <option class="2">Febrero</option>
+                    <option class="3">Marzo</option>
+                    <option class="4">Abril</option>
+                    <option class="5">Mayo</option>
+                    <option class="6">Junio</option>
+                    <option class="7">Julio</option>
+                    <option class="8">Agosto</option>
+                    <option class="9">Septiembre</option>
+                    <option class="10">Octubre</option>
+                    <option class="11">Noviembre</option>
+                    <option class="12">Diciembre</option>
+                </select>
+
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <button id="Izq"><</button>
+                    <button id="Der">></button>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column;">
+                <label for="Año" style="display: flex; align-items: flex-start;">Año:</label>
+                <select id="Año" class="custom-select">
+                    <option class="2024">2024</option>
+                    <option class="2025">2025</option>
+                    <option class="2026">2026</option>
+                    <option class="2027">2027</option>
+                    <option class="2028">2028</option>
+                </select>
+            </div>
         </div>
         <div class="Contenedor" class="custom-select">
 
