@@ -117,7 +117,16 @@ function actualizarColorCelda(celda) {
 
 function guardarCeldas() {
     var passw = document.getElementById('pass').value;
-    if (passw == "8714612092460") {
+    var contraseñaEncontrada = false;
+
+    for (let agente in agentes) {
+        if (agentes[agente].contraseña == passw) {
+            contraseñaEncontrada = true;
+            break;
+        }
+    }
+
+    if (contraseñaEncontrada) {
         const celdas = document.querySelectorAll('#Table td');
         const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
         const añoSeleccionado = document.getElementById('Año').value;
