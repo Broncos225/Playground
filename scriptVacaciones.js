@@ -241,28 +241,49 @@ document.getElementById('btnExportar').addEventListener('click', exportarExcel);
 let agentes = {
     Anderson_Cano_Londoño: {
         nombre: "Anderson Cano Londoño",
-        fechaIngreso: "2023-11-01"
+        fechaIngreso: "2023-11-01",
+        contraseña: ""
     },
     Miguel_Cadavid_Naranjo: {
         nombre: "Miguel Cadavid Naranjo",
-        fechaIngreso: "2023-04-17"
+        fechaIngreso: "2023-04-17",
+        contraseña: ""
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
-        fechaIngreso: "2023-02-02"
+        fechaIngreso: "2023-02-02",
+        contraseña: ""
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
-        fechaIngreso: "2023-11-14"
+        fechaIngreso: "2023-11-14",
+        contraseña: ""
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
-        fechaIngreso: "2023-10-17"
+        fechaIngreso: "2023-10-17",
+        contraseña: ""
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
-        fechaIngreso: "2023-10-17"
+        fechaIngreso: "2023-10-17",
+        contraseña: ""
     },
+}
+
+
+let agentesExcluidos = ["D", "DF", "AM"];
+for (let agente in agentes) {
+    if (!agentesExcluidos.includes(agente)) {
+        if (agentes[agente].contraseña == "") {
+            let contraseña = firebase.database().ref('agentes/' + agente);
+            contraseña.once('value').then(function (snapshot) {
+                agentes[agente].contraseña = snapshot.val();
+            }).catch(function (error) {
+                console.error("Error obteniendo las contraseñas: ", error);
+            });
+        }
+    }
 }
 
 const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
