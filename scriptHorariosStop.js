@@ -1201,7 +1201,7 @@ function cambiarBordeColumna() {
         const celdasSegundaFila = segundaFila.querySelectorAll('td');
         celdasSegundaFila.forEach((celda, index) => {
             if (celda.textContent.trim() === 'D') {
-                const columnIndex = index + 2; 
+                const columnIndex = index + 2;
                 const columnCeldas = document.querySelectorAll(`#Table th:nth-child(${columnIndex}), #Table td:nth-child(${columnIndex})`);
                 columnCeldas.forEach((celda, idx) => {
                     if (idx === 0 || idx === 1) { // Índices 0 y 1 corresponden a las dos primeras filas (th y primera td)

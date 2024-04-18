@@ -884,6 +884,8 @@ table tbody tr th:first-child {
 }
 
 
-#titulos, #Dias {
+#titulos,
+#Dias,
+#Descansos th {
     border-bottom: 1px solid white;
 }
