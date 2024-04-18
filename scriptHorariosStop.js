@@ -17,6 +17,7 @@ window.onload = function () {
     colorCelda();
     mostrarSolicitudes();
     Festivos();
+    cambiarBordeColumna()
 };
 
 function colorCelda() {
@@ -863,7 +864,7 @@ selectMes.addEventListener('change', function () {
     cargarDatos();
     diaSemana();
     Festivos();
-
+    cambiarBordeColumna();
 });
 
 selectAño.addEventListener('change', function () {
@@ -872,6 +873,7 @@ selectAño.addEventListener('change', function () {
     cargarDatos();
     diaSemana();
     Festivos();
+    cambiarBordeColumna();
 });
 
 function diaSemana() {
@@ -1162,26 +1164,54 @@ function Festivos() {
     }
 }
 
-// Obtén los botones
 var botonIzq = document.getElementById('Izq');
 var botonDer = document.getElementById('Der');
 
-// Añade un controlador de eventos al botón izquierdo
-botonIzq.addEventListener('click', function() {
-    // Disminuye el mes
+botonIzq.addEventListener('click', function () {
     if (selectMes.selectedIndex > 0) {
         selectMes.selectedIndex--;
-        // Dispara el evento 'change' del selectMes
         selectMes.dispatchEvent(new Event('change'));
     }
 });
 
-// Añade un controlador de eventos al botón derecho
-botonDer.addEventListener('click', function() {
-    // Incrementa el mes
+botonDer.addEventListener('click', function () {
     if (selectMes.selectedIndex < selectMes.options.length - 1) {
         selectMes.selectedIndex++;
-        // Dispara el evento 'change' del selectMes
         selectMes.dispatchEvent(new Event('change'));
     }
 });
+
+function eliminarBordes() {
+    const todasLasCeldas = document.querySelectorAll('#Table th, #Table td');
+    todasLasCeldas.forEach(celda => {
+        celda.style.border = 'none';
+    });
+}
+
+function cambiarBordeColumna() {
+    // Eliminar bordes derechos existentes de todas las celdas y encabezados
+    const todasLasCeldas = document.querySelectorAll('#Table th, #Table td');
+    todasLasCeldas.forEach(celda => {
+        celda.style.borderRight = 'none';
+    });
+
+    // Verificar si la segunda fila contiene 'D' y en qué columnas
+    const segundaFila = document.querySelector('#Table tr:nth-child(2)');
+    if (segundaFila) {
+        const celdasSegundaFila = segundaFila.querySelectorAll('td');
+        celdasSegundaFila.forEach((celda, index) => {
+            if (celda.textContent.trim() === 'D') {
+                const columnIndex = index + 2; 
+                const columnCeldas = document.querySelectorAll(`#Table th:nth-child(${columnIndex}), #Table td:nth-child(${columnIndex})`);
+                columnCeldas.forEach((celda, idx) => {
+                    if (idx === 0 || idx === 1) { // Índices 0 y 1 corresponden a las dos primeras filas (th y primera td)
+                        celda.style.borderRight = '1px solid white';
+                    } else {
+                        celda.style.borderRight = '1px solid #012353';
+                    }
+                });
+            }
+        });
+    }
+}
+

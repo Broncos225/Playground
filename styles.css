@@ -882,3 +882,8 @@ table tbody tr th:first-child {
     background-color: #012353;
     z-index: 1;
 }
+
+
+#titulos, #Dias {
+    border-bottom: 1px solid white;
+}
