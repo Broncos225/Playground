@@ -112,6 +112,10 @@ function actualizarColorCelda(celda) {
             color = 'white';
             celda.style.color = 'black';
             break;
+        case 'IN':
+            color = 'red';
+            celda.style.color = 'black';
+            break;
     }
     celda.style.backgroundColor = color;
 }
