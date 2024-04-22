@@ -106,7 +106,7 @@ function actualizarColorCelda(celda) {
             break;
         case 'NN':
             color = 'gray';
-            celda.style.color = 'black';
+            celda.style.color = 'gray';
             break;
         case 'R1':
             color = 'white';
