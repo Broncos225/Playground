@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="icon" href="Icono.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
+    <title>Herramientas</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="titulo">
+                <h2><a href="index.html">Playground</a></h2>
+            </div>
+            <ul class="botonesNav">
+                <li><a href="Calculadora.html">Calculadora</a></li>
+                <li><a href="Herramientas.html">Herramientas</a></li>
+                <li><a href="VacacionesStop.html">Vacaciones Stop</a></li>
+                <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
+                <li><a href="HorariosMarco.html">Horarios Marco</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="Marca">
+        <p id="Texto"></p>
+    </div>
+    <section>
+        <h1 id="Titulo">Herramientas</h1>
+        <div class="GModulos">
+            <div class="Modulo">
+                <h2>Descuentos</h2>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px;">
+                    <div>
+
+                        <p style="margin: 0%; font-weight: bold;">Valor</p>
+                        <input type="number" placeholder="Valor" min="0" style="height: 36px;">
+                    </div>
+                    <p style="align-self: self-end; margin: 0%; margin-bottom: 11px;">Tiene</p>
+                    <div>
+                        <p style="margin: 0%; font-weight: bold;">Porcentaje</p>
+                        <input type="number" placeholder="Porcentaje" value="0" min="0" max="100"
+                            style="height: 36px; width: 70px;">
+                    </div>
+                    <p style="align-self: self-end; margin: 0%; margin-bottom: 11px;">%</p>
+                </div>
+                <div style="flex-direction: column; display: flex; align-items: center; gap: 10px;">
+                    <label id="Resultado1" style="width: auto;"></label>
+                    <label id="Resultado11" style="width: auto;"></label>
+                    <button id="Limpiar">Limpiar</button>
+                </div>
+            </div>
+            <div class="Modulo">
+                <h2>Modulo 2</h2>
+            </div>
+            <div class="Modulo">
+                <h2>Modulo 3</h2>
+            </div>
+            <div class="Modulo">
+                <h2>Modulo 4</h2>
+            </div>
+        </div>
+
+
+
+        <label id="Resultado"></label>
+
+    </section>
+
+    <footer>
+        <p>© 2024 Andrés Felipe Yepes Tascón</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+    <script src="scriptHerramientas.js"></script>
+    <script src="Marquee.js"></script>
+</body>
+
+</html>

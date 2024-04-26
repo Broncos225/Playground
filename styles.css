@@ -889,3 +889,53 @@ table tbody tr th:first-child {
 #Descansos th {
     border-bottom: 1px solid white;
 }
+
+.GModulos {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    height: 500px;
+}
+
+.Modulo {
+    border: 1px solid #000000;
+    border-radius: 10px;
+    flex: 1 1 auto;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+@media (min-width: 600px) {
+    .Modulo {
+        width: 50%;
+    }
+}
+
+@media (min-width: 900px) {
+    .Modulo {
+        width: 33.33%;
+    }
+}
+
+/* Para Firefox */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+/* Para Chrome, Safari y Edge */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
