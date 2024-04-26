@@ -910,6 +910,7 @@ table tbody tr th:first-child {
     justify-content: center;
     text-align: center;
     flex-direction: column;
+    background-color: white;
 }
 
 @media (min-width: 600px) {
