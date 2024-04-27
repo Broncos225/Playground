@@ -869,14 +869,14 @@ label {
     background-color: #a3a3a3;
 }
 
-table tbody tr td:first-child {
+table:not(#Contactos) tbody tr td:first-child {
     position: sticky;
     left: 0;
     background-color: #f2f2f2;
     z-index: 1;
 }
 
-table tbody tr th:first-child {
+table:not(#Contactos) tbody tr th:first-child {
     position: sticky;
     left: 0;
     background-color: #012353;
@@ -925,10 +925,7 @@ table tbody tr th:first-child {
     }
 }
 
-/* Para Firefox */
-input[type='number'] {
-    -moz-appearance:textfield;
-}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -939,4 +936,35 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+#Table>tbody:nth-of-type(2)>tr>td:not(:first-child),
+#Table>tbody:nth-of-type(2)>tr:last-child>td:first-child {
+    border-bottom: 1px solid #012353;
+}
+
+#Contactos {
+    margin: 10px;
+    width: auto;
+    overflow: auto;
+    display: block;
+    height: 300px;
+    position: static;
+}
+
+#Contactos th {
+    background-color: #012353;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+
+
+#Contactos tr td {
+    white-space: nowrap !important;
+    text-align: center;
 }
