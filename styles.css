@@ -926,6 +926,21 @@ table:not(#Contactos) tbody tr th:first-child {
     
 }
 
+@media (max-width: 600px) {
+    .celda {
+        flex-direction: column;
+    }
+    .input-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        align-items: center; /* Añadido para centrar verticalmente */
+        width: 100%;
+    }
+    .input-container p {
+        margin-right: 10px;
+    }
+}
 
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {

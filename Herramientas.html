@@ -35,21 +35,19 @@
     <section>
         <h1 id="Titulo">Herramientas</h1>
         <div class="GModulos">
-
             <div class="Modulo" id="M1">
                 <h2>Descuentos</h2>
-                <div style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px;">
-                    <div>
+                <div id="Celda" class="celda"
+                    style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 10px;">
+                    <div class="input-container">
                         <p style="margin: 0%; font-weight: bold;">Valor</p>
                         <input type="number" placeholder="Valor" min="0" style="height: 36px;">
                     </div>
-                    <p style="align-self: self-end; margin: 0%; margin-bottom: 11px;">Tiene</p>
-                    <div>
+                    <div class="input-container">
                         <p style="margin: 0%; font-weight: bold;">Porcentaje</p>
                         <input type="number" placeholder="Porcentaje" value="0" min="0" max="100"
                             style="height: 36px; width: 70px;">
                     </div>
-                    <p style="align-self: self-end; margin: 0%; margin-bottom: 11px;">%</p>
                 </div>
                 <div style="flex-direction: column; display: flex; align-items: center; gap: 10px;">
                     <label id="Resultado1" style="width: auto;"></label>
@@ -73,7 +71,7 @@
                     </tr>
                 </table>
             </div>
-            
+
 
             <div class="Modulo" id="M3">
                 <h2>Modulo 3</h2>
