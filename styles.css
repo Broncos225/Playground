@@ -978,9 +978,18 @@ input[type='number']::-webkit-outer-spin-button {
     z-index: 2;
 }
 
-
-
 #Contactos tr td {
     white-space: nowrap !important;
     text-align: center;
+}
+
+#FormTiendas {
+    margin-left: 10px;
+    margin-right: 10px;
+    gap: 10px;
+    display: flex;
+}
+
+#busqueda {
+    flex-grow: 1;
 }
