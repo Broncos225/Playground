@@ -24,7 +24,6 @@
                 <li><a href="Herramientas.html">Herramientas</a></li>
                 <li><a href="VacacionesStop.html">Vacaciones Stop</a></li>
                 <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
-                <li><a href="HorariosMarco.html">Horarios Marco</a></li>
                 <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
             </ul>
         </nav>
@@ -76,7 +75,28 @@
 
 
             <div class="Modulo" id="M3">
-                <h2>Modulo 3</h2>
+                <h2>Matriz de escalamiento</h2>
+                <div id="FormTiendas">
+                    <input type="text" id="busqueda2" placeholder="Buscar..." style="height: 36px;">
+                    <button id="Limpiar3">Limpiar</button>
+                </div>
+                <table id="Matriz">
+                    <tr>
+                        <th>Tipo de servicio</th>
+                        <th>Área del servicio</th>
+                        <th>Categoria padre</th>
+                        <th>Categoria Hijo</th>
+                        <th>Sintoma / Detalle</th>
+                        <th>Prioridad</th>
+                        <th>SLA /ANS (Min)</th>
+                        <th>Recepción del caso</th>
+                        <th>Pruebas de descartes</th>
+                        <th>Escalamiento 1</th>
+                        <th>Escalamiento 2</th>
+                        <th>¿Susceptible de cierre en mesa?</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </table>
             </div>
 
             <div class="Modulo" id="M4">
@@ -92,7 +112,7 @@
     </section>
 
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
     <script src="scriptHerramientas.js"></script>
     <script src="Marquee.js"></script>

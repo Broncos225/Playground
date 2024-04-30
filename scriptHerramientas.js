@@ -38,7 +38,9 @@ limpiarButton.addEventListener('click', function () {
     resultadoLabel11.textContent = '';
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+// Modulo 2: Contactos de Tiendas
+
+document.addEventListener("DOMContentLoaded", function () {
     let datosTabla = [];
 
     function cargarDatos() {
@@ -93,19 +95,81 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    document.getElementById('busqueda').addEventListener('input', function() {
-        const consulta = this.value.toLowerCase();
-        const datosFiltrados = datosTabla.filter(item => 
-            Object.values(item).some(val => val.toLowerCase().includes(consulta))
+    function normalizar(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    document.getElementById('busqueda').addEventListener('input', function () {
+        const consulta = normalizar(this.value.toLowerCase());
+        const datosFiltrados = datosTabla.filter(item =>
+            Object.values(item).some(val => normalizar(val.toLowerCase()).includes(consulta))
         );
         actualizarTabla(datosFiltrados);
     });
 
-    document.getElementById('Limpiar2').addEventListener('click', function() {
+    document.getElementById('Limpiar2').addEventListener('click', function () {
         document.getElementById('busqueda').value = '';
+        document.getElementById('Contactos').scrollLeft = 0;
         actualizarTabla(datosTabla);
     });
 
     cargarDatos();
 });
+let datosTablaMatriz = [];
 
+document.addEventListener("DOMContentLoaded", function () {
+    function cargarDatosMatriz() {
+        fetch('Matriz.csv')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error HTTP: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(data => {
+                datosTablaMatriz = Papa.parse(data, {
+                    header: true,
+                    skipEmptyLines: true,
+                    dynamicTyping: true
+                }).data;
+                actualizarTabla(datosTablaMatriz, 'Matriz');
+            }).catch(error => console.error('Error al cargar el archivo CSV matriz.csv:', error));
+    }
+
+    function actualizarTabla(datos, nombreTabla) {
+        let tabla = document.getElementById(nombreTabla);
+        while (tabla.rows.length > 1) {
+            tabla.deleteRow(1);
+        }
+        datos.forEach(d => {
+            let fila = tabla.insertRow(-1);
+            let orden = Object.keys(d); // Orden especificado para las celdas
+            orden.forEach(key => {
+                let celda = fila.insertCell(-1);
+                celda.textContent = d[key];
+            });
+        });
+    }
+
+    function normalizar(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    document.getElementById('busqueda2').addEventListener('input', function () {
+        const consulta = normalizar(this.value.toLowerCase());
+        const datosFiltrados = datosTablaMatriz.filter(item =>
+            Object.values(item).some(val =>
+                typeof val === 'string' && normalizar(val.toLowerCase()).includes(consulta)
+            )
+        );
+        actualizarTabla(datosFiltrados, 'Matriz');
+    });
+
+    document.getElementById('Limpiar3').addEventListener('click', function () {
+        document.getElementById('busqueda2').value = '';
+        document.getElementById('Matriz').scrollLeft = 0;
+        actualizarTabla(datosTablaMatriz, 'Matriz');
+    });
+
+    cargarDatosMatriz();
+});
