@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('Limpiar2').addEventListener('click', function () {
         document.getElementById('busqueda').value = '';
         document.getElementById('Contactos').scrollLeft = 0;
+        document.getElementById('Contactos').scrollTop = 0;
         actualizarTabla(datosTabla);
     });
 
@@ -168,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('Limpiar3').addEventListener('click', function () {
         document.getElementById('busqueda2').value = '';
         document.getElementById('Matriz').scrollLeft = 0;
+        document.getElementById('Matriz').scrollTop = 0;
         actualizarTabla(datosTablaMatriz, 'Matriz');
     });
 
