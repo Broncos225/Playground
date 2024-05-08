@@ -869,14 +869,14 @@ label {
     background-color: #a3a3a3;
 }
 
-table:not(#Contactos):not(#Matriz) tbody tr td:first-child {
+#Table tbody tr td:first-child {
     position: sticky;
     left: 0;
     background-color: #f2f2f2;
     z-index: 1;
 }
 
-table:not(#Contactos):not(#Matriz) tbody tr th:first-child {
+#Table tbody tr th:first-child {
     position: sticky;
     left: 0;
     background-color: #012353;
@@ -964,7 +964,8 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 #Contactos,
-#Matriz {
+#Matriz,
+#Enlaces {
     margin: 10px;
     width: auto;
     overflow: auto;
@@ -974,7 +975,8 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 #Contactos th,
-#Matriz th {
+#Matriz th,
+#Enlaces th {
     background-color: #012353;
     color: #fff;
     white-space: nowrap;
@@ -986,7 +988,8 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 #Contactos tr td,
-#Matriz tr td {
+#Matriz tr td,
+#Enlaces tr td {
     white-space: nowrap !important;
     text-align: center;
     font-weight: bold;
@@ -1006,4 +1009,3 @@ input[type='number']::-webkit-outer-spin-button {
 #busqueda2 {
     flex-grow: 1;
 }
-
