@@ -1094,7 +1094,8 @@ function ExportaraTexto() {
         "NN": "Ninguno",
         "D": "Descanso",
         "AM": "Apoyo Marco",
-        "DF": "Día de la familia"
+        "DF": "Día de la familia",
+        "IN": "Incapacidad",
     }
     agentes[document.getElementById("SolExportar").value].nombre;
     var mes = document.getElementById("Mes").value;
