@@ -1093,7 +1093,7 @@ function ExportaraTexto() {
         "T7R1": "9:00 - 5:00",
         "NN": "Ninguno",
         "D": "Descanso",
-        "AS": "Apoyo Sura",
+        "AS": "Apoyo Sura 07:30 am - 05:30 pm",
         "DF": "Día de la familia",
         "IN": "Incapacidad",
     }
