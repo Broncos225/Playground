@@ -290,13 +290,13 @@ let agentes = {
         nombre: "Día de la familia",
         contraseña: "DF"
     },
-    AM: {
-        nombre: "Apoyo Marco",
-        contraseña: "AM"
+    AS: {
+        nombre: "Apoyo Sura",
+        contraseña: "AS"
     }
 }
 
-let agentesExcluidos = ["D", "DF", "AM"];
+let agentesExcluidos = ["D", "DF", "AS"];
 for (let agente in agentes) {
     if (!agentesExcluidos.includes(agente)) {
         if (agentes[agente].contraseña == "") {
@@ -713,8 +713,8 @@ function aceptarCambio(registro) {
         case "Día de la familia":
             var receptor = "DF";
             break;
-        case "Apoyo Marco":
-            var receptor = "AM";
+        case "Apoyo Sura":
+            var receptor = "AS";
             break;
     }
 
@@ -780,8 +780,8 @@ function rechazarCambio(registro) {
         case "Día de la familia":
             var receptor = "DF";
             break;
-        case "Apoyo Marco":
-            var receptor = "AM";
+        case "Apoyo Sura":
+            var receptor = "AS";
             break;
     }
 
