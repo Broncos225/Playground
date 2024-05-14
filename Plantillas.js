@@ -63,7 +63,7 @@ function showModal(event) {
         <h2 style="margin-right: auto;">Apertura</h2>
         <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
         </div>
-        <div id="textoA"><p>Buenas<br></p>${textoA}<br><p>Saludos.</p></div>
+        <div id="textoA"><p>Buenas<br></p>${textoA}<p>Saludos.</p></div>
         <hr>`;
     });
 
@@ -75,7 +75,7 @@ function showModal(event) {
         <h2 style="margin-right: auto;">Cierre</h2>
         <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
         </div>
-        <div id="textoC"><p>Buenas</p>${textoC}<br><p>Saludos.</p></div>
+        <div id="textoC"><p>Buenas</p>${textoC}<p>Saludos.</p></div>
         `;
     });
 }
