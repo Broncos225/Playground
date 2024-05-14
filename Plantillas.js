@@ -59,22 +59,23 @@ function showModal(event) {
         textoA = snapshot.val();
 
         modalApertura.innerHTML = `
-        <div style="display: flex; gap: 10px; align-items: center;">
-        <h3>Apertura</h3>
-        <button onclick="copiarTexto('textoA')" style="height: 40px; ">Copiar</button>
+        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
+        <h2 style="margin-right: auto;">Apertura</h2>
+        <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
         </div>
-        <div id="textoA"><p>Buenas<br>Nombre:<br>CeCo: <br>Teléfono para devolver la llamada:<br><strong>Se indica que esta llamada será grabada y monitoreada para efectos de calidad, en caso de presentarse alguna interrupción durante esta llamada y perdamos comunicación le estaremos contactando nuevamente.</strong><br></p>${textoA}</div>
-        `;
+        <div id="textoA"><p>Buenas<br></p>${textoA}</div>
+        <p>Saludos</p>
+        <hr>`;
     });
 
     db.ref('Plantillas/' + h2Content + '/Cierre').once('value').then(function (snapshot) {
         textoC = snapshot.val();
 
         modalCierre.innerHTML = `
-        <div style="display: flex; gap: 10px; align-items: center;">
-        <h3>Cierre</h3>
-        <button onclick="copiarTexto('textoC')" style="height: 40px; ">Copiar</button>
-        </div>
+        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
+        <h2 style="margin-right: auto;">Cierre</h2>
+        <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
+    </div>
         <div id="textoC"><p>Buenas</p>${textoC}</div>
         `;
     });
@@ -83,7 +84,7 @@ function showModal(event) {
 
 
 
-function copiarTexto(id) {
+function copiarAranda(id) {
     var text = document.getElementById(id).innerHTML;
     var styledText = `<span style="font-family: Nunito, sans-serif;">${text}</span>`;
     function listener(e) {
@@ -94,6 +95,36 @@ function copiarTexto(id) {
     document.addEventListener("copy", listener);
     document.execCommand("copy");
     document.removeEventListener("copy", listener);
+
+    // Muestra la notificación
+    var notification = document.getElementById('notification');
+    notification.textContent = 'Texto para Aranda copiado al portapapeles';
+    notification.style.opacity = '1';
+
+    // Oculta la notificación después de 1 segundo
+    setTimeout(function() {
+        notification.style.opacity = '0';
+    }, 1000);
+}
+
+function copiarTexto(id) {
+    var text = document.getElementById(id).innerText;
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+
+    // Muestra la notificación
+    var notification = document.getElementById('notification2');
+    notification.textContent = 'Texto plano copiado al portapapeles';
+    notification.style.opacity = '1';
+
+    // Oculta la notificación después de 1 segundo
+    setTimeout(function() {
+        notification.style.opacity = '0';
+    }, 1000);
 }
 
 function closeModal() {
