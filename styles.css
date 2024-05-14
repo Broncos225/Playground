@@ -914,6 +914,9 @@ label {
     overflow: auto;
 }
 
+
+
+
 @media (min-width: 600px) {
     .Modulo {
         width: 50%;
@@ -1008,4 +1011,63 @@ input[type='number']::-webkit-outer-spin-button {
 #busqueda,
 #busqueda2 {
     flex-grow: 1;
+}
+
+.GModulos2 {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+@media (max-width: 600px) {
+    .GModulos2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.Modulo2 {
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

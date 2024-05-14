@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Icono.ico">
+    <meta name="theme-color" content="#333" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+
+
+    <title>Plantillas</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="titulo">
+                <h2><a href="index.html">Playground</a></h2>
+            </div>
+            <ul class="botonesNav">
+                <li><a href="Calculadora.html">Calculadora</a></li>
+                <li><a href="Herramientas.html">Herramientas</a></li>
+                <li><a href="VacacionesStop.html">Vacaciones Stop</a></li>
+                <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+
+        <h1 id="Titulo">Plantillas</h1>
+
+        <div id="FormTiendas">
+            <input type="text" id="busqueda" placeholder="Buscar..." style="height: 36px;">
+            <button style="height: 42px;" id="Limpiar">Limpiar</button>
+        </div>
+
+        <div class="GModulos2">
+            <div class="Modulo2" onclick="showModal(event)">
+                <h2>Cambio de cliente generico a real</h2>
+            </div>
+            <div class="Modulo2" onclick="showModal(event)">
+                <h2>Traslado de personal</h2>
+            </div>
+            <div class="Modulo2" onclick="showModal(event)">
+                <h2>Cargar notas de entrega</h2>
+            </div>
+            <div class="Modulo2" onclick="showModal(event)">
+                <h2>Sin internet</h2>
+            </div>
+            <div class="Modulo2" onclick="showModal(event)">
+                <h2>Reimpresión de la Z</h2>
+            </div>
+            <div class="Modulo2" onclick="showModal(event)">
+                <h2>Reimpresión del Albarán</h2>
+            </div>
+        </div>
+
+        <!-- La ventana modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div id="modal-content">
+                    <div id="titulo">
+                    </div>
+                    <div id="apertura">
+                    </div>
+                    <div id="cierre">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <footer>
+        <p>© 2024 Andrés Felipe Yepes Tascón</p>
+    </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="Plantillas.js"></script>
+</body>
+
+</html>
