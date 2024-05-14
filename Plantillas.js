@@ -13,10 +13,12 @@ db = firebase.database();
 
 document.getElementById('busqueda').addEventListener('input', function (e) {
     var busqueda = e.target.value.toLowerCase();
+    busqueda = quitarTildes(busqueda);
     var modulos = document.querySelectorAll('.Modulo2');
 
     modulos.forEach(function (modulo) {
         var texto = modulo.textContent.toLowerCase();
+        texto = quitarTildes(texto); 
         if (texto.includes(busqueda)) {
             modulo.style.display = 'block';
         } else {
@@ -24,6 +26,11 @@ document.getElementById('busqueda').addEventListener('input', function (e) {
         }
     });
 });
+
+function quitarTildes(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 
 document.getElementById('Limpiar').addEventListener('click', function () {
     var busqueda = document.getElementById('busqueda');
