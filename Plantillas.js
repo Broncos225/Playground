@@ -64,7 +64,7 @@ function showModal(event) {
         <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
         </div>
         <div id="textoA"><p>Buenas<br></p>${textoA}</div>
-        <p>Saludos</p>
+        <p>Saludos.</p>
         <hr>`;
     });
 
@@ -77,6 +77,7 @@ function showModal(event) {
         <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
     </div>
         <div id="textoC"><p>Buenas</p>${textoC}</div>
+        <p>Saludos.</p>
         `;
     });
 }
