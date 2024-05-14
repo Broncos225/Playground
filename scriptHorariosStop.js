@@ -1170,6 +1170,7 @@ function Festivos() {
 }
 
 var botonIzq = document.getElementById('Izq');
+var botonHoy = document.getElementById('Hoy');
 var botonDer = document.getElementById('Der');
 
 botonIzq.addEventListener('click', function () {
@@ -1177,6 +1178,13 @@ botonIzq.addEventListener('click', function () {
         selectMes.selectedIndex--;
         selectMes.dispatchEvent(new Event('change'));
     }
+});
+
+botonHoy.addEventListener('click', function () {
+    var fechaActual = new Date();
+    var mesActual = fechaActual.getMonth();
+    selectMes.selectedIndex = mesActual;
+    selectMes.dispatchEvent(new Event('change'));
 });
 
 botonDer.addEventListener('click', function () {

@@ -868,7 +868,8 @@ label {
 }
 
 #Izq,
-#Der {
+#Der,
+#Hoy {
     height: 30x;
     width: 30px;
     padding: 3px;
@@ -877,7 +878,8 @@ label {
 }
 
 #Izq:hover,
-#Der:hover {
+#Der:hover,
+#Hoy:hover {
     background-color: #a3a3a3;
 }
 
