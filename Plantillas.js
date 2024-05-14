@@ -63,8 +63,7 @@ function showModal(event) {
         <h2 style="margin-right: auto;">Apertura</h2>
         <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
         </div>
-        <div id="textoA"><p>Buenas<br></p>${textoA}</div>
-        <p>Saludos.</p>
+        <div id="textoA"><p>Buenas<br></p>${textoA}<br><p>Saludos.</p></div>
         <hr>`;
     });
 
@@ -75,9 +74,8 @@ function showModal(event) {
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
         <h2 style="margin-right: auto;">Cierre</h2>
         <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
-    </div>
-        <div id="textoC"><p>Buenas</p>${textoC}</div>
-        <p>Saludos.</p>
+        </div>
+        <div id="textoC"><p>Buenas</p>${textoC}<br><p>Saludos.</p></div>
         `;
     });
 }
@@ -103,7 +101,7 @@ function copiarAranda(id) {
     notification.style.opacity = '1';
 
     // Oculta la notificación después de 1 segundo
-    setTimeout(function() {
+    setTimeout(function () {
         notification.style.opacity = '0';
     }, 1000);
 }
@@ -123,7 +121,7 @@ function copiarTexto(id) {
     notification.style.opacity = '1';
 
     // Oculta la notificación después de 1 segundo
-    setTimeout(function() {
+    setTimeout(function () {
         notification.style.opacity = '0';
     }, 1000);
 }
