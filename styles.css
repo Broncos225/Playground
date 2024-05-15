@@ -1156,3 +1156,6 @@ input[type='number']::-webkit-outer-spin-button {
     }
 }
 
+body.modal-open {
+    overflow: hidden;
+}

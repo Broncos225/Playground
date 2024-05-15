@@ -85,6 +85,7 @@ function showModal(event) {
         <div id="textoC"><p>Buenas</p>${textoC}<p>Saludos.</p></div>
         `;
     });
+    document.body.classList.add('modal-open');
 }
 
 
@@ -136,12 +137,14 @@ function copiarTexto(id) {
 function closeModal() {
     var modal = document.getElementById("myModal");
     modal.style.display = "none";
+    document.body.classList.remove('modal-open');
 }
 
 window.onclick = function (event) {
     var modal = document.getElementById("myModal");
     if (event.target == modal) {
         modal.style.display = "none";
+        document.body.classList.remove('modal-open');
     }
 }
 
