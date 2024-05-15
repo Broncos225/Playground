@@ -194,3 +194,5 @@ document.getElementById('limpiar').addEventListener('click', function () {
     document.getElementById('ListaTiendasJuntas').value = '';
     document.getElementById('texto').innerText = '';
 });
+
+
