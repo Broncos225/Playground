@@ -18,7 +18,7 @@ document.getElementById('busqueda').addEventListener('input', function (e) {
 
     modulos.forEach(function (modulo) {
         var texto = modulo.textContent.toLowerCase();
-        texto = quitarTildes(texto); 
+        texto = quitarTildes(texto);
         if (texto.includes(busqueda)) {
             modulo.style.display = 'block';
         } else {
@@ -86,6 +86,13 @@ function showModal(event) {
         `;
     });
     document.body.classList.add('modal-open');
+    if (window.innerWidth <= 968) {
+        document.querySelector('header').style.display = 'none';
+        document.getElementById("myModal").style.top = '0px';
+    } else {
+        document.querySelector('header').style.display = 'block';
+        document.getElementById("myModal").style.top = '50px';
+    }
 }
 
 
@@ -138,6 +145,7 @@ function closeModal() {
     var modal = document.getElementById("myModal");
     modal.style.display = "none";
     document.body.classList.remove('modal-open');
+    document.querySelector('header').style.display = 'block';
 }
 
 window.onclick = function (event) {
@@ -145,6 +153,7 @@ window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
         document.body.classList.remove('modal-open');
+        document.querySelector('header').style.display = 'block';
     }
 }
 
