@@ -20,7 +20,7 @@ document.getElementById('busqueda').addEventListener('input', function (e) {
         var texto = modulo.textContent.toLowerCase();
         texto = quitarTildes(texto);
         if (texto.includes(busqueda)) {
-            modulo.style.display = 'block';
+            modulo.style.display = 'flex';
         } else {
             modulo.style.display = 'none';
         }
@@ -32,7 +32,7 @@ function quitarTildes(texto) {
 }
 
 
-document.getElementById('Limpiar').addEventListener('click', function () {
+document.getElementById('LimpiarP').addEventListener('click', function () {
     var busqueda = document.getElementById('busqueda');
     busqueda.value = '';
     var event = new Event('input', {
@@ -40,6 +40,12 @@ document.getElementById('Limpiar').addEventListener('click', function () {
         cancelable: true,
     });
     busqueda.dispatchEvent(event);
+
+    // Añadir este código para cambiar el display de los módulos a 'flex'
+    var modulos = document.querySelectorAll('.Modulo2');
+    modulos.forEach(function (modulo) {
+        modulo.style.display = 'flex';
+    });
 });
 
 var db = firebase.database();
@@ -98,32 +104,34 @@ function showModal(event) {
 
 
 
-function copiarAranda(id) {
-    var text = document.getElementById(id).innerHTML;
-    var styledText = `<span style="font-family: Nunito, sans-serif;">${text}</span>`;
-    function listener(e) {
-        e.clipboardData.setData("text/html", styledText);
-        e.clipboardData.setData("text/plain", text);
-        e.preventDefault();
-    }
-    document.addEventListener("copy", listener);
-    document.execCommand("copy");
-    document.removeEventListener("copy", listener);
+// function copiarAranda(id) {
+//     var text = document.getElementById(id).innerHTML;
+//     var styledText = `<span style="font-family: Nunito, sans-serif;">${text}</span>`;
+//     function listener(e) {
+//         e.clipboardData.setData("text/html", styledText);
+//         e.clipboardData.setData("text/plain", text);
+//         e.preventDefault();
+//     }
+//     document.addEventListener("copy", listener);
+//     document.execCommand("copy");
+//     document.removeEventListener("copy", listener);
 
-    // Muestra la notificación
-    var notification = document.getElementById('notification');
-    notification.textContent = 'Texto para Aranda copiado al portapapeles';
-    notification.style.opacity = '1';
+//     // Muestra la notificación
+//     var notification = document.getElementById('notification');
+//     notification.textContent = 'Texto para Aranda copiado al portapapeles';
+//     notification.style.opacity = '1';
 
-    // Oculta la notificación después de 1 segundo
-    setTimeout(function () {
-        notification.style.opacity = '0';
-    }, 1000);
-}
+//     // Oculta la notificación después de 1 segundo
+//     setTimeout(function () {
+//         notification.style.opacity = '0';
+//     }, 1000);
+// }
 
 function copiarTexto(id) {
-    var text = document.getElementById(id).innerText;
+    var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
+    text = text.replace(/<br>/g, "\r\n").replace(/<\/p><p>/g, "\r\n").replace(/<p>/g, "").replace(/<\/p>/g, ""); // Añadido para conservar los saltos de línea y eliminar las etiquetas <p></p>
     var textArea = document.createElement("textarea");
+    textArea.style.fontFamily = "Nunito, sans-serif"; // Añadido para establecer el tipo de letra a Nunito
     textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();

@@ -699,37 +699,49 @@ label {
         padding: 0px;
         display: flex;
         flex-direction: column;
-        align-items: center; /* Centra los elementos en el eje transversal */
+        align-items: center;
+        /* Centra los elementos en el eje transversal */
     }
 
     .titulo {
-        font-size: 18px; /* Aumenta el tamaño de la fuente para que el título sea más prominente */
-        color: #333; /* Cambia el color para que contraste con el fondo */
+        font-size: 18px;
+        /* Aumenta el tamaño de la fuente para que el título sea más prominente */
+        color: #333;
+        /* Cambia el color para que contraste con el fondo */
     }
 
     .botonesNav {
         display: flex;
-        flex-direction: row; /* Cambia la dirección a fila para que los botones se muestren en una línea */
-        justify-content: space-around; /* Distribuye el espacio alrededor de los botones de manera uniforme */
-        flex-wrap: wrap; /* Permite que los elementos de la lista se envuelvan en múltiples líneas si no caben en una sola línea */
-        padding: 10px 0; /* Añade padding para dar más espacio alrededor de los botones */
+        flex-direction: row;
+        /* Cambia la dirección a fila para que los botones se muestren en una línea */
+        justify-content: space-around;
+        /* Distribuye el espacio alrededor de los botones de manera uniforme */
+        flex-wrap: wrap;
+        /* Permite que los elementos de la lista se envuelvan en múltiples líneas si no caben en una sola línea */
+        padding: 10px 0;
+        /* Añade padding para dar más espacio alrededor de los botones */
         gap: 5px;
     }
 
     nav ul.botonesNav li a {
-        font-size: 14px; /* Reduce el tamaño de la fuente para que los botones no sean demasiado grandes */
+        font-size: 14px;
+        /* Reduce el tamaño de la fuente para que los botones no sean demasiado grandes */
     }
 
     nav ul.botonesNav li a:hover {
-        background-color: #333; /* Cambia el color de fondo al pasar el ratón para que contraste con el texto */
+        background-color: #333;
+        /* Cambia el color de fondo al pasar el ratón para que contraste con el texto */
         color: white;
     }
 
     nav ul.botonesNav li a {
         font-size: 14px;
-        overflow: hidden; /* Asegura que el texto no se desborde del contenedor */
-        text-overflow: ellipsis; /* Añade puntos suspensivos cuando el texto es demasiado largo */
-        white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+        overflow: hidden;
+        /* Asegura que el texto no se desborde del contenedor */
+        text-overflow: ellipsis;
+        /* Añade puntos suspensivos cuando el texto es demasiado largo */
+        white-space: nowrap;
+        /* Evita que el texto se rompa en varias líneas */
     }
 
     /* Estilos para cuando se hace scroll en una pantalla pequeña */
@@ -737,32 +749,45 @@ label {
         padding: 0px;
         display: flex;
         flex-direction: column;
-        align-items: center; /* Centra los elementos en el eje transversal */
-        background-color: #333; /* Un color de fondo oscuro puede ayudar a que el encabezado se destaque */
-        color: #fff; /* Un color de texto claro puede ayudar a que el texto sea legible contra el fondo oscuro */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Una sombra de caja puede ayudar a que el encabezado se destaque contra el contenido de la página */
+        align-items: center;
+        /* Centra los elementos en el eje transversal */
+        background-color: #333;
+        /* Un color de fondo oscuro puede ayudar a que el encabezado se destaque */
+        color: #fff;
+        /* Un color de texto claro puede ayudar a que el texto sea legible contra el fondo oscuro */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Una sombra de caja puede ayudar a que el encabezado se destaque contra el contenido de la página */
     }
 
     .small-header-scroll .titulo {
-        font-size: 16px; /* Reduce el tamaño de la fuente cuando se hace scroll para que el título no sea demasiado grande */
+        font-size: 16px;
+        /* Reduce el tamaño de la fuente cuando se hace scroll para que el título no sea demasiado grande */
     }
 
     .small-header-scroll .botonesNav {
-        flex-direction: row; /* Cambia la dirección a fila para que los botones se muestren en una línea */
-        justify-content: space-around; /* Distribuye el espacio alrededor de los botones de manera uniforme */
-        flex-wrap: wrap; /* Permite que los elementos de la lista se envuelvan en múltiples líneas si no caben en una sola línea */
-        padding: 5px 0; /* Reduce el padding cuando se hace scroll para maximizar el espacio de la pantalla */
-    }
-
-    .small-header-scroll ul.botonesNav li a {
-        font-size: 12px; /* Reduce el tamaño de la fuente cuando se hace scroll para que los botones no sean demasiado grandes */
+        flex-direction: row;
+        /* Cambia la dirección a fila para que los botones se muestren en una línea */
+        justify-content: space-around;
+        /* Distribuye el espacio alrededor de los botones de manera uniforme */
+        flex-wrap: wrap;
+        /* Permite que los elementos de la lista se envuelvan en múltiples líneas si no caben en una sola línea */
+        padding: 5px 0;
+        /* Reduce el padding cuando se hace scroll para maximizar el espacio de la pantalla */
     }
 
     .small-header-scroll ul.botonesNav li a {
         font-size: 12px;
-        overflow: hidden; /* Asegura que el texto no se desborde del contenedor */
-        text-overflow: ellipsis; /* Añade puntos suspensivos cuando el texto es demasiado largo */
-        white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+        /* Reduce el tamaño de la fuente cuando se hace scroll para que los botones no sean demasiado grandes */
+    }
+
+    .small-header-scroll ul.botonesNav li a {
+        font-size: 12px;
+        overflow: hidden;
+        /* Asegura que el texto no se desborde del contenedor */
+        text-overflow: ellipsis;
+        /* Añade puntos suspensivos cuando el texto es demasiado largo */
+        white-space: nowrap;
+        /* Evita que el texto se rompa en varias líneas */
     }
 }
 
@@ -824,7 +849,7 @@ label {
     border-bottom: 1px solid #012353;
 }
 
-#Descansos  {
+#Descansos {
     border-left: 1px solid #012353;
     border-right: 1px solid #012353;
 }
@@ -1105,9 +1130,9 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .Modulo2:hover {
-    background-color: #333; 
-    color: #fff; 
-    cursor: pointer; 
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
 }
 
 .modal {
@@ -1146,7 +1171,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .small-header {
-    font-size: 0.8em; 
+    font-size: 0.8em;
     height: 50px;
 }
 
@@ -1158,4 +1183,10 @@ input[type='number']::-webkit-outer-spin-button {
 
 body.modal-open {
     overflow: hidden;
+}
+
+#LimpiarP:hover,
+#distribucion1:hover,
+#distribucion2:hover {
+    background-color: #a3a3a3 !important;
 }
