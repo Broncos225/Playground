@@ -44,6 +44,7 @@ function actualizarColorCelda(celda) {
     var colorTSA = '#FFA500';
     var colorAS = '#063970';
     var colorD = '#012353';
+    var colorDV = '#88ed47';
     const texto = celda.textContent.trim();
     let color;
     switch (texto) {
@@ -115,6 +116,10 @@ function actualizarColorCelda(celda) {
             break;
         case 'IN':
             color = 'red';
+            celda.style.color = 'black';
+            break;
+        case 'DV':
+            color = colorDV;
             celda.style.color = 'black';
             break;
     }
@@ -1229,3 +1234,40 @@ function cambiarBordeColumna() {
     }
 }
 
+var selector = document.getElementById('Mes');
+
+// Agrega un evento de cambio al selector
+selector.addEventListener('change', function() {
+    // Obtén el valor seleccionado
+    var valorSeleccionado = this.value;
+
+    // Define los meses para los que quieres ocultar la fila
+    var meses = ["Junio", "Julio", "Agosto"];
+
+    // Obtén todas las filas
+    var filas = document.getElementsByTagName('tr');
+
+    // Recorre todas las filas
+    for (var i = 0; i < filas.length; i++) {
+        // Obtén todas las celdas de la fila
+        var celdas = filas[i].getElementsByTagName('td');
+
+        // Recorre todas las celdas
+        for (var j = 0; j < celdas.length; j++) {
+            // Si el contenido de la celda es "Andrés Felipe Vidal Medina" y el valor seleccionado está en el array de meses, oculta la fila
+            if (celdas[j].textContent === "Andrés Felipe Vidal Medina" && meses.includes(valorSeleccionado)) {
+                filas[i].style.display = 'none';
+                break; // Sal del bucle una vez que encuentres la celda correcta
+            } else {
+                filas[i].style.display = ''; // Muestra la fila si no coincide con las condiciones
+            }
+        }
+    }
+
+    // Oculta la fila con el ID 5 si el valor seleccionado está en el array de meses
+    if (meses.includes(valorSeleccionado)) {
+        document.getElementById('5').parentElement.style.display = 'none';
+    } else {
+        document.getElementById('5').parentElement.style.display = '';
+    }
+});
