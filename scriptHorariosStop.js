@@ -101,6 +101,7 @@ function actualizarColorCelda(celda) {
             celda.style.color = 'black';
             break;
         case 'AS':
+        case 'ASR1':
             color = colorAS;
             celda.style.color = 'white';
             break;
@@ -902,7 +903,7 @@ function diaSemana() {
 function contHoras() {
     var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
     var tiposTurno8 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AS', 'DF'];
-    var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1', 'T7R1'];
+    var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1', 'T7R1', 'ASR1'];
     var tiposTurno0 = ['NN', 'D'];
 
     for (var i = 1; i < 32; i++) {
@@ -1093,7 +1094,7 @@ function ExportaraTexto() {
         "T7R1": "9:00 - 5:00",
         "NN": "Ninguno",
         "D": "Descanso",
-        "AS": "Apoyo Sura 07:30 am - 05:30 pm",
+        "AS": "Apoyo Sura 06:30 am - 05:00 pm",
         "DF": "Día de la familia",
         "IN": "Incapacidad",
     }
