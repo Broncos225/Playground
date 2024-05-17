@@ -1242,7 +1242,7 @@ selector.addEventListener('change', function() {
     var valorSeleccionado = this.value;
 
     // Define los meses para los que quieres ocultar la fila
-    var meses = ["Junio", "Julio", "Agosto"];
+    var meses = ["Junio", "Julio", "Agosto", "Septiembre"];
 
     // Obtén todas las filas
     var filas = document.getElementsByTagName('tr');
