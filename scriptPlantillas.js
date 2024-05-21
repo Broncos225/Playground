@@ -76,7 +76,7 @@ function showModal(event) {
         <h2 style="margin-right: auto;">Apertura</h2>
         <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
         </div>
-        <div id="textoA"><p>Buenas<br></p>${textoA}<p>Saludos.</p></div>
+        <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
     });
 
