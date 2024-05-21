@@ -88,7 +88,7 @@ function showModal(event) {
         <h2 style="margin-right: auto;">Cierre</h2>
         <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
         </div>
-        <div id="textoC"><p>Buenas</p>${textoC}<p>Saludos.</p></div>
+        <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
     });
     document.body.classList.add('modal-open');
