@@ -8,6 +8,10 @@ const firebaseConfig = {
     appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
 };
 
+window.onload = function () {
+    Estado();
+}
+
 firebase.initializeApp(firebaseConfig);
 db = firebase.database();
 
@@ -50,13 +54,72 @@ document.getElementById('LimpiarP').addEventListener('click', function () {
 
 var db = firebase.database();
 
+var distribucionSeleccionada = 'grid'; // Valor por defecto
+
+function cambiarDistribucion(distribucion) {
+    distribucionSeleccionada = distribucion;
+    Estado();
+}
+
+function abrirModulo(event) {
+    if (distribucionSeleccionada == 'grid') {
+        showModal(event);
+    } else if (distribucionSeleccionada == 'list') {
+        showPanel(event);
+    } else {
+        alert('Error al cambiar la distribución');
+    }
+}
+
+function showPanel() {
+    var panel = document.getElementById("Panel");
+    var modalTitulo = document.querySelector("#Panel #modal-content #titulo");
+    var modalApertura = document.querySelector("#Panel #modal-content #apertura");
+    var modalCierre = document.querySelector("#Panel #modal-content #cierre");
+
+    var h2Content = event.currentTarget.querySelector('h2').innerText;
+    var textoA;
+    var textoC;
+
+    modalTitulo.innerHTML = `
+    <hr>
+    <h2 style="text-align: center;">${h2Content}</h2>
+    <hr>
+    `;
+    db.ref('Plantillas/' + h2Content + '/Apertura').once('value').then(function (snapshot) {
+        textoA = snapshot.val();
+
+        modalApertura.innerHTML = `
+        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
+        <h2 style="margin-right: auto;">Apertura</h2>
+        <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
+        </div>
+        <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
+        <hr>`;
+    });
+
+    db.ref('Plantillas/' + h2Content + '/Cierre').once('value').then(function (snapshot) {
+        textoC = snapshot.val();
+
+        modalCierre.innerHTML = `
+        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
+        <h2 style="margin-right: auto;">Cierre</h2>
+        <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
+        </div>
+        <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
+        `;
+    });
+    panel.style.display = "block"; // Esta línea hace visible el panel
+
+}
+
 function showModal(event) {
+    cerrarPanel();
     var modal = document.getElementById("myModal");
     modal.scrollTop = 0; // Add this line
-    var modalTitulo = document.querySelector("#modal-content #titulo");
-    var modalApertura = document.querySelector("#modal-content #apertura");
-    var modalCierre = document.querySelector("#modal-content #cierre");
-    modal.style.display = "block";
+    var modalTitulo = document.querySelector("#myModal #modal-content #titulo");
+    var modalApertura = document.querySelector("#myModal #modal-content #apertura");
+    var modalCierre = document.querySelector("#myModal #modal-content #cierre");
 
     var h2Content = event.currentTarget.querySelector('h2').innerText;
 
@@ -99,6 +162,7 @@ function showModal(event) {
         document.querySelector('header').style.display = 'block';
         document.getElementById("myModal").style.top = '50px';
     }
+    modal.style.display = "block";
 }
 
 
@@ -165,3 +229,16 @@ window.onclick = function (event) {
     }
 }
 
+function cerrarPanel() {
+    document.getElementById('Panel').style.display = 'none';
+}
+
+function Estado() {
+    if (distribucionSeleccionada == 'grid') {
+        document.getElementById('list').style.backgroundColor = 'white';
+        document.getElementById('grid').style.backgroundColor = '#bbb';
+    } else if (distribucionSeleccionada == 'list') {
+        document.getElementById('grid').style.backgroundColor = 'white';
+        document.getElementById('list').style.backgroundColor = '#bbb';
+    }
+}

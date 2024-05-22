@@ -8,7 +8,7 @@
     <link rel="icon" href="Icono.ico">
     <meta name="theme-color" content="#333" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
     <title>Plantillas</title>
 </head>
@@ -22,6 +22,7 @@
             <ul class="botonesNav">
                 <li><a href="Calculadora.html">Calculadora</a></li>
                 <li><a href="Herramientas.html">Herramientas</a></li>
+                <li><a href="Plantillas.html">Plantillas</a></li>
                 <li><a href="VacacionesStop.html">Vacaciones Stop</a></li>
                 <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
                 <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
@@ -31,10 +32,20 @@
     <section>
 
         <h1 id="Titulo">Plantillas</h1>
-
-        <div id="FormTiendas">
-            <input type="text" id="busqueda" placeholder="Buscar..." style="height: 36px;">
-            <button style="height: 42px; background-color: white;" id="LimpiarP">Limpiar</button>
+        <div style="display: flex; width: 100%; justify-content: space-between;">
+            <div id="FormTiendas" style="display: flex; justify-content: center; flex-grow: 1; margin: 0px;">
+                <input type="text" id="busqueda" placeholder="Buscar..." style="height: 36px;">
+                <button style="height: 42px; background-color: white; margin-right: 10px;"
+                    id="LimpiarP">Limpiar</button>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button id="grid" style="background-color: white;" onclick="cambiarDistribucion('grid')">
+                    <i class="fas fa-th"></i> <!-- Icono de cuadrícula -->
+                </button>
+                <button id="list" style="background-color: white;" onclick="cambiarDistribucion('list')">
+                    <i class="fas fa-list"></i> <!-- Icono de lista -->
+                </button>
+            </div>
         </div>
         <div id="notification"
             style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #32526A; color: white; padding: 15px; text-align: center; opacity: 0; z-index: 9999; transition: opacity 0.5s;">
@@ -42,96 +53,111 @@
         <div id="notification2"
             style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 15px; text-align: center; opacity: 0; z-index: 9999; transition: opacity 0.5s;">
         </div>
-        <div class="GModulos2">
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Actualización de cliente</h2>
+        <div id="GrupoConPanel" style="display: flex; flex-direction: row;">
+            <div class="GModulos2">
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Actualización de cliente</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Cambio a control de inventarios</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Cambio de cliente genérico a real</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Cambio de concepto</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Cambio de medio de pago</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Cargar PLUs a NumRot</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Configurar impresora</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Crear asesor</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Crear huella</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Cargar notas de entrega</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Devolución de un abono</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Devolución de un crédito</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Devolución de un ticket</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Eliminar asesor</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Eliminar devolución a proveedor</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Eliminar documento de transferencia</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Escalamientos</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Error dispositivo fiscal</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Error FOS5</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Llamada de prueba</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Llamada informativa</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Llamada sin intervención</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Modificar vendedor</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>No recauda abono</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>No aplica abono SAC</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Reimpresión de la Z</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Reimpresión del Albarán</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Restablecer contraseña Cegid</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Sin internet</h2>
+                </div>
+                <div class="Modulo2" onclick="abrirModulo(event)">
+                    <h2>Traslado de personal</h2>
+                </div>
             </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Cambio a control de inventarios</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Cambio de cliente genérico a real</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Cambio de concepto</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Cambio de medio de pago</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Cargar PLUs a NumRot</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Configurar impresora</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Crear asesor</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Crear huella</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Cargar notas de entrega</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Devolución de un abono</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Devolución de un crédito</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Devolución de un ticket</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Eliminar asesor</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Eliminar devolución a proveedor</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Eliminar documento de transferencia</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Escalamientos</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Error dispositivo fiscal</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Error FOS5</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Llamada de prueba</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Llamada informativa</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Llamada sin intervención</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Modificar vendedor</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>No recauda abono</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>No aplica abono SAC</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Reimpresión de la Z</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Reimpresión del Albarán</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Restablecer contraseña Cegid</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Sin internet</h2>
-            </div>
-            <div class="Modulo2" onclick="showModal(event)">
-                <h2>Traslado de personal</h2>
+            <div id="Panel" style="display: none;">
+                <div id="modal-content">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div id="titulo" style="flex-grow: 1; text-align: left;">
+                        </div>
+                        <button id="cerrar" onclick="cerrarPanel()" style="height: 74px;">X</button>
+                    </div>
+                    <div id="apertura">
+                    </div>
+                    <div id="cierre">
+                    </div>
+                </div>
             </div>
         </div>
 
