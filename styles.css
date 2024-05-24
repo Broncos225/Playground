@@ -1233,6 +1233,9 @@ section {
     #TiposDias {
         width: 50%;
         overflow-x: scroll;
+    }
+
+    #TiposDias thead th {
         padding: 1.5px;
     }
 
