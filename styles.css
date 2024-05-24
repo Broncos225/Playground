@@ -284,7 +284,7 @@ button .botonReiniciar:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 15%;
+
 }
 
 .Informaciones {
@@ -423,17 +423,21 @@ button .botonReiniciar:hover {
     width: 100%;
 }
 
+.tablas {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    width: 100%;
+}
 
 
-#Informacion,
-#InformacionVaca {
+#Informacion {
     display: flex;
     flex-direction: row;
     align-self: start;
     justify-content: space-around;
     height: 100%;
     width: 100%;
-    overflow-x: auto;
 }
 
 #TablaSol,
@@ -695,6 +699,9 @@ label {
 
 
 @media (max-width: 968px) {
+
+
+
     nav {
         padding: 0px;
         display: flex;
@@ -833,11 +840,6 @@ label {
         overflow-x: scroll;
     }
 
-    .Calculos {
-
-        display: table;
-        width: 100%;
-    }
 }
 
 #Descansos th,
@@ -886,14 +888,12 @@ label {
     animation: aparecerAnimacion 0.5s ease-in-out;
 }
 
-.Calculos {
-    width: 60%;
-}
 
 .tablas {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    width: 100%;
 }
 
 #TablaCalculos,
@@ -905,7 +905,7 @@ label {
 }
 
 #TiposDias {
-    width: 10%;
+    width: fit-content;
     align-self: flex-end;
     text-align: center;
     /* Añadido para centrar el texto */
@@ -922,9 +922,11 @@ label {
     text-align: center;
 }
 
-#TiposDias th {
-    padding: 6.5px;
+#TiposDias thead th {
+    padding: 1.5px;
 }
+
+
 
 
 #TablaCalculos th:first-child,
@@ -1110,7 +1112,8 @@ input[type='number']::-webkit-outer-spin-button {
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
     height: min-content;
-    justify-content: start; /* Alinea el conjunto de elementos a la izquierda */
+    justify-content: start;
+    /* Alinea el conjunto de elementos a la izquierda */
 }
 
 @media (max-width: 738px) {
@@ -1205,6 +1208,54 @@ section {
     border-radius: 10px;
     padding: 10px;
     height: min-content;
-    min-width: 300px; /* Ajusta este valor según tus necesidades */
+    min-width: 300px;
+    /* Ajusta este valor según tus necesidades */
 }
 
+.Almuerzos td,
+.Turnos td {
+    background-color: white;
+}
+
+
+@media screen and (max-width: 1200px) {
+    #Informacion {
+        width: 100%;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .Calculos {
+        display: flex;
+        width: 100%;
+    }
+
+    #TiposDias {
+        width: 50%;
+        overflow-x: scroll;
+    }
+
+    #TablaCalculos {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
+    .Turnos,
+    .Almuerzos {
+        width: 60%;
+    }
+}
+
+#TablaCalculos tr:nth-child(odd) td,
+#TiposDias tr:nth-child(even) td {
+    background-color: white !important;
+}
+
+#TablaCalculos tr:nth-child(even) td,
+#TiposDias tr:nth-child(odd) td {
+    background-color: rgb(224, 224, 224) !important;
+}
+
+#Solicitudes {
+    display: none;
+}

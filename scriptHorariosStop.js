@@ -17,7 +17,8 @@ window.onload = function () {
     colorCelda();
     mostrarSolicitudes();
     Festivos();
-    cambiarBordeColumna()
+    cambiarBordeColumna();
+    cargarVacaciones();
 };
 
 function colorCelda() {
@@ -122,6 +123,14 @@ function actualizarColorCelda(celda) {
             color = colorDV;
             celda.style.color = 'black';
             break;
+        case 'T':
+            color = colorT3;
+            celda.style.color = 'black';
+            break;
+        case 'MD':
+            color = colorT5;
+            celda.style.color = 'black';
+            break;
     }
     celda.style.backgroundColor = color;
 }
@@ -160,7 +169,7 @@ function guardarCeldas() {
 function cargarDatos() {
     const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
     const añoSeleccionado = document.getElementById('Año').value;
-    const celdas = document.querySelectorAll('td');
+    const celdas = document.querySelectorAll('#Table td');
     celdas.forEach((celda) => {
         const idCelda = celda.cellIndex + 1;
         const nombreFila = celda.parentNode.cells[0].textContent.trim();
@@ -875,6 +884,7 @@ selectMes.addEventListener('change', function () {
     diaSemana();
     Festivos();
     cambiarBordeColumna();
+    cargarVacaciones();
 });
 
 selectAño.addEventListener('change', function () {
@@ -884,6 +894,7 @@ selectAño.addEventListener('change', function () {
     diaSemana();
     Festivos();
     cambiarBordeColumna();
+    cargarVacaciones();
 });
 
 function diaSemana() {
@@ -1271,3 +1282,131 @@ selector.addEventListener('change', function() {
         document.getElementById('5').parentElement.style.display = '';
     }
 });
+
+let agentesV = {
+    Anderson_Cano_Londoño: {
+        nombre: "Anderson Cano Londoño",
+        fechaIngreso: "2023-11-01",
+        contraseña: ""
+    },
+    Miguel_Cadavid_Naranjo: {
+        nombre: "Miguel Cadavid Naranjo",
+        fechaIngreso: "2023-04-17",
+        contraseña: ""
+    },
+    Milton_Alexis_Calle_Londoño: {
+        nombre: "Milton Alexis Calle Londoño",
+        fechaIngreso: "2023-02-02",
+        contraseña: ""
+    },
+    Yesica_Johana_Cano_Quintero: {
+        nombre: "Yesica Johana Cano Quintero",
+        fechaIngreso: "2023-11-14",
+        contraseña: ""
+    },
+    Andrés_Felipe_Vidal_Medina: {
+        nombre: "Andrés Felipe Vidal Medina",
+        fechaIngreso: "2023-10-17",
+        contraseña: ""
+    },
+    Andrés_Felipe_Yepes_Tascón: {
+        nombre: "Andrés Felipe Yepes Tascón",
+        fechaIngreso: "2023-10-17",
+        contraseña: ""
+    },
+}
+
+function CalculoDiasPendientes(agente) {
+    var diasVacaciones = 0;
+    const [year, month, day] = agentesV[agente].fechaIngreso.split('-');
+    const fechaIngreso = new Date(year, month - 1, day);
+
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+
+    // Establecer el día a '1' dará el primer día del mes actual
+    fechaActual.setDate(1);
+
+    // Restar un día desde el primer día del mes actual te llevará al último día del mes anterior
+    fechaActual.setDate(fechaActual.getDate() - 1);
+
+    const diferencia = fechaActual - fechaIngreso;
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    diasVacaciones = Math.floor((dias / 365) * 15);
+    return diasVacaciones;
+}
+
+async function CalculoDiasAño(agente) {
+    const añoSeleccionado = document.getElementById('Año').value;
+    const nombreAgente = agentesV[agente].nombre;
+    var diasAño = 0;
+    var incapacidad = 0;
+    var vacaciones = 0;
+    var medioDia = 0;
+    var tramites = 0;
+
+    let promises = [];
+    for (var i = 1; i <= 12; i++) {
+        for (var j = 2; j <= 32; j++) {
+            let promise = db.ref('celdas/' + nombreAgente + '/' + j + '/' + añoSeleccionado + '/' + i).once('value');
+            promises.push(promise);
+        }
+    }
+    let results = await Promise.all(promises);
+    results.forEach(snapshot => {
+        const data = snapshot.val();
+        if (data && (data.texto == 'I' || data.texto == 'DV')) {
+            diasAño += 1;
+            if (data.texto == 'I') {
+                incapacidad += 1;
+            } else if (data.texto == 'DV') {
+                vacaciones += 1;
+            }
+        } else if (data && data.texto == 'T') {
+            tramites += 1;
+        } else if (data && data.texto == 'MD') {
+            medioDia += 1;
+        }
+    });
+    return { incapacidad, vacaciones, tramites, medioDia, diasAño };
+}
+
+async function CalculoDiasMes(agente) {
+    const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
+    const añoSeleccionado = document.getElementById('Año').value;
+    const nombreAgente = agentesV[agente].nombre;
+
+    var diasMes = 0;
+
+    let promises = [];
+    for (var j = 2; j <= 32; j++) {
+        let promise = db.ref('celdas/' + nombreAgente + '/' + j + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
+        promises.push(promise);
+    }
+    let results = await Promise.all(promises);
+    results.forEach(snapshot => {
+        const data = snapshot.val();
+        if (data && (data.texto == 'I' || data.texto == 'DV')) {
+            diasMes += 1;
+        }
+    });
+    return diasMes;
+}
+
+async function cargarVacaciones() {
+    const agentesArray = Object.keys(agentesV);
+    for (let index = 0; index < agentesArray.length; index++) {
+        const agente = agentesArray[index];
+        const diasPendientes = await CalculoDiasPendientes(agente);
+        const diasMes = await CalculoDiasMes(agente);
+        const { incapacidad, vacaciones, tramites, medioDia, diasAño } = await CalculoDiasAño(agente);
+        document.getElementById("DP" + (index + 1)).textContent = diasPendientes - diasAño;
+        document.getElementById("DenA" + (index + 1)).textContent = diasAño;
+        document.getElementById("DenM" + (index + 1)).textContent = diasMes;
+        document.getElementById("I" + (index + 1)).textContent = incapacidad;
+        document.getElementById("DV" + (index + 1)).textContent = vacaciones;
+        document.getElementById("T" + (index + 1)).textContent = tramites;
+        document.getElementById("MD" + (index + 1)).textContent = medioDia;
+    }
+}
+

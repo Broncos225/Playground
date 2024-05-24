@@ -10,8 +10,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <title>Horarios Stop</title>
+
+    <title>Horarios Stop Jeans</title>
 </head>
 
 <body>
@@ -26,7 +28,6 @@
                 <li><a href="Calculadora.html">Calculadora</a></li>
                 <li><a href="Herramientas.html">Herramientas</a></li>
                 <li><a href="Plantillas.html">Plantillas</a></li>
-                <li><a href="VacacionesStop.html">Vacaciones Stop</a></li>
                 <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
                 <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
             </ul>
@@ -34,7 +35,7 @@
     </header>
     <section>
         <h1 id="banner"></h1>
-        <h1 id="Titulo">Horarios STOP</h1>
+        <h1 id="Titulo">Horarios Stop Jeans</h1>
         <div style="display: flex; flex-direction: row; gap: 20px;">
             <div style="display: flex; flex-direction: column;">
 
@@ -55,9 +56,9 @@
                 </select>
 
                 <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <button id="Izq"><</button>
-                    <button id="Hoy">A</button>
-                    <button id="Der">></button>
+                    <button id="Izq"><i class="fas fa-arrow-left"></i></i></button>
+                    <button id="Hoy"><i class="fas fa-calendar-day"></i></i></button>
+                    <button id="Der"><i class="fas fa-arrow-right"></i></button>
                 </div>
             </div>
             <div style="display: flex; flex-direction: column;">
@@ -540,6 +541,14 @@
                         <td style="font-weight: bold;">DV</td>
                         <td>Vacaciones</td>
                     </tr>
+                    <tr>
+                        <td style="font-weight: bold;">T</td>
+                        <td>Tramites</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">MD</td>
+                        <td>Medio-día</td>
+                    </tr>
                 </table>
             </div>
             <div class="Almuerzos">
@@ -580,7 +589,106 @@
                 </table>
             </div>
 
-        </div>
+
+
+            <div class="Calculos">
+                <h2>Cálculos automáticos</h2>
+                <div class="tablas">
+                    <table id="TablaCalculos">
+                        <tr>
+                            <th style="font-size: medium;">Agentes</th>
+                            <th style="font-size: medium;">Dias x mes</th>
+                            <th style="font-size: medium;">Dias x año</th>
+                            <th style="font-size: medium;">Dias pendientes</th>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Anderson Cano Londoño</td>
+                            <td id="DenM1"></td>
+                            <td id="DenA1"></td>
+                            <td id="DP1"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Miguel Cadavid Naranjo </td>
+                            <td id="DenM2"></td>
+                            <td id="DenA2"></td>
+                            <td id="DP2"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Milton Alexis Calle Londoño </td>
+                            <td id="DenM3"></td>
+                            <td id="DenA3"></td>
+                            <td id="DP3"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Yesica Johana Cano Quintero </td>
+                            <td id="DenM4"></td>
+                            <td id="DenA4"></td>
+                            <td id="DP4"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Andrés Felipe Vidal Medina </td>
+                            <td id="DenM5"></td>
+                            <td id="DenA5"></td>
+                            <td id="DP5"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;">Andrés Felipe Yepes Tascón </td>
+                            <td id="DenM6"></td>
+                            <td id="DenA6"></td>
+                            <td id="DP6"></td>
+                        </tr>
+                    </table>
+                    <table id="TiposDias">
+                        <thead>
+                            <tr>
+                                <th style="font-size: small;" colspan="4">Razón de salida</th>
+                            </tr>
+                            <tr>
+                                <th style="font-size: smaller;">I</th>
+                                <th style="font-size: smaller;">DV</th>
+                                <th style="font-size: smaller;">T</th>
+                                <th style="font-size: smaller;">MD</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td id="I1"></td>
+                            <td id="DV1"></td>
+                            <td id="T1"></td>
+                            <td id="MD1"></td>
+                        </tr>
+                        <tr>
+                            <td id="I2"></td>
+                            <td id="DV2"></td>
+                            <td id="T2"></td>
+                            <td id="MD2"></td>
+                        </tr>
+                        <tr>
+                            <td id="I3"></td>
+                            <td id="DV3"></td>
+                            <td id="T3"></td>
+                            <td id="MD3"></td>
+                        </tr>
+                        <tr>
+                            <td id="I4"></td>
+                            <td id="DV4"></td>
+                            <td id="T4"></td>
+                            <td id="MD4"></td>
+                        </tr>
+                        <tr>
+                            <td id="I5"></td>
+                            <td id="DV5"></td>
+                            <td id="T5"></td>
+                            <td id="MD5"></td>
+                        </tr>
+                        <tr>
+                            <td id="I6"></td>
+                            <td id="DV6"></td>
+                            <td id="T6"></td>
+                            <td id="MD6"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
     </section>
 
     <footer>
