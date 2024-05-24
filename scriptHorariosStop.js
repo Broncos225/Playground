@@ -1355,9 +1355,9 @@ async function CalculoDiasAño(agente) {
     let results = await Promise.all(promises);
     results.forEach(snapshot => {
         const data = snapshot.val();
-        if (data && (data.texto == 'I' || data.texto == 'DV')) {
+        if (data && (data.texto == 'IN' || data.texto == 'DV')) {
             diasAño += 1;
-            if (data.texto == 'I') {
+            if (data.texto == 'IN') {
                 incapacidad += 1;
             } else if (data.texto == 'DV') {
                 vacaciones += 1;
@@ -1386,7 +1386,7 @@ async function CalculoDiasMes(agente) {
     let results = await Promise.all(promises);
     results.forEach(snapshot => {
         const data = snapshot.val();
-        if (data && (data.texto == 'I' || data.texto == 'DV')) {
+        if (data && (data.texto == 'IN' || data.texto == 'DV')) {
             diasMes += 1;
         }
     });
@@ -1400,10 +1400,11 @@ async function cargarVacaciones() {
         const diasPendientes = await CalculoDiasPendientes(agente);
         const diasMes = await CalculoDiasMes(agente);
         const { incapacidad, vacaciones, tramites, medioDia, diasAño } = await CalculoDiasAño(agente);
-        document.getElementById("DP" + (index + 1)).textContent = diasPendientes - diasAño;
+        const diasNoIncapacidad = diasAño - incapacidad; // Restar los días de incapacidad de los días del año
+        document.getElementById("DP" + (index + 1)).textContent = diasPendientes - diasNoIncapacidad; // Restar los días que no son de incapacidad de los días pendientes
         document.getElementById("DenA" + (index + 1)).textContent = diasAño;
         document.getElementById("DenM" + (index + 1)).textContent = diasMes;
-        document.getElementById("I" + (index + 1)).textContent = incapacidad;
+        document.getElementById("IN" + (index + 1)).textContent = incapacidad;
         document.getElementById("DV" + (index + 1)).textContent = vacaciones;
         document.getElementById("T" + (index + 1)).textContent = tramites;
         document.getElementById("MD" + (index + 1)).textContent = medioDia;
