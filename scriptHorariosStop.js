@@ -244,23 +244,73 @@ function contDescansos() {
     celdaF.textContent = contF;
 }
 
-let celdaDiaActual = null;
+document.addEventListener('DOMContentLoaded', (event) => {
 
-function exportarExcel() {
-    var table = document.getElementById("Table");
-    var wb = XLSX.utils.table_to_book(table);
-    var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+    var modal = document.getElementById("myModal");
+    var body = document.getElementsByTagName("body")[0];
+    var btn = document.getElementById("btnExportar");
 
-    function s2ab(s) {
-        var buf = new ArrayBuffer(s.length);
-        var view = new Uint8Array(buf);
-        for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
+    btn.onclick = function () {
+        modal.style.display = "block";
+        body.style.overflow = "hidden";
     }
-    saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "Horarios.xlsx");
-}
 
-document.getElementById('btnExportar').addEventListener('click', exportarExcel);
+    var span = document.getElementsByClassName("close")[0];
+
+    span.onclick = function () {
+        modal.style.display = "none";
+        body.style.overflow = "auto";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            body.style.overflow = "auto";
+        }
+    }
+    var btnExcel = document.getElementById("exportExcel");
+    var btnPng = document.getElementById("exportPng");
+
+    btnExcel.onclick = function () {
+        exportarExcel();
+    }
+
+    btnPng.onclick = function () {
+        exportarPNG();
+    }
+
+    function cerrarModal() {
+        modal.style.display = "none";
+        body.style.overflow = "auto";
+    }
+
+    function exportarExcel() {
+        var table = document.getElementById("Table");
+        var wb = XLSX.utils.table_to_book(table);
+        var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+
+        function s2ab(s) {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+        }
+        saveAs(new Blob([s2ab(wbout)], { type: "application/octet-stream" }), "Horarios.xlsx");
+        cerrarModal();
+    }
+
+    function exportarPNG() {
+        var table = document.getElementById("Table");
+
+        html2canvas(table).then(function (canvas) {
+            canvas.toBlob(function (blob) {
+                saveAs(blob, "Horarios.png");
+                cerrarModal();
+            });
+        });
+    }
+});
+
 
 let agentes = {
     Anderson_Cano_Londoño: {
@@ -1248,7 +1298,7 @@ function cambiarBordeColumna() {
 var selector = document.getElementById('Mes');
 
 // Agrega un evento de cambio al selector
-selector.addEventListener('change', function() {
+selector.addEventListener('change', function () {
     // Obtén el valor seleccionado
     var valorSeleccionado = this.value;
 

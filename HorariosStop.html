@@ -689,6 +689,22 @@
                     </table>
                 </div>
             </div>
+            <div id="myModal" class="modal">
+                <div class="modal-content2">
+                    <div id="modal-content"
+                        style="display: flex; flex-direction: column; align-items: center; gap:10px;">
+                        <div style="position: relative; width: 100%; text-align: center;">
+                            <h2 style="margin: 0px;">Exportar</h2>
+                            <span class="close" style="position: absolute; right: 0; top: 0;" onclick="closeModal()">&times;</span>
+                        </div>
+                        <p style="text-align: center;">Seleccione el formato de exportación:</p>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="exportExcel">Exportar a Excel</button>
+                            <button id="exportPng">Exportar a PNG</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </section>
 
     <footer>
@@ -698,6 +714,10 @@
     <script src="scriptHorariosStop.js" type="module"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="Header.js"></script>
     <script src="Marquee.js"></script>
 </body>

@@ -1265,3 +1265,34 @@ section {
 #Solicitudes {
     display: none;
 }
+
+.modal-content2 {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    position: fixed; /* Posicionamiento fijo respecto a la ventana del navegador */
+    top: 50%; /* Centrado verticalmente */
+    left: 50%; /* Centrado horizontalmente */
+    transform: translate(-50%, -20%); /* Desplaza el modal a la mitad de su altura y anchura para centrarlo perfectamente */
+    width: fit-content; /* Ajusta este valor para cambiar el ancho del modal */
+    padding: 20px;
+    border: 1px solid #888;
+    background-color: #fefefe;
+    overflow: auto; /* Habilita el scroll si es necesario */
+}
+
+@media screen and (max-height: 327px) {
+    .titulo h2 {
+        margin: 0;
+    }
+    
+    .Turnos,
+    .Almuerzos {
+        width: max-content;
+    }
+
+    .Calculos {
+        display: flex;
+        width: auto;
+    }
+}
