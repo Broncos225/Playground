@@ -36,40 +36,62 @@
     <section>
         <h1 id="banner"></h1>
         <h1 id="Titulo">Horarios Stop Jeans</h1>
-        <div style="display: flex; flex-direction: row; gap: 20px;">
-            <div style="display: flex; flex-direction: column;">
 
-                <label for="Mes" style="display: flex; align-items: flex-start;">Mes:</label>
-                <select id="Mes" class="custom-select">
-                    <option class="1">Enero</option>
-                    <option class="2">Febrero</option>
-                    <option class="3">Marzo</option>
-                    <option class="4">Abril</option>
-                    <option class="5">Mayo</option>
-                    <option class="6">Junio</option>
-                    <option class="7">Julio</option>
-                    <option class="8">Agosto</option>
-                    <option class="9">Septiembre</option>
-                    <option class="10">Octubre</option>
-                    <option class="11">Noviembre</option>
-                    <option class="12">Diciembre</option>
-                </select>
 
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <button id="Izq"><i class="fas fa-arrow-left"></i></i></button>
-                    <button id="Hoy"><i class="fas fa-calendar-day"></i></i></button>
-                    <button id="Der"><i class="fas fa-arrow-right"></i></button>
+        <div style="display: flex; width: 100%; flex-direction: row; gap: 20px; justify-content: center; align-items: center;">
+
+
+            <div style="display: flex; gap: 10px;">
+                <div style="display: flex; flex-direction: column;">
+
+                    <label for="Mes" style="display: flex; align-items: flex-start;">Mes:</label>
+                    <select id="Mes" class="custom-select">
+                        <option class="1">Enero</option>
+                        <option class="2">Febrero</option>
+                        <option class="3">Marzo</option>
+                        <option class="4">Abril</option>
+                        <option class="5">Mayo</option>
+                        <option class="6">Junio</option>
+                        <option class="7">Julio</option>
+                        <option class="8">Agosto</option>
+                        <option class="9">Septiembre</option>
+                        <option class="10">Octubre</option>
+                        <option class="11">Noviembre</option>
+                        <option class="12">Diciembre</option>
+                    </select>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <button id="Izq"><i class="fas fa-arrow-left"></i></i></button>
+                        <button id="Hoy"><i class="fas fa-calendar-day"></i></i></button>
+                        <button id="Der"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column;">
+                    <label for="Año" style="display: flex; align-items: flex-start;">Año:</label>
+                    <select id="Año" class="custom-select">
+                        <option class="2024">2024</option>
+                        <option class="2025">2025</option>
+                        <option class="2026">2026</option>
+                        <option class="2027">2027</option>
+                        <option class="2028">2028</option>
+                    </select>
                 </div>
             </div>
-            <div style="display: flex; flex-direction: column;">
-                <label for="Año" style="display: flex; align-items: flex-start;">Año:</label>
-                <select id="Año" class="custom-select">
-                    <option class="2024">2024</option>
-                    <option class="2025">2025</option>
-                    <option class="2026">2026</option>
-                    <option class="2027">2027</option>
-                    <option class="2028">2028</option>
-                </select>
+            <div>
+                <button id="menuButton" style="height: fit-content;">Opciones</button>
+            </div>
+        </div>
+        <div id="BotonesHerramientas"
+            style="display: flex; justify-content: center; flex-direction: row; gap: 13px; align-items: flex-end; flex-wrap: wrap;">
+            <form>
+                <input type="password" id="pass" placeholder="Contraseña">
+                <button id="btnGuardar">Guardar</button>
+            </form>
+            <div class="vertical-bar"></div>
+            <div>
+                <button id="btnExportar">Exportar</button>
+                <button id="btnImportar">Importar</button>
+                <button id="btnLimpiar">Limpiar</button>
             </div>
         </div>
         <div class="Contenedor" class="custom-select">
@@ -393,15 +415,7 @@
         </div>
 
         <div id="BotonesHorario">
-            <form>
-                <input type="password" id="pass" placeholder="Contraseña">
-                <button id="btnGuardar">Guardar</button>
-            </form>
-            <div class="vertical-bar"></div>
-            <button id="btnExportar">Exportar</button>
-            <button id="btnImportar">Importar</button>
-            <button id="btnLimpiar">Limpiar</button>
-            <div class="vertical-bar"></div>
+            <button id="btnExportarTexto">Exportar a texto</button>
             <select type="text" id="SolExportar" name="Solicitante" required>
                 <option value="">Seleccione el asesor...</option>
                 <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
@@ -411,8 +425,12 @@
                 <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
                 <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
             </select>
-            <button id="btnExportarTexto">Exportar a texto</button>
-            <button id="btnNotificador">Notificador</button>
+
+            <span>Notificaciones de Softcontrol</span>
+            <label class="switch">
+                <input type="checkbox" id="notificationSwitch">
+                <span class="slider"></span>
+            </label>
         </div>
         <div id="Solicitudes">
             <h2 style="margin-bottom: 0">Solicitudes</h2>

@@ -1464,3 +1464,21 @@ async function cargarVacaciones() {
         document.getElementById("MD" + (index + 1)).textContent = medioDia;
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Primero, selecciona el botón y el elemento #BotonesHerramientas
+    var boton = document.querySelector('#menuButton');
+    var botonesHerramientas = document.querySelector('#BotonesHerramientas');
+    botonesHerramientas.style.display = 'none'
+    // Luego, agrega un evento de escucha al botón
+    boton.addEventListener('click', function() {
+        // En el evento de clic, verifica si #BotonesHerramientas está oculto
+        if (botonesHerramientas.style.display === 'none') {
+            // Si está oculto, muéstralo
+            botonesHerramientas.style.display = 'flex';
+        } else {
+            // Si no está oculto, ocúltalo
+            botonesHerramientas.style.display = 'none';
+        }
+    });
+});

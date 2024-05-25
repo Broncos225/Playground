@@ -32,25 +32,13 @@ let agentesN = {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    setupButtonEventListener();
     checkAndSetupNotifications();
 });
 
-function setupButtonEventListener() {
-    var btnNotificador = document.getElementById("btnNotificador");
-    if (btnNotificador) {
-        btnNotificador.addEventListener("click", function () {
-            Notificador();
-        });
-    }
-}
+
 
 function Notificador() {
     var agenteSeleccionado = document.getElementById("SolExportar").value;
-    if (agenteSeleccionado == "") {
-        alert("Por favor seleccione un agente");
-        return;
-    }
 
     if (!(agenteSeleccionado in agentesN)) {
         alert("El agente seleccionado no es válido");
@@ -167,3 +155,40 @@ function checkAndSetupNotifications() {
     }
 }
 
+function enableNotifications() {
+    var notificacionesActivas = localStorage.getItem('notificacionesActivas');
+    if (notificacionesActivas) {
+        var { horarios, descripciones, celdaContent } = JSON.parse(notificacionesActivas);
+        programarNotificaciones(horarios, descripciones, celdaContent);
+    }
+}
+
+function disableNotifications() {
+    localStorage.removeItem('notificacionesActivas');
+}
+
+document.getElementById('notificationSwitch').addEventListener('change', function() {
+    
+    if (this.checked) {
+        if (asesorSeleccionado()) {
+            Notificador();
+        } else {
+            this.checked = false;
+            alert('Por favor, selecciona un asesor antes de activar las notificaciones.');
+        }
+    } else {
+        disableNotifications();
+    }
+});
+
+function asesorSeleccionado() {
+    // Supongamos que los asesores se seleccionan a través de un elemento select
+    var select = document.getElementById('SolExportar');
+
+    // Si el valor del select es vacío, entonces no se ha seleccionado un asesor
+    if (select.value === '') {
+        return false;
+    } else {
+        return true;
+    }
+}
