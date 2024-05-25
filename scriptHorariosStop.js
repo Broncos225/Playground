@@ -1465,6 +1465,7 @@ async function cargarVacaciones() {
     }
 }
 
+
 document.getElementById("btnNotificador").addEventListener("click", function () {
     Notificador();
 });
@@ -1482,7 +1483,7 @@ function Notificador() {
         "T3": ["09:30", "13:30", "14:30", "18:30"],
         "T4": ["10:00", "14:30", "15:30", "19:00"],
         "T5": ["11:00", "15:30", "16:30", "20:00"],
-        "T6": ["12:30", "16:30", "17:30", "21:30"],
+        "T6": ["12:30", "16:30", "17:30", "21:09"],
         "TSA": ["8:00", "12:00", "13:00", "16:00"],
         "T2R1": ["10:00", "12:30", "13:30", "18:00"],
         "T3R1": ["10:30", "13:30", "14:30", "18:30"],
@@ -1507,11 +1508,13 @@ function Notificador() {
         Notification.requestPermission().then(function (permission) {
             if (permission === "granted") {
                 // Notificación de confirmación
-                mostrarNotificacion("Has activado las notificaciones de las marcaiones de Softcontrol");
+                mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
                 programarNotificaciones(horarios, descripciones);
             }
         });
     } else {
+        // Notificación de confirmación si los permisos ya están concedidos
+        mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
         programarNotificaciones(horarios, descripciones);
     }
 }
@@ -1533,7 +1536,7 @@ function programarNotificaciones(horarios, descripciones) {
 }
 
 function mostrarNotificacion(mensaje) {
-    new Notification("Recordatorio de Marcación", {
+    new Notification("Recordatorio de Marcación Softcontrol", {
         body: mensaje,
     });
 
