@@ -1478,13 +1478,13 @@ function Notificador() {
     }
 
     var Marcaciones = {
-        "T1": ["7:00", "12:00", "13:00", "16:00"],
-        "T2": ["9:00", "12:30", "13:30", "18:00"],
+        "T1": ["07:00", "12:00", "13:00", "16:00"],
+        "T2": ["09:00", "12:30", "13:30", "18:00"],
         "T3": ["09:30", "13:30", "14:30", "18:30"],
         "T4": ["10:00", "14:30", "15:30", "19:00"],
-        "T5": ["0:25", "15:30", "16:30", "20:00"],
+        "T5": ["11:00", "15:30", "16:30", "20:00"],
         "T6": ["12:30", "16:30", "17:30", "21:30"],
-        "TSA": ["8:00", "12:00", "13:00", "16:00"],
+        "TSA": ["08:00", "12:00", "13:00", "16:00"],
         "T2R1": ["10:00", "12:30", "13:30", "18:00"],
         "T3R1": ["10:30", "13:30", "14:30", "18:30"],
         "T4R1": ["11:00", "14:30", "15:30", "19:00"],
@@ -1509,17 +1509,17 @@ function Notificador() {
             if (permission === "granted") {
                 // Notificación de confirmación
                 mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
-                programarNotificaciones(horarios, descripciones);
+                programarNotificaciones(horarios, descripciones, celda);
             }
         });
     } else {
         // Notificación de confirmación si los permisos ya están concedidos
         mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
-        programarNotificaciones(horarios, descripciones);
+        programarNotificaciones(horarios, descripciones, celda);
     }
 }
 
-function programarNotificaciones(horarios, descripciones) {
+function programarNotificaciones(horarios, descripciones, celda) {
     var now = new Date();
     horarios.forEach((horario, index) => {
         var [hours, minutes] = horario.split(':');
@@ -1529,7 +1529,7 @@ function programarNotificaciones(horarios, descripciones) {
         if (time > now) {
             var timeout = time - now;
             setTimeout(() => {
-                mostrarNotificacion(`Es hora de la ${descripciones[index]}: ${convertirHora12(time)}`);
+                mostrarNotificacion(`Es hora de marcar la ${descripciones[index]} del: ${celda.textContent} a las ${convertirHora12(time)}`);
             }, timeout);
         }
     });
