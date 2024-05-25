@@ -71,23 +71,31 @@ function abrirModulo(event) {
     }
 }
 
-function showPanel() {
+async function showPanel(event) {
     var panel = document.getElementById("Panel");
     var modalTitulo = document.querySelector("#Panel #modal-content #titulo");
     var modalApertura = document.querySelector("#Panel #modal-content #apertura");
     var modalCierre = document.querySelector("#Panel #modal-content #cierre");
 
     var h2Content = event.currentTarget.querySelector('h2').innerText;
-    var textoA;
-    var textoC;
+
+    // Limpiar el contenido anterior
+    modalTitulo.innerHTML = '';
+    modalApertura.innerHTML = '';
+    modalCierre.innerHTML = '';
 
     modalTitulo.innerHTML = `
     <hr>
     <h2 style="text-align: center;">${h2Content}</h2>
     <hr>
     `;
-    db.ref('Plantillas/' + h2Content + '/Apertura').once('value').then(function (snapshot) {
-        textoA = snapshot.val();
+
+    try {
+        let snapshotA = await db.ref('Plantillas/' + h2Content + '/Apertura').once('value');
+        let snapshotC = await db.ref('Plantillas/' + h2Content + '/Cierre').once('value');
+
+        var textoA = snapshotA.val();
+        var textoC = snapshotC.val();
 
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -96,10 +104,6 @@ function showPanel() {
         </div>
         <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
-    });
-
-    db.ref('Plantillas/' + h2Content + '/Cierre').once('value').then(function (snapshot) {
-        textoC = snapshot.val();
 
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -108,12 +112,14 @@ function showPanel() {
         </div>
         <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
-    });
-    panel.style.display = "block"; // Esta línea hace visible el panel
-
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    } finally {
+        panel.style.display = "block"; // Esta línea hace visible el panel
+    }
 }
 
-function showModal(event) {
+async function showModal(event) {
     cerrarPanel();
     var modal = document.getElementById("myModal");
     modal.scrollTop = 0; // Add this line
@@ -123,16 +129,23 @@ function showModal(event) {
 
     var h2Content = event.currentTarget.querySelector('h2').innerText;
 
-    var textoA;
-    var textoC;
+    // Limpiar el contenido anterior
+    modalTitulo.innerHTML = '';
+    modalApertura.innerHTML = '';
+    modalCierre.innerHTML = '';
 
     modalTitulo.innerHTML = `
     <hr>
     <h2 style="text-align: center;">${h2Content}</h2>
     <hr>
     `;
-    db.ref('Plantillas/' + h2Content + '/Apertura').once('value').then(function (snapshot) {
-        textoA = snapshot.val();
+
+    try {
+        let snapshotA = await db.ref('Plantillas/' + h2Content + '/Apertura').once('value');
+        let snapshotC = await db.ref('Plantillas/' + h2Content + '/Cierre').once('value');
+
+        var textoA = snapshotA.val();
+        var textoC = snapshotC.val();
 
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -141,10 +154,6 @@ function showModal(event) {
         </div>
         <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
-    });
-
-    db.ref('Plantillas/' + h2Content + '/Cierre').once('value').then(function (snapshot) {
-        textoC = snapshot.val();
 
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -153,43 +162,20 @@ function showModal(event) {
         </div>
         <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
-    });
-    document.body.classList.add('modal-open');
-    if (window.innerWidth <= 968) {
-        document.querySelector('header').style.display = 'none';
-        document.getElementById("myModal").style.top = '0px';
-    } else {
-        document.querySelector('header').style.display = 'block';
-        document.getElementById("myModal").style.top = '50px';
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    } finally {
+        document.body.classList.add('modal-open');
+        if (window.innerWidth <= 968) {
+            document.querySelector('header').style.display = 'none';
+            document.getElementById("myModal").style.top = '0px';
+        } else {
+            document.querySelector('header').style.display = 'block';
+            document.getElementById("myModal").style.top = '50px';
+        }
+        modal.style.display = "block";
     }
-    modal.style.display = "block";
 }
-
-
-
-
-// function copiarAranda(id) {
-//     var text = document.getElementById(id).innerHTML;
-//     var styledText = `<span style="font-family: Nunito, sans-serif;">${text}</span>`;
-//     function listener(e) {
-//         e.clipboardData.setData("text/html", styledText);
-//         e.clipboardData.setData("text/plain", text);
-//         e.preventDefault();
-//     }
-//     document.addEventListener("copy", listener);
-//     document.execCommand("copy");
-//     document.removeEventListener("copy", listener);
-
-//     // Muestra la notificación
-//     var notification = document.getElementById('notification');
-//     notification.textContent = 'Texto para Aranda copiado al portapapeles';
-//     notification.style.opacity = '1';
-
-//     // Oculta la notificación después de 1 segundo
-//     setTimeout(function () {
-//         notification.style.opacity = '0';
-//     }, 1000);
-// }
 
 function copiarTexto(id) {
     var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
@@ -212,6 +198,7 @@ function copiarTexto(id) {
         notification.style.opacity = '0';
     }, 1000);
 }
+
 
 function closeModal() {
     var modal = document.getElementById("myModal");
@@ -242,3 +229,26 @@ function Estado() {
         document.getElementById('list').style.backgroundColor = '#bbb';
     }
 }
+
+// function copiarAranda(id) {
+//     var text = document.getElementById(id).innerHTML;
+//     var styledText = `<span style="font-family: Nunito, sans-serif;">${text}</span>`;
+//     function listener(e) {
+//         e.clipboardData.setData("text/html", styledText);
+//         e.clipboardData.setData("text/plain", text);
+//         e.preventDefault();
+//     }
+//     document.addEventListener("copy", listener);
+//     document.execCommand("copy");
+//     document.removeEventListener("copy", listener);
+
+//     // Muestra la notificación
+//     var notification = document.getElementById('notification');
+//     notification.textContent = 'Texto para Aranda copiado al portapapeles';
+//     notification.style.opacity = '1';
+
+//     // Oculta la notificación después de 1 segundo
+//     setTimeout(function () {
+//         notification.style.opacity = '0';
+//     }, 1000);
+// }
