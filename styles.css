@@ -391,6 +391,10 @@ button .botonReiniciar:hover {
     background-color: #fac8c8;
 }
 
+#btnNotificador {
+    background-color: #f089ee;
+}
+
 #btnGuardar:hover,
 #btnExportar:hover,
 #btnExportarTexto:hover,

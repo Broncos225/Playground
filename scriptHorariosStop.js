@@ -1161,8 +1161,12 @@ function ExportaraTexto() {
         "NN": "Ninguno",
         "D": "Descanso",
         "AS": "Apoyo Sura 06:30 am - 05:00 pm",
+        "ASR1": "Apoyo Sura 06:30 am - 04:00 pm",
         "DF": "Día de la familia",
         "IN": "Incapacidad",
+        "DV": "Vacaciones",
+        "T": "Tramites",
+        "MD": "Medio día",
     }
     agentes[document.getElementById("SolExportar").value].nombre;
     var mes = document.getElementById("Mes").value;
@@ -1461,3 +1465,90 @@ async function cargarVacaciones() {
     }
 }
 
+document.getElementById("btnNotificador").addEventListener("click", function () {
+    Notificador();
+});
+
+function Notificador() {
+    var agenteSeleccionado = document.getElementById("SolExportar").value;
+    if (agenteSeleccionado == "") {
+        alert("Por favor seleccione un agente");
+        return;
+    }
+
+    var Marcaciones = {
+        "T1": ["7:00", "12:00", "13:00", "16:00"],
+        "T2": ["9:00", "12:30", "13:30", "18:00"],
+        "T3": ["09:30", "13:30", "14:30", "18:30"],
+        "T4": ["10:00", "14:30", "15:30", "19:00"],
+        "T5": ["11:00", "15:30", "16:30", "20:00"],
+        "T6": ["12:30", "16:30", "17:30", "21:30"],
+        "TSA": ["8:00", "12:00", "13:00", "16:00"],
+        "T2R1": ["10:00", "12:30", "13:30", "18:00"],
+        "T3R1": ["10:30", "13:30", "14:30", "18:30"],
+        "T4R1": ["11:00", "14:30", "15:30", "19:00"],
+        "T5R1": ["12:00", "15:30", "16:30", "20:00"],
+        "T6R1": ["13:30", "16:30", "17:30", "21:30"],
+    };
+
+    var Letra = agentes[agenteSeleccionado].letra;
+    var fecha = new Date();
+    var dia = fecha.getDate();
+    var celda = document.getElementById(Letra + dia);
+    console.log(celda.textContent);
+
+    var descripciones = ["entrada del turno", "salida al almuerzo", "entrada del almuerzo", "salida del turno"];
+    var horarios = Marcaciones[celda.textContent.trim()];
+
+    if (!("Notification" in window)) {
+        alert("Este navegador no soporta notificaciones de escritorio");
+        return;
+    } else if (Notification.permission !== "granted") {
+        Notification.requestPermission().then(function (permission) {
+            if (permission === "granted") {
+                // Notificación de confirmación
+                mostrarNotificacion("Has activado las notificaciones de las marcaiones de Softcontrol");
+                programarNotificaciones(horarios, descripciones);
+            }
+        });
+    } else {
+        programarNotificaciones(horarios, descripciones);
+    }
+}
+
+function programarNotificaciones(horarios, descripciones) {
+    var now = new Date();
+    horarios.forEach((horario, index) => {
+        var [hours, minutes] = horario.split(':');
+        var time = new Date();
+        time.setHours(hours, minutes, 0, 0);
+
+        if (time > now) {
+            var timeout = time - now;
+            setTimeout(() => {
+                mostrarNotificacion(`Es hora de la ${descripciones[index]}: ${convertirHora12(time)}`);
+            }, timeout);
+        }
+    });
+}
+
+function mostrarNotificacion(mensaje) {
+    new Notification("Recordatorio de Marcación", {
+        body: mensaje,
+    });
+
+    // Reproducir sonido de notificación
+    var sonido = document.getElementById("notificationSound");
+    sonido.play();
+}
+
+function convertirHora12(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // La hora '0' debe ser '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}

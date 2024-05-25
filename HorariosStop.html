@@ -116,7 +116,7 @@
                         <td class="titulos DiaSemana"></td>
                     </tr>
                     <tr class="titulos" id="Dias">
-                        <th>Nombre del agente</th>
+                        <th>Nombre del asesor</th>
                         <th id="Dia1">1</th>
                         <th id="Dia2">2</th>
                         <th id="Dia3">3</th>
@@ -403,7 +403,7 @@
             <button id="btnLimpiar">Limpiar</button>
             <div class="vertical-bar"></div>
             <select type="text" id="SolExportar" name="Solicitante" required>
-                <option value=""></option>
+                <option value="">Seleccione el asesor...</option>
                 <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
                 <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
                 <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
@@ -412,7 +412,7 @@
                 <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
             </select>
             <button id="btnExportarTexto">Exportar a texto</button>
-
+            <button id="btnNotificador">Notificador</button>
         </div>
         <div id="Solicitudes">
             <h2 style="margin-bottom: 0">Solicitudes</h2>
@@ -695,7 +695,8 @@
                         style="display: flex; flex-direction: column; align-items: center; gap:10px;">
                         <div style="position: relative; width: 100%; text-align: center;">
                             <h2 style="margin: 0px;">Exportar</h2>
-                            <span class="close" style="position: absolute; right: 0; top: 0;" onclick="closeModal()">&times;</span>
+                            <span class="close" style="position: absolute; right: 0; top: 0;"
+                                onclick="closeModal()">&times;</span>
                         </div>
                         <p style="text-align: center;">Seleccione el formato de exportación:</p>
                         <div style="display: flex; gap: 10px;">
@@ -705,6 +706,8 @@
                     </div>
                 </div>
             </div>
+            <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
+
     </section>
 
     <footer>
