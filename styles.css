@@ -269,7 +269,6 @@ button .botonReiniciar:hover {
 }
 
 .titulos,
-
 .titulos th {
     font-weight: bold;
     font-size: 15px;
@@ -1097,7 +1096,7 @@ input[type='number']::-webkit-outer-spin-button {
 #FormTiendas {
     margin-left: 10px;
     margin-right: 10px;
-    gap: 10px;
+    gap: 5px;
     display: flex;
 }
 
@@ -1288,11 +1287,15 @@ section {
     
     .Turnos,
     .Almuerzos {
-        width: max-content;
+        width: 30%;
     }
 
     .Calculos {
         display: flex;
         width: auto;
     }
+}
+
+#Panel {
+    width: 100%;
 }
