@@ -118,19 +118,25 @@ function programarNotificaciones(horarios, descripciones, celdaContent) {
         if (time > now) {
             var timeout = time - now;
             setTimeout(() => {
-                mostrarNotificacion(`Es hora de marcar la ${descripciones[index]} del: ${celdaContent} a las ${convertirHora12(time)}`);
+                mostrarNotificacion(`Es hora de marcar la ${descripciones[index]} del: ${celdaContent} a las ${convertirHora12(time)}`, "https://biometricos.arus.com.co/home");
             }, timeout);
         }
     });
 }
 
-function mostrarNotificacion(mensaje) {
+function mostrarNotificacion(mensaje, url) {
     var notification = new Notification("Recordatorio de Marcación Softcontrol", {
         body: mensaje,
     });
 
-    cargarSonidoNotificacion(); // Cargar el audio cuando se muestra la notificación
+    if (url) {
+        notification.onclick = function(event) {
+            event.preventDefault(); // Previene el comportamiento predeterminado del navegador
+            window.open(url, '_blank'); // Abre la URL en una nueva pestaña
+        }
+    }
 
+    cargarSonidoNotificacion(); // Cargar el audio cuando se muestra la notificación
 }
 
 function cargarSonidoNotificacion() {
