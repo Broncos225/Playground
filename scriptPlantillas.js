@@ -8,9 +8,6 @@ const firebaseConfig = {
     appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
 };
 
-window.onload = function () {
-    Estado();
-}
 
 firebase.initializeApp(firebaseConfig);
 db = firebase.database();
@@ -54,73 +51,10 @@ document.getElementById('LimpiarP').addEventListener('click', function () {
 
 var db = firebase.database();
 
-var distribucionSeleccionada = 'grid'; // Valor por defecto
 
-function cambiarDistribucion(distribucion) {
-    distribucionSeleccionada = distribucion;
-    Estado();
-}
 
-function abrirModulo(event) {
-    if (distribucionSeleccionada == 'grid') {
-        showModal(event);
-    } else if (distribucionSeleccionada == 'list') {
-        showPanel(event);
-    } else {
-        alert('Error al cambiar la distribución');
-    }
-}
 
-async function showPanel(event) {
-    var panel = document.getElementById("Panel");
-    var modalTitulo = document.querySelector("#Panel #modal-content #titulo");
-    var modalApertura = document.querySelector("#Panel #modal-content #apertura");
-    var modalCierre = document.querySelector("#Panel #modal-content #cierre");
-
-    var h2Content = event.currentTarget.querySelector('h2').innerText;
-
-    // Limpiar el contenido anterior
-    modalTitulo.innerHTML = '';
-    modalApertura.innerHTML = '';
-    modalCierre.innerHTML = '';
-
-    modalTitulo.innerHTML = `
-    <hr>
-    <h2 style="text-align: center;">${h2Content}</h2>
-    <hr>
-    `;
-
-    try {
-        let snapshotA = await db.ref('Plantillas/' + h2Content + '/Apertura').once('value');
-        let snapshotC = await db.ref('Plantillas/' + h2Content + '/Cierre').once('value');
-
-        var textoA = snapshotA.val();
-        var textoC = snapshotC.val();
-
-        modalApertura.innerHTML = `
-        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
-        <h2 style="margin-right: auto;">Apertura</h2>
-        <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
-        </div>
-        <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
-        <hr>`;
-
-        modalCierre.innerHTML = `
-        <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
-        <h2 style="margin-right: auto;">Cierre</h2>
-        <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
-        </div>
-        <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
-        `;
-    } catch (error) {
-        console.error("Error fetching data:", error);
-    } finally {
-        panel.style.display = "block"; // Esta línea hace visible el panel
-    }
-}
-
-async function showModal(event) {
-    cerrarPanel();
+function showModal(event) {
     var modal = document.getElementById("myModal");
     modal.scrollTop = 0; // Add this line
     var modalTitulo = document.querySelector("#myModal #modal-content #titulo");
@@ -129,23 +63,16 @@ async function showModal(event) {
 
     var h2Content = event.currentTarget.querySelector('h2').innerText;
 
-    // Limpiar el contenido anterior
-    modalTitulo.innerHTML = '';
-    modalApertura.innerHTML = '';
-    modalCierre.innerHTML = '';
+    var textoA;
+    var textoC;
 
     modalTitulo.innerHTML = `
     <hr>
     <h2 style="text-align: center;">${h2Content}</h2>
     <hr>
     `;
-
-    try {
-        let snapshotA = await db.ref('Plantillas/' + h2Content + '/Apertura').once('value');
-        let snapshotC = await db.ref('Plantillas/' + h2Content + '/Cierre').once('value');
-
-        var textoA = snapshotA.val();
-        var textoC = snapshotC.val();
+    db.ref('Plantillas/' + h2Content + '/Apertura').once('value').then(function (snapshot) {
+        textoA = snapshot.val();
 
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -154,6 +81,10 @@ async function showModal(event) {
         </div>
         <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
+    });
+
+    db.ref('Plantillas/' + h2Content + '/Cierre').once('value').then(function (snapshot) {
+        textoC = snapshot.val();
 
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -162,73 +93,20 @@ async function showModal(event) {
         </div>
         <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
-    } catch (error) {
-        console.error("Error fetching data:", error);
-    } finally {
-        document.body.classList.add('modal-open');
-        if (window.innerWidth <= 968) {
-            document.querySelector('header').style.display = 'none';
-            document.getElementById("myModal").style.top = '0px';
-        } else {
-            document.querySelector('header').style.display = 'block';
-            document.getElementById("myModal").style.top = '50px';
-        }
-        modal.style.display = "block";
-    }
-}
-
-function copiarTexto(id) {
-    var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
-    text = text.replace(/<br>/g, "\r\n").replace(/<\/p><p>/g, "\r\n").replace(/<p>/g, "").replace(/<\/p>/g, ""); // Añadido para conservar los saltos de línea y eliminar las etiquetas <p></p>
-    var textArea = document.createElement("textarea");
-    textArea.style.fontFamily = "Nunito, sans-serif"; // Añadido para establecer el tipo de letra a Nunito
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-
-    // Muestra la notificación
-    var notification = document.getElementById('notification2');
-    notification.textContent = 'Texto plano copiado al portapapeles';
-    notification.style.opacity = '1';
-
-    // Oculta la notificación después de 1 segundo
-    setTimeout(function () {
-        notification.style.opacity = '0';
-    }, 1000);
-}
-
-
-function closeModal() {
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
-    document.body.classList.remove('modal-open');
-    document.querySelector('header').style.display = 'block';
-}
-
-window.onclick = function (event) {
-    var modal = document.getElementById("myModal");
-    if (event.target == modal) {
-        modal.style.display = "none";
-        document.body.classList.remove('modal-open');
+    });
+    document.body.classList.add('modal-open');
+    if (window.innerWidth <= 968) {
+        document.querySelector('header').style.display = 'none';
+        document.getElementById("myModal").style.top = '0px';
+    } else {
         document.querySelector('header').style.display = 'block';
+        document.getElementById("myModal").style.top = '50px';
     }
+    modal.style.display = "block";
 }
 
-function cerrarPanel() {
-    document.getElementById('Panel').style.display = 'none';
-}
 
-function Estado() {
-    if (distribucionSeleccionada == 'grid') {
-        document.getElementById('list').style.backgroundColor = 'white';
-        document.getElementById('grid').style.backgroundColor = '#bbb';
-    } else if (distribucionSeleccionada == 'list') {
-        document.getElementById('grid').style.backgroundColor = 'white';
-        document.getElementById('list').style.backgroundColor = '#bbb';
-    }
-}
+
 
 // function copiarAranda(id) {
 //     var text = document.getElementById(id).innerHTML;
@@ -252,3 +130,43 @@ function Estado() {
 //         notification.style.opacity = '0';
 //     }, 1000);
 // }
+
+function copiarTexto(id) {
+    var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
+    text = text.replace(/<br>/g, "\r\n").replace(/<\/p><p>/g, "\r\n").replace(/<p>/g, "").replace(/<\/p>/g, ""); // Añadido para conservar los saltos de línea y eliminar las etiquetas <p></p>
+    var textArea = document.createElement("textarea");
+    textArea.style.fontFamily = "Nunito, sans-serif"; // Añadido para establecer el tipo de letra a Nunito
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+
+    // Muestra la notificación
+    var notification = document.getElementById('notification2');
+    notification.textContent = 'Texto plano copiado al portapapeles';
+    notification.style.opacity = '1';
+
+    // Oculta la notificación después de 1 segundo
+    setTimeout(function () {
+        notification.style.opacity = '0';
+    }, 1000);
+}
+
+function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+    document.body.classList.remove('modal-open');
+    document.querySelector('header').style.display = 'block';
+}
+
+window.onclick = function (event) {
+    var modal = document.getElementById("myModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+        document.body.classList.remove('modal-open');
+        document.querySelector('header').style.display = 'block';
+    }
+}
+
+
