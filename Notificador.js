@@ -241,7 +241,7 @@ document.getElementById('usuario').addEventListener('click', function() {
             var cleanVariable = localVariable.replace(/_/g, ' '); // reemplaza todos los guiones bajos con espacios
             alert('El asesor seleccionado es: ' + cleanVariable);
         } else {
-            alert('No se ha seleccionado un asesor.');
+            alert('No se ha seleccionado un asesor. Por favor, selecciona un asesor antes de activar las notificaciones. En la pagina de Horarios.');
         }
     }
 });
