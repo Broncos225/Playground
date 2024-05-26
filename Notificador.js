@@ -167,6 +167,10 @@ function disableNotifications() {
     localStorage.removeItem('notificacionesActivas');
 }
 
+function areNotificationsActive() {
+    return localStorage.getItem('notificacionesActivas') !== null;
+}
+
 document.getElementById('notificationSwitch').addEventListener('change', function() {
     
     if (this.checked) {
@@ -180,6 +184,9 @@ document.getElementById('notificationSwitch').addEventListener('change', functio
         disableNotifications();
     }
 });
+
+// Establecer el estado inicial del interruptor de notificaciones
+document.getElementById('notificationSwitch').checked = areNotificationsActive();
 
 function asesorSeleccionado() {
     // Supongamos que los asesores se seleccionan a través de un elemento select
