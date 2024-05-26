@@ -32,7 +32,7 @@ let agentesN = {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    checkAndSetupNotifications();
+    enableNotifications();
 });
 
 
@@ -144,14 +144,6 @@ function convertirHora12(date) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
-}
-
-function checkAndSetupNotifications() {
-    var notificacionesActivas = localStorage.getItem('notificacionesActivas');
-    if (notificacionesActivas) {
-        var { horarios, descripciones, celdaContent } = JSON.parse(notificacionesActivas);
-        programarNotificaciones(horarios, descripciones, celdaContent);
-    }
 }
 
 function enableNotifications() {
