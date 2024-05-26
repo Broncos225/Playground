@@ -12,6 +12,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
+    CuentaAsesor();
     diaSemana();
     cargarDatos();
     colorCelda();
@@ -135,6 +136,11 @@ function actualizarColorCelda(celda) {
     celda.style.backgroundColor = color;
 }
 
+document.getElementById('form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    guardarCeldas();
+});
+
 function guardarCeldas() {
     var passw = document.getElementById('pass').value;
     var contraseñaEncontrada = false;
@@ -163,8 +169,11 @@ function guardarCeldas() {
         location.reload();
     } else {
         alert("Contraseña incorrecta");
+        document.getElementById('pass').value = "";
     }
 }
+
+
 
 function cargarDatos() {
     const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
@@ -190,7 +199,6 @@ function cargarDatos() {
 
 }
 
-document.getElementById('btnGuardar').addEventListener('click', guardarCeldas);
 function contDescansos() {
     var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
 
@@ -1132,7 +1140,8 @@ function limpiarCeldasEditables() {
 document.getElementById('btnLimpiar').addEventListener('click', limpiarCeldasEditables);
 
 function ExportaraTexto() {
-    if (document.getElementById("SolExportar").value == "") {
+    document.getElementById("SolExportar").value = localStorage.getItem("nombreAsesorActual");
+    if (document.getElementById("SolExportar").value == "Nadie") {
         alert("Por favor seleccione un agente");
         return;
     }
@@ -1465,20 +1474,56 @@ async function cargarVacaciones() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Primero, selecciona el botón y el elemento #BotonesHerramientas
+document.addEventListener('DOMContentLoaded', function () {
     var boton = document.querySelector('#menuButton');
     var botonesHerramientas = document.querySelector('#BotonesHerramientas');
     botonesHerramientas.style.display = 'none'
-    // Luego, agrega un evento de escucha al botón
-    boton.addEventListener('click', function() {
-        // En el evento de clic, verifica si #BotonesHerramientas está oculto
+    boton.addEventListener('click', function () {
         if (botonesHerramientas.style.display === 'none') {
-            // Si está oculto, muéstralo
             botonesHerramientas.style.display = 'flex';
         } else {
-            // Si no está oculto, ocúltalo
             botonesHerramientas.style.display = 'none';
         }
     });
 });
+
+function CuentaAsesor() {
+    var nombre = localStorage.getItem('nombreAsesorActual');
+    nombre = nombre.replace(/_/g, ' '); // Reemplaza todos los guiones bajos con espacios
+    var asesor = document.getElementById("AsesorActual");
+    asesor.textContent = "Asesor actual: ";
+    asesor.textContent += nombre; // Aquí se cambió el operador += por = para reemplazar el contenido anterior
+}
+
+function seleccionarNombre(nombre) {
+    localStorage.setItem('nombreAsesorActual', nombre);
+    cerrarModal2();
+    CuentaAsesor(); // Aquí se llama a la función CuentaAsesor después de actualizar el localStorage
+}
+
+function cerrarModal2() {
+    var modal2 = document.getElementById("myModal2");
+    var body = document.getElementsByTagName("body")[0];
+    modal2.style.display = "none";
+    body.style.overflow = "auto";
+}
+
+document.getElementById("btnAceptar").addEventListener("click", function () {
+    seleccionarNombre(document.getElementById("SolExportar").value);
+});
+var modal2 = document.getElementById("myModal2");
+var btnusuario = document.getElementById("usuario");
+var body = document.getElementsByTagName("body")[0];
+
+btnusuario.onclick = function () {
+    modal2.style.display = "block";
+    body.style.overflow = "hidden";
+}
+
+var span = document.getElementsByClassName("close")[1];
+
+span.onclick = function () {
+    modal2.style.display = "none";
+    body.style.overflow = "auto";
+}
+

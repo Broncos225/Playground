@@ -42,7 +42,10 @@ function Notificador() {
 
     if (!(agenteSeleccionado in agentesN)) {
         alert("El agente seleccionado no es válido");
-        return;
+        var notificationSwitch = document.getElementById('notificationSwitch');
+        if (notificationSwitch) {
+            notificationSwitch.checked = false;
+        } return;
     }
 
     var Letra = agentesN[agenteSeleccionado].letra;
@@ -167,27 +170,31 @@ function areNotificationsActive() {
     return localStorage.getItem('notificacionesActivas') !== null;
 }
 
-document.getElementById('notificationSwitch').addEventListener('change', function() {
-    
-    if (this.checked) {
-        if (asesorSeleccionado()) {
-            Notificador();
+var notificationSwitch = document.getElementById('notificationSwitch');
+if (notificationSwitch) {
+    notificationSwitch.addEventListener('change', function () {
+        if (this.checked) {
+            if (asesorSeleccionado()) {
+                Notificador();
+            } else {
+                this.checked = false;
+                alert('Por favor, selecciona un asesor antes de activar las notificaciones.');
+            }
         } else {
-            this.checked = false;
-            alert('Por favor, selecciona un asesor antes de activar las notificaciones.');
+            disableNotifications();
         }
-    } else {
-        disableNotifications();
-    }
-});
+    });
+}
 
 // Establecer el estado inicial del interruptor de notificaciones
-document.getElementById('notificationSwitch').checked = areNotificationsActive();
-
+var notificationSwitch = document.getElementById('notificationSwitch');
+if (notificationSwitch) {
+    notificationSwitch.checked = areNotificationsActive();
+}
 function asesorSeleccionado() {
     // Supongamos que los asesores se seleccionan a través de un elemento select
     var select = document.getElementById('SolExportar');
-
+    select.value = localStorage.getItem('nombreAsesorActual');
     // Si el valor del select es vacío, entonces no se ha seleccionado un asesor
     if (select.value === '') {
         return false;
@@ -195,3 +202,46 @@ function asesorSeleccionado() {
         return true;
     }
 }
+
+// Añadir un intervalo para comprobar si el turno ha cambiado cada minuto
+setInterval(function () {
+    if (areNotificationsActive()) {
+        var agenteSeleccionado = document.getElementById("SolExportar").value;
+
+        // Verificar si el agente seleccionado existe
+        if (!(agenteSeleccionado in agentesN)) {
+            alert('El asesor seleccionado no es válido. Desactivando las notificaciones.');
+            document.getElementById('notificationSwitch').checked = false;
+            disableNotifications();
+            return;
+        }
+
+        var Letra = agentesN[agenteSeleccionado].letra;
+        var fecha = new Date();
+        var dia = fecha.getDate();
+        var celdaId = Letra + dia;
+
+        var tabla = document.getElementById("Table");
+        var celda = tabla ? tabla.querySelector(`#${celdaId}`) : null;
+
+        if (celda) {
+            var notificacionesActivas = JSON.parse(localStorage.getItem('notificacionesActivas'));
+            if (notificacionesActivas.celdaContent !== celda.textContent.trim()) {
+                // El turno ha cambiado, reprogramar las notificaciones
+                Notificador();
+            }
+        }
+    }
+}, 30000); // 30000 milisegundos = 0.5 minuto
+
+document.getElementById('usuario').addEventListener('click', function() {
+    if (!window.location.href.includes('HorariosStop.html')) {
+        var localVariable = localStorage.getItem('nombreAsesorActual'); // obtiene el valor del localStorage
+        if (localVariable) { // verifica si la variable existe
+            var cleanVariable = localVariable.replace(/_/g, ' '); // reemplaza todos los guiones bajos con espacios
+            alert('El asesor seleccionado es: ' + cleanVariable);
+        } else {
+            alert('La variable no existe en el localStorage');
+        }
+    }
+});

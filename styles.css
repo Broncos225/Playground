@@ -814,7 +814,7 @@ label {
     }
 }
 
-@media only screen and (max-width: 520px) {
+@media only screen and (max-width: 680px) {
     .vertical-bar {
         display: none;
     }

@@ -30,15 +30,20 @@
                 <li><a href="Plantillas.html">Plantillas</a></li>
                 <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
                 <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+                <li><a id="usuario"><i class="fas fa-user"></i></a></li>
             </ul>
         </nav>
     </header>
     <section>
         <h1 id="banner"></h1>
+        <div style="display: flex; width: 100%; justify-content: flex-start;">
+            <h2 id="AsesorActual" style="margin: 0;">Asesor actual: </h2>
+        </div>
         <h1 id="Titulo">Horarios Stop Jeans</h1>
 
 
-        <div style="display: flex; width: 100%; flex-direction: row; gap: 20px; justify-content: center; align-items: center;">
+        <div
+            style="display: flex; width: 100%; flex-direction: row; gap: 20px; justify-content: center; align-items: center;">
 
 
             <div style="display: flex; gap: 10px;">
@@ -83,7 +88,7 @@
         </div>
         <div id="BotonesHerramientas"
             style="display: flex; justify-content: center; flex-direction: row; gap: 13px; align-items: flex-end; flex-wrap: wrap;">
-            <form>
+            <form id="form">
                 <input type="password" id="pass" placeholder="Contraseña">
                 <button id="btnGuardar">Guardar</button>
             </form>
@@ -93,6 +98,8 @@
                 <button id="btnImportar">Importar</button>
                 <button id="btnLimpiar">Limpiar</button>
             </div>
+            <div class="vertical-bar"></div>
+            <button id="btnExportarTexto">Exportar a texto</button>
         </div>
         <div class="Contenedor" class="custom-select">
 
@@ -415,17 +422,6 @@
         </div>
 
         <div id="BotonesHorario">
-            <button id="btnExportarTexto">Exportar a texto</button>
-            <select type="text" id="SolExportar" name="Solicitante" required>
-                <option value="">Seleccione el asesor...</option>
-                <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
-                <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
-                <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
-                <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
-                <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
-                <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
-            </select>
-
             <span>Notificaciones de Softcontrol</span>
             <label class="switch">
                 <input type="checkbox" id="notificationSwitch">
@@ -724,7 +720,28 @@
                     </div>
                 </div>
             </div>
+
+            <div id="myModal2" class="modal">
+                <div class="modal-content2">
+                    <span class="close" style="position: absolute; right: 1; top: 0;">&times;</span>
+                    <div id="modal-content2"
+                        style="display: flex; flex-direction: column; align-items: center; gap:10px;">
+                        <h2>Seleccione el asesor</h2>
+                        <select style="padding-left: 1px;" type="text" id="SolExportar" name="Solicitante" required>
+                            <option value="Nadie">Seleccione el asesor...</option>
+                            <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
+                            <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
+                            <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
+                            <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
+                            <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
+                            <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
+                        </select>
+                        <button id="btnAceptar">Aceptar</button>
+                    </div>
+                </div>
+            </div>
             <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
+
 
     </section>
 
