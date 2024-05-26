@@ -1362,3 +1362,7 @@ input:checked+.slider:before {
 #BotonesHerramientas.mostrar {
     display: flex;
 }
+
+#NoResultados {
+    display: none;
+}

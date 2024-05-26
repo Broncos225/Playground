@@ -16,16 +16,24 @@ document.getElementById('busqueda').addEventListener('input', function (e) {
     var busqueda = e.target.value.toLowerCase();
     busqueda = quitarTildes(busqueda);
     var modulos = document.querySelectorAll('.Modulo2');
+    var count = 0; // Añadir contador
 
     modulos.forEach(function (modulo) {
         var texto = modulo.textContent.toLowerCase();
         texto = quitarTildes(texto);
         if (texto.includes(busqueda)) {
             modulo.style.display = 'flex';
+            count++; // Incrementar contador si se encuentra una coincidencia
+            document.getElementById('NoResultados').style.display = 'none';
         } else {
             modulo.style.display = 'none';
         }
     });
+
+    // Si no se encontraron coincidencias, mostrar un mensaje
+    if (count === 0) {
+        document.getElementById('NoResultados').style.display = 'block';
+    }
 });
 
 function quitarTildes(texto) {
