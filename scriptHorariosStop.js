@@ -1489,10 +1489,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function CuentaAsesor() {
     var nombre = localStorage.getItem('nombreAsesorActual');
-    nombre = nombre.replace(/_/g, ' '); // Reemplaza todos los guiones bajos con espacios
-    var asesor = document.getElementById("AsesorActual");
-    asesor.textContent = "Asesor actual: ";
-    asesor.textContent += nombre; // Aquí se cambió el operador += por = para reemplazar el contenido anterior
+    if (nombre) {
+        nombre = nombre.replace(/_/g, ' '); // Reemplaza todos los guiones bajos con espacios
+        var asesor = document.getElementById("AsesorActual");
+        asesor.textContent = "Asesor actual: ";
+        asesor.textContent += nombre; // Aquí se cambió el operador += por = para reemplazar el contenido anterior
+    } else {
+        console.log('La variable nombreAsesorActual no está definida en localStorage');
+    }
 }
 
 function seleccionarNombre(nombre) {
