@@ -58,8 +58,6 @@ function Notificador() {
         return;
     }
 
-    console.log(celda.textContent);
-
     var Marcaciones = {
         "T1": ["07:00", "12:00", "13:00", "16:00"],
         "T2": ["09:00", "12:30", "13:30", "18:00"],
@@ -106,25 +104,23 @@ function programarNotificaciones(horarios, descripciones, celdaContent) {
         if (time > now) {
             var timeout = time - now;
             setTimeout(() => {
-                mostrarNotificacion(`Es hora de marcar la ${descripciones[index]} del: ${celdaContent} a las ${convertirHora12(time)}`, "https://biometricos.arus.com.co/home");
+                mostrarNotificacion(`Es hora de marcar la ${descripciones[index]} del: ${celdaContent} a las ${convertirHora12(time)}`);
+                abrirSoftcontrol();
             }, timeout);
         }
     });
 }
 
-function mostrarNotificacion(mensaje, url) {
+function mostrarNotificacion(mensaje) {
     var notification = new Notification("Recordatorio de Marcación Softcontrol", {
         body: mensaje,
     });
 
-    if (url) {
-        notification.onclick = function(event) {
-            event.preventDefault(); // Previene el comportamiento predeterminado del navegador
-            window.open(url, '_blank'); // Abre la URL en una nueva pestaña
-        }
-    }
-
     cargarSonidoNotificacion(); // Cargar el audio cuando se muestra la notificación
+}
+
+function abrirSoftcontrol() {
+    window.open("https://biometricos.arus.com.co/home");
 }
 
 function cargarSonidoNotificacion() {
