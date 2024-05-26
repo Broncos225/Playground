@@ -206,17 +206,17 @@ function asesorSeleccionado() {
 // Añadir un intervalo para comprobar si el turno ha cambiado cada minuto
 setInterval(function () {
     if (areNotificationsActive()) {
-        var agenteSeleccionado = document.getElementById("SolExportar").value;
+        var usuarioActual = localStorage.getItem('nombreAsesorActual'); // Recuperar el valor de nombreAsesorActual del almacenamiento local
 
-        // Verificar si el agente seleccionado existe
-        if (!(agenteSeleccionado in agentesN)) {
-            alert('El asesor seleccionado no es válido. Desactivando las notificaciones.');
+        // Verificar si el usuario actual existe
+        if (!(usuarioActual in agentesN)) {
+            alert('El usuario actual no es válido. Desactivando las notificaciones.');
             document.getElementById('notificationSwitch').checked = false;
             disableNotifications();
             return;
         }
 
-        var Letra = agentesN[agenteSeleccionado].letra;
+        var Letra = agentesN[usuarioActual].letra;
         var fecha = new Date();
         var dia = fecha.getDate();
         var celdaId = Letra + dia;
