@@ -241,7 +241,7 @@ document.getElementById('usuario').addEventListener('click', function() {
             var cleanVariable = localVariable.replace(/_/g, ' '); // reemplaza todos los guiones bajos con espacios
             alert('El asesor seleccionado es: ' + cleanVariable);
         } else {
-            alert('La variable no existe en el localStorage');
+            alert('No se ha seleccionado un asesor.');
         }
     }
 });
