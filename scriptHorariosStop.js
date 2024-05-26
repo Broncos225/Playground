@@ -16,7 +16,6 @@ window.onload = function () {
     diaSemana();
     cargarDatos();
     colorCelda();
-    mostrarSolicitudes();
     Festivos();
     cambiarBordeColumna();
     cargarVacaciones();
@@ -544,7 +543,6 @@ setInterval(() => {
     cambiarPaddingSegunScroll();
 }, checkInterval);
 
-document.getElementById('btnEnviar').addEventListener('click', generarSolicitudes2);
 
 
 function Importar() {
