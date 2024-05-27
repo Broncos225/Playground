@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function Notificador() {
-    var agenteSeleccionado = document.getElementById("SolExportar").value;
+    var agenteSeleccionado = localStorage.getItem('nombreAsesorActual');
 
     if (!(agenteSeleccionado in agentesN)) {
         alert("El agente seleccionado no es válido");

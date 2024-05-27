@@ -821,32 +821,26 @@ let agentesV = {
     Anderson_Cano_Londoño: {
         nombre: "Anderson Cano Londoño",
         fechaIngreso: "2023-11-01",
-        contraseña: ""
     },
     Miguel_Cadavid_Naranjo: {
         nombre: "Miguel Cadavid Naranjo",
         fechaIngreso: "2023-04-17",
-        contraseña: ""
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
         fechaIngreso: "2023-02-02",
-        contraseña: ""
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
         fechaIngreso: "2023-11-14",
-        contraseña: ""
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
         fechaIngreso: "2023-10-17",
-        contraseña: ""
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
         fechaIngreso: "2023-10-17",
-        contraseña: ""
     },
 }
 
@@ -954,15 +948,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function CuentaAsesor() {
     var nombre = localStorage.getItem('nombreAsesorActual');
+    var asesor = document.getElementById("AsesorActual");
+    var span = document.createElement("span"); // Crear un nuevo elemento span
+
     if (nombre) {
         nombre = nombre.replace(/_/g, ' '); // Reemplaza todos los guiones bajos con espacios
-        var asesor = document.getElementById("AsesorActual");
         asesor.textContent = "Asesor actual: ";
-        asesor.textContent += nombre; // Aquí se cambió el operador += por = para reemplazar el contenido anterior
+        span.textContent = nombre; // Asignar el nombre al elemento span
     } else {
-        var asesor = document.getElementById("AsesorActual");
         asesor.textContent = "Asesor actual: ";
-        asesor.textContent += "Nadie";    }
+        span.textContent = "Nadie"; // Asignar "Nadie" al elemento span
+    }
+
+    span.style.fontWeight = "lighter"; // Hacer que el texto del span sea más delgado
+    asesor.appendChild(span); // Añadir el span al asesor
 }
 
 function seleccionarNombre(nombre) {

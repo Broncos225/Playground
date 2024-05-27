@@ -36,8 +36,15 @@
     </header>
     <section>
         <h1 id="banner"></h1>
-        <div style="display: flex; width: 100%; justify-content: flex-start;">
+        <div style="display: flex; width: 100%; justify-content: space-between;">
             <h2 id="AsesorActual" style="margin: 0;">Asesor actual: </h2>
+            <div id="BotonesHorario">
+                <span>Notificaciones de Softcontrol</span>
+                <label class="switch">
+                    <input type="checkbox" id="notificationSwitch">
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
         <h1 id="Titulo">Horarios Stop Jeans</h1>
 
@@ -421,13 +428,7 @@
             </div>
         </div>
 
-        <div id="BotonesHorario">
-            <span>Notificaciones de Softcontrol</span>
-            <label class="switch">
-                <input type="checkbox" id="notificationSwitch">
-                <span class="slider"></span>
-            </label>
-        </div>
+
         <div id="Solicitudes">
             <h2 style="margin-bottom: 0">Solicitudes</h2>
             <button id="btnIntercambioTurno"></button>
@@ -715,7 +716,7 @@
                         <p style="text-align: center;">Seleccione el formato de exportación:</p>
                         <div style="display: flex; gap: 10px;">
                             <button id="exportExcel">Exportar a Excel</button>
-                            <button id="exportPng">Exportar a PNG</button>
+                            <button id="exportPng">Exportar a imagen</button>
                         </div>
                     </div>
                 </div>
