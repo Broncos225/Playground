@@ -1304,6 +1304,11 @@ section {
         display: flex;
         width: auto;
     }
+
+    section {
+        margin-top: 100px !important;
+    }
+
 }
 
 #Panel {
