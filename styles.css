@@ -1281,7 +1281,7 @@ section {
     /* Centrado horizontalmente */
     transform: translate(-50%, -20%);
     /* Desplaza el modal a la mitad de su altura y anchura para centrarlo perfectamente */
-    width: fit-content;
+    width: max-content;
     /* Ajusta este valor para cambiar el ancho del modal */
     padding: 20px;
     border: 1px solid #888;
