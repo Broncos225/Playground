@@ -222,3 +222,12 @@ function busqueda3() {
 }
 busqueda3();
 
+function showPDF() {
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+    pdfs.forEach(function (pdf) {
+        pdf.addEventListener('click', function () {
+            var pdfSrc = pdf.getAttribute('data-src');
+            window.open(pdfSrc, '_blank');
+        });
+    });
+}
