@@ -196,3 +196,29 @@ document.getElementById('limpiar').addEventListener('click', function () {
 });
 
 
+function busqueda3() {
+    var input = document.getElementById('busqueda3');
+    var clearButton = document.getElementById('Limpiar4'); // Cambiado a 'Limpiar3'
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+
+    input.addEventListener('keyup', function () {
+        var filter = input.value.toUpperCase();
+        pdfs.forEach(function (pdf) {
+            var title = pdf.getElementsByTagName('h2')[0];
+            if (title.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                pdf.style.display = "";
+            } else {
+                pdf.style.display = "none";
+            }
+        });
+    });
+
+    clearButton.addEventListener('click', function () {
+        input.value = '';
+        pdfs.forEach(function (pdf) {
+            pdf.style.display = "";
+        });
+    });
+}
+busqueda3();
+

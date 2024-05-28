@@ -1105,7 +1105,8 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 #busqueda,
-#busqueda2 {
+#busqueda2,
+#busqueda3 {
     flex-grow: 1;
 }
 
@@ -1371,3 +1372,17 @@ input:checked+.slider:before {
 #NoResultados {
     display: none;
 }
+
+#Gpdf {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+    margin: 10px;
+    justify-content: start;
+    max-height: 225px; 
+    overflow-y: auto; 
+    padding: 10px;
+
+}
+
+
