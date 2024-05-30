@@ -273,4 +273,63 @@ document.getElementById('limpiar').addEventListener('click', function () {
     document.getElementById('texto').innerText = '';
 });
 
+let datosTablaAdministrativas = [];
+
+document.addEventListener("DOMContentLoaded", function () {
+    function cargarDatosAdministrativas() {
+        fetch('Administrativas.csv')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error HTTP: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(data => {
+                datosTablaAdministrativas = Papa.parse(data, {
+                    header: true,
+                    skipEmptyLines: true,
+                    dynamicTyping: true
+                }).data;
+                actualizarTabla(datosTablaAdministrativas, 'Administrativas');
+            }).catch(error => console.error('Error al cargar el archivo CSV administrativas.csv:', error));
+    }
+
+    function actualizarTabla(datos, nombreTabla) {
+        let tabla = document.getElementById(nombreTabla);
+        while (tabla.rows.length > 1) {
+            tabla.deleteRow(1);
+        }
+        datos.forEach(d => {
+            let fila = tabla.insertRow(-1);
+            let orden = Object.keys(d); // Orden especificado para las celdas
+            orden.forEach(key => {
+                let celda = fila.insertCell(-1);
+                celda.textContent = d[key];
+            });
+        });
+    }
+
+    function normalizar(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    document.getElementById('busqueda4').addEventListener('input', function () {
+        const consulta = normalizar(this.value.toLowerCase());
+        const datosFiltrados = datosTablaAdministrativas.filter(item =>
+            Object.values(item).some(val =>
+                typeof val === 'string' && normalizar(val.toLowerCase()).includes(consulta)
+            )
+        );
+        actualizarTabla(datosFiltrados, 'Administrativas');
+    });
+
+    document.getElementById('Limpiar5').addEventListener('click', function () {
+        document.getElementById('busqueda4').value = '';
+        document.getElementById('Administrativas').scrollLeft = 0;
+        document.getElementById('Administrativas').scrollTop = 0;
+        actualizarTabla(datosTablaAdministrativas, 'Administrativas');
+    });
+
+    cargarDatosAdministrativas();
+});
 

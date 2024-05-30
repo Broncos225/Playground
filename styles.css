@@ -1064,7 +1064,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 #Contactos,
 #Matriz,
-#Enlaces {
+#Enlaces,
+#Administrativas {
     margin: 10px;
     width: auto;
     overflow: auto;
@@ -1075,7 +1076,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 #Contactos th,
 #Matriz th,
-#Enlaces th {
+#Enlaces th,
+#Administrativas th {
     background-color: #012353;
     color: #fff;
     white-space: nowrap;
@@ -1088,7 +1090,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 #Contactos tr td,
 #Matriz tr td,
-#Enlaces tr td {
+#Enlaces tr td,
+#Administrativas tr td {
     white-space: nowrap !important;
     text-align: center;
     font-weight: bold;
@@ -1106,7 +1109,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 #busqueda,
 #busqueda2,
-#busqueda3 {
+#busqueda3,
+#busqueda4 {
     flex-grow: 1;
 }
 
