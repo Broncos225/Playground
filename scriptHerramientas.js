@@ -37,6 +37,9 @@ firebase.auth().onAuthStateChanged(function (user) {
 
                 document.getElementById("Gpdf").appendChild(newDiv);
             });
+
+            // Configurar búsqueda después de agregar elementos
+            configurarBusqueda();
         }).catch(function (error) {
             console.log("Error al listar los archivos: ", error);
         });
@@ -44,6 +47,33 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log('No user is signed in');
     }
 });
+
+function configurarBusqueda() {
+    var input = document.getElementById('busqueda3');
+    var clearButton = document.getElementById('Limpiar4');
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+
+    input.addEventListener('keyup', function () {
+        console.log("Keyup event triggered"); // Para depuración
+        var filter = input.value.toUpperCase();
+        pdfs.forEach(function (pdf) {
+            var title = pdf.getElementsByTagName('h2')[0];
+            if (title.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                pdf.style.display = "";
+            } else {
+                pdf.style.display = "none";
+            }
+        });
+    });
+
+    clearButton.addEventListener('click', function () {
+        console.log("Clear button clicked"); // Para depuración
+        input.value = '';
+        pdfs.forEach(function (pdf) {
+            pdf.style.display = "";
+        });
+    });
+}
 
 
 // Selecciona los campos de entrada y el elemento de resultado
@@ -244,28 +274,3 @@ document.getElementById('limpiar').addEventListener('click', function () {
 });
 
 
-function busqueda3() {
-    var input = document.getElementById('busqueda3');
-    var clearButton = document.getElementById('Limpiar4'); // Cambiado a 'Limpiar3'
-    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
-
-    input.addEventListener('keyup', function () {
-        var filter = input.value.toUpperCase();
-        pdfs.forEach(function (pdf) {
-            var title = pdf.getElementsByTagName('h2')[0];
-            if (title.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                pdf.style.display = "";
-            } else {
-                pdf.style.display = "none";
-            }
-        });
-    });
-
-    clearButton.addEventListener('click', function () {
-        input.value = '';
-        pdfs.forEach(function (pdf) {
-            pdf.style.display = "";
-        });
-    });
-}
-busqueda3();
