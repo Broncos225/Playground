@@ -1,4 +1,3 @@
-// scriptLogin.js
 document.addEventListener('DOMContentLoaded', () => {
     const firebaseConfig = {
         apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         messagingSenderId: "808082296806",
         appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
     };
-    // Inicializar Firebase solo si no se ha inicializado previamente
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -48,7 +46,6 @@ async function authenticateUser(username, password) {
         return userCredential.user;
     } catch (error) {
         if (error.code === 'auth/user-not-found') {
-            // If user not found, create the user
             const newUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
             return newUser.user;
         } else {
@@ -58,13 +55,11 @@ async function authenticateUser(username, password) {
 }
 
 function validateUsername(username) {
-    // Basic username validation: only allow alphanumeric characters and dots
     const usernameRegex = /^[a-zA-Z0-9.]+$/;
     return usernameRegex.test(username);
 }
 
 function getErrorMessage(error) {
-    // Handle Firebase Authentication errors
     if (error.code === 'auth/user-not-found') {
         return 'No user found with these credentials.';
     } else if (error.code === 'auth/wrong-password') {
@@ -77,25 +72,11 @@ function getErrorMessage(error) {
 }
 
 let agentesA = {
-    "anderson.cano": {
-        nombre: "Anderson_Cano_Londoño",
-    },
-    "miguel.naranjo": {
-        nombre: "Miguel_Cadavid_Naranjo",
-    },
-    "milton.calle": {
-        nombre: "Milton_Alexis_Calle_Londoño",
-    },
-    "yesica.cano": {
-        nombre: "Yesica_Johana_Cano_Quintero",
-    },
-    "andres.vidal": {
-        nombre: "Andrés_Felipe_Vidal_Medina",
-    },
-    "andres.yepes": {
-        nombre: "Andrés_Felipe_Yepes_Tascón",
-    },
-    "oscar.cabrera": {
-        nombre: "Oscar_Luis_Cabrera_Pacheco",
-    },
+    "anderson.cano": { nombre: "Anderson_Cano_Londoño" },
+    "miguel.naranjo": { nombre: "Miguel_Cadavid_Naranjo" },
+    "milton.calle": { nombre: "Milton_Alexis_Calle_Londoño" },
+    "yesica.cano": { nombre: "Yesica_Johana_Cano_Quintero" },
+    "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
+    "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
+    "oscar.cabrera": { nombre: "Oscar_Luis_Cabrera_Pacheco" },
 };
