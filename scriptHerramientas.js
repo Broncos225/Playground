@@ -1,3 +1,51 @@
+const firebaseConfig = {
+    apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
+    authDomain: "playgroundbdstop.firebaseapp.com",
+    databaseURL: "https://playgroundbdstop-default-rtdb.firebaseio.com",
+    projectId: "playgroundbdstop",
+    storageBucket: "playgroundbdstop.appspot.com",
+    messagingSenderId: "808082296806",
+    appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+var storage = firebase.storage();
+var storageRef = storage.ref();
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // Usuario autenticado, listar archivos
+        storageRef.listAll().then(function (result) {
+            result.items.forEach(function (imageRef) {
+                var fileName = imageRef.name;
+
+                var newDiv = document.createElement("div");
+                newDiv.className = "Modulo2";
+
+                newDiv.onclick = function () {
+                    imageRef.getDownloadURL().then(function (url) {
+                        window.open(url, '_blank');
+                    }).catch(function (error) {
+                        console.log("Error al obtener la URL de descarga: ", error);
+                    });
+                };
+
+                var newH2 = document.createElement("h2");
+                newH2.textContent = fileName;
+                newDiv.appendChild(newH2);
+
+                document.getElementById("Gpdf").appendChild(newDiv);
+            });
+        }).catch(function (error) {
+            console.log("Error al listar los archivos: ", error);
+        });
+    } else {
+        console.log('No user is signed in');
+    }
+});
+
+
 // Selecciona los campos de entrada y el elemento de resultado
 let valorInput = document.querySelector('input[placeholder="Valor"]');
 let porcentajeInput = document.querySelector('input[placeholder="Porcentaje"]');
@@ -221,13 +269,3 @@ function busqueda3() {
     });
 }
 busqueda3();
-
-function showPDF() {
-    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
-    pdfs.forEach(function (pdf) {
-        pdf.addEventListener('click', function () {
-            var pdfSrc = pdf.getAttribute('data-src');
-            window.open(pdfSrc, '_blank');
-        });
-    });
-}

@@ -1378,14 +1378,20 @@ input:checked+.slider:before {
 
 #Gpdf {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
     margin: 10px;
     justify-content: start;
     max-height: 225px;
     overflow-y: auto;
     padding: 10px;
+}
 
+/* Cuando la pantalla tiene 600px o menos, cambiamos a una sola columna */
+@media (max-width: 600px) {
+    #Gpdf {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 
