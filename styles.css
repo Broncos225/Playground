@@ -1448,3 +1448,7 @@ input:checked+.slider:before {
         height: auto;
     }
 }
+
+#M3 {
+    display: flex;
+}
