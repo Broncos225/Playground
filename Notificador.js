@@ -1,31 +1,37 @@
 let agentesN = {
     Anderson_Cano_Londoño: {
         nombre: "Anderson Cano Londoño",
+        usuario: "anderson.cano",
         letra: "A",
         contraseña: ""
     },
     Miguel_Cadavid_Naranjo: {
         nombre: "Miguel Cadavid Naranjo",
+        usuario: "miguel.naranjo",
         letra: "B",
         contraseña: ""
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
+        usuario: "milton.calle",
         letra: "C",
         contraseña: ""
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
+        usuario: "yesica.cano",
         letra: "D",
         contraseña: ""
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
+        usuario: "andres.vidal",
         letra: "E",
         contraseña: ""
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
+        usuario: "andres.yepes",
         letra: "F",
         contraseña: ""
     }
@@ -198,7 +204,7 @@ function asesorSeleccionado() {
 // Añadir un intervalo para comprobar si el turno ha cambiado cada minuto
 setInterval(function () {
     if (areNotificationsActive()) {
-        var usuarioActual = localStorage.getItem('nombreAsesorActual'); // Recuperar el valor de nombreAsesorActual del almacenamiento local
+        var usuarioActual = localStorage.getItem('nombreAsesorActual'); 
 
         // Verificar si el usuario actual existe
         if (!(usuarioActual in agentesN)) {
@@ -226,14 +232,50 @@ setInterval(function () {
     }
 }, 30000); // 30000 milisegundos = 0.5 minuto
 
-document.getElementById('usuario').addEventListener('click', function() {
-    if (!window.location.href.includes('HorariosStop.html')) {
-        var localVariable = localStorage.getItem('nombreAsesorActual'); // obtiene el valor del localStorage
-        if (localVariable) { // verifica si la variable existe
-            var cleanVariable = localVariable.replace(/_/g, ' '); // reemplaza todos los guiones bajos con espacios
-            alert('El asesor seleccionado es: ' + cleanVariable);
-        } else {
-            alert('No se ha seleccionado un asesor. Por favor, selecciona un asesor antes de activar las notificaciones en la pagina de Horarios.');
-        }
+
+
+function CuentaAsesor() {
+    var nombre = localStorage.getItem('nombreAsesorActual');
+    var asesor = document.getElementById("AsesorActual");
+    var span = document.createElement("span"); // Crear un nuevo elemento span
+
+    if (nombre) {
+        nombre = nombre.replace(/_/g, ' '); // Reemplaza todos los guiones bajos con espacios
+        asesor.textContent = "Asesor actual: ";
+        span.textContent = nombre; // Asignar el nombre al elemento span
+    } else {
+        asesor.textContent = "Asesor actual: ";
+        span.textContent = "Nadie"; // Asignar "Nadie" al elemento span
     }
-});
+
+    span.style.fontWeight = "lighter"; // Hacer que el texto del span sea más delgado
+    asesor.appendChild(span); // Añadir el span al asesor
+}
+
+function seleccionarNombre(nombre) {
+    localStorage.setItem('nombreAsesorActual', nombre);
+    cerrarModal2();
+    CuentaAsesor(); // Aquí se llama a la función CuentaAsesor después de actualizar el localStorage
+}
+
+function cerrarModal2() {
+    var modal2 = document.getElementById("myModal2");
+    var body = document.getElementsByTagName("body")[0];
+    modal2.style.display = "none";
+    body.style.overflow = "auto";
+}
+
+var modal2 = document.getElementById("myModal2");
+var btnusuario = document.getElementById("usuario");
+var body = document.getElementsByTagName("body")[0];
+
+btnusuario.onclick = function () {
+    modal2.style.display = "block";
+    body.style.overflow = "hidden";
+}
+
+var span = document.getElementById("close2");
+span.onclick = function () {
+    modal2.style.display = "none";
+    body.style.overflow = "auto";
+}

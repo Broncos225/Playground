@@ -548,7 +548,7 @@ setInterval(() => {
 function Importar() {
     let confirmacion = confirm("¿Está seguro de que desea pegar los datos del portapapeles en la tabla?");
     if (!confirmacion) {
-        return; // Si el usuario no confirma, termina la función
+        return; 
     }
     navigator.clipboard.readText()
         .then(data => {
@@ -945,52 +945,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-function CuentaAsesor() {
-    var nombre = localStorage.getItem('nombreAsesorActual');
-    var asesor = document.getElementById("AsesorActual");
-    var span = document.createElement("span"); // Crear un nuevo elemento span
-
-    if (nombre) {
-        nombre = nombre.replace(/_/g, ' '); // Reemplaza todos los guiones bajos con espacios
-        asesor.textContent = "Asesor actual: ";
-        span.textContent = nombre; // Asignar el nombre al elemento span
-    } else {
-        asesor.textContent = "Asesor actual: ";
-        span.textContent = "Nadie"; // Asignar "Nadie" al elemento span
-    }
-
-    span.style.fontWeight = "lighter"; // Hacer que el texto del span sea más delgado
-    asesor.appendChild(span); // Añadir el span al asesor
-}
-
-function seleccionarNombre(nombre) {
-    localStorage.setItem('nombreAsesorActual', nombre);
-    cerrarModal2();
-    CuentaAsesor(); // Aquí se llama a la función CuentaAsesor después de actualizar el localStorage
-}
-
-function cerrarModal2() {
-    var modal2 = document.getElementById("myModal2");
-    var body = document.getElementsByTagName("body")[0];
-    modal2.style.display = "none";
-    body.style.overflow = "auto";
-}
-
-document.getElementById("btnAceptar").addEventListener("click", function () {
-    seleccionarNombre(document.getElementById("SolExportar").value);
-});
-var modal2 = document.getElementById("myModal2");
-var btnusuario = document.getElementById("usuario");
-var body = document.getElementsByTagName("body")[0];
-
-btnusuario.onclick = function () {
-    modal2.style.display = "block";
-    body.style.overflow = "hidden";
-}
-
-var span = document.getElementsByClassName("close")[1];
-span.onclick = function () {
-    modal2.style.display = "none";
-    body.style.overflow = "auto";
-}

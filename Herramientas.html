@@ -241,6 +241,15 @@
 
 
         <label id="Resultado"></label>
+        <div id="myModal2" class="modal">
+            <div class="modal-content2">
+                <span id="close2" style="position: absolute; right: 1; top: 0;">&times;</span>
+                <div id="modal-content2" style="display: flex; flex-direction: column; align-items: center; gap:10px;">
+                    <h2>¿Quiere cerrar la sesión?</h2>
+                    <button id="btnCerrarSesion">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
         <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
 
     </section>
@@ -253,6 +262,10 @@
     <script src="scriptHerramientas.js"></script>
     <script src="Header.js"></script>
     <script src="Notificador.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="Autorizacion.js" type="module" defer></script>
+    <script src="CerrarSesion.js" type="module" defer></script>
 </body>
 
 </html>
