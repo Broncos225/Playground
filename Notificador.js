@@ -172,7 +172,7 @@ var notificationSwitch = document.getElementById('notificationSwitch');
 if (notificationSwitch) {
     notificationSwitch.addEventListener('change', function () {
         if (this.checked) {
-            if (asesorSeleccionado()) {
+            if (localStorage.getItem('nombreAsesorActual')) {
                 Notificador();
             } else {
                 this.checked = false;
@@ -188,17 +188,6 @@ if (notificationSwitch) {
 var notificationSwitch = document.getElementById('notificationSwitch');
 if (notificationSwitch) {
     notificationSwitch.checked = areNotificationsActive();
-}
-function asesorSeleccionado() {
-    // Supongamos que los asesores se seleccionan a través de un elemento select
-    var select = document.getElementById('SolExportar');
-    select.value = localStorage.getItem('nombreAsesorActual');
-    // Si el valor del select es vacío, entonces no se ha seleccionado un asesor
-    if (select.value === '') {
-        return false;
-    } else {
-        return true;
-    }
 }
 
 // Añadir un intervalo para comprobar si el turno ha cambiado cada minuto
