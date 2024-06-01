@@ -12,6 +12,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
+    ocultarFilas();
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -382,6 +383,34 @@ for (let agente in agentes) {
     }
 }
 
+function ocultarFilas() {
+    var valorSeleccionado = document.getElementById('Mes').value;
+    var meses = ["Junio", "Julio", "Agosto", "Septiembre"];
+    var filas = document.getElementsByTagName('tr');
+    for (var i = 0; i < filas.length; i++) {
+        var celdas = filas[i].getElementsByTagName('td');
+
+        for (var j = 0; j < celdas.length; j++) {
+            if (celdas[j].textContent === "Andrés Felipe Vidal Medina" && meses.includes(valorSeleccionado)) {
+                filas[i].style.display = 'none';
+                break;
+            } else {
+                filas[i].style.display = '';
+            }
+        }
+    }
+
+    if (meses.includes(valorSeleccionado)) {
+        document.getElementById('5').parentElement.style.display = 'none';
+    } else {
+        document.getElementById('5').parentElement.style.display = '';
+    }
+}
+
+var selector = document.getElementById('Mes');
+selector.addEventListener('change', ocultarFilas);
+
+
 
 const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 var titulo = document.getElementById("titulos");
@@ -548,7 +577,7 @@ setInterval(() => {
 function Importar() {
     let confirmacion = confirm("¿Está seguro de que desea pegar los datos del portapapeles en la tabla?");
     if (!confirmacion) {
-        return; 
+        return;
     }
     navigator.clipboard.readText()
         .then(data => {
@@ -779,43 +808,7 @@ function cambiarBordeColumna() {
     }
 }
 
-var selector = document.getElementById('Mes');
 
-// Agrega un evento de cambio al selector
-selector.addEventListener('change', function () {
-    // Obtén el valor seleccionado
-    var valorSeleccionado = this.value;
-
-    // Define los meses para los que quieres ocultar la fila
-    var meses = ["Junio", "Julio", "Agosto", "Septiembre"];
-
-    // Obtén todas las filas
-    var filas = document.getElementsByTagName('tr');
-
-    // Recorre todas las filas
-    for (var i = 0; i < filas.length; i++) {
-        // Obtén todas las celdas de la fila
-        var celdas = filas[i].getElementsByTagName('td');
-
-        // Recorre todas las celdas
-        for (var j = 0; j < celdas.length; j++) {
-            // Si el contenido de la celda es "Andrés Felipe Vidal Medina" y el valor seleccionado está en el array de meses, oculta la fila
-            if (celdas[j].textContent === "Andrés Felipe Vidal Medina" && meses.includes(valorSeleccionado)) {
-                filas[i].style.display = 'none';
-                break; // Sal del bucle una vez que encuentres la celda correcta
-            } else {
-                filas[i].style.display = ''; // Muestra la fila si no coincide con las condiciones
-            }
-        }
-    }
-
-    // Oculta la fila con el ID 5 si el valor seleccionado está en el array de meses
-    if (meses.includes(valorSeleccionado)) {
-        document.getElementById('5').parentElement.style.display = 'none';
-    } else {
-        document.getElementById('5').parentElement.style.display = '';
-    }
-});
 
 let agentesV = {
     Anderson_Cano_Londoño: {
