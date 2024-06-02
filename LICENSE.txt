@@ -1,7 +1,11 @@
 Derechos de Autor (c) 2024 Andrés Felipe Yepes Tascón
 
-Se concede permiso, de forma gratuita, a cualquier persona que obtenga una copia de este software y archivos de documentación asociados (el "Software"), para utilizar el Software sin restricciones, incluyendo, sin limitación, los derechos de uso, copia, modificación, fusión, publicación, distribución, sublicencia y/o venta de copias del Software, y para permitir a las personas a las que se les proporcione el Software a hacer lo mismo, sujeto a las siguientes condiciones:
+Todos los derechos reservados. Queda estrictamente prohibido el uso, descarga o cualquier forma de utilización de este software y sus archivos de documentación asociados (el "Software"), sin el permiso expreso por escrito del titular de los derechos de autor.
 
-El aviso de derechos de autor anterior y este aviso de permiso se incluirán en todas las copias o partes sustanciales del Software.
+Cualquier infracción de estos derechos de autor estará sujeta a las correspondientes acciones legales y reclamaciones por daños y perjuicios.
+
+Para obtener el permiso para utilizar este software, por favor, póngase en contacto con el titular de los derechos de autor en la siguiente dirección: [dirección de contacto].
+
+Todas las copias o partes sustanciales del Software deben incluir este aviso de derechos de autor y permiso.
 
 EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO NO LIMITADO A LAS GARANTÍAS DE COMERCIABILIDAD, ADECUACIÓN PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS AUTORES O TITULARES DE LOS DERECHOS DE AUTOR SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN, DAÑOS U OTRAS RESPONSABILIDADES, YA SEA EN UNA ACCIÓN DE CONTRATO, AGRAVIO O DE OTRO MODO, QUE SURJA DE, FUERA DE O EN RELACIÓN CON EL SOFTWARE O EL USO U OTROS TRATOS EN EL SOFTWARE.
