@@ -1,10 +1,12 @@
+Playground - Página Web
+
 Derechos de Autor (c) 2024 Andrés Felipe Yepes Tascón
 
 Todos los derechos reservados. Queda estrictamente prohibido el uso, descarga o cualquier forma de utilización de este software y sus archivos de documentación asociados (el "Software"), sin el permiso expreso por escrito del titular de los derechos de autor.
 
 Cualquier infracción de estos derechos de autor estará sujeta a las correspondientes acciones legales y reclamaciones por daños y perjuicios.
 
-Para obtener el permiso para utilizar este software, por favor, póngase en contacto con el titular de los derechos de autor en la siguiente dirección: [dirección de contacto].
+Para obtener el permiso para utilizar este software, por favor, póngase en contacto con el titular de los derechos de autor en la siguiente dirección: andresfyepest15@gmail.com.
 
 Todas las copias o partes sustanciales del Software deben incluir este aviso de derechos de autor y permiso.
 
