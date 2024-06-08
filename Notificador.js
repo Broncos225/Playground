@@ -39,9 +39,8 @@ let agentesN = {
 
 document.addEventListener("DOMContentLoaded", function () {
     enableNotifications();
+    setInterval(checkForDateChange, 60000); // Comprueba cada minuto si la fecha ha cambiado
 });
-
-
 
 function Notificador() {
     var agenteSeleccionado = localStorage.getItem('nombreAsesorActual');
@@ -51,12 +50,15 @@ function Notificador() {
         var notificationSwitch = document.getElementById('notificationSwitch');
         if (notificationSwitch) {
             notificationSwitch.checked = false;
-        } return;
+        }
+        return;
     }
 
     var Letra = agentesN[agenteSeleccionado].letra;
     var fecha = new Date();
     var dia = fecha.getDate();
+    var mes = fecha.getMonth();
+    var año = fecha.getFullYear();
     var celdaId = Letra + dia;
 
     var tabla = document.getElementById("Table");
@@ -74,7 +76,7 @@ function Notificador() {
         "T4": ["10:00", "14:30", "15:30", "19:00"],
         "T5": ["11:00", "15:30", "16:30", "20:00"],
         "T6": ["12:30", "16:30", "17:30", "21:30"],
-        "TSA": ["08:00", "12:00", "13:00", "16:00"],
+        "TSA": ["08:00", "12:00", "13:00", "16:42"],
         "T2R1": ["10:00", "12:30", "13:30", "18:00"],
         "T3R1": ["10:30", "13:30", "14:30", "18:30"],
         "T4R1": ["11:00", "14:30", "15:30", "19:00"],
@@ -91,13 +93,13 @@ function Notificador() {
     } else if (Notification.permission !== "granted") {
         Notification.requestPermission().then(function (permission) {
             if (permission === "granted") {
-                localStorage.setItem('notificacionesActivas', JSON.stringify({ horarios, descripciones, celdaContent: celda.textContent.trim() }));
+                localStorage.setItem('notificacionesActivas', JSON.stringify({ horarios, descripciones, celdaContent: celda.textContent.trim(), fecha: { dia, mes, año } }));
                 mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
                 programarNotificaciones(horarios, descripciones, celda.textContent.trim());
             }
         });
     } else {
-        localStorage.setItem('notificacionesActivas', JSON.stringify({ horarios, descripciones, celdaContent: celda.textContent.trim() }));
+        localStorage.setItem('notificacionesActivas', JSON.stringify({ horarios, descripciones, celdaContent: celda.textContent.trim(), fecha: { dia, mes, año } }));
         mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
         programarNotificaciones(horarios, descripciones, celda.textContent.trim());
     }
@@ -125,7 +127,7 @@ function mostrarNotificacion(mensaje) {
         body: mensaje,
     });
 
-    cargarSonidoNotificacion(); // Cargar el audio cuando se muestra la notificación
+    cargarSonidoNotificacion();
 }
 
 function abrirSoftcontrol() {
@@ -146,7 +148,7 @@ function convertirHora12(date) {
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
-    hours = hours ? hours : 12; // La hora '0' debe ser '12'
+    hours = hours ? hours : 12;
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
@@ -155,7 +157,7 @@ function convertirHora12(date) {
 function enableNotifications() {
     var notificacionesActivas = localStorage.getItem('notificacionesActivas');
     if (notificacionesActivas) {
-        var { horarios, descripciones, celdaContent } = JSON.parse(notificacionesActivas);
+        var { horarios, descripciones, celdaContent, fecha } = JSON.parse(notificacionesActivas);
         programarNotificaciones(horarios, descripciones, celdaContent);
     }
 }
@@ -184,67 +186,43 @@ if (notificationSwitch) {
     });
 }
 
-// Establecer el estado inicial del interruptor de notificaciones
-var notificationSwitch = document.getElementById('notificationSwitch');
 if (notificationSwitch) {
     notificationSwitch.checked = areNotificationsActive();
 }
 
-// Añadir un intervalo para comprobar si el turno ha cambiado cada minuto
-setInterval(function () {
-    if (areNotificationsActive()) {
-        var usuarioActual = localStorage.getItem('nombreAsesorActual'); 
-
-        // Verificar si el usuario actual existe
-        if (!(usuarioActual in agentesN)) {
-            alert('El usuario actual no es válido. Desactivando las notificaciones.');
-            document.getElementById('notificationSwitch').checked = false;
-            disableNotifications();
-            return;
-        }
-
-        var Letra = agentesN[usuarioActual].letra;
-        var fecha = new Date();
-        var dia = fecha.getDate();
-        var celdaId = Letra + dia;
-
-        var tabla = document.getElementById("Table");
-        var celda = tabla ? tabla.querySelector(`#${celdaId}`) : null;
-
-        if (celda) {
-            var notificacionesActivas = JSON.parse(localStorage.getItem('notificacionesActivas'));
-            if (notificacionesActivas.celdaContent !== celda.textContent.trim()) {
-                // El turno ha cambiado, reprogramar las notificaciones
-                Notificador();
-            }
+function checkForDateChange() {
+    var notificacionesActivas = localStorage.getItem('notificacionesActivas');
+    if (notificacionesActivas) {
+        var { fecha } = JSON.parse(notificacionesActivas);
+        var now = new Date();
+        if (fecha.dia !== now.getDate() || fecha.mes !== now.getMonth() || fecha.año !== now.getFullYear()) {
+            Notificador();
         }
     }
-}, 30000); // 30000 milisegundos = 0.5 minuto
-
-
+}
 
 function CuentaAsesor() {
     var nombre = localStorage.getItem('nombreAsesorActual');
     var asesor = document.getElementById("AsesorActual");
-    var span = document.createElement("span"); // Crear un nuevo elemento span
+    var span = document.createElement("span");
 
     if (nombre) {
-        nombre = nombre.replace(/_/g, ' '); // Reemplaza todos los guiones bajos con espacios
+        nombre = nombre.replace(/_/g, ' ');
         asesor.textContent = "Asesor actual: ";
-        span.textContent = nombre; // Asignar el nombre al elemento span
+        span.textContent = nombre;
     } else {
         asesor.textContent = "Asesor actual: ";
-        span.textContent = "Nadie"; // Asignar "Nadie" al elemento span
+        span.textContent = "Nadie";
     }
 
-    span.style.fontWeight = "lighter"; // Hacer que el texto del span sea más delgado
-    asesor.appendChild(span); // Añadir el span al asesor
+    span.style.fontWeight = "lighter";
+    asesor.appendChild(span);
 }
 
 function seleccionarNombre(nombre) {
     localStorage.setItem('nombreAsesorActual', nombre);
     cerrarModal2();
-    CuentaAsesor(); // Aquí se llama a la función CuentaAsesor después de actualizar el localStorage
+    CuentaAsesor();
 }
 
 function cerrarModal2() {
