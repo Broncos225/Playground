@@ -8,79 +8,95 @@ const firebaseConfig = {
     appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
 };
 
-
 firebase.initializeApp(firebaseConfig);
-db = firebase.database();
+const db = firebase.database();
 
-document.getElementById('busqueda').addEventListener('input', function (e) {
-    var busqueda = e.target.value.toLowerCase();
-    busqueda = quitarTildes(busqueda);
-    var modulos = document.querySelectorAll('.Modulo2');
-    var count = 0; // Añadir contador
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // Usuario autenticado, listar archivos desde Firebase Realtime Database
+        db.ref('Plantillas').once('value').then(function (snapshot) {
+            var modulosPlantillas = document.getElementById("ModulosPlantillas");
+            snapshot.forEach(function (childSnapshot) {
+                var fileName = childSnapshot.key;
 
-    modulos.forEach(function (modulo) {
-        var texto = modulo.textContent.toLowerCase();
-        texto = quitarTildes(texto);
-        if (texto.includes(busqueda)) {
-            modulo.style.display = 'flex';
-            count++; // Incrementar contador si se encuentra una coincidencia
-            document.getElementById('NoResultados').style.display = 'none';
-        } else {
-            modulo.style.display = 'none';
-        }
-    });
+                var newDiv = document.createElement("div");
+                newDiv.className = "Modulo2";
 
-    // Si no se encontraron coincidencias, mostrar un mensaje
-    if (count === 0) {
-        document.getElementById('NoResultados').style.display = 'block';
+                newDiv.onclick = function () {
+                    showModal(fileName);
+                };
+
+                var newH2 = document.createElement("h2");
+                newH2.textContent = fileName;
+                newDiv.appendChild(newH2);
+
+                modulosPlantillas.appendChild(newDiv);
+            });
+
+            // Configurar búsqueda después de agregar elementos
+            configurarBusqueda();
+        }).catch(function (error) {
+            console.log("Error al listar los archivos: ", error);
+        });
+    } else {
+        console.log('No user is signed in');
     }
 });
 
-function quitarTildes(texto) {
-    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+function configurarBusqueda() {
+    var input = document.getElementById('busqueda');
+    var clearButton = document.getElementById('LimpiarP');
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+
+    input.addEventListener('keyup', function () {
+        console.log("Keyup event triggered"); // Para depuración
+        var filter = input.value.toUpperCase();
+        pdfs.forEach(function (pdf) {
+            var title = pdf.getElementsByTagName('h2')[0];
+            if (title.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                pdf.style.display = "";
+            } else {
+                pdf.style.display = "none";
+            }
+        });
+        verificarResultados();
+    });
+
+    clearButton.addEventListener('click', function () {
+        console.log("Clear button clicked"); // Para depuración
+        input.value = '';
+        pdfs.forEach(function (pdf) {
+            pdf.style.display = "";
+        });
+        verificarResultados();
+    });
 }
 
+function verificarResultados() {
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+    var hayResultados = pdfs.some(pdf => pdf.style.display !== 'none');
+    document.getElementById('NoResultados').style.display = hayResultados ? 'none' : 'block';
+}
 
-document.getElementById('LimpiarP').addEventListener('click', function () {
-    var busqueda = document.getElementById('busqueda');
-    busqueda.value = '';
-    var event = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-    });
-    busqueda.dispatchEvent(event);
-
-    // Añadir este código para cambiar el display de los módulos a 'flex'
-    var modulos = document.querySelectorAll('.Modulo2');
-    modulos.forEach(function (modulo) {
-        modulo.style.display = 'flex';
-    });
-});
-
-var db = firebase.database();
+// Llamar a la función configurarBusqueda después de cargar los elementos
+configurarBusqueda();
 
 
-
-
-function showModal(event) {
+function showModal(fileName) {
     var modal = document.getElementById("myModal");
-    modal.scrollTop = 0; // Add this line
+    modal.scrollTop = 0;
     var modalTitulo = document.querySelector("#myModal #modal-content #titulo");
     var modalApertura = document.querySelector("#myModal #modal-content #apertura");
     var modalCierre = document.querySelector("#myModal #modal-content #cierre");
 
-    var h2Content = event.currentTarget.querySelector('h2').innerText;
-
-    var textoA;
-    var textoC;
-
     modalTitulo.innerHTML = `
     <hr>
-    <h2 style="text-align: center;">${h2Content}</h2>
+    <h2 style="text-align: center;">${fileName}</h2>
     <hr>
     `;
-    db.ref('Plantillas/' + h2Content + '/Apertura').once('value').then(function (snapshot) {
-        textoA = snapshot.val();
+    db.ref('Plantillas/' + fileName + '/Apertura').once('value').then(function (snapshot) {
+        var textoA = snapshot.val();
 
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -91,8 +107,8 @@ function showModal(event) {
         <hr>`;
     });
 
-    db.ref('Plantillas/' + h2Content + '/Cierre').once('value').then(function (snapshot) {
-        textoC = snapshot.val();
+    db.ref('Plantillas/' + fileName + '/Cierre').once('value').then(function (snapshot) {
+        var textoC = snapshot.val();
 
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
@@ -112,32 +128,6 @@ function showModal(event) {
     }
     modal.style.display = "block";
 }
-
-
-
-
-// function copiarAranda(id) {
-//     var text = document.getElementById(id).innerHTML;
-//     var styledText = `<span style="font-family: Nunito, sans-serif;">${text}</span>`;
-//     function listener(e) {
-//         e.clipboardData.setData("text/html", styledText);
-//         e.clipboardData.setData("text/plain", text);
-//         e.preventDefault();
-//     }
-//     document.addEventListener("copy", listener);
-//     document.execCommand("copy");
-//     document.removeEventListener("copy", listener);
-
-//     // Muestra la notificación
-//     var notification = document.getElementById('notification');
-//     notification.textContent = 'Texto para Aranda copiado al portapapeles';
-//     notification.style.opacity = '1';
-
-//     // Oculta la notificación después de 1 segundo
-//     setTimeout(function () {
-//         notification.style.opacity = '0';
-//     }, 1000);
-// }
 
 function copiarTexto(id) {
     var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
@@ -176,5 +166,3 @@ window.onclick = function (event) {
         document.querySelector('header').style.display = 'block';
     }
 }
-
-
