@@ -1452,3 +1452,38 @@ input:checked+.slider:before {
 #M3 {
     display: flex;
 }
+
+.contenedor-modulos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.contenedor-modulos .Modulo2 {
+    padding: 20px;
+    font-size: 1.8em;
+}
+
+@media (max-width: 800px) {
+    .contenedor-modulos {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
+    }
+    .contenedor-modulos .Modulo2 {
+        padding: 10px;
+        font-size: 1.5em;
+    }
+}
+
+.index-page header nav .titulo {
+    display: flex;
+    font-size: 1.5em;
+    justify-content: center;
+    width: 100%;
+}
+
+.index-page section {
+    margin: 0px;
+}

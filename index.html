@@ -15,26 +15,36 @@
     <title>Playground</title>
 </head>
 
-<body>
+<body class="index-page">
     <header>
         <nav>
             <div class="titulo">
                 <h2><a href="index.html">Playground</a></h2>
             </div>
-            <ul class="botonesNav">
-                <li><a href="Calculadora.html">Calculadora</a></li>
-                <li><a href="Herramientas.html">Herramientas</a></li>
-                <li><a href="Plantillas.html">Plantillas</a></li>
-                <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
-                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
-                <li><a id="usuario"><i class="far fa-user"></i></a></li>
-            </ul>
+
         </nav>
     </header>
     <div class="Marca">
         <p id="Texto"></p>
     </div>
     <section>
+        <style>
+            body {
+                background-image: url('https://wallpaper.dog/large/17065954.jpg');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        </style>
+        <div class="contenedor-modulos">
+            <div class="Modulo2" onclick="location.href='Calculadora.html'">Calculadora</div>
+            <div class="Modulo2" onclick="location.href='Herramientas.html'">Herramientas</div>
+            <div class="Modulo2" onclick="location.href='Plantillas.html'">Plantillas</div>
+            <div class="Modulo2" onclick="location.href='HorariosStop.html'">Horarios Stop Jeans</div>
+            <div class="Modulo2" onclick="window.open('https://anderson1178.github.io/js-vite-blackjack/', '_blank')">
+                BlackJack</div>
+        </div>
+
         <div id="myModal2" class="modal">
             <div class="modal-content2">
                 <span id="close2" style="position: absolute; right: 1; top: 0;">&times;</span>
