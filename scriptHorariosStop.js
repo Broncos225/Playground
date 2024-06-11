@@ -640,16 +640,12 @@ function ExportaraTexto() {
         alert("Por favor seleccione un asesor para exportar los datos");
         return;
     }
-    document.getElementById("SolExportar").value = nombreAsesorActual;
-    if (document.getElementById("SolExportar").value == "Nadie") {
-        alert("Por favor seleccione un asesor");
-        return;
-    }
+
     let confirmacion = confirm("¿Está seguro de que desea copiar los datos de la tabla al portapapeles?");
     if (!confirmacion) {
         return;
     }
-    var Letra = agentes[document.getElementById("SolExportar").value].letra;
+    var Letra = agentes[nombreAsesorActual].letra;
     let texto = "";
     var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     var horariosTurnos = {
@@ -677,9 +673,9 @@ function ExportaraTexto() {
         "T": "Tramites",
         "MD": "Medio día",
     }
-    agentes[document.getElementById("SolExportar").value].nombre;
+    agentes[nombreAsesorActual].nombre;
     var mes = document.getElementById("Mes").value;
-    texto += "Turnos de " + agentes[document.getElementById("SolExportar").value].nombre + " en " + mes + ":" + "\n" + "\n";
+    texto += "Turnos de " + agentes[nombreAsesorActual].nombre + " en " + mes + ":" + "\n" + "\n";
     for (let i = 1; i <= 31; i++) {
         var turno = document.getElementById(Letra + i).textContent;
         var horario = horariosTurnos[turno];
