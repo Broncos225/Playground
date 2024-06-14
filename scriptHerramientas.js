@@ -256,20 +256,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function minuta() {
     var listaTiendas = document.getElementById('ListaTiendas').value;
-    var listaTiendasJuntas = document.getElementById('ListaTiendasJuntas');
-    var formattedString = listaTiendas.split('\n').join(';');
-    listaTiendasJuntas.value = formattedString;
+    var listaTiendasJuntasComa = document.getElementById('ListaTiendasJuntasComa');
+    var listaTiendasJuntasPuntoComa = document.getElementById('ListaTiendasJuntasPuntoComa');
+    var formattedStringComa = listaTiendas.split('\n').join(',');
+    var formattedStringPuntoComa = listaTiendas.split('\n').join(';');
+    listaTiendasJuntasComa.value = formattedStringComa;
+    listaTiendasJuntasPuntoComa.value = formattedStringPuntoComa;
 
     // Contar la cantidad de tiendas
-    var cantidadTiendas = formattedString.split(';').length;
+    var cantidadTiendas = formattedStringPuntoComa.split(';').length;
     document.getElementById('texto').innerHTML = "Cantidad: " + cantidadTiendas;
 }
 
 document.getElementById('convertir').addEventListener('click', minuta);
 
-document.getElementById('limpiar').addEventListener('click', function () {
+document.getElementById('limpiarMinuta').addEventListener('click', function () {
     document.getElementById('ListaTiendas').value = '';
-    document.getElementById('ListaTiendasJuntas').value = '';
+    document.getElementById('ListaTiendasJuntasComa').value = '';
+    document.getElementById('ListaTiendasJuntasPuntoComa').value = '';
     document.getElementById('texto').innerText = '';
 });
 
