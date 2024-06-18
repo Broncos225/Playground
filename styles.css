@@ -29,13 +29,13 @@ nav ul li {
 
 nav a {
     text-decoration: none;
-    color: #fff;
+    color: #000000;
     font-weight: bold;
 }
 
 section {
     padding: 20px;
-    margin-top: 110px;
+    margin-top: 130px;
 }
 
 body {
@@ -53,9 +53,10 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #333;
-    color: #fff;
+    background-color: #e69500;
+    color: #000000;
     text-align: center;
+    font-weight: bold;
     width: 100%;
     height: 35px;
     text-decoration: none;
@@ -182,7 +183,7 @@ button {
 }
 
 button:hover {
-    background-color: #a3a3a3;
+    background-color: #e69500;
 }
 
 
@@ -259,6 +260,8 @@ button .botonReiniciar:hover {
     overflow-x: auto;
     width: 100%;
     flex-direction: row;
+    border: 1px solid #000;
+    border-bottom: none;
 }
 
 
@@ -272,8 +275,8 @@ button .botonReiniciar:hover {
 .titulos th {
     font-weight: bold;
     font-size: 15px;
-    background-color: #012353;
-    color: #fff;
+    background-color: #e69500;
+    color: #000000;
     border-color: #f2f2f2;
 }
 
@@ -307,8 +310,8 @@ button .botonReiniciar:hover {
 #TablaSol2 table th {
     font-weight: bold;
     font-size: 15px;
-    background-color: #012353;
-    color: #fff;
+    background-color: #e69500;
+    color: #000000;
     border-color: #f2f2f2;
     text-align: center;
 }
@@ -401,7 +404,7 @@ button .botonReiniciar:hover {
 #btnLimpiar:hover,
 #btnImportar:hover,
 #btnEnviar:hover #btnEnviar2:hover {
-    background-color: #a3a3a3;
+    background-color: #e69500;
 }
 
 #pass {
@@ -607,7 +610,7 @@ body {
     font-family: 'Nunito', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    background-color: #fdf4e6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -615,7 +618,7 @@ body {
 
 header {
     background-color: #333;
-    color: #fff;
+    color: #000;
     padding: 0%;
 }
 
@@ -624,7 +627,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #e69500;
     padding: 10px;
     /* Adjusted padding for consistency */
 }
@@ -640,7 +643,7 @@ nav li {
 }
 
 nav a {
-    color: white;
+    color: rgb(0, 0, 0);
     text-align: center;
     padding: 10px;
     /* Reduced redundancy */
@@ -650,8 +653,8 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #ddd;
-    color: #333;
+    background-color:#ffffff;
+    color: #000;
 }
 
 /* Buttons styles */
@@ -739,9 +742,9 @@ label {
     }
 
     nav ul.botonesNav li a:hover {
-        background-color: #333;
+        background-color: #ffffff;
         /* Cambia el color de fondo al pasar el ratón para que contraste con el texto */
-        color: white;
+        color: rgb(0, 0, 0);
     }
 
     nav ul.botonesNav li a {
@@ -761,9 +764,9 @@ label {
         flex-direction: column;
         align-items: center;
         /* Centra los elementos en el eje transversal */
-        background-color: #333;
+        background-color: #e69500;
         /* Un color de fondo oscuro puede ayudar a que el encabezado se destaque */
-        color: #fff;
+        color: #000;
         /* Un color de texto claro puede ayudar a que el texto sea legible contra el fondo oscuro */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         /* Una sombra de caja puede ayudar a que el encabezado se destaque contra el contenido de la página */
@@ -851,12 +854,12 @@ label {
 }
 
 #Descansos tr {
-    border-bottom: 1px solid #012353;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
 }
 
 #Descansos {
-    border-left: 1px solid #012353;
-    border-right: 1px solid #012353;
+    border-right: 1px solid #000;
 }
 
 
@@ -962,20 +965,20 @@ label {
 #Izq:hover,
 #Der:hover,
 #Hoy:hover {
-    background-color: #a3a3a3;
+    background-color: #e69500;
 }
 
 #Table tbody tr td:first-child {
     position: sticky;
     left: 0;
-    background-color: #f2f2f2;
+    background-color: #e69500;
     z-index: 1;
 }
 
 #Table tbody tr th:first-child {
     position: sticky;
     left: 0;
-    background-color: #012353;
+    background-color: #e69500;
     z-index: 1;
 }
 
@@ -983,7 +986,7 @@ label {
 #titulos,
 #Dias,
 #Descansos th {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid black;
 }
 
 .GModulos {
@@ -1059,7 +1062,7 @@ input[type='number']::-webkit-outer-spin-button {
 
 #Table>tbody:nth-of-type(2)>tr>td:not(:first-child),
 #Table>tbody:nth-of-type(2)>tr:last-child>td:first-child {
-    border-bottom: 1px solid #012353;
+    border-bottom: 1px solid #000;
 }
 
 #Contactos,
@@ -1078,8 +1081,8 @@ input[type='number']::-webkit-outer-spin-button {
 #Matriz th,
 #Enlaces th,
 #Administrativas th {
-    background-color: #012353;
-    color: #fff;
+    background-color: #e69500;
+    color: #000;
     white-space: nowrap;
     text-align: center;
     position: sticky;
@@ -1095,7 +1098,7 @@ input[type='number']::-webkit-outer-spin-button {
     white-space: nowrap !important;
     text-align: center;
     font-weight: bold;
-    border: 1px solid #012353;
+    border: 1px solid #000;
 }
 
 
@@ -1143,8 +1146,8 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .Modulo2:hover {
-    background-color: #333;
-    color: #fff;
+    background-color: #e69500;
+    color: #000000;
     cursor: pointer;
 }
 
@@ -1204,7 +1207,7 @@ body.modal-open {
 #LimpiarP:hover,
 #distribucion1:hover,
 #distribucion2:hover {
-    background-color: #a3a3a3 !important;
+    background-color: #e69500 !important;
 }
 
 section {
@@ -1215,7 +1218,7 @@ section {
 #Panel {
     margin-left: 10px;
     background-color: white;
-    border: 1px solid #012353;
+    border: 1px solid #000;
     border-radius: 10px;
     padding: 10px;
     height: min-content;
@@ -1355,13 +1358,13 @@ section {
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     transition: .4s;
     border-radius: 50%;
 }
 
 input:checked+.slider {
-    background-color: #333;
+    background-color: #e69500;
 }
 
 input:checked+.slider:before {
@@ -1412,7 +1415,7 @@ input:checked+.slider:before {
     background-color: white;
     flex-direction: column;
     padding: 10px;
-    border: 1px solid #012353;
+    border: 1px solid #000;
     border-radius: 10px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
     align-items: center;
@@ -1445,7 +1448,8 @@ input:checked+.slider:before {
 
     #LogoLogin {
         padding-right: 0;
-        height: auto;
+        height: 50%;
+        padding-bottom: 10px;
     }
 }
 
@@ -1486,4 +1490,8 @@ input:checked+.slider:before {
 
 .index-page section {
     margin: 0px;
+}
+
+#usuario :hover {
+    cursor: pointer;
 }

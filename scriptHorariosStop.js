@@ -45,7 +45,7 @@ function actualizarColorCelda(celda) {
     var colorT7 = '#FFC85C';
     var colorTSA = '#FFA500';
     var colorAS = '#063970';
-    var colorD = '#012353';
+    var colorD = '#e69500';
     var colorDV = '#88ed47';
     const texto = celda.textContent.trim();
     let color;
@@ -728,19 +728,19 @@ function Festivos() {
     const mesActual = nombresDeMeses[fecha.getMonth()];
     for (let i = 1; i <= 31; i++) {
         var celda = document.getElementById("Dia" + i);
-        celda.style.backgroundColor = "#012353";
-        celda.style.color = "white";
+        celda.style.backgroundColor = "#e69500";
+        celda.style.color = "Black";
         if (festivos2024[mes].includes(i)) {
             if (dia == "Dia" + i) {
                 celda.style.backgroundColor = "orange";
                 celda.style.color = "red";
             } else {
                 celda.style.backgroundColor = "red";
-                celda.style.color = "white";
+                celda.style.color = "Black";
             }
         } else if (dia == "Dia" + i && mes == mesActual) {
-            celda.style.backgroundColor = "orange";
-            celda.style.color = "black";
+            celda.style.backgroundColor = "#0051e6";
+            celda.style.color = "white";
         }
     }
 }
@@ -794,9 +794,9 @@ function cambiarBordeColumna() {
                 const columnCeldas = document.querySelectorAll(`#Table th:nth-child(${columnIndex}), #Table td:nth-child(${columnIndex})`);
                 columnCeldas.forEach((celda, idx) => {
                     if (idx === 0 || idx === 1) { // Índices 0 y 1 corresponden a las dos primeras filas (th y primera td)
-                        celda.style.borderRight = '1px solid white';
+                        celda.style.borderRight = '1px solid Black';
                     } else {
-                        celda.style.borderRight = '1px solid #012353';
+                        celda.style.borderRight = '1px solid #000';
                     }
                 });
             }
