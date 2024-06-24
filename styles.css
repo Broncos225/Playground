@@ -653,7 +653,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color:#ffffff;
+    background-color: #ffffff;
     color: #000;
 }
 
@@ -1475,6 +1475,7 @@ input:checked+.slider:before {
         gap: 10px;
         padding: 10px;
     }
+
     .contenedor-modulos .Modulo2 {
         padding: 10px;
         font-size: 1.5em;
@@ -1494,4 +1495,57 @@ input:checked+.slider:before {
 
 #usuario :hover {
     cursor: pointer;
+}
+
+#musicPlayer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to right, #4b6cb7, #182848); /* Gradiente de fondo */
+    color: #fff;
+    padding: 10px 20px; /* Ajuste del padding para más espacio */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 10px; /* Esquinas redondeadas */
+    border-top-right-radius: 10px; /* Esquinas redondeadas */
+}
+
+#audioPlayer {
+    width: 50%;
+    height: 30px;
+    border-radius: 15px; /* Esquinas redondeadas */
+    outline: none; /* Remover el borde al enfocar */
+    transition: transform 0.3s ease; /* Transición suave al interactuar */
+}
+
+#audioPlayer:hover {
+    transition: background-color 0.3s ease; /* Transición suave del fondo */
+}
+
+#songSelector {
+    width: 20%;
+    height: 30px;
+    margin-left: 10px;
+    background-color: #182848; /* Color de fondo más oscuro para contraste */
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 15px; /* Esquinas redondeadas */
+    outline: none; /* Remover el borde al enfocar */
+    transition: background-color 0.3s ease; /* Transición suave del fondo */
+    font-family: 'Nunito', Arial, sans-serif;
+}
+
+#songSelector:hover {
+    background-color: #4b6cb7; /* Cambio de color al pasar el mouse */
+}
+
+#btnMostrarReproductor {
+    position: fixed; /* Cambia la posición a fijo */
+    bottom: 50px; /* Distancia desde el fondo */
+    right: 20px; /* Distancia desde la derecha */
+    display: flex;
+    align-items: center; /* Alinea los elementos internos verticalmente */
+    justify-content: center; /* Alinea los elementos internos horizontalmente */
+    border: 0;
 }
