@@ -101,7 +101,7 @@ function showModal(fileName) {
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
         <h2 style="margin-right: auto;">Apertura</h2>
-        <button onclick="copiarTexto('textoA')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
+        <button onclick="copiarTexto('textoA')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
         </div>
         <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
@@ -113,7 +113,7 @@ function showModal(fileName) {
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
         <h2 style="margin-right: auto;">Cierre</h2>
-        <button onclick="copiarTexto('textoC')" style="height: 40px; color: white; background-color: #333;">Copiar texto</button>
+        <button onclick="copiarTexto('textoC')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
         </div>
         <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
