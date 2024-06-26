@@ -142,7 +142,7 @@ function copiarTexto(id) {
 
     // Muestra la notificación
     var notification = document.getElementById('notification2');
-    notification.textContent = 'Texto plano copiado al portapapeles';
+    notification.textContent = '¡Texto Copiado!';
     notification.style.opacity = '1';
 
     // Oculta la notificación después de 1 segundo
