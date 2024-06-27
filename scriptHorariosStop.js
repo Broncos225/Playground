@@ -200,7 +200,7 @@ function cargarDatos() {
 }
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0, contH = 0;
 
     for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
@@ -238,6 +238,18 @@ function contDescansos() {
             contF += 1;
         }
     }
+    for (var i = 1; i < 32; i++) {
+        var celda = document.getElementById('G' + i);
+        if (celda.textContent == 'D') {
+            contG += 1;
+        }
+    }
+    for (var i = 1; i < 32; i++) {
+        var celda = document.getElementById('H' + i);
+        if (celda.textContent == 'D') {
+            contH += 1;
+        }
+    }
     var celdaA = document.getElementById("1");
     celdaA.textContent = contA;
     var celdaB = document.getElementById("2");
@@ -250,6 +262,10 @@ function contDescansos() {
     celdaE.textContent = contE;
     var celdaF = document.getElementById("6");
     celdaF.textContent = contF;
+    var celdaG = document.getElementById("7");
+    celdaG.textContent = contG;
+    var celdaH = document.getElementById("8");
+    celdaH.textContent = contH;
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -385,7 +401,7 @@ for (let agente in agentes) {
 
 function ocultarFilas() {
     var valorSeleccionado = document.getElementById('Mes').value;
-    var meses = ["Junio", "Julio", "Agosto", "Septiembre"];
+    var meses = ["Junio", "Julio"];
     var filas = document.getElementsByTagName('tr');
     for (var i = 0; i < filas.length; i++) {
         var celdas = filas[i].getElementsByTagName('td');
@@ -471,7 +487,7 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0, contH = 0;
     var tiposTurno8 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AS', 'DF'];
     var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1', 'T7R1', 'ASR1'];
     var tiposTurno0 = ['NN', 'D'];
@@ -536,6 +552,26 @@ function contHoras() {
             contF += 0;
         }
     }
+    for (var i = 1; i < 32; i++) {
+        var celda = document.getElementById('G' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contG += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contG += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contG += 0;
+        }
+    }
+    for (var i = 1; i < 32; i++) {
+        var celda = document.getElementById('H' + i);
+        if (tiposTurno8.includes(celda.textContent)) {
+            contH += 8;
+        } else if (tiposTurno7.includes(celda.textContent)) {
+            contH += 7;
+        } else if (tiposTurno0.includes(celda.textContent)) {
+            contH += 0;
+        }
+    }
 
     var celdaA = document.getElementById("11");
     celdaA.textContent = contA;
@@ -549,6 +585,10 @@ function contHoras() {
     celdaE.textContent = contE;
     var celdaF = document.getElementById("16");
     celdaF.textContent = contF;
+    var celdaG = document.getElementById("17");
+    celdaG.textContent = contG;
+    var celdaH = document.getElementById("18");
+    celdaH.textContent = contH;
 }
 
 const checkInterval = 200;
