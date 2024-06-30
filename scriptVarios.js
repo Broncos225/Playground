@@ -1,14 +1,23 @@
-window.addEventListener('load', function () {
-    var passwordTime = localStorage.getItem('passwordTime');
-    var currentTime = new Date().getTime();
+window.onload = function() {
+    var img = document.getElementById('image');
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var colorValue = document.getElementById('color-value');
 
-    if (!passwordTime || currentTime - passwordTime > 10 * 60 * 1000) { // 5 minutos
-        var password = prompt("Por favor, introduzca su contraseña", "");
-        if (password != "minuta") { // reemplaza "contraseña_correcta" con la contraseña real
-            window.location.href = "index.html";
-        } else {
-            localStorage.setItem('passwordTime', currentTime);
-        }
-    }
-});
+    // Asegúrate de que el canvas tenga el mismo tamaño que la imagen
+    canvas.width = img.width;
+    canvas.height = img.height;
 
+    // Dibuja la imagen en el canvas
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+    // Añade el evento de clic al canvas
+    canvas.addEventListener('click', function(event) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+        var pixel = ctx.getImageData(x, y, 1, 1).data;
+        var rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+        colorValue.textContent = `Color seleccionado: ${rgb}`;
+        colorValue.style.color = rgb;
+    });
+};

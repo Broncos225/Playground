@@ -1,46 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="Icono.ico">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-
-
-    <title>Playground</title>
+    <title>Cuenta Gotas</title>
+    <style>
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        img {
+            display: block;
+        }
+        #color-value {
+            margin-top: 20px;
+        }
+    </style>
 </head>
-
 <body>
-    <header>
-        <nav>
-            <div class="titulo">
-                <h2><a href="index.html">Playground</a></h2>
-            </div>
-            <ul class="botonesNav">
-                <li><a href="Calculadora.html">Calculadora</a></li>
-                <li><a href="Herramientas.html">Herramientas</a></li>
-                <li><a href="Plantillas.html">Plantillas</a></li>
-                <li><a href="VacacionesStop.html">Vacaciones Stop</a></li>
-                <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
-                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="Marca">
-        <p id="Texto"></p>
-    </div>
-    <section>
+    <img id="image" src="LogoLogin.png" alt="Imagen">
+    <canvas id="canvas"></canvas>
+    <p id="color-value">Selecciona un color de la imagen</p>
 
-    </section>
-
-
-    <footer>
-        <p>© 2024 Andrés Felipe Yepes Tascón</p>
-    </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
     <script src="scriptVarios.js"></script>
 </body>
-
 </html>

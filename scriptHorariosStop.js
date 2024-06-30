@@ -12,7 +12,10 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
-    ocultarFilas();
+    ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
+    ocultarFilas("Daniel Muñoz Vidal", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -399,32 +402,41 @@ for (let agente in agentes) {
     }
 }
 
-function ocultarFilas() {
+function ocultarFilas(nombre, mesesParam) {
     var valorSeleccionado = document.getElementById('Mes').value;
-    var meses = ["Junio", "Julio"];
     var filas = document.getElementsByTagName('tr');
     for (var i = 0; i < filas.length; i++) {
         var celdas = filas[i].getElementsByTagName('td');
+        var nombreEncontrado = false;
 
         for (var j = 0; j < celdas.length; j++) {
-            if (celdas[j].textContent === "Andrés Felipe Vidal Medina" && meses.includes(valorSeleccionado)) {
-                filas[i].style.display = 'none';
+            if (celdas[j].textContent === nombre) {
+                nombreEncontrado = true;
                 break;
+            }
+        }
+
+        if (nombreEncontrado) {
+            if (mesesParam.includes(valorSeleccionado)) {
+                filas[i].style.display = 'none';
+                document.getElementById(i - 2).parentElement.style.display = 'none';
             } else {
                 filas[i].style.display = '';
+                document.getElementById(i - 2).parentElement.style.display = '';
             }
         }
     }
 
-    if (meses.includes(valorSeleccionado)) {
-        document.getElementById('5').parentElement.style.display = 'none';
-    } else {
-        document.getElementById('5').parentElement.style.display = '';
-    }
+
 }
 
 var selector = document.getElementById('Mes');
-selector.addEventListener('change', ocultarFilas);
+selector.addEventListener('change', function () {
+    ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
+    ocultarFilas("Daniel Muñoz Vidal", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+});
 
 
 
@@ -624,30 +636,33 @@ function Importar() {
             const dataArray = data.split('\n');
             const table = document.getElementById("Table");
             let rows = table.rows;
-            let currentRow = 0;
-            let currentCell = 0;
+            let currentRow = 3; // Comienza después de las primeras 3 filas
+            let currentCell = 1;
+
             dataArray.forEach(item => {
                 let itemArray = item.split('\t'); // Divide cada línea por el carácter de tabulación
                 itemArray.forEach(subItem => {
-                    while (currentRow < rows.length) {
-                        let cell = rows[currentRow].cells[currentCell]; // Obtiene la celda de la fila y columna actual
-                        if (!cell.textContent.trim()) { // Si la celda está vacía
-                            cell.textContent = subItem; // Agrega el valor en la celda
-                            currentCell++;
-                            if (currentCell >= rows[currentRow].cells.length) {
-                                currentCell = 0;
-                                currentRow++;
-                            }
-                            break;
-                        } else {
-                            currentCell++;
-                            if (currentCell >= rows[currentRow].cells.length) {
-                                currentCell = 0;
-                                currentRow++;
-                            }
-                        }
+                    // Asegúrate de no exceder el número de filas disponibles
+                    if (currentRow >= rows.length) {
+                        console.error('No hay suficientes filas en la tabla para importar todos los datos.');
+                        return; // Salir si no hay más filas disponibles
                     }
-                    colorCelda()
+                    // Verifica si la fila actual está oculta (display: none)
+                    if (rows[currentRow].style.display === 'none') {
+                        // Si la fila está oculta, pasa a la siguiente fila
+                        currentRow++;
+                        currentCell = 1; // Reinicia el índice de celdas para la nueva fila
+                    }
+                    let cell = rows[currentRow].cells[currentCell]; // Obtiene la celda de la fila y columna actual
+                    if (!cell.textContent.trim()) { // Si la celda está vacía
+                        cell.textContent = subItem; // Agrega el valor en la celda
+                        colorCelda(currentRow, currentCell); // Asumiendo que colorCelda ahora toma fila y celda como argumentos
+                    }
+                    currentCell++;
+                    if (currentCell >= rows[currentRow].cells.length) {
+                        currentCell = 1;
+                        currentRow++;
+                    }
                 });
             });
         })
@@ -659,7 +674,6 @@ function Importar() {
 document.getElementById("btnImportar").addEventListener("click", Importar);
 
 function limpiarCeldasEditables() {
-
     let celdasEditables = document.querySelectorAll('[contenteditable="true"]');
 
     celdasEditables.forEach(function (celda) {
