@@ -677,11 +677,7 @@ function limpiarCeldasEditables() {
     let celdasEditables = document.querySelectorAll('[contenteditable="true"]');
 
     celdasEditables.forEach(function (celda) {
-        if (celda.textContent == "NN") {
-            celda.textContent = 'NN';
-        } else {
-            celda.textContent = '';
-        }
+        celda.textContent = '';
     });
     colorCelda()
 }
