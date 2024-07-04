@@ -374,6 +374,10 @@ let agentes = {
         nombre: "Oscar Luis Cabrera Pacheco",
         contraseña: ""
     },
+    Daniel_Munoz_Vidal: {
+        nombre: "Daniel Muñoz Vidal",
+        contraseña: ""
+    },
     D: {
         nombre: "Descanso",
         contraseña: "D"

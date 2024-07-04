@@ -79,4 +79,5 @@ let agentesA = {
     "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
     "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
     "oscar.cabrera": { nombre: "Oscar_Luis_Cabrera_Pacheco" },
+    "daniel.munoz": { nombre: "Daniel_Muñoz_Vidal" },
 };
