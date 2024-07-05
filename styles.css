@@ -1549,3 +1549,7 @@ input:checked+.slider:before {
     justify-content: center; /* Alinea los elementos internos horizontalmente */
     border: 0;
 }
+
+.Calculos {
+    display: none;
+}
