@@ -14,7 +14,7 @@ const db = firebase.database();
 window.onload = function () {
     ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
-    ocultarFilas("Miguel Cadavid Naranjo", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Miguel Cadavid Naranjo", ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Daniel Muñoz Vidal", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     CuentaAsesor();
@@ -439,7 +439,7 @@ var selector = document.getElementById('Mes');
 selector.addEventListener('change', function () {
     ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
-    ocultarFilas("Miguel Cadavid Naranjo", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Miguel Cadavid Naranjo", ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Daniel Muñoz Vidal", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
 });
