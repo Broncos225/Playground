@@ -14,8 +14,7 @@ const db = firebase.database();
 window.onload = function () {
     ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
-    ocultarFilas("Miguel Cadavid Naranjo", ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Daniel Muñoz Vidal", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     CuentaAsesor();
     diaSemana();
@@ -60,31 +59,45 @@ function actualizarColorCelda(celda) {
             break;
         case 'T1':
         case 'T1R1':
+        case 'T1N':
+        case 'T1D':
             color = colorT1;
             celda.style.color = 'black';
             break;
         case 'T2':
         case 'T2R1':
+        case 'T2N':
+        case 'T2D':
             color = colorT2;
             celda.style.color = 'black';
             break;
         case 'T3':
         case 'T3R1':
+        case 'T3N':
+        case 'T3D':
+        case 'T3AD':
             color = colorT3;
             celda.style.color = 'black';
             break;
         case 'T4':
         case 'T4R1':
+        case 'T4N':
+        case 'T4D':
             color = colorT4;
             celda.style.color = 'black';
             break;
         case 'T5':
         case 'T5R1':
+        case 'T5N':
+        case 'T5D':
             color = colorT5;
             celda.style.color = 'black';
             break;
         case 'T6':
         case 'T6R1':
+        case 'T6N':
+        case 'T6D':
+        case 'T6AD':
             color = colorT6;
             celda.style.color = 'black';
             break;
@@ -346,11 +359,6 @@ let agentes = {
         letra: "A",
         contraseña: ""
     },
-    Miguel_Cadavid_Naranjo: {
-        nombre: "Miguel Cadavid Naranjo",
-        letra: "B",
-        contraseña: ""
-    },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
         letra: "C",
@@ -373,10 +381,6 @@ let agentes = {
     },
     Oscar_Luis_Cabrera_Pacheco: {
         nombre: "Oscar Luis Cabrera Pacheco",
-        contraseña: ""
-    },
-    Daniel_Munoz_Vidal: {
-        nombre: "Daniel Muñoz Vidal",
         contraseña: ""
     },
     D: {
@@ -439,8 +443,7 @@ var selector = document.getElementById('Mes');
 selector.addEventListener('change', function () {
     ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
-    ocultarFilas("Miguel Cadavid Naranjo", ["Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Daniel Muñoz Vidal", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
 });
 
@@ -505,109 +508,31 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0, contH = 0;
-    var tiposTurno8 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AS', 'DF'];
-    var tiposTurno7 = ['TSA', 'T1R1', 'T2R1', 'T3R1', 'T4R1', 'T5R1', 'T6R1', 'T7R1', 'ASR1'];
+    var contadores = {A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0};
+    var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AS', 'DF'];
+    var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'T7N', 'TSA'];
     var tiposTurno0 = ['NN', 'D'];
+    var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('A' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contA += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contA += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contA += 0;
+    letras.forEach(function(letra) {
+        for (var i = 1; i < 32; i++) {
+            var celda = document.getElementById(letra + i);
+            var contenido = celda.textContent;
+            if (tiposTurno7_5.includes(contenido)) {
+                contadores[letra] += 7.5;
+            } else if (tiposTurno8.includes(contenido)) {
+                contadores[letra] += 8;
+            }
         }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('B' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contB += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contB += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contB += 0;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('C' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contC += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contC += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contC += 0;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('D' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contD += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contD += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contD += 0;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('E' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contE += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contE += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contE += 0;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('F' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contF += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contF += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contF += 0;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('G' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contG += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contG += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contG += 0;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('H' + i);
-        if (tiposTurno8.includes(celda.textContent)) {
-            contH += 8;
-        } else if (tiposTurno7.includes(celda.textContent)) {
-            contH += 7;
-        } else if (tiposTurno0.includes(celda.textContent)) {
-            contH += 0;
-        }
-    }
+    });
 
-    var celdaA = document.getElementById("11");
-    celdaA.textContent = contA;
-    var celdaB = document.getElementById("12");
-    celdaB.textContent = contB;
-    var celdaC = document.getElementById("13");
-    celdaC.textContent = contC;
-    var celdaD = document.getElementById("14");
-    celdaD.textContent = contD;
-    var celdaE = document.getElementById("15");
-    celdaE.textContent = contE;
-    var celdaF = document.getElementById("16");
-    celdaF.textContent = contF;
-    var celdaG = document.getElementById("17");
-    celdaG.textContent = contG;
-    var celdaH = document.getElementById("18");
-    celdaH.textContent = contH;
+    letras.forEach(function(letra, index) {
+        var celda = document.getElementById((index + 11).toString());
+        celda.textContent = contadores[letra];
+    });
 }
+
+
 
 const checkInterval = 200;
 function checkScrollbar(el) {
@@ -866,10 +791,6 @@ let agentesV = {
     Anderson_Cano_Londoño: {
         nombre: "Anderson Cano Londoño",
         fechaIngreso: "2023-11-01",
-    },
-    Miguel_Cadavid_Naranjo: {
-        nombre: "Miguel Cadavid Naranjo",
-        fechaIngreso: "2023-04-17",
     },
     Milton_Alexis_Calle_Londoño: {
         nombre: "Milton Alexis Calle Londoño",
