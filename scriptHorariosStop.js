@@ -25,6 +25,8 @@ window.onload = function () {
     cargarVacaciones();
 };
 
+console.log("Hola");
+
 function colorCelda() {
     const celdas = document.querySelectorAll('td');
     celdas.forEach(celda => {
