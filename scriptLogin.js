@@ -73,11 +73,9 @@ function getErrorMessage(error) {
 
 let agentesA = {
     "anderson.cano": { nombre: "Anderson_Cano_Londoño" },
-    "miguel.naranjo": { nombre: "Miguel_Cadavid_Naranjo" },
-    "milton.calle": { nombre: "Milton_Alexis_Calle_Londoño" },
     "yesica.cano": { nombre: "Yesica_Johana_Cano_Quintero" },
     "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
     "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
     "oscar.cabrera": { nombre: "Oscar_Luis_Cabrera_Pacheco" },
-    "daniel.munoz": { nombre: "Daniel_Muñoz_Vidal" },
+    "maira.mosquera": { nombre: "Maira_Mosquera_Blandon" },
 };
