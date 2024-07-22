@@ -12,10 +12,11 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
-    ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
+    ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -445,6 +446,9 @@ selector.addEventListener('change', function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
+    ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
 });
 
 
