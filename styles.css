@@ -1154,9 +1154,9 @@ input[type='number']::-webkit-outer-spin-button {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 9999;
     left: 0;
-    top: 50px;
+    top: 0px;
     width: 100%;
     height: 100%;
     overflow: auto;
@@ -1291,9 +1291,7 @@ section {
     left: 50%;
     /* Centrado horizontalmente */
     transform: translate(-50%, -20%);
-    /* Desplaza el modal a la mitad de su altura y anchura para centrarlo perfectamente */
     width: max-content;
-    /* Ajusta este valor para cambiar el ancho del modal */
     padding: 20px;
     border: 1px solid #888;
     background-color: #fefefe;
@@ -1552,4 +1550,12 @@ input:checked+.slider:before {
 
 .Calculos {
     display: none;
+}
+
+.Configuraciones {
+    width: 100%;
+}
+
+.Configuracion {
+    width: 100%;
 }

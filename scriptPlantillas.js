@@ -120,11 +120,9 @@ function showModal(fileName) {
     });
     document.body.classList.add('modal-open');
     if (window.innerWidth <= 968) {
-        document.querySelector('header').style.display = 'none';
         document.getElementById("myModal").style.top = '0px';
     } else {
         document.querySelector('header').style.display = 'block';
-        document.getElementById("myModal").style.top = '50px';
     }
     modal.style.display = "block";
 }
