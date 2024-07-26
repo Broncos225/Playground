@@ -384,6 +384,10 @@ let agentes = {
         nombre: "Oscar Luis Cabrera Pacheco",
         contraseña: ""
     },
+    Maira_Mosquera_Blandon: {
+        nombre: "Maira Mosquera Blandon",
+        contraseña: ""
+    },
     D: {
         nombre: "Descanso",
         contraseña: "D"
