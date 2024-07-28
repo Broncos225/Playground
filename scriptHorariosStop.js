@@ -12,7 +12,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
-    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
+    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
@@ -447,7 +447,7 @@ function ocultarFilas(nombre, mesesParam) {
 var selector = document.getElementById('Mes');
 selector.addEventListener('change', function () {
     ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio"]);
+    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
