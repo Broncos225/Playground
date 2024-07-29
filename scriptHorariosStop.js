@@ -992,13 +992,11 @@ function exportarIcs() {
     var table = document.getElementById('Table');
     var cal = ics();
 
-    // Verificar si el mes es válido
     if (mes === undefined) {
         console.log(`Mes no válido: ${mesTexto}`);
         return;
     }
 
-    // Función para convertir formato de 12 horas a 24 horas
     function convertTo24Hour(time) {
         var [time, modifier] = time.split(' ');
         var [hours, minutes] = time.split(':');
@@ -1011,15 +1009,12 @@ function exportarIcs() {
         return `${hours}:${minutes}`;
     }
 
-    // Iterar por las filas de la tabla
     for (var i = 1, row; row = table.rows[i]; i++) {
         var nombre = row.cells[0].innerText;
         if (nombre === nombreAsesor) {
-            // Iterar por las celdas de los días
             for (var j = 1, cell; cell = row.cells[j]; j++) {
                 var turno = cell.innerText.trim();
                 if (turno === "NN") {
-                    // No crear ningún evento para "NN"
                     continue;
                 } else if (horariosTurnos[turno]) {
                     var horario = horariosTurnos[turno];
@@ -1037,16 +1032,15 @@ function exportarIcs() {
                         var [horaFinH, horaFinM] = horaFin.split(':');
                         var start = new Date(fecha.setHours(horaInicioH, horaInicioM));
                         var end = new Date(fecha.setHours(horaFinH, horaFinM));
-                        cal.addEvent(`Turno ${turno}`, `Turno ${turno} para ${nombreAsesor}`, 'Oficina', start, end);
+                        cal.addEvent(`Turno ${turno}`, `Turno ${turno} para ${nombreAsesor}`, 'Arus', start, end);
                     } else {
                         console.log(`Horario no válido para el turno ${turno}: ${horario}`);
                     }
                 } else {
-                    // Crear un evento de todo el día para turnos no encontrados en horariosTurnos
                     var fecha = new Date(año, mes, j);
                     var start = new Date(fecha.setHours(0, 0, 0));
                     var end = new Date(fecha.setHours(23, 59, 59));
-                    cal.addEvent('Turno diferente', `Turno diferente para ${nombreAsesor}`, 'Oficina', start, end);
+                    cal.addEvent('Turno diferente', `Turno diferente para ${nombreAsesor}`, 'Arus', start, end);
                 }
             }
             break;
