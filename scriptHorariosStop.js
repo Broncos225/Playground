@@ -312,6 +312,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
     var btnExcel = document.getElementById("exportExcel");
     var btnPng = document.getElementById("exportPng");
+    var btnIcs = document.getElementById("exportIcs");
 
     btnExcel.onclick = function () {
         exportarExcel();
@@ -319,6 +320,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     btnPng.onclick = function () {
         exportarPNG();
+    }
+
+    btnIcs.onclick = function () {
+        exportarIcs();
     }
 
     function cerrarModal() {
@@ -386,6 +391,14 @@ let agentes = {
     },
     Maira_Mosquera_Blandon: {
         nombre: "Maira Mosquera Blandon",
+        contraseña: ""
+    },
+    Jhonatan_Gamboa_Mena: {
+        nombre: "Jhonatan Gamboa Mena",
+        contraseña: ""
+    },
+    Santiago_Pérez_Martinez: {
+        nombre: "Santiago Pérez Martinez",
         contraseña: ""
     },
     D: {
@@ -516,13 +529,13 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contadores = {A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0};
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0 };
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AS', 'DF'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'T7N', 'TSA'];
     var tiposTurno0 = ['NN', 'D'];
     var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-    letras.forEach(function(letra) {
+    letras.forEach(function (letra) {
         for (var i = 1; i < 32; i++) {
             var celda = document.getElementById(letra + i);
             var contenido = celda.textContent;
@@ -534,7 +547,7 @@ function contHoras() {
         }
     });
 
-    letras.forEach(function(letra, index) {
+    letras.forEach(function (letra, index) {
         var celda = document.getElementById((index + 11).toString());
         celda.textContent = contadores[letra];
     });
@@ -919,3 +932,127 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+function exportarIcs() {
+    var nombreAsesor = document.getElementById('AsesorActual').textContent;
+    var prefijo = "Asesor actual: ";
+    if (nombreAsesor.startsWith(prefijo)) {
+        nombreAsesor = nombreAsesor.substring(prefijo.length);
+    }
+
+    var horariosTurnos = {
+        "T1N": "7:00 AM - 4:00 PM",
+        "T2N": "9:00 AM - 6:00 PM",
+        "T3N": "09:30 AM - 6:30 PM",
+        "T4N": "10:00 AM - 7:00 PM",
+        "T5N": "11:00 AM - 8:00 PM",
+        "T6N": "12:30 PM - 9:30 PM",
+        "TSA": "8:00 AM - 4:00 PM",
+        "T1": "7:00 AM - 3:30 PM",
+        "T2": "9:00 AM - 5:30 PM",
+        "T3": "09:30 AM - 6:00 PM",
+        "T4": "10:00 AM - 6:30 PM",
+        "T5": "11:00 AM - 7:30 PM",
+        "T6": "1:00 PM - 9:30 PM",
+        "T2R1": "10:00 AM - 6:00 PM",
+        "T3R1": "10:30 AM - 6:30 PM",
+        "T4R1": "11:00 AM - 7:00 PM",
+        "T5R1": "12:00 PM - 8:00 PM",
+        "T6R1": "1:30 PM - 9:30 PM",
+        "T7R1": "9:00 AM - 5:00 PM",
+        "NN": "Ninguno",
+        "D": "Descanso",
+        "AS": "Apoyo Sura 06:30 AM - 05:00 PM",
+        "ASR1": "Apoyo Sura 06:30 AM - 04:00 PM",
+        "DF": "Día de la familia",
+        "IN": "Incapacidad",
+        "DV": "Vacaciones",
+        "T": "Tramites",
+        "MD": "Medio día"
+    };
+
+    var meses = {
+        "enero": 0,
+        "febrero": 1,
+        "marzo": 2,
+        "abril": 3,
+        "mayo": 4,
+        "junio": 5,
+        "julio": 6,
+        "agosto": 7,
+        "septiembre": 8,
+        "octubre": 9,
+        "noviembre": 10,
+        "diciembre": 11
+    };
+
+    var mesTexto = document.getElementById('Mes').value.toLowerCase();
+    var mes = meses[mesTexto];
+    var año = parseInt(document.getElementById('Año').value);
+    var table = document.getElementById('Table');
+    var cal = ics();
+
+    // Verificar si el mes es válido
+    if (mes === undefined) {
+        console.log(`Mes no válido: ${mesTexto}`);
+        return;
+    }
+
+    // Función para convertir formato de 12 horas a 24 horas
+    function convertTo24Hour(time) {
+        var [time, modifier] = time.split(' ');
+        var [hours, minutes] = time.split(':');
+        if (hours === '12') {
+            hours = '00';
+        }
+        if (modifier === 'PM') {
+            hours = parseInt(hours, 10) + 12;
+        }
+        return `${hours}:${minutes}`;
+    }
+
+    // Iterar por las filas de la tabla
+    for (var i = 1, row; row = table.rows[i]; i++) {
+        var nombre = row.cells[0].innerText;
+        if (nombre === nombreAsesor) {
+            // Iterar por las celdas de los días
+            for (var j = 1, cell; cell = row.cells[j]; j++) {
+                var turno = cell.innerText.trim();
+                if (turno === "NN") {
+                    // No crear ningún evento para "NN"
+                    continue;
+                } else if (horariosTurnos[turno]) {
+                    var horario = horariosTurnos[turno];
+                    if (turno === "D") {
+                        var fecha = new Date(año, mes, j);
+                        var start = new Date(fecha.setHours(0, 0, 0));
+                        var end = new Date(fecha.setHours(23, 59, 59));
+                        cal.addEvent('Descanso', `Día de descanso para ${nombreAsesor}`, 'Casa', start, end);
+                    } else if (horario.includes(" - ")) {
+                        var fecha = new Date(año, mes, j);
+                        var [horaInicio, horaFin] = horario.split(" - ");
+                        horaInicio = convertTo24Hour(horaInicio);
+                        horaFin = convertTo24Hour(horaFin);
+                        var [horaInicioH, horaInicioM] = horaInicio.split(':');
+                        var [horaFinH, horaFinM] = horaFin.split(':');
+                        var start = new Date(fecha.setHours(horaInicioH, horaInicioM));
+                        var end = new Date(fecha.setHours(horaFinH, horaFinM));
+                        cal.addEvent(`Turno ${turno}`, `Turno ${turno} para ${nombreAsesor}`, 'Oficina', start, end);
+                    } else {
+                        console.log(`Horario no válido para el turno ${turno}: ${horario}`);
+                    }
+                } else {
+                    // Crear un evento de todo el día para turnos no encontrados en horariosTurnos
+                    var fecha = new Date(año, mes, j);
+                    var start = new Date(fecha.setHours(0, 0, 0));
+                    var end = new Date(fecha.setHours(23, 59, 59));
+                    cal.addEvent('Turno diferente', `Turno diferente para ${nombreAsesor}`, 'Oficina', start, end);
+                }
+            }
+            break;
+        }
+    }
+
+    cal.download(`${nombreAsesor}_horarios`);
+}
+

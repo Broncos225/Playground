@@ -810,6 +810,12 @@ label {
     }
 }
 
+@media only screen and (max-width: 615px) {
+    section {
+        margin-top: 180px !important;
+    }
+}
+
 @media only screen and (max-width: 100x) {
     .TablaDescansos {
         padding: 0px;
@@ -1290,7 +1296,7 @@ section {
     /* Centrado verticalmente */
     left: 50%;
     /* Centrado horizontalmente */
-    transform: translate(-50%, -20%);
+    transform: translate(-50%, -40%);
     width: max-content;
     padding: 20px;
     border: 1px solid #888;

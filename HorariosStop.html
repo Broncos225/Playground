@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Icono.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -798,9 +797,10 @@
                                 onclick="closeModal()">&times;</span>
                         </div>
                         <p style="text-align: center;">Seleccione el formato de exportación:</p>
-                        <div style="display: flex; gap: 10px;">
+                        <div style="display: flex; gap: 10px; flex-direction: column;">
                             <button id="exportExcel">Exportar a Excel</button>
                             <button id="exportPng">Exportar a imagen</button>
+                            <button id="exportIcs">Exportar a calendario</button>
                         </div>
                     </div>
                 </div>
@@ -825,6 +825,7 @@
         <p>© 2024 Andrés Felipe Yepes Tascón</p>
     </footer>
     <script src="scriptMusica.js"></script>
+    <script src="ics.js"></script>
     <script src="scriptHorariosStop.js" type="module"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
