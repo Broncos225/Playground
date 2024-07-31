@@ -62,6 +62,8 @@ function actualizarColorCelda(celda) {
         case 'T1R1':
         case 'T1N':
         case 'T1D':
+        case 'T1U':
+        case 'T1 - T1U':
             color = colorT1;
             celda.style.color = 'black';
             break;
@@ -99,6 +101,7 @@ function actualizarColorCelda(celda) {
         case 'T6N':
         case 'T6D':
         case 'T6AD':
+        case 'T6U':
             color = colorT6;
             celda.style.color = 'black';
             break;
@@ -1050,3 +1053,38 @@ function exportarIcs() {
     cal.download(`${nombreAsesor}_horarios`);
 }
 
+
+
+// Función para contar turnos
+function contarTurnos() {
+  const rootRef = db.ref();
+  rootRef.once('value', (snapshot) => {
+    const data = snapshot.val();
+    const conteo = {};
+
+    for (const user in data) {
+      const userData = data[user];
+      for (const year in userData) {
+        for (const month in userData[year]) {
+          for (const day in userData[year][month]) {
+            if (!conteo[user]) {
+              conteo[user] = {};
+            }
+            if (!conteo[user][year]) {
+              conteo[user][year] = {};
+            }
+            if (!conteo[user][year][month]) {
+              conteo[user][year][month] = 0;
+            }
+            conteo[user][year][month]++;
+          }
+        }
+      }
+    }
+    console.log('Conteo de turnos:');
+    console.log(conteo);
+    // Aquí puedes hacer lo que quieras con el conteo, por ejemplo, mostrarlo en la UI
+  });
+}
+
+contarTurnos();
