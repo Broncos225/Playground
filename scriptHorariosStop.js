@@ -536,6 +536,8 @@ function contHoras() {
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AS', 'DF'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'T7N', 'TSA'];
     var tiposTurno0 = ['NN', 'D'];
+    var tiposTurno8_5 = ['T1U'];
+    var tiposTurno6_5 = ['T6U'];
     var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
     letras.forEach(function (letra) {
@@ -546,6 +548,10 @@ function contHoras() {
                 contadores[letra] += 7.5;
             } else if (tiposTurno8.includes(contenido)) {
                 contadores[letra] += 8;
+            } else if (tiposTurno8_5.includes(contenido)) {
+                contadores[letra] += 8.5;
+            } else if (tiposTurno6_5.includes(contenido)) {
+                contadores[letra] += 6.5;
             }
         }
     });
