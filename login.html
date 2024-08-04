@@ -26,6 +26,65 @@
             border-radius: 5px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(51, 51, 51, 0.9);
+            /* Background color similar to your theme */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            color: #fff;
+            /* White text color */
+            font-family: 'Nunito', sans-serif;
+            /* Font family consistent with your site */
+        }
+
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            /* Light border color */
+            border-top: 8px solid #fff;
+            /* White border for the spinner */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+            /* Space between spinner and text */
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8d7da;
+            /* Light red background */
+            color: #721c24;
+            /* Dark red text */
+            border: 1px solid #f5c6cb;
+            /* Border color */
+            border-radius: 4px;
+            /* Rounded corners */
+            font-family: 'Nunito', sans-serif;
+            /* Font family consistent with your site */
+            font-size: 14px;
+            /* Font size */
+        }
     </style>
     <div class="login-container">
         <img src="LogoLogin.png" alt="Descripción de la imagen" id="LogoLogin">
@@ -42,9 +101,17 @@
                 </div>
                 <button type="submit">Ingresar</button>
             </form>
-            <div id="error-message"></div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            <!-- Contenedor del mensaje de error -->
         </div>
     </div>
+    <!-- Pantalla de carga -->
+    <div id="loading-screen" style="display: none;">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="scriptLogin.js" type="module" defer></script>

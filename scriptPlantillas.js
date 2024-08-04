@@ -164,3 +164,96 @@ window.onclick = function (event) {
         document.querySelector('header').style.display = 'block';
     }
 }
+
+// Agregar los estilos CSS al documento
+var style = document.createElement('style');
+style.innerHTML = `
+    #loadingScreen {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(51, 51, 51, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 9999;
+        color: #fff;
+        font-family: 'Nunito', sans-serif;
+    }
+
+    .spinner {
+        border: 8px solid rgba(255, 255, 255, 0.3);
+        border-top: 8px solid #fff;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Agregar el elemento de pantalla de carga al HTML
+var loadingScreen = document.createElement("div");
+loadingScreen.id = "loadingScreen";
+loadingScreen.innerHTML = `
+    <div class="spinner"></div>
+    <div>Cargando...</div>
+`;
+document.body.appendChild(loadingScreen);
+
+// Mostrar la pantalla de carga antes de iniciar la consulta
+loadingScreen.style.display = "flex";
+
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // Usuario autenticado, listar archivos desde Firebase Realtime Database
+        db.ref('Plantillas').once('value').then(function (snapshot) {
+            var modulosPlantillas = document.getElementById("ModulosPlantillas");
+            snapshot.forEach(function (childSnapshot) {
+                var fileName = childSnapshot.key;
+
+                var newDiv = document.createElement("div");
+                newDiv.className = "Modulo2";
+
+                newDiv.onclick = function () {
+                    showModal(fileName);
+                };
+
+                var newH2 = document.createElement("h2");
+                newH2.textContent = fileName;
+                newDiv.appendChild(newH2);
+
+                modulosPlantillas.appendChild(newDiv);
+            });
+
+            // Configurar búsqueda después de agregar elementos
+            configurarBusqueda();
+
+            // Ocultar la pantalla de carga una vez que la consulta haya terminado
+            loadingScreen.style.display = "none";
+        }).catch(function (error) {
+            console.log("Error al listar los archivos: ", error);
+
+            // Ocultar la pantalla de carga en caso de error
+            loadingScreen.style.display = "none";
+        });
+    } else {
+        console.log('No user is signed in');
+
+        // Ocultar la pantalla de carga si no hay usuario autenticado
+        loadingScreen.style.display = "none";
+    }
+});

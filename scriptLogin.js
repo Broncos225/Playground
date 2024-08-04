@@ -13,13 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const form = document.getElementById('login-form');
+    const loadingScreen = document.getElementById('loading-screen');
+    const errorMessage = document.getElementById('error-message');
+
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            loadingScreen.style.display = 'flex'; // Mostrar la pantalla de carga
+            errorMessage.style.display = 'none'; // Ocultar el mensaje de error
 
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            localStorage.setItem('nombreAsesorActual', agentesA[username].nombre);
+            localStorage.setItem('nombreAsesorActual', agentesA[username]?.nombre || 'Usuario Desconocido');
 
             try {
                 const user = await authenticateUser(username, password);
@@ -27,7 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = 'index.html';
             } catch (error) {
                 console.error('Authentication error:', error);
-                document.getElementById('error-message').textContent = getErrorMessage(error);
+                errorMessage.textContent = getErrorMessage(error);
+                errorMessage.style.display = 'block'; // Mostrar el mensaje de error
+                loadingScreen.style.display = 'none'; // Ocultar la pantalla de carga
             }
         });
     } else {
@@ -37,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function authenticateUser(username, password) {
     if (!validateUsername(username)) {
-        throw new Error('Invalid username format');
+        throw new Error('auth/invalid-username');
     }
 
     const email = `${username}@playground.com`; // Convert username to email
@@ -46,10 +53,13 @@ async function authenticateUser(username, password) {
         return userCredential.user;
     } catch (error) {
         if (error.code === 'auth/user-not-found') {
-            const newUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
-            return newUser.user;
+            throw new Error('auth/user-not-found');
+        } else if (error.code === 'auth/wrong-password') {
+            throw new Error('auth/wrong-password');
+        } else if (error.code === 'auth/invalid-email') {
+            throw new Error('auth/invalid-email');
         } else {
-            throw error;
+            throw new Error('auth/generic-error');
         }
     }
 }
@@ -60,14 +70,17 @@ function validateUsername(username) {
 }
 
 function getErrorMessage(error) {
-    if (error.code === 'auth/user-not-found') {
-        return 'No user found with these credentials.';
-    } else if (error.code === 'auth/wrong-password') {
-        return 'Incorrect password.';
-    } else if (error.code === 'auth/invalid-email') {
-        return 'Invalid email format.';
-    } else {
-        return 'Authentication failed. Please try again.';
+    switch (error.message) {
+        case 'auth/user-not-found':
+            return 'No se encontró ningún usuario con estas credenciales.';
+        case 'auth/wrong-password':
+            return 'Contraseña incorrecta.';
+        case 'auth/invalid-email':
+            return 'Formato de correo electrónico no válido.';
+        case 'auth/invalid-username':
+            return 'Formato de usuario no válido.';
+        default:
+            return 'Fallo de autenticación. Por favor, inténtelo de nuevo.';
     }
 }
 
@@ -79,5 +92,5 @@ let agentesA = {
     "oscar.cabrera": { nombre: "Oscar_Luis_Cabrera_Pacheco" },
     "maira.mosquera": { nombre: "Maira_Mosquera_Blandon" },
     "jhonatan.gamboa": { nombre: "Jhonatan_Gamboa_Mena" },
-    "santiago.perez":{nombre:"Santiago_Perez_Martinez"}
+    "santiago.perez": { nombre: "Santiago_Perez_Martinez" }
 };

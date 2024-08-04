@@ -24,6 +24,7 @@ window.onload = function () {
     Festivos();
     cambiarBordeColumna();
     cargarVacaciones();
+    contarTurnos();
 };
 
 function colorCelda() {
@@ -1060,37 +1061,39 @@ function exportarIcs() {
 }
 
 
-
-// Función para contar turnos
 function contarTurnos() {
-  const rootRef = db.ref();
-  rootRef.once('value', (snapshot) => {
-    const data = snapshot.val();
-    const conteo = {};
-
-    for (const user in data) {
-      const userData = data[user];
-      for (const year in userData) {
-        for (const month in userData[year]) {
-          for (const day in userData[year][month]) {
-            if (!conteo[user]) {
-              conteo[user] = {};
-            }
-            if (!conteo[user][year]) {
-              conteo[user][year] = {};
-            }
-            if (!conteo[user][year][month]) {
-              conteo[user][year][month] = 0;
-            }
-            conteo[user][year][month]++;
-          }
+    const rootRef = db.ref('celdas');
+    rootRef.once('value', (snapshot) => {
+        const data = snapshot.val();
+        if (!data) {
+            console.error('No se encontraron datos en la base de datos.');
+            return;
         }
-      }
-    }
-    console.log('Conteo de turnos:');
-    console.log(conteo);
-    // Aquí puedes hacer lo que quieras con el conteo, por ejemplo, mostrarlo en la UI
-  });
-}
 
-contarTurnos();
+        const agentesA = {
+            "anderson.cano": { nombre: "Anderson_Cano_Londoño" },
+            "yesica.cano": { nombre: "Yesica_Johana_Cano_Quintero" },
+            "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
+            "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
+            "maira.mosquera": { nombre: "Maira_Mosquera_Blandon" },
+            "jhonatan.gamboa": { nombre: "Jhonatan_Gamboa_Mena" },
+            "santiago.perez": { nombre: "Santiago_Pérez_Martinez" }
+        };
+
+        const table = document.getElementById('Table1');
+        
+        for (let agente in agentesA) {
+            const nombre = agentesA[agente].nombre;
+            const row = table.insertRow();
+            const cell1 = row.insertCell();
+            const cell2 = row.insertCell();
+            cell1.textContent = agentes[nombre].nombre;
+            cell2.textContent = 0;
+            cell2.id = `Turnos${nombre}`;
+        }
+        
+
+    }, (error) => {
+        console.error('Error al leer los datos de la base de datos:', error);
+    });
+}

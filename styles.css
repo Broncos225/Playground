@@ -1565,3 +1565,47 @@ input:checked+.slider:before {
 .Configuracion {
     width: 100%;
 }
+
+#Estadisticas {
+    width: 100%;
+}
+
+#EstadisticasContenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabla-contenedor {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#Table1 {
+    width: 100%;  /* Ajustar el ancho total de la tabla */
+    border-collapse: collapse;
+    table-layout: fixed; /* Asegura que todas las columnas tengan el mismo ancho */
+}
+
+#Table1 th, #Table1 td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#Table1 th#NombreAsesor {
+    width: 200px;  /* Ajusta el ancho según sea necesario */
+}
+
+#Table1 th.common-width, #Table1 td.common-width {
+    width: 100px;  
+}
+
+
+#Table1 th#NombreAsesor {
+    width: 200px; 
+}
+
+#Table1 th:not(#NombreAsesor), #Table1 td {
+    width: 50px; 
+    text-align: center;
+}
