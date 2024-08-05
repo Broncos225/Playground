@@ -13,9 +13,15 @@ const db = firebase.database();
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+        // Mostrar la pantalla de carga antes de iniciar la consulta
+        var loadingScreen = document.getElementById("loadingScreen");
+        loadingScreen.style.display = "flex";
+
         // Usuario autenticado, listar archivos desde Firebase Realtime Database
         db.ref('Plantillas').once('value').then(function (snapshot) {
             var modulosPlantillas = document.getElementById("ModulosPlantillas");
+            modulosPlantillas.innerHTML = ''; // Limpiar la lista de módulos antes de agregar nuevos
+
             snapshot.forEach(function (childSnapshot) {
                 var fileName = childSnapshot.key;
 
@@ -35,14 +41,19 @@ firebase.auth().onAuthStateChanged(function (user) {
 
             // Configurar búsqueda después de agregar elementos
             configurarBusqueda();
+
+            // Ocultar la pantalla de carga una vez que la consulta haya terminado
+            loadingScreen.style.display = "none";
         }).catch(function (error) {
             console.log("Error al listar los archivos: ", error);
+
+            // Ocultar la pantalla de carga en caso de error
+            loadingScreen.style.display = "none";
         });
     } else {
         console.log('No user is signed in');
     }
 });
-
 
 function configurarBusqueda() {
     var input = document.getElementById('busqueda');
@@ -78,10 +89,6 @@ function verificarResultados() {
     var hayResultados = pdfs.some(pdf => pdf.style.display !== 'none');
     document.getElementById('NoResultados').style.display = hayResultados ? 'none' : 'block';
 }
-
-// Llamar a la función configurarBusqueda después de cargar los elementos
-configurarBusqueda();
-
 
 function showModal(fileName) {
     var modal = document.getElementById("myModal");
@@ -213,47 +220,3 @@ loadingScreen.innerHTML = `
     <div>Cargando...</div>
 `;
 document.body.appendChild(loadingScreen);
-
-// Mostrar la pantalla de carga antes de iniciar la consulta
-loadingScreen.style.display = "flex";
-
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        // Usuario autenticado, listar archivos desde Firebase Realtime Database
-        db.ref('Plantillas').once('value').then(function (snapshot) {
-            var modulosPlantillas = document.getElementById("ModulosPlantillas");
-            snapshot.forEach(function (childSnapshot) {
-                var fileName = childSnapshot.key;
-
-                var newDiv = document.createElement("div");
-                newDiv.className = "Modulo2";
-
-                newDiv.onclick = function () {
-                    showModal(fileName);
-                };
-
-                var newH2 = document.createElement("h2");
-                newH2.textContent = fileName;
-                newDiv.appendChild(newH2);
-
-                modulosPlantillas.appendChild(newDiv);
-            });
-
-            // Configurar búsqueda después de agregar elementos
-            configurarBusqueda();
-
-            // Ocultar la pantalla de carga una vez que la consulta haya terminado
-            loadingScreen.style.display = "none";
-        }).catch(function (error) {
-            console.log("Error al listar los archivos: ", error);
-
-            // Ocultar la pantalla de carga en caso de error
-            loadingScreen.style.display = "none";
-        });
-    } else {
-        console.log('No user is signed in');
-
-        // Ocultar la pantalla de carga si no hay usuario autenticado
-        loadingScreen.style.display = "none";
-    }
-});
