@@ -160,47 +160,64 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
-
-
 function configurarBusqueda() {
     var input = document.getElementById('busqueda');
     var clearButton = document.getElementById('LimpiarP');
     var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
 
     input.addEventListener('keyup', function () {
-        console.log("Keyup event triggered"); // Para depuración
         var filter = input.value.toUpperCase();
         var tipoSeleccionado = document.getElementById('Tipos').value;
 
         pdfs.forEach(function (pdf) {
-            var title = pdf.getElementsByTagName('h2')[0];
-            var type = pdf.getElementsByTagName('p')[0];
-            var typeMatches = tipoSeleccionado == "0" || pdf.getAttribute("data-type") === tipoSeleccionado;
+            var title = pdf.getElementsByTagName('h2')[0].innerText.toUpperCase(); // Obtén el texto del título en mayúsculas
+            var type = pdf.getAttribute('data-type'); // Obtén el tipo de plantilla desde el atributo 'data-type'
+            var typeMatches = tipoSeleccionado === "0" || type === tipoSeleccionado;
 
-            if ((title.innerHTML.toUpperCase().indexOf(filter) > -1 || type.innerHTML.toUpperCase().indexOf(filter) > -1) && typeMatches) {
-                pdf.style.display = "";
+            // Filtra por título y tipo
+            if (title.indexOf(filter) > -1 && typeMatches) {
+                pdf.style.display = ""; // Muestra el div si coincide con la búsqueda y el filtro
             } else {
-                pdf.style.display = "none";
+                pdf.style.display = "none"; // Oculta el div si no coincide
             }
         });
+
         verificarResultados();
     });
 
     clearButton.addEventListener('click', function () {
-        console.log("Clear button clicked"); // Para depuración
-        input.value = '';
-        var tipoSeleccionado = document.getElementById('Tipos').value;
+        input.value = ''; // Limpia el campo de búsqueda
         pdfs.forEach(function (pdf) {
-            var typeMatches = tipoSeleccionado == "0" || pdf.getAttribute("data-type") === tipoSeleccionado;
-            if (typeMatches) {
-                pdf.style.display = "";
-            } else {
-                pdf.style.display = "none";
-            }
+            pdf.style.display = ""; // Muestra todas las plantillas
         });
         verificarResultados();
     });
 }
+
+function configurarFiltro() {
+    var select = document.getElementById('Tipos');
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+
+    select.addEventListener('change', function () {
+        var tipoSeleccionado = select.value;
+
+        pdfs.forEach(function (pdf) {
+            var type = pdf.getAttribute('data-type');
+            var typeMatches = tipoSeleccionado === "0" || type === tipoSeleccionado;
+
+            pdf.style.display = typeMatches ? "" : "none"; // Filtra por tipo de plantilla
+        });
+
+        verificarResultados();
+    });
+}
+
+function verificarResultados() {
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+    var hayResultados = pdfs.some(pdf => pdf.style.display !== 'none');
+    document.getElementById('NoResultados').style.display = hayResultados ? 'none' : 'block';
+}
+
 
 function configurarFiltro() {
     var select = document.getElementById('Tipos');
@@ -217,11 +234,6 @@ function configurarFiltro() {
     });
 }
 
-function verificarResultados() {
-    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
-    var hayResultados = pdfs.some(pdf => pdf.style.display !== 'none');
-    document.getElementById('NoResultados').style.display = hayResultados ? 'none' : 'block';
-}
 
 
 
