@@ -10,7 +10,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-
+// JavaScript para el modal
+// JavaScript para el modal y el formulario
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // Mostrar la pantalla de carga antes de iniciar la consulta
@@ -22,25 +23,88 @@ firebase.auth().onAuthStateChanged(function (user) {
             var modulosPlantillas = document.getElementById("ModulosPlantillas");
             modulosPlantillas.innerHTML = ''; // Limpiar la lista de módulos antes de agregar nuevos
 
+            var plantillas = []; // Array para almacenar las plantillas y sus tipos
+            var asesorActual = localStorage.getItem('nombreAsesorActual'); // Obtener el nombre del asesor actual desde el localStorage
+
             snapshot.forEach(function (childSnapshot) {
                 var fileName = childSnapshot.key;
+                var moduleData = childSnapshot.val();
+                var moduleType = moduleData.Tipo;
+                var creador = moduleData.Creador;
+
+                // Convertir el tipo numérico a texto
+                // Convertir el tipo numérico a texto
+                var typeText;
+                switch (moduleType) {
+                    case '1':
+                        typeText = 'Predeterminada';
+                        break;
+                    case '2':
+                        typeText = 'Solo personalizada';
+                        break;
+                    default:
+                        typeText = 'Desconocido'; // Para otros valores
+                        break;
+                }
+
+                // Filtrar las plantillas personalizadas
+                if (moduleType === '2' && creador !== asesorActual) {
+                    return; // Saltar esta plantilla si es personalizada y el creador no coincide con el asesor actual
+                }
 
                 var newDiv = document.createElement("div");
                 newDiv.className = "Modulo2";
+                newDiv.setAttribute("data-type", moduleType); // Agregar un atributo de datos para el tipo
 
                 newDiv.onclick = function () {
                     showModal(fileName);
                 };
 
+                var typeSpan = document.createElement("span");
+                typeSpan.className = "module-type";
+                typeSpan.textContent = "Tipo: " + typeText;
+
+                // Solo agregar el deleteSpan si el módulo es personalizado
+                if (moduleType === '2') {
+                    var deleteSpan = document.createElement("span");
+                    deleteSpan.className = "delete-module";
+                    deleteSpan.textContent = "❌";
+
+                    // Agregar el manejador de eventos para la eliminación
+                    deleteSpan.onclick = function (event) {
+                        event.stopPropagation(); // Evita que se dispare el evento onclick del div contenedor
+
+                        var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
+                        if (confirmacion) {
+                            // Eliminar la plantilla de Firebase
+                            db.ref('Plantillas/' + fileName).remove()
+                                .then(function () {
+                                    alert("Plantilla eliminada exitosamente.");
+                                    location.reload(); // Recargar la página para actualizar la lista de plantillas
+                                })
+                                .catch(function (error) {
+                                    console.error("Error al eliminar la plantilla: ", error);
+                                });
+                        }
+                    };
+
+                    newDiv.appendChild(deleteSpan); // Añadir el botón de eliminación solo si es personalizado
+                }
+
                 var newH2 = document.createElement("h2");
                 newH2.textContent = fileName;
+
+                newDiv.appendChild(typeSpan); // Añadir el tipo al principio del div
                 newDiv.appendChild(newH2);
 
-                modulosPlantillas.appendChild(newDiv);
+                plantillas.push(newDiv); // Agregar el div al array
             });
 
-            // Configurar búsqueda después de agregar elementos
+            modulosPlantillas.append(...plantillas); // Añadir todos los divs al contenedor
+
+            // Configurar búsqueda y filtro después de agregar elementos
             configurarBusqueda();
+            configurarFiltro();
 
             // Ocultar la pantalla de carga una vez que la consulta haya terminado
             loadingScreen.style.display = "none";
@@ -50,10 +114,53 @@ firebase.auth().onAuthStateChanged(function (user) {
             // Ocultar la pantalla de carga en caso de error
             loadingScreen.style.display = "none";
         });
+
+        // Configuración del modal
+        var modal = document.getElementById("createTemplateModal");
+        var btn = document.getElementById("openModalButton");
+
+        // Abrir el modal al hacer clic en el botón
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // Cerrar el modal al hacer clic fuera del contenido del modal
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Configurar el formulario para crear plantillas
+        var form = document.getElementById('crearPlantillaForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar el envío del formulario de la manera tradicional
+
+            var nombrePlantilla = document.getElementById('nombrePlantilla').value;
+            var apertura = document.getElementById('apertura').value;
+            var cierre = document.getElementById('cierre').value;
+            var creador = localStorage.getItem('nombreAsesorActual') || 'Desconocido'; // Obtener el nombre del usuario autenticado
+
+            db.ref('Plantillas/' + nombrePlantilla).set({
+                Tipo: '2', // Siempre personalizado
+                Apertura: apertura,
+                Cierre: cierre,
+                Creador: creador
+            }).then(function () {
+                alert('Plantilla creada exitosamente.');
+                form.reset();
+                modal.style.display = "none"; // Cerrar el modal después de crear la plantilla
+                location.reload(); // Recargar la página para reflejar los cambios
+            }).catch(function (error) {
+                console.error("Error al crear la plantilla: ", error);
+            });
+        });
     } else {
         console.log('No user is signed in');
     }
 });
+
+
 
 function configurarBusqueda() {
     var input = document.getElementById('busqueda');
@@ -63,9 +170,14 @@ function configurarBusqueda() {
     input.addEventListener('keyup', function () {
         console.log("Keyup event triggered"); // Para depuración
         var filter = input.value.toUpperCase();
+        var tipoSeleccionado = document.getElementById('Tipos').value;
+
         pdfs.forEach(function (pdf) {
             var title = pdf.getElementsByTagName('h2')[0];
-            if (title.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            var type = pdf.getElementsByTagName('p')[0];
+            var typeMatches = tipoSeleccionado == "0" || pdf.getAttribute("data-type") === tipoSeleccionado;
+
+            if ((title.innerHTML.toUpperCase().indexOf(filter) > -1 || type.innerHTML.toUpperCase().indexOf(filter) > -1) && typeMatches) {
                 pdf.style.display = "";
             } else {
                 pdf.style.display = "none";
@@ -77,8 +189,29 @@ function configurarBusqueda() {
     clearButton.addEventListener('click', function () {
         console.log("Clear button clicked"); // Para depuración
         input.value = '';
+        var tipoSeleccionado = document.getElementById('Tipos').value;
         pdfs.forEach(function (pdf) {
-            pdf.style.display = "";
+            var typeMatches = tipoSeleccionado == "0" || pdf.getAttribute("data-type") === tipoSeleccionado;
+            if (typeMatches) {
+                pdf.style.display = "";
+            } else {
+                pdf.style.display = "none";
+            }
+        });
+        verificarResultados();
+    });
+}
+
+function configurarFiltro() {
+    var select = document.getElementById('Tipos');
+    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+
+    select.addEventListener('change', function () {
+        console.log("Select changed"); // Para depuración
+        var tipoSeleccionado = select.value;
+        pdfs.forEach(function (pdf) {
+            var typeMatches = tipoSeleccionado == "0" || pdf.getAttribute("data-type") === tipoSeleccionado;
+            pdf.style.display = typeMatches ? "" : "none";
         });
         verificarResultados();
     });
@@ -89,6 +222,8 @@ function verificarResultados() {
     var hayResultados = pdfs.some(pdf => pdf.style.display !== 'none');
     document.getElementById('NoResultados').style.display = hayResultados ? 'none' : 'block';
 }
+
+
 
 function showModal(fileName) {
     var modal = document.getElementById("myModal");
@@ -102,13 +237,13 @@ function showModal(fileName) {
     <h2 style="text-align: center;">${fileName}</h2>
     <hr>
     `;
+
     db.ref('Plantillas/' + fileName + '/Apertura').once('value').then(function (snapshot) {
         var textoA = snapshot.val();
-
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
-        <h2 style="margin-right: auto;">Apertura</h2>
-        <button onclick="copiarTexto('textoA')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
+            <h2 style="margin-right: auto;">Apertura</h2>
+            <button onclick="copiarTexto('textoA')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
         </div>
         <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
@@ -116,15 +251,15 @@ function showModal(fileName) {
 
     db.ref('Plantillas/' + fileName + '/Cierre').once('value').then(function (snapshot) {
         var textoC = snapshot.val();
-
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
-        <h2 style="margin-right: auto;">Cierre</h2>
-        <button onclick="copiarTexto('textoC')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
+            <h2 style="margin-right: auto;">Cierre</h2>
+            <button onclick="copiarTexto('textoC')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
         </div>
         <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
     });
+
     document.body.classList.add('modal-open');
     if (window.innerWidth <= 968) {
         document.getElementById("myModal").style.top = '0px';
@@ -133,6 +268,7 @@ function showModal(fileName) {
     }
     modal.style.display = "block";
 }
+
 
 function copiarTexto(id) {
     var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
@@ -157,20 +293,25 @@ function copiarTexto(id) {
 }
 
 function closeModal() {
-    var modal = document.getElementById("myModal");
-    modal.style.display = "none";
+    var modals = document.querySelectorAll('.modal');
+    modals.forEach(function (modal) {
+        modal.style.display = "none";
+    });
     document.body.classList.remove('modal-open');
     document.querySelector('header').style.display = 'block';
 }
 
-window.onclick = function (event) {
-    var modal = document.getElementById("myModal");
-    if (event.target == modal) {
-        modal.style.display = "none";
-        document.body.classList.remove('modal-open');
-        document.querySelector('header').style.display = 'block';
-    }
-}
+// Añadir el manejador de eventos para el clic fuera del contenido del modal
+window.addEventListener('click', function (event) {
+    var modals = document.querySelectorAll('.modal');
+    modals.forEach(function (modal) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            document.body.classList.remove('modal-open');
+            document.querySelector('header').style.display = 'block';
+        }
+    });
+});
 
 // Agregar los estilos CSS al documento
 var style = document.createElement('style');

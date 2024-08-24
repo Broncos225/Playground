@@ -139,7 +139,7 @@ function mostrarNotificacion(mensaje) {
 }
 
 function abrirSoftcontrol() {
-    window.open("https://biometricos.arus.com.co/home");
+    window.open("https://biometricos.arus.com.co/Autogestion/Home");
 }
 
 function cargarSonidoNotificacion() {

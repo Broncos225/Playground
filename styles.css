@@ -1,3 +1,8 @@
+:root {
+    --color-primario: #3498db; 
+    --color-secundario: #e74c3c;
+}
+
 body {
     font-family: 'Nunito', Arial, sans-serif;
     margin: 0;
@@ -1145,10 +1150,30 @@ input[type='number']::-webkit-outer-spin-button {
     padding: 10px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    flex-direction: column;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
+    position: relative; /* Añadir esta línea para permitir el posicionamiento absoluto del span */
+}
+
+.module-type {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 0.8em; /* Tamaño de fuente más pequeño */
+    color: #555;
+    background-color: #e0e0e0;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.delete-module {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
 }
 
 .Modulo2:hover {
@@ -1609,3 +1634,45 @@ input:checked+.slider:before {
     width: 50px; 
     text-align: center;
 }
+
+.module-creator {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    font-size: 0.8em;
+    color: #777;
+    background-color: #f0f0f0;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+
+/* Estilo del formulario */
+/* Estilo del formulario */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+}
+
+form input,
+form textarea {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 97%; /* Asegurarse de que ocupe todo el ancho disponible */
+}
+
+form textarea {
+    height: 50px; /* Ajusta la altura del textarea */
+    resize: vertical; /* Permite cambiar el tamaño verticalmente */
+}
+

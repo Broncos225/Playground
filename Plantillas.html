@@ -47,8 +47,34 @@
                     <option value="2">Solo personalizadas</option>
                 </select>
             </div>
-
         </div>
+        <!-- Botón para abrir el modal -->
+        <button id="openModalButton">Crear Plantilla</button>
+
+        <!-- El modal -->
+        <!-- El modal -->
+        <div id="createTemplateModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 style="text-align: center;">Crear Nueva Plantilla</h2>
+                <form id="crearPlantillaForm">
+                    <label for="nombrePlantilla">Nombre de la Plantilla:</label>
+                    <input type="text" id="nombrePlantilla" required><br>
+
+                    <label for="apertura">Guión de Apertura:</label>
+                    <textarea id="apertura" required></textarea><br>
+
+                    <label for="cierre">Guión de Cierre:</label>
+                    <textarea id="cierre" required></textarea><br>
+
+                    <button type="submit">Crear Plantilla</button>
+                </form>
+            </div>
+        </div>
+
+
+
+
         <div style="display: flex; width: 100%; justify-content: space-between;">
             <div id="FormTiendas" style="display: flex; justify-content: center; flex-grow: 1; margin: 0px;">
                 <input type="text" autocomplete="off" id="busqueda" placeholder="Buscar..." style="height: 36px;">
