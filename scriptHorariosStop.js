@@ -15,8 +15,9 @@ window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
-    ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Yesica Johana Cano Quintero", ["Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -434,32 +435,34 @@ for (let agente in agentes) {
 }
 
 function ocultarFilas(nombre, mesesParam) {
-    var valorSeleccionado = document.getElementById('Mes').value;
+    var valorSeleccionado = document.getElementById('Mes').value.trim().toLowerCase();
     var filas = document.getElementsByTagName('tr');
+    nombre = nombre.trim().toLowerCase();
+
+    var ocultarMes = mesesParam.map(mes => mes.toLowerCase()).includes(valorSeleccionado);
+
     for (var i = 0; i < filas.length; i++) {
         var celdas = filas[i].getElementsByTagName('td');
         var nombreEncontrado = false;
 
         for (var j = 0; j < celdas.length; j++) {
-            if (celdas[j].textContent === nombre) {
+            if (celdas[j].textContent.trim().toLowerCase() === nombre) {
                 nombreEncontrado = true;
                 break;
             }
         }
 
         if (nombreEncontrado) {
-            if (mesesParam.includes(valorSeleccionado)) {
-                filas[i].style.display = 'none';
-                document.getElementById(i - 2).parentElement.style.display = 'none';
-            } else {
-                filas[i].style.display = '';
-                document.getElementById(i - 2).parentElement.style.display = '';
+            filas[i].style.display = ocultarMes ? 'none' : '';
+
+            var elementoRelacionado = document.getElementById(i - 2);
+            if (elementoRelacionado) {
+                elementoRelacionado.parentElement.style.display = ocultarMes ? 'none' : '';
             }
         }
     }
-
-
 }
+
 
 var selector = document.getElementById('Mes');
 selector.addEventListener('change', function () {
@@ -468,8 +471,9 @@ selector.addEventListener('change', function () {
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
-    ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Yesica Johana Cano Quintero", ["Septiembre", "Octubre", "Noviembre", "Diciembre"]);
 });
 
 
@@ -1081,7 +1085,7 @@ function contarTurnos() {
         };
 
         const table = document.getElementById('Table1');
-        
+
         for (let agente in agentesA) {
             const nombre = agentesA[agente].nombre;
             const row = table.insertRow();
@@ -1091,7 +1095,7 @@ function contarTurnos() {
             cell2.textContent = 0;
             cell2.id = `Turnos${nombre}`;
         }
-        
+
 
     }, (error) => {
         console.error('Error al leer los datos de la base de datos:', error);

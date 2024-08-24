@@ -5,15 +5,9 @@ let agentesN = {
         letra: "A",
         contraseña: ""
     },
-    Miguel_Cadavid_Naranjo: {
-        nombre: "Miguel Cadavid Naranjo",
-        usuario: "miguel.naranjo",
-        letra: "B",
-        contraseña: ""
-    },
-    Milton_Alexis_Calle_Londoño: {
-        nombre: "Milton Alexis Calle Londoño",
-        usuario: "milton.calle",
+    Santiago_Pérez_Martinez: {
+        nombre: "Santiago Pérez Martínez",
+        usuario: "santiago.perez",
         letra: "C",
         contraseña: ""
     },
@@ -34,7 +28,13 @@ let agentesN = {
         usuario: "andres.yepes",
         letra: "F",
         contraseña: ""
-    }
+    },
+    Maira_Mosquera_Blandon: {
+        nombre: "Maira Mosquera Blandon",
+        usuario: "maira.mosquera",
+        letra: "G",
+        contraseña: ""
+    },
 };
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -70,18 +70,25 @@ function Notificador() {
     }
 
     var Marcaciones = {
-        "T1": ["07:00", "12:00", "13:00", "16:00"],
-        "T2": ["09:00", "12:30", "13:30", "18:00"],
-        "T3": ["09:30", "13:30", "14:30", "18:30"],
+        "T1": ["07:00", "12:00", "13:00", "15:30"],
+        "T1U": ["07:00", "12:00", "13:00", "16:30"],
+
+        "T2": ["09:00", "12:30", "13:30", "17:30"],
+        "T2N": ["09:00", "12:30", "13:30", "18:00"],
+
+        "T3": ["10:00", "13:00", "14:00", "18:30"],
+        "T3N": ["09:30", "13:00", "14:00", "18:30"],
+
         "T4": ["10:00", "14:30", "15:30", "19:00"],
+        "T4N": ["10:30", "14:30", "15:30", "19:00"],
+
         "T5": ["11:00", "15:30", "16:30", "20:00"],
+        "T5N": ["11:30", "15:30", "16:30", "20:00"],
+
         "T6": ["12:30", "16:30", "17:30", "21:30"],
-        "TSA": ["08:00", "12:00", "13:00", "16:00"],
-        "T2R1": ["10:00", "12:30", "13:30", "18:00"],
-        "T3R1": ["10:30", "13:30", "14:30", "18:30"],
-        "T4R1": ["11:00", "14:30", "15:30", "19:00"],
-        "T5R1": ["12:00", "15:30", "16:30", "20:00"],
-        "T6R1": ["13:30", "16:30", "17:30", "21:30"],
+        "T6N": ["13:00", "16:30", "17:30", "21:30"],
+
+        "TSA": ["08:00", "12:00", "12:30", "16:00"],
     };
 
     var descripciones = ["entrada del turno", "salida al almuerzo", "entrada del almuerzo", "salida del turno"];

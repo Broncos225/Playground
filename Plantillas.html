@@ -18,7 +18,7 @@
         <nav>
             <div class="titulo">
                 <h2>
-                    <a href="index.html"  style="display: flex; align-items: center; gap: 10px;">
+                    <a href="index.html" style="display: flex; align-items: center; gap: 10px;">
                         <img src="Icono.ico" width="45" alt="Icono" style="vertical-align: middle;">
                         Playground
                     </a>
@@ -36,8 +36,19 @@
         </nav>
     </header>
     <section>
+        <div>
+            <h1 id="Titulo">Plantillas</h1>
 
-        <h1 id="Titulo">Plantillas</h1>
+            <div style="display: flex; flex-direction: column;">
+                <label for="Tipos" style="display: flex; width: auto;">Tipos de plantillas:</label>
+                <select id="Tipos" class="custom-select">
+                    <option value="0">Todas las plantillas</option>
+                    <option value="1">Predeterminadas</option>
+                    <option value="2">Solo personalizadas</option>
+                </select>
+            </div>
+
+        </div>
         <div style="display: flex; width: 100%; justify-content: space-between;">
             <div id="FormTiendas" style="display: flex; justify-content: center; flex-grow: 1; margin: 0px;">
                 <input type="text" autocomplete="off" id="busqueda" placeholder="Buscar..." style="height: 36px;">
@@ -79,7 +90,8 @@
             </div>
         </div>
         <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
-        <button id="btnMostrarReproductor" style="display: flex; align-self: end; justify-self: end; border: 0;"></button>
+        <button id="btnMostrarReproductor"
+            style="display: flex; align-self: end; justify-self: end; border: 0;"></button>
 
     </section>
     <footer>
