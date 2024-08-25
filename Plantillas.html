@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="PlantillasEstilos.css">
     <link rel="icon" href="Icono.ico">
     <meta name="theme-color" content="#333" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
@@ -56,8 +57,12 @@
         <div id="createTemplateModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
+                <hr>
                 <h2 style="text-align: center;">Crear Nueva Plantilla</h2>
+                <hr>
                 <form id="crearPlantillaForm">
+                    <p>Nota: No agregar saludos ni despedidas como "Buenos días" ya que esto se agrega automaticamente
+                        al momento de crear la plantilla.</p>
                     <label for="nombrePlantilla">Nombre de la Plantilla:</label>
                     <input type="text" id="nombrePlantilla" required><br>
 

@@ -62,7 +62,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
                 var typeSpan = document.createElement("span");
                 typeSpan.className = "module-type";
-                typeSpan.textContent = "Tipo: " + typeText;
+                typeSpan.textContent = typeText;
 
                 // Solo agregar el deleteSpan si el módulo es personalizado
                 if (moduleType === '2') {

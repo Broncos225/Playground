@@ -1,5 +1,5 @@
 :root {
-    --color-primario: #3498db; 
+    --color-primario: #e69500;
     --color-secundario: #e74c3c;
 }
 
@@ -58,7 +58,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #e69500;
+    background-color: var(--color-primario);
     color: #000000;
     text-align: center;
     font-weight: bold;
@@ -188,7 +188,7 @@ button {
 }
 
 button:hover {
-    background-color: #e69500;
+    background-color: var(--color-primario);
 }
 
 
@@ -280,7 +280,7 @@ button .botonReiniciar:hover {
 .titulos th {
     font-weight: bold;
     font-size: 15px;
-    background-color: #e69500;
+    background-color: var(--color-primario);
     color: #000000;
     border-color: #f2f2f2;
 }
@@ -315,7 +315,7 @@ button .botonReiniciar:hover {
 #TablaSol2 table th {
     font-weight: bold;
     font-size: 15px;
-    background-color: #e69500;
+    background-color: var(--color-primario);
     color: #000000;
     border-color: #f2f2f2;
     text-align: center;
@@ -409,7 +409,7 @@ button .botonReiniciar:hover {
 #btnLimpiar:hover,
 #btnImportar:hover,
 #btnEnviar:hover #btnEnviar2:hover {
-    background-color: #e69500;
+    background-color: var(--color-primario);
 }
 
 #pass {
@@ -632,7 +632,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #e69500;
+    background-color: var(--color-primario);
     padding: 10px;
     /* Adjusted padding for consistency */
 }
@@ -769,7 +769,7 @@ label {
         flex-direction: column;
         align-items: center;
         /* Centra los elementos en el eje transversal */
-        background-color: #e69500;
+        background-color: var(--color-primario);
         /* Un color de fondo oscuro puede ayudar a que el encabezado se destaque */
         color: #000;
         /* Un color de texto claro puede ayudar a que el texto sea legible contra el fondo oscuro */
@@ -976,20 +976,20 @@ label {
 #Izq:hover,
 #Der:hover,
 #Hoy:hover {
-    background-color: #e69500;
+    background-color: var(--color-primario);
 }
 
 #Table tbody tr td:first-child {
     position: sticky;
     left: 0;
-    background-color: #e69500;
+    background-color: var(--color-primario);
     z-index: 1;
 }
 
 #Table tbody tr th:first-child {
     position: sticky;
     left: 0;
-    background-color: #e69500;
+    background-color: var(--color-primario);
     z-index: 1;
 }
 
@@ -1092,7 +1092,7 @@ input[type='number']::-webkit-outer-spin-button {
 #Matriz th,
 #Enlaces th,
 #Administrativas th {
-    background-color: #e69500;
+    background-color: var(--color-primario);
     color: #000;
     white-space: nowrap;
     text-align: center;
@@ -1155,31 +1155,37 @@ input[type='number']::-webkit-outer-spin-button {
     justify-content: center;
     align-items: center;
     background-color: white;
-    position: relative; /* Añadir esta línea para permitir el posicionamiento absoluto del span */
+    position: relative;
+    /* Añadir esta línea para permitir el posicionamiento absoluto del span */
 }
 
 .module-type {
     position: absolute;
     top: 5px;
     left: 5px;
-    font-size: 0.8em; /* Tamaño de fuente más pequeño */
-    color: #555;
-    background-color: #e0e0e0;
+    font-size: 0.8em;
+    /* Tamaño de fuente más pequeño */
+    color: #000000;
+    background-color: var(--color-primario);
     padding: 2px 4px;
-    border-radius: 3px;
+    border-radius: 10px;
 }
 
 .delete-module {
     position: absolute;
     top: 5px;
     right: 5px;
-
 }
 
 .Modulo2:hover {
-    background-color: #e69500;
-    color: #000000;
+    background-color: #000000;
+    color: var(--color-primario);
     cursor: pointer;
+}
+
+.Modulo2:hover .module-type {
+    background-color: #000000;
+    color: var(--color-primario);
 }
 
 .modal {
@@ -1238,7 +1244,7 @@ body.modal-open {
 #LimpiarP:hover,
 #distribucion1:hover,
 #distribucion2:hover {
-    background-color: #e69500 !important;
+    background-color: var(--color-primario) !important;
 }
 
 section {
@@ -1393,7 +1399,7 @@ section {
 }
 
 input:checked+.slider {
-    background-color: #e69500;
+    background-color: var(--color-primario);
 }
 
 input:checked+.slider:before {
@@ -1530,52 +1536,71 @@ input:checked+.slider:before {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background: linear-gradient(to right, #4b6cb7, #182848); /* Gradiente de fondo */
+    background: linear-gradient(to right, #4b6cb7, #182848);
+    /* Gradiente de fondo */
     color: #fff;
-    padding: 10px 20px; /* Ajuste del padding para más espacio */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    padding: 10px 20px;
+    /* Ajuste del padding para más espacio */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+    /* Sombra más pronunciada */
     display: flex;
     align-items: center;
-    border-top-left-radius: 10px; /* Esquinas redondeadas */
-    border-top-right-radius: 10px; /* Esquinas redondeadas */
+    border-top-left-radius: 10px;
+    /* Esquinas redondeadas */
+    border-top-right-radius: 10px;
+    /* Esquinas redondeadas */
 }
 
 #audioPlayer {
     width: 50%;
     height: 30px;
-    border-radius: 15px; /* Esquinas redondeadas */
-    outline: none; /* Remover el borde al enfocar */
-    transition: transform 0.3s ease; /* Transición suave al interactuar */
+    border-radius: 15px;
+    /* Esquinas redondeadas */
+    outline: none;
+    /* Remover el borde al enfocar */
+    transition: transform 0.3s ease;
+    /* Transición suave al interactuar */
 }
 
 #audioPlayer:hover {
-    transition: background-color 0.3s ease; /* Transición suave del fondo */
+    transition: background-color 0.3s ease;
+    /* Transición suave del fondo */
 }
 
 #songSelector {
     width: 20%;
     height: 30px;
     margin-left: 10px;
-    background-color: #182848; /* Color de fondo más oscuro para contraste */
+    background-color: #182848;
+    /* Color de fondo más oscuro para contraste */
     color: #fff;
     border: 1px solid #555;
-    border-radius: 15px; /* Esquinas redondeadas */
-    outline: none; /* Remover el borde al enfocar */
-    transition: background-color 0.3s ease; /* Transición suave del fondo */
+    border-radius: 15px;
+    /* Esquinas redondeadas */
+    outline: none;
+    /* Remover el borde al enfocar */
+    transition: background-color 0.3s ease;
+    /* Transición suave del fondo */
     font-family: 'Nunito', Arial, sans-serif;
 }
 
 #songSelector:hover {
-    background-color: #4b6cb7; /* Cambio de color al pasar el mouse */
+    background-color: #4b6cb7;
+    /* Cambio de color al pasar el mouse */
 }
 
 #btnMostrarReproductor {
-    position: fixed; /* Cambia la posición a fijo */
-    bottom: 50px; /* Distancia desde el fondo */
-    right: 20px; /* Distancia desde la derecha */
+    position: fixed;
+    /* Cambia la posición a fijo */
+    bottom: 50px;
+    /* Distancia desde el fondo */
+    right: 20px;
+    /* Distancia desde la derecha */
     display: flex;
-    align-items: center; /* Alinea los elementos internos verticalmente */
-    justify-content: center; /* Alinea los elementos internos horizontalmente */
+    align-items: center;
+    /* Alinea los elementos internos verticalmente */
+    justify-content: center;
+    /* Alinea los elementos internos horizontalmente */
     border: 0;
 }
 
@@ -1606,32 +1631,38 @@ input:checked+.slider:before {
 }
 
 #Table1 {
-    width: 100%;  /* Ajustar el ancho total de la tabla */
+    width: 100%;
+    /* Ajustar el ancho total de la tabla */
     border-collapse: collapse;
-    table-layout: fixed; /* Asegura que todas las columnas tengan el mismo ancho */
+    table-layout: fixed;
+    /* Asegura que todas las columnas tengan el mismo ancho */
 }
 
-#Table1 th, #Table1 td {
+#Table1 th,
+#Table1 td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
 }
 
 #Table1 th#NombreAsesor {
-    width: 200px;  /* Ajusta el ancho según sea necesario */
+    width: 200px;
+    /* Ajusta el ancho según sea necesario */
 }
 
-#Table1 th.common-width, #Table1 td.common-width {
-    width: 100px;  
+#Table1 th.common-width,
+#Table1 td.common-width {
+    width: 100px;
 }
 
 
 #Table1 th#NombreAsesor {
-    width: 200px; 
+    width: 200px;
 }
 
-#Table1 th:not(#NombreAsesor), #Table1 td {
-    width: 50px; 
+#Table1 th:not(#NombreAsesor),
+#Table1 td {
+    width: 50px;
     text-align: center;
 }
 
@@ -1644,35 +1675,5 @@ input:checked+.slider:before {
     background-color: #f0f0f0;
     padding: 2px 4px;
     border-radius: 3px;
-}
-
-
-/* Estilo del formulario */
-/* Estilo del formulario */
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-form label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    width: 100%;
-    text-align: left;
-}
-
-form input,
-form textarea {
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 97%; /* Asegurarse de que ocupe todo el ancho disponible */
-}
-
-form textarea {
-    height: 50px; /* Ajusta la altura del textarea */
-    resize: vertical; /* Permite cambiar el tamaño verticalmente */
 }
 
