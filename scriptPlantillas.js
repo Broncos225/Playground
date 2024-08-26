@@ -236,13 +236,25 @@ function configurarFiltro() {
 
 
 
-
 function showModal(fileName) {
     var modal = document.getElementById("myModal");
     modal.scrollTop = 0;
     var modalTitulo = document.querySelector("#myModal #modal-content #titulo");
     var modalApertura = document.querySelector("#myModal #modal-content #apertura");
     var modalCierre = document.querySelector("#myModal #modal-content #cierre");
+
+    // Obtener la hora actual
+    var currentHour = new Date().getHours();
+    var saludo;
+
+    // Determinar el saludo basado en la hora del día
+    if (currentHour < 12) {
+        saludo = "Buenos días";
+    } else if (currentHour < 18) {
+        saludo = "Buenas tardes";
+    } else {
+        saludo = "Buenas noches";
+    }
 
     modalTitulo.innerHTML = `
     <hr>
@@ -257,7 +269,7 @@ function showModal(fileName) {
             <h2 style="margin-right: auto;">Apertura</h2>
             <button onclick="copiarTexto('textoA')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
         </div>
-        <div id="textoA"><p>Buenas<br></p><p>${textoA}</p><p>Saludos.</p></div>
+        <div id="textoA"><p>${saludo}<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
     });
 
@@ -268,7 +280,7 @@ function showModal(fileName) {
             <h2 style="margin-right: auto;">Cierre</h2>
             <button onclick="copiarTexto('textoC')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
         </div>
-        <div id="textoC"><p>Buenas</p><p>${textoC}</p><p>Saludos.</p></div>
+        <div id="textoC"><p>${saludo}</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
     });
 
@@ -280,7 +292,6 @@ function showModal(fileName) {
     }
     modal.style.display = "block";
 }
-
 
 function copiarTexto(id) {
     var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
