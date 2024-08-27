@@ -216,10 +216,10 @@ function CuentaAsesor() {
 
     if (nombre) {
         nombre = nombre.replace(/_/g, ' ');
-        asesor.textContent = "Asesor actual: ";
+        asesor.textContent = "Bienvenido/a ";
         span.textContent = nombre;
     } else {
-        asesor.textContent = "Asesor actual: ";
+        asesor.textContent = "Bienvenido/a ";
         span.textContent = "Nadie";
     }
 

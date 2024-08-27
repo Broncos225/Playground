@@ -17,7 +17,7 @@ window.onload = function () {
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
-    ocultarFilas("Yesica Johana Cano Quintero", ["Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Yesica Johana Cano Quintero", ["Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -473,7 +473,7 @@ selector.addEventListener('change', function () {
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
-    ocultarFilas("Yesica Johana Cano Quintero", ["Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Yesica Johana Cano Quintero", ["Octubre", "Noviembre", "Diciembre"]);
 });
 
 
@@ -949,7 +949,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function exportarIcs() {
     var nombreAsesor = document.getElementById('AsesorActual').textContent;
-    var prefijo = "Asesor actual: ";
+    var prefijo = "Bienvenido/a ";
     if (nombreAsesor.startsWith(prefijo)) {
         nombreAsesor = nombreAsesor.substring(prefijo.length);
     }
