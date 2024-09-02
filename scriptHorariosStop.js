@@ -74,6 +74,7 @@ function actualizarColorCelda(celda) {
         case 'T2N':
         case 'T2D':
         case 'T2U':
+        case 'T2 - T2U':
             color = colorT2;
             celda.style.color = 'black';
             break;
@@ -539,8 +540,8 @@ function diaSemana() {
 
 function contHoras() {
     var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0 };
-    var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'AS'];
-    var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'T7N', 'TSA', 'DF'];
+    var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
+    var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
     var tiposTurno0 = ['NN', 'D'];
     var tiposTurno8_5 = ['T1U', 'T2U'];
     var tiposTurno6_5 = ['T6U'];
