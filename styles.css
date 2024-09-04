@@ -1700,6 +1700,13 @@ input:checked+.slider:before {
     table-layout: auto; 
 }
 
+#TablaPagosQuincena1 th:first-child,
+#TablaPagosQuincena2 th:first-child,
+#TablaPagosQuincena1 td:first-child,
+#TablaPagosQuincena2 td:first-child {
+    width: 200px;
+}
+
 #TablasSalarios {
     display: flex;
     align-items: center;

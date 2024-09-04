@@ -15,9 +15,9 @@ window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
+    ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
-    ocultarFilas("Yesica Johana Cano Quintero", ["Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -373,11 +373,6 @@ let agentes = {
         letra: "A",
         contraseña: ""
     },
-    Milton_Alexis_Calle_Londoño: {
-        nombre: "Milton Alexis Calle Londoño",
-        letra: "C",
-        contraseña: ""
-    },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
         letra: "D",
@@ -401,12 +396,12 @@ let agentes = {
         nombre: "Maira Mosquera Blandon",
         contraseña: ""
     },
-    Jhonatan_Gamboa_Mena: {
-        nombre: "Jhonatan Gamboa Mena",
-        contraseña: ""
-    },
     Santiago_Pérez_Martinez: {
         nombre: "Santiago Pérez Martinez",
+        contraseña: ""
+    },
+    Yeison_Torres_Ochoa: {
+        nombre: "Yeison Torres Ochoa",
         contraseña: ""
     },
     D: {
@@ -473,10 +468,10 @@ selector.addEventListener('change', function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
-    ocultarFilas("Yesica Johana Cano Quintero", ["Octubre", "Noviembre", "Diciembre"]);
 });
 
 
@@ -1083,7 +1078,7 @@ function contarTurnos() {
             "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
             "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
             "maira.mosquera": { nombre: "Maira_Mosquera_Blandon" },
-            "jhonatan.gamboa": { nombre: "Jhonatan_Gamboa_Mena" },
+            "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
             "santiago.perez": { nombre: "Santiago_Pérez_Martinez" }
         };
 

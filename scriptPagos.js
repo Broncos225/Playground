@@ -21,9 +21,12 @@ const month = today.getMonth() + 1;
 async function cargarDatos() {
     const promesasPrimeraQuincena = [];
     const promesasSegundaQuincena = [];
+    var asesor = localStorage.getItem("nombreAsesorActual");
+    var asesorConEspacios = asesor.replace(/_/g, ' ');
+
 
     for (let i = 1; i <= 15; i++) {
-        const ref = firebase.database().ref(`celdas/Andrés Felipe Yepes Tascón/${i + 1}/${year}/${month}`);
+        const ref = firebase.database().ref(`celdas/${asesorConEspacios}/${i + 1}/${year}/${month}`);
 
         const promesa = new Promise((resolve, reject) => {
             ref.on('value', (snapshot) => {
@@ -44,7 +47,7 @@ async function cargarDatos() {
     }
 
     for (let i = 16; i <= 31; i++) {
-        const ref = firebase.database().ref(`celdas/Andrés Felipe Yepes Tascón/${i + 1}/${year}/${month}`);
+        const ref = firebase.database().ref(`celdas/${asesorConEspacios}/${i + 1}/${year}/${month}`);
 
         const promesa = new Promise((resolve, reject) => {
             ref.on('value', (snapshot) => {
