@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="icon" href="Icono.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <title>Calculadora de notas</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="titulo">
+                <h2>
+                    <a href="index.html" style="display: flex; align-items: center; gap: 10px;">
+                        <img src="Icono.png" width="45" alt="Icono" style="vertical-align: middle;">
+                        Playground
+                    </a>
+                </h2>
+            </div>
+            <ul class="botonesNav">
+                <li><a href="Calculadora.html">Calculadora</a></li>
+                <li><a href="Herramientas.html">Herramientas</a></li>
+                <li><a href="Plantillas.html">Plantillas</a></li>
+                <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+                <li><a id="usuario"><i class="far fa-user"></i></a></li>
+                <li><a id="configuraciones" href="Configuraciones.html"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+
+        <h1 id="Titulo">Calculadora de nomina</h1>
+        <div style="display: flex; gap: 20px;">
+            <label for="Nombre">Salario:</label>
+            <input type="text" oninput="actualizarTodosLosValores()" id="Salario" placeholder="" value="1406000">
+        </div>
+        <div id="TablasSalarios">
+            <h1 id="Titulo">Quincena 1</h1>
+            <table id="TablaPagosQuincena1">
+                <tr>
+                    <th id="Encabezado">Nombre</th>
+                    <th id="Encabezado">1</th>
+                    <th id="Encabezado">2</th>
+                    <th id="Encabezado">3</th>
+                    <th id="Encabezado">4</th>
+                    <th id="Encabezado">5</th>
+                    <th id="Encabezado">6</th>
+                    <th id="Encabezado">7</th>
+                    <th id="Encabezado">8</th>
+                    <th id="Encabezado">9</th>
+                    <th id="Encabezado">10</th>
+                    <th id="Encabezado">11</th>
+                    <th id="Encabezado">12</th>
+                    <th id="Encabezado">13</th>
+                    <th id="Encabezado">14</th>
+                    <th id="Encabezado">15</th>
+
+                    <th id="Encabezado">Cantidad Total</th>
+                    <th id="Encabezado">Dias Total</th>
+                    <th id="Encabezado">Valor</th>
+                </tr>
+                <tr>
+                    <th id="Nombre">Turnos</th>
+                    <th id="Dia1"></th>
+                    <th id="Dia2"></th>
+                    <th id="Dia3"></th>
+                    <th id="Dia4"></th>
+                    <th id="Dia5"></th>
+                    <th id="Dia6"></th>
+                    <th id="Dia7"></th>
+                    <th id="Dia8"></th>
+                    <th id="Dia9"></th>
+                    <th id="Dia10"></th>
+                    <th id="Dia11"></th>
+                    <th id="Dia12"></th>
+                    <th id="Dia13"></th>
+                    <th id="Dia14"></th>
+                    <th id="Dia15"></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Horas Normales</th>
+                    <th id="HN1"></th>
+                    <th id="HN2"></th>
+                    <th id="HN3"></th>
+                    <th id="HN4"></th>
+                    <th id="HN5"></th>
+                    <th id="HN6"></th>
+                    <th id="HN7"></th>
+                    <th id="HN8"></th>
+                    <th id="HN9"></th>
+                    <th id="HN10"></th>
+                    <th id="HN11"></th>
+                    <th id="HN12"></th>
+                    <th id="HN13"></th>
+                    <th id="HN14"></th>
+                    <th id="HN15"></th>
+
+                    <th id="TotalHNQ1"></th>
+                    <th id="DiasHNQ1"></th>
+                    <th id="ValorHNQ1"></th>
+                </tr>
+                <tr>
+                    <th>Recargno Nocturno Ordinario</th>
+                    <th id="RNO1"></th>
+                    <th id="RNO2"></th>
+                    <th id="RNO3"></th>
+                    <th id="RNO4"></th>
+                    <th id="RNO5"></th>
+                    <th id="RNO6"></th>
+                    <th id="RNO7"></th>
+                    <th id="RNO8"></th>
+                    <th id="RNO9"></th>
+                    <th id="RNO10"></th>
+                    <th id="RNO11"></th>
+                    <th id="RNO12"></th>
+                    <th id="RNO13"></th>
+                    <th id="RNO14"></th>
+                    <th id="RNO15"></th>
+
+                    <th id="TotalRNOQ1"></th>
+                    <th id="DiasRNOQ1"></th>
+                    <th id="ValorRNOQ1"></th>
+                </tr>
+                <tr>
+                    <th>Hora Extra Diurno Ordinaria</th>
+                    <th id="HEDO1"></th>
+                    <th id="HEDO2"></th>
+                    <th id="HEDO3"></th>
+                    <th id="HEDO4"></th>
+                    <th id="HEDO5"></th>
+                    <th id="HEDO6"></th>
+                    <th id="HEDO7"></th>
+                    <th id="HEDO8"></th>
+                    <th id="HEDO9"></th>
+                    <th id="HEDO10"></th>
+                    <th id="HEDO11"></th>
+                    <th id="HEDO12"></th>
+                    <th id="HEDO13"></th>
+                    <th id="HEDO14"></th>
+                    <th id="HEDO15"></th>
+
+                    <th id="TotalHEDOQ1"></th>
+                    <th id="DiasHEDOQ1"></th>
+                    <th id="ValorHEDOQ1"></th>
+                </tr>
+                <tr>
+                    <th>Hora Extra Nocturno Ordinaria</th>
+                    <th id="HENO1"></th>
+                    <th id="HENO2"></th>
+                    <th id="HENO3"></th>
+                    <th id="HENO4"></th>
+                    <th id="HENO5"></th>
+                    <th id="HENO6"></th>
+                    <th id="HENO7"></th>
+                    <th id="HENO8"></th>
+                    <th id="HENO9"></th>
+                    <th id="HENO10"></th>
+                    <th id="HENO11"></th>
+                    <th id="HENO12"></th>
+                    <th id="HENO13"></th>
+                    <th id="HENO14"></th>
+                    <th id="HENO15"></th>
+
+                    <th id="TotalHENOQ1"></th>
+                    <th id="DiasHENOQ1"></th>
+                    <th id="ValorHENOQ1"></th>
+                </tr>
+                <tr>
+                    <th>Festivo Sin Compensatorio</th>
+                    <th id="FSC1"></th>
+                    <th id="FSC2"></th>
+                    <th id="FSC3"></th>
+                    <th id="FSC4"></th>
+                    <th id="FSC5"></th>
+                    <th id="FSC6"></th>
+                    <th id="FSC7"></th>
+                    <th id="FSC8"></th>
+                    <th id="FSC9"></th>
+                    <th id="FSC10"></th>
+                    <th id="FSC11"></th>
+                    <th id="FSC12"></th>
+                    <th id="FSC13"></th>
+                    <th id="FSC14"></th>
+                    <th id="FSC15"></th>
+
+                    <th id="TotalFSCQ1"></th>
+                    <th id="DiasFSCQ1"></th>
+                    <th id="ValorFSCQ1"></th>
+                </tr>
+                <tr>
+                    <th>Dominical Festivo Nocturno</th>
+                    <th id="DFN1"></th>
+                    <th id="DFN2"></th>
+                    <th id="DFN3"></th>
+                    <th id="DFN4"></th>
+                    <th id="DFN5"></th>
+                    <th id="DFN6"></th>
+                    <th id="DFN7"></th>
+                    <th id="DFN8"></th>
+                    <th id="DFN9"></th>
+                    <th id="DFN10"></th>
+                    <th id="DFN11"></th>
+                    <th id="DFN12"></th>
+                    <th id="DFN13"></th>
+                    <th id="DFN14"></th>
+                    <th id="DFN15"></th>
+
+                    <th id="TotalDFNQ1"></th>
+                    <th id="DiasDFNQ1"></th>
+                    <th id="ValorDFNQ1"></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                    <th id="SumaCantTotalQ1"></th>
+                    <th id="SumaDiasTotalQ1"></th>
+                    <th id="SumaValorTotalQ1"></th>
+                </tr>
+            </table>
+            <hr>
+            <h1 id="Titulo">Quincena 2</h1>
+            <table id="TablaPagosQuincena2">
+                <tr>
+                    <th id="Encabezado">Nombre</th>
+                    <th id="Encabezado">16</th>
+                    <th id="Encabezado">17</th>
+                    <th id="Encabezado">18</th>
+                    <th id="Encabezado">19</th>
+                    <th id="Encabezado">20</th>
+                    <th id="Encabezado">21</th>
+                    <th id="Encabezado">22</th>
+                    <th id="Encabezado">23</th>
+                    <th id="Encabezado">24</th>
+                    <th id="Encabezado">25</th>
+                    <th id="Encabezado">26</th>
+                    <th id="Encabezado">27</th>
+                    <th id="Encabezado">28</th>
+                    <th id="Encabezado">29</th>
+                    <th id="Encabezado">30</th>
+                    <th id="Encabezado">31</th>
+
+                    <th id="Encabezado">Cantidad Total</th>
+                    <th id="Encabezado">Dias Total</th>
+                    <th id="Encabezado">Valor</th>
+                </tr>
+                <tr>
+                    <th>Turnos</th>
+                    <th id="Dia16"></th>
+                    <th id="Dia17"></th>
+                    <th id="Dia18"></th>
+                    <th id="Dia19"></th>
+                    <th id="Dia20"></th>
+                    <th id="Dia21"></th>
+                    <th id="Dia22"></th>
+                    <th id="Dia23"></th>
+                    <th id="Dia24"></th>
+                    <th id="Dia25"></th>
+                    <th id="Dia26"></th>
+                    <th id="Dia27"></th>
+                    <th id="Dia28"></th>
+                    <th id="Dia29"></th>
+                    <th id="Dia30"></th>
+                    <th id="Dia31"></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>Horas Normales</th>
+                    <th id="HN16"></th>
+                    <th id="HN17"></th>
+                    <th id="HN18"></th>
+                    <th id="HN19"></th>
+                    <th id="HN20"></th>
+                    <th id="HN21"></th>
+                    <th id="HN22"></th>
+                    <th id="HN23"></th>
+                    <th id="HN24"></th>
+                    <th id="HN25"></th>
+                    <th id="HN26"></th>
+                    <th id="HN27"></th>
+                    <th id="HN28"></th>
+                    <th id="HN29"></th>
+                    <th id="HN30"></th>
+                    <th id="HN31"></th>
+                    <th id="TotalHNQ2"></th>
+                    <th id="DiasHNQ2"></th>
+                    <th id="ValorHNQ2"></th>
+                </tr>
+                <tr>
+                    <th>Recargno Nocturno Ordinario</th>
+                    <th id="RNO16"></th>
+                    <th id="RNO17"></th>
+                    <th id="RNO18"></th>
+                    <th id="RNO19"></th>
+                    <th id="RNO20"></th>
+                    <th id="RNO21"></th>
+                    <th id="RNO22"></th>
+                    <th id="RNO23"></th>
+                    <th id="RNO24"></th>
+                    <th id="RNO25"></th>
+                    <th id="RNO26"></th>
+                    <th id="RNO27"></th>
+                    <th id="RNO28"></th>
+                    <th id="RNO29"></th>
+                    <th id="RNO30"></th>
+                    <th id="RNO31"></th>
+                    <th id="TotalRNOQ2"></th>
+                    <th id="DiasRNOQ2"></th>
+                    <th id="ValorRNOQ2"></th>
+                </tr>
+                <tr>
+                    <th>Hora Extra Diurno Ordinaria</th>
+                    <th id="HEDO16"></th>
+                    <th id="HEDO17"></th>
+                    <th id="HEDO18"></th>
+                    <th id="HEDO19"></th>
+                    <th id="HEDO20"></th>
+                    <th id="HEDO21"></th>
+                    <th id="HEDO22"></th>
+                    <th id="HEDO23"></th>
+                    <th id="HEDO24"></th>
+                    <th id="HEDO25"></th>
+                    <th id="HEDO26"></th>
+                    <th id="HEDO27"></th>
+                    <th id="HEDO28"></th>
+                    <th id="HEDO29"></th>
+                    <th id="HEDO30"></th>
+                    <th id="HEDO31"></th>
+                    <th id="TotalHEDOQ2"></th>
+                    <th id="DiasHEDOQ2"></th>
+                    <th id="ValorHEDOQ2"></th>
+                </tr>
+                <tr>
+                    <th>Hora Extra Nocturno Ordinaria</th>
+                    <th id="HENO16"></th>
+                    <th id="HENO17"></th>
+                    <th id="HENO18"></th>
+                    <th id="HENO19"></th>
+                    <th id="HENO20"></th>
+                    <th id="HENO21"></th>
+                    <th id="HENO22"></th>
+                    <th id="HENO23"></th>
+                    <th id="HENO24"></th>
+                    <th id="HENO25"></th>
+                    <th id="HENO26"></th>
+                    <th id="HENO27"></th>
+                    <th id="HENO28"></th>
+                    <th id="HENO29"></th>
+                    <th id="HENO30"></th>
+                    <th id="HENO31"></th>
+                    <th id="TotalHENOQ2"></th>
+                    <th id="DiasHENOQ2"></th>
+                    <th id="ValorHENOQ2"></th>
+                </tr>
+                <tr>
+                    <th>Festivo Sin Compensatorio</th>
+                    <th id="FSC16"></th>
+                    <th id="FSC17"></th>
+                    <th id="FSC18"></th>
+                    <th id="FSC19"></th>
+                    <th id="FSC20"></th>
+                    <th id="FSC21"></th>
+                    <th id="FSC22"></th>
+                    <th id="FSC23"></th>
+                    <th id="FSC24"></th>
+                    <th id="FSC25"></th>
+                    <th id="FSC26"></th>
+                    <th id="FSC27"></th>
+                    <th id="FSC28"></th>
+                    <th id="FSC29"></th>
+                    <th id="FSC30"></th>
+                    <th id="FSC31"></th>
+                    <th id="TotalFSCQ2"></th>
+                    <th id="DiasFSCQ2"></th>
+                    <th id="ValorFSCQ2"></th>
+                </tr>
+                <tr>
+                    <th>Dominical Festivo Nocturno</th>
+                    <th id="DFN16"></th>
+                    <th id="DFN17"></th>
+                    <th id="DFN18"></th>
+                    <th id="DFN19"></th>
+                    <th id="DFN20"></th>
+                    <th id="DFN21"></th>
+                    <th id="DFN22"></th>
+                    <th id="DFN23"></th>
+                    <th id="DFN24"></th>
+                    <th id="DFN25"></th>
+                    <th id="DFN26"></th>
+                    <th id="DFN27"></th>
+                    <th id="DFN28"></th>
+                    <th id="DFN29"></th>
+                    <th id="DFN30"></th>
+                    <th id="DFN31"></th>
+                    <th id="TotalDFNQ2"></th>
+                    <th id="DiasDFNQ2"></th>
+                    <th id="ValorDFNQ2"></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                    <th id="SumaCantTotalQ2"></th>
+                    <th id="SumaDiasTotalQ2"></th>
+                    <th id="SumaValorTotalQ2"></th>
+                </tr>
+            </table>
+        </div>
+
+    </section>
+    <footer>
+        <p>© 2024 Andrés Felipe Yepes Tascón</p>
+    </footer>
+
+
+    <script src="scriptPagos.js" type="module"></script>
+    <script src="Header.js"></script>
+    <script src="Notificador.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="Autorizacion.js" type="module" defer></script>
+    <script src="CerrarSesion.js" type="module" defer></script>
+</body>
+
+</html>

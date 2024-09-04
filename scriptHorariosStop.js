@@ -90,6 +90,7 @@ function actualizarColorCelda(celda) {
         case 'T4R1':
         case 'T4N':
         case 'T4D':
+        case 'T4A':
             color = colorT4;
             celda.style.color = 'black';
             break;

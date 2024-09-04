@@ -1677,3 +1677,39 @@ input:checked+.slider:before {
     border-radius: 3px;
 }
 
+#Encabezado {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--color-primario) !important;
+    border-bottom: 1px solid #ddd;
+}
+
+#TablaPagosQuincena1 th,
+#TablaPagosQuincena2 th {
+    background-color: rgb(255, 255, 255);
+    color: black;
+    border: 1px solid #000000;
+    text-align: center;
+}
+
+#TablaPagosQuincena1,
+#TablaPagosQuincena2 {
+    width: min-content;
+    border-collapse: collapse;
+    table-layout: auto; 
+}
+
+#TablasSalarios {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: auto; 
+}
+
+@media screen and (max-width: 1000px) {
+    #TablasSalarios {
+        align-items: flex-start; 
+    }
+}
