@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="icon" href="Icono.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <title>Calculadora de notas</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="titulo">
+                <h2>
+                    <a href="index.html" style="display: flex; align-items: center; gap: 10px;">
+                        <img src="Icono.png" width="45" alt="Icono" style="vertical-align: middle;">
+                        Playground
+                    </a>
+                </h2>
+            </div>
+            <ul class="botonesNav">
+                <li><a href="Calculadora.html">Calculadora</a></li>
+                <li><a href="Herramientas.html">Herramientas</a></li>
+                <li><a href="Plantillas.html">Plantillas</a></li>
+                <li><a href="Procedimientos.html">Procedimientos</a></li>
+                <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
+                <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
+                <li><a id="usuario"><i class="far fa-user"></i></a></li>
+                <li><a id="configuraciones" href="Configuraciones.html"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+        <h1 id="Titulo">Procedimientos</h1>
+        <div style="width: 100%; display: flex; gap: 20px;">
+            <div class="Modulo"
+                style="display: flex; width: 20%; padding-top: 5px; padding-bottom: 5px; justify-content: flex-start; height: 435px;"
+                id="items-container">
+            </div>
+
+            <div class="Modulo" style="width: 80%; overflow: auto;" id="descripcion">
+                <h1 id="titulo-texto">Por favor selecciona un procedimiento</h1>
+                <p id="descripcion-texto" style="height: 200px;"></p>
+                <div id="enlaces-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <div id="myModal2" class="modal">
+        <div class="modal-content2">
+            <span id="close2" style="position: absolute; right: 1; top: 0;">&times;</span>
+            <div id="modal-content2" style="display: flex; flex-direction: column; align-items: center; gap:10px;">
+                <h2>¿Quiere cerrar la sesión?</h2>
+                <button id="btnCerrarSesion">Cerrar sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Andrés Felipe Yepes Tascón</p>
+    </footer>
+    <script src="scriptMusica.js"></script>
+
+    <script src="scriptProcedimientos.js" type="module"></script>
+    <script src="Header.js"></script>
+    <script src="Notificador.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="Autorizacion.js" type="module" defer></script>
+    <script src="CerrarSesion.js" type="module" defer></script>
+</body>
+
+</html>

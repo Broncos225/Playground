@@ -1720,3 +1720,58 @@ input:checked+.slider:before {
         align-items: flex-start; 
     }
 }
+
+.Items {
+    text-align: start;
+    width: 95%;
+    word-wrap: break-word;
+}
+
+.Items h4 {
+    background: var(--color-primario);
+    border-radius: 5px;
+    margin: 2.5px;
+    padding: 5px;
+    cursor: pointer;
+    transition: color 0.1s ease;
+    transition: background-color 0.3s ease;
+}
+
+.Items h4:hover {
+    background-color: var(--color-secundario);
+}
+
+
+.Items h4.selected {
+    background-color: #000000;
+    color: #ffa600;
+}
+
+#enlaces-container {
+
+    display: flex;
+}
+
+.enlace-item {
+    margin: 10px;
+    width: fit-content;
+}
+
+#descripcion {
+    height: 445px; /* Ajusta el tamaño fijo que desees */
+    display: flex;
+    flex-direction: column;
+}
+
+#descripcion-texto {
+    flex: 1; /* Permite que ocupe el espacio restante dentro del padre */
+    overflow-y: auto; /* Habilita el scroll vertical si el contenido excede el tamaño */
+    padding: 10px;
+    box-sizing: border-box;
+    max-height: 100%; /* Asegura que el contenido no exceda el tamaño del contenedor */
+    margin: 0;
+    text-align: left;
+    width: 100%;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
