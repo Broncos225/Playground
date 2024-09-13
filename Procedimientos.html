@@ -8,6 +8,8 @@
     <link rel="icon" href="Icono.ico">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://cdn.quilljs.com/latest/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/latest/quill.js"></script>
 
     <title>Calculadora de notas</title>
 </head>
@@ -37,15 +39,32 @@
     </header>
     <section>
         <h1 id="Titulo">Procedimientos</h1>
-        <div class="ProcedimientosDiv" style="width: 100%; display: flex; gap: 20px;">
-            <div class="Modulo"
-                style="display: flex; width: 20%; padding-top: 5px; padding-bottom: 5px; justify-content: flex-start; height: 435px;"
-                id="items-container">
+        <div class="ProcedimientosDiv" style="width: 100%; display: flex; gap: 10px;">
+            <div style="width: max-content;">
+                <div style="display: flex; gap: 5px;">
+                    <button id="agregar-item-btn" class="AgregarItems"
+                        style="margin: 0; margin-bottom: 5px; width: 100%; height: fit-content; background-color: #2ecc71;">
+                        <h4 style="padding: 0; margin: 0;">Agregar</h4>
+                    </button>
+                    <button id="eliminar-item-btn" class="AgregarItems"
+                        style="margin: 0; margin-bottom: 5px; width: 100%; height: fit-content; background-color: #e74c3c;">
+                        <h4 style="padding: 0; margin: 0;">Eliminar</h4>
+                    </button>
+                </div>
+                <div class="Modulo"
+                    style="display: flex; width: auto; padding: 5px; justify-content: flex-start; height: 400px;"
+                    id="items-container">
+                </div>
             </div>
-
             <div class="Modulo" style="width: 80%; overflow: auto;" id="descripcion">
-                <h1 id="titulo-texto">Por favor selecciona un procedimiento</h1>
-                <p id="descripcion-texto" style="height: 200px;"></p>
+                <div style="display: flex; align-items: center;" id="Cabecera">
+                    <h1 id="titulo-texto">Por favor selecciona un procedimiento</h1>
+                    <button id="editar-btn"
+                        style="display: none;height: fit-content; position: absolute; right: 35px;">Editar</button>
+                    <button id="guardar-btn"
+                        style="display: none; height: fit-content; position: absolute; right: 35px;">Guardar</button>
+                </div>
+                <div id="descripcion-texto" style="height: 200px; width: 100%;"></div>
                 <div id="enlaces-container"></div>
             </div>
         </div>
@@ -65,7 +84,6 @@
         <p>© 2024 Andrés Felipe Yepes Tascón</p>
     </footer>
     <script src="scriptMusica.js"></script>
-
     <script src="scriptProcedimientos.js" type="module"></script>
     <script src="Header.js"></script>
     <script src="Notificador.js"></script>

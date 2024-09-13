@@ -1723,11 +1723,13 @@ input:checked+.slider:before {
 
 .Items {
     text-align: start;
-    width: 95%;
+    width: 100%;
     word-wrap: break-word;
 }
 
-.Items h4 {
+
+
+.Items h4, .AgregarItems {
     background: var(--color-primario);
     border-radius: 5px;
     margin: 2.5px;
@@ -1766,7 +1768,6 @@ input:checked+.slider:before {
 #descripcion-texto {
     flex: 1; /* Permite que ocupe el espacio restante dentro del padre */
     overflow-y: auto; /* Habilita el scroll vertical si el contenido excede el tamaño */
-    padding: 10px;
     box-sizing: border-box;
     max-height: 100%; /* Asegura que el contenido no exceda el tamaño del contenedor */
     margin: 0;
@@ -1776,7 +1777,7 @@ input:checked+.slider:before {
     border-bottom: 1px solid #000;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 930px) {
     .ProcedimientosDiv {
         display: flex;
         flex-direction: column;
@@ -1791,4 +1792,63 @@ input:checked+.slider:before {
         height: auto !important;
         width: 100% !important;
     }
+
+    #Cabecera {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+
+    }
+
+    #editar-btn {
+        position: static !important;
+        margin-bottom: 19px;
+    }
+}
+
+.ql-editor {
+    font-family: 'Nunito', sans-serif;
+}
+
+.ql-snow{
+    .ql-picker{
+        &.ql-size{
+            .ql-picker-label,
+            .ql-picker-item{
+                &::before{
+                    content: attr(data-value) !important;
+                }
+            }
+        }
+    }
+  }
+
+  /* Estilos para el botón de agregar */
+.agregar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px; /* Ajusta el tamaño según sea necesario */
+    height: 40px; /* Ajusta la altura según sea necesario */
+    font-size: 24px; /* Tamaño del + */
+    color: white;
+    background-color: #007bff; /* Color de fondo, puedes cambiarlo */
+    border: none;
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.agregar-btn:hover {
+    background-color: #0056b3; /* Color de fondo cuando se pasa el ratón sobre el botón */
+}
+
+.agregar-btn:focus {
+    outline: none; /* Elimina el contorno del botón cuando está enfocado */
+}
+
+.item-btn {
+    font-family: 'Nunito', sans-serif; /* Asegúrate de que el botón use la misma fuente */
+    font-weight: 600; /* Asegúrate de que el texto del botón sea visible */
 }
