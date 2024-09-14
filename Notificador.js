@@ -35,6 +35,13 @@ let agentesN = {
         letra: "G",
         contraseña: ""
     },
+    Yeison_Torres_Ochoa: {
+        nombre: "Yeison Torres Ochoa",
+        usuario: "yeison.torres",
+        letra: "H",
+        contraseña: ""
+    },
+    
 };
 
 document.addEventListener("DOMContentLoaded", function () {

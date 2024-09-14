@@ -1757,6 +1757,9 @@ input:checked+.slider:before {
 .enlace-item {
     margin: 10px;
     width: fit-content;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
 }
 
 #descripcion {
@@ -1800,9 +1803,19 @@ input:checked+.slider:before {
 
     }
 
-    #editar-btn {
+    #editar-btn,
+    #guardar-btn,
+    #agregar-enlace-btn {
         position: static !important;
         margin-bottom: 19px;
+    }
+
+    #ItemsTamaño {
+        width: 100% !important;
+    }
+    
+    #items-container {
+        width: auto !important;
     }
 }
 
@@ -1851,4 +1864,27 @@ input:checked+.slider:before {
 .item-btn {
     font-family: 'Nunito', sans-serif; /* Asegúrate de que el botón use la misma fuente */
     font-weight: 600; /* Asegúrate de que el texto del botón sea visible */
+}
+
+
+.eliminar-enlace-btn {
+    background-color: black;
+    color: var(--color-primario);
+    border: none;
+    border-radius: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    cursor: pointer;
+}
+
+.eliminar-enlace-btn:hover {
+    background-color:white;
+    color: black;
+}
+
+.enlace-texto {
+    flex-grow: 1;
+    cursor: pointer;
 }

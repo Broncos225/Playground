@@ -11,7 +11,7 @@
     <link href="https://cdn.quilljs.com/latest/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/latest/quill.js"></script>
 
-    <title>Calculadora de notas</title>
+    <title>Procedimientos</title>
 </head>
 
 <body>
@@ -40,7 +40,7 @@
     <section>
         <h1 id="Titulo">Procedimientos</h1>
         <div class="ProcedimientosDiv" style="width: 100%; display: flex; gap: 10px;">
-            <div style="width: max-content;">
+            <div style="width: max-content;" id="ItemsTamaño">
                 <div style="display: flex; gap: 5px;">
                     <button id="agregar-item-btn" class="AgregarItems"
                         style="margin: 0; margin-bottom: 5px; width: 100%; height: fit-content; background-color: #2ecc71;">
@@ -59,6 +59,9 @@
             <div class="Modulo" style="width: 80%; overflow: auto;" id="descripcion">
                 <div style="display: flex; align-items: center;" id="Cabecera">
                     <h1 id="titulo-texto">Por favor selecciona un procedimiento</h1>
+                    <button id="agregar-enlace-btn"
+                        style="display: none; height: fit-content; position: absolute; right: 110px;">Agregar
+                        enlaces</button>
                     <button id="editar-btn"
                         style="display: none;height: fit-content; position: absolute; right: 35px;">Editar</button>
                     <button id="guardar-btn"
@@ -69,6 +72,8 @@
             </div>
         </div>
     </section>
+    <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
+    <button id="btnMostrarReproductor" style="display: flex; align-self: end; justify-self: end; border: 0;"></button>
 
     <div id="myModal2" class="modal">
         <div class="modal-content2">
