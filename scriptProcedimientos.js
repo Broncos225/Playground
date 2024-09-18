@@ -40,6 +40,9 @@ const quill = new Quill('#descripcion-texto', {
                         const range = this.quill.getSelection();
                         this.quill.insertEmbed(range.index, 'image', url, 'user');
                     }
+                },
+                'link': function () {
+                    agregarAtajo();
                 }
             }
         }
@@ -339,3 +342,61 @@ const setupButtons = () => {
 };
 
 setupButtons();
+
+function agregarAtajo() {
+    const choice = prompt('¿Deseas insertar un ítem o un enlace? (Escribe "item" o "enlace")');
+
+    if (choice === 'item') {
+        const itemText = prompt('Introduce el texto del ítem');
+        if (itemText) {
+            const range = quill.getSelection(); // Obtener la posición seleccionada en el editor
+            if (range) {
+                // Insertamos el texto como un enlace que no llevará a ningún lugar (href="#")
+                const link = '#';
+                quill.insertText(range.index, itemText, { 'link': link }); // Insertar el texto con formato de enlace
+            } else {
+                alert('Selecciona un lugar en el editor para insertar el ítem.');
+            }
+        }
+    } else if (choice === 'enlace') {
+        const url = prompt('Introduce la URL del enlace');
+        if (url) {
+            const range = quill.getSelection(); // Obtener la posición seleccionada en el editor
+            if (range) {
+                const text = prompt('Introduce el texto del enlace'); // Pedir el texto que será mostrado para el enlace
+                if (text) {
+                    quill.insertText(range.index, text, 'user'); // Insertar el texto del enlace en la posición seleccionada
+                    quill.formatText(range.index, text.length, 'link', url); // Aplicar el formato de enlace al texto
+                } else {
+                    alert('No se ingresó ningún texto para el enlace.');
+                }
+            } else {
+                alert('Selecciona un lugar en el editor para insertar el enlace.');
+            }
+        }
+    } else {
+        alert('Opción no válida. Por favor, escribe "item" o "enlace".');
+    }
+}
+
+// Delegación de eventos para todos los enlaces dentro del editor
+document.querySelector('#descripcion-texto').addEventListener('click', function (event) {
+    const target = event.target;
+    if (target.tagName === 'A' && target.href.endsWith('#')) {
+        event.preventDefault(); // Prevenir la redirección de la página
+        const itemText = target.textContent; // Obtener el texto del enlace
+        cambiarItem(itemText); // Ejecutar la lógica de cambio de ítem
+    }
+});
+
+
+
+function cambiarItem(texto) {
+    var listaItems = document.getElementsByClassName('Items');
+    for (let i = 0; i < listaItems.length; i++) {
+        if (texto === listaItems[i].textContent) {
+            listaItems[i].click(); // Simula un clic en el ítem seleccionado
+            break;
+        }
+    }
+}

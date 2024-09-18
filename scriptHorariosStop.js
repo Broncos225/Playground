@@ -17,7 +17,7 @@ window.onload = function () {
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -471,7 +471,7 @@ selector.addEventListener('change', function () {
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
+    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Octubre", "Noviembre", "Diciembre"]);
 });
 
 
