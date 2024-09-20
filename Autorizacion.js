@@ -13,35 +13,23 @@ document.addEventListener('DOMContentLoaded', () => {
         firebase.initializeApp(firebaseConfig);
     }
 
-    // Función para obtener la fecha actual en formato YYYY-MM-DD
-    function getCurrentDate() {
-        const today = new Date();
-        return today.toISOString().split('T')[0];
-    }
+    // Función para cerrar sesión a la medianoche
+    function scheduleSignOutAtMidnight() {
+        const now = new Date();
+        const millisTillMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0) - now;
 
-    // Guardar la fecha actual en el almacenamiento local
-    let lastLoginDate = localStorage.getItem('lastLoginDate');
-    if (!lastLoginDate) {
-        lastLoginDate = getCurrentDate();
-        localStorage.setItem('lastLoginDate', lastLoginDate);
-    }
-
-    // Verificar si la fecha ha cambiado
-    function checkDateChange() {
-        const currentDate = getCurrentDate();
-        if (currentDate !== lastLoginDate) {
+        setTimeout(() => {
             firebase.auth().signOut().then(() => {
-                console.log('User signed out due to date change.');
+                console.log('User signed out at midnight.');
                 localStorage.removeItem('lastLoginDate');
                 window.location.href = 'login.html';
             }).catch(error => {
                 console.error('Sign out error:', error);
             });
-        }
+            // Vuelve a programar para la próxima medianoche
+            scheduleSignOutAtMidnight();
+        }, millisTillMidnight);
     }
-
-    // Temporizador para verificar el cambio de fecha cada minuto
-    setInterval(checkDateChange, 60 * 1000); // 60 segundos
 
     firebase.auth().onAuthStateChanged(user => {
         if (!user && window.location.pathname !== '/login.html') {
@@ -51,4 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'index.html';
         }
     });
+
+    // Programar el cierre de sesión a la medianoche
+    scheduleSignOutAtMidnight();
 });
