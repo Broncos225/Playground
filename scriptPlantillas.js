@@ -35,8 +35,14 @@ window.addEventListener('load', function () {
             messagingSenderId: "808082296806",
             appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
         };
-
-        firebase.initializeApp(firebaseConfig);
+        
+        // Verificar si Firebase ya está inicializado
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        } else {
+            firebase.app(); // Si ya está inicializado, usa la instancia existente
+        }
+        
         const db = firebase.database();
         // JavaScript para el modal
         // JavaScript para el modal y el formulario
