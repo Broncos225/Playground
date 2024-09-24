@@ -14,12 +14,7 @@ const db = firebase.database();
 // JavaScript para el modal y el formulario
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        const nombreAsesor = localStorage.getItem('nombreAsesorActual');
-        if (nombreAsesor !== 'Andrés_Felipe_Yepes_Tascón') {
-            alert('No tienes permiso para acceder a esta página.');
-            window.location.href = 'https://broncos225.github.io/Playground/index.html'; // Reemplaza con tu URL
-            return; // Detener la ejecución aquí
-        }
+
         // Mostrar la pantalla de carga antes de iniciar la consulta
         var loadingScreen = document.getElementById("loadingScreen");
         loadingScreen.style.display = "flex";
