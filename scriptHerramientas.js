@@ -337,3 +337,26 @@ document.addEventListener("DOMContentLoaded", function () {
     cargarDatosAdministrativas();
 });
 
+
+function nombreUsuario() {
+    var usuario = firebase.auth().currentUser;
+    if (usuario) {
+        var usuariocorto = usuario.displayName || usuario.email || usuario.uid;
+        if (usuariocorto.includes("@playground.com")) {
+            usuariocorto = usuariocorto.replace("@playground.com", "");
+        }
+        var elementos = document.getElementsByClassName('nombreUsuario');
+        for (var i = 0; i < elementos.length; i++) {
+            elementos[i].innerHTML = usuariocorto;
+        }
+    } else {
+        console.log("No hay un usuario autenticado.");
+    }
+}
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        nombreUsuario(); 
+        console.log("Nadie ha iniciado sesión.");
+    }
+});

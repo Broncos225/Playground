@@ -1079,6 +1079,7 @@ input[type='number']::-webkit-outer-spin-button {
 #Contactos,
 #Matriz,
 #Enlaces,
+#EnlacesArus,
 #Administrativas {
     margin: 10px;
     width: auto;
@@ -1091,6 +1092,7 @@ input[type='number']::-webkit-outer-spin-button {
 #Contactos th,
 #Matriz th,
 #Enlaces th,
+#EnlacesArus th,
 #Administrativas th {
     background-color: var(--color-primario);
     color: #000;
@@ -1105,6 +1107,7 @@ input[type='number']::-webkit-outer-spin-button {
 #Contactos tr td,
 #Matriz tr td,
 #Enlaces tr td,
+#EnlacesArus tr td,
 #Administrativas tr td {
     white-space: nowrap !important;
     text-align: center;
@@ -1112,7 +1115,9 @@ input[type='number']::-webkit-outer-spin-button {
     border: 1px solid #000;
 }
 
-
+#EnlacesArus{
+    height: 342px;
+}
 
 #FormTiendas {
     margin-left: 10px;
