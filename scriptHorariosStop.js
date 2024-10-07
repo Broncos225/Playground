@@ -13,6 +13,7 @@ const db = firebase.database();
 
 window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
+    ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
@@ -392,6 +393,10 @@ let agentes = {
         nombre: "Oscar Luis Cabrera Pacheco",
         contraseña: ""
     },
+    Juan_Pablo_Vidal_Saldarriaga: {
+        nombre: "Juan Pablo Vidal Saldarriaga",
+        contraseña: ""
+    },
     Maira_Mosquera_Blandon: {
         nombre: "Maira Mosquera Blandon",
         contraseña: ""
@@ -466,12 +471,12 @@ var selector = document.getElementById('Mes');
 selector.addEventListener('change', function () {
     ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
+    ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Octubre", "Noviembre", "Diciembre"]);
 });
 
 

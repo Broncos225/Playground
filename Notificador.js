@@ -29,9 +29,9 @@ let agentesN = {
         letra: "F",
         contraseña: ""
     },
-    Maira_Mosquera_Blandon: {
-        nombre: "Maira Mosquera Blandon",
-        usuario: "maira.mosquera",
+    Juan_Pablo_Vidal_Saldarriaga: {
+        nombre: "Juan Pablo Vidal Saldarriaga",
+        usuario: "juan.vidal",
         letra: "G",
         contraseña: ""
     },
