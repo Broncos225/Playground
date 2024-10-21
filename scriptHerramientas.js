@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('busqueda').addEventListener('input', function () {
         const consulta = normalizar(this.value.toLowerCase());
         const datosFiltrados = datosTabla.filter(item =>
-            Object.values(item).some(val => normalizar(val.toLowerCase()).includes(consulta))
+            Object.values(item).some(val => val && normalizar(val.toLowerCase()).includes(consulta))
         );
         actualizarTabla(datosFiltrados);
     });
