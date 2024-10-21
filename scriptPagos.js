@@ -235,3 +235,51 @@ function actualizarTodosLosValores() {
     document.getElementById(`SumaValorTotalQ1`).innerText = sumaTotalQ1.toFixed(2);
     document.getElementById(`SumaValorTotalQ2`).innerText = sumaTotalQ2.toFixed(2);
 }
+
+
+
+// Función para actualizar el saludo dinámicamente
+function actualizarSaludo() {
+    const saludo = document.getElementById("Saludo").value;
+    const saludoLabel = document.getElementById("SaludoLabel");
+
+    // Cambiar entre "Buenos" y "Buenas"
+    if (saludo === "días") {
+        saludoLabel.textContent = "Buenos";
+    } else {
+        saludoLabel.textContent = "Buenas";
+    }
+}
+
+// Escuchar los cambios en el select de saludo
+document.getElementById("Saludo").addEventListener("change", actualizarSaludo);
+
+document.getElementById("btnCierre").addEventListener("click", function () {
+    // Obtener los valores de los selects e inputs
+    const saludo = document.getElementById("Saludo").value;
+    const cierre = document.getElementById("Cierre").value;
+    const llamadas = document.getElementById("Llamadas").value;
+    const casos = document.getElementById("Casos").value;
+    const minuta = document.getElementById("Minuta").value;
+
+    // Ajustar el saludo (sin repetir la palabra seleccionada en el select)
+    let saludoTexto;
+    if (saludo === "días") {
+        saludoTexto = "Buenos días";
+    } else {
+        saludoTexto = `Buenas ${saludo}`;
+    }
+
+    // Crear el texto a copiar
+    const texto = `${saludoTexto}, ${cierre} ${llamadas} llamadas y ${casos} casos, ${minuta} se hace la minuta, VIP y correos listos.`;
+
+    // Copiar el texto al portapapeles
+    navigator.clipboard.writeText(texto).then(() => {
+        alert("Texto copiado al portapapeles: " + texto);
+    }).catch(err => {
+        console.error("Error al copiar el texto: ", err);
+    });
+});
+
+// Llamar a la función para inicializar el saludo
+actualizarSaludo();

@@ -1893,3 +1893,27 @@ input:checked+.slider:before {
     flex-grow: 1;
     cursor: pointer;
 }
+
+#contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Espaciado entre los elementos */
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+}
+
+#contenedor label {
+    width: auto;
+    white-space: nowrap; /* Mantiene el texto en una sola línea */
+}
+
+#contenedor input {
+    width: 80px;
+    padding: 5px;
+}
+
+#contenedor select {
+    width: auto;
+    padding: 5px;
+}
