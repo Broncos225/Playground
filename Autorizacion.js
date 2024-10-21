@@ -13,22 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
         firebase.initializeApp(firebaseConfig);
     }
 
-    // Función para cerrar sesión a la medianoche
-    function scheduleSignOutAtMidnight() {
+    // Función para cerrar sesión cada hora
+    function scheduleSignOutEveryHour() {
         const now = new Date();
-        const millisTillMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0) - now;
+        const millisTillNextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, 0) - now;
 
         setTimeout(() => {
             firebase.auth().signOut().then(() => {
-                console.log('User signed out at midnight.');
+                console.log('User signed out at the top of the hour.');
                 localStorage.removeItem('lastLoginDate');
                 window.location.href = 'login.html';
             }).catch(error => {
                 console.error('Sign out error:', error);
             });
-            // Vuelve a programar para la próxima medianoche
-            scheduleSignOutAtMidnight();
-        }, millisTillMidnight);
+            // Vuelve a programar para la próxima hora
+            scheduleSignOutEveryHour();
+        }, millisTillNextHour);
     }
 
     firebase.auth().onAuthStateChanged(user => {
@@ -40,6 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Programar el cierre de sesión a la medianoche
-    scheduleSignOutAtMidnight();
+    // Programar el cierre de sesión cada hora
+    scheduleSignOutEveryHour();
 });
