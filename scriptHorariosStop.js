@@ -15,7 +15,7 @@ window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
+    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Octubre", "Noviembre", "Diciembre"]);
@@ -401,10 +401,6 @@ let agentes = {
         nombre: "Maira Mosquera Blandon",
         contraseña: ""
     },
-    Santiago_Pérez_Martinez: {
-        nombre: "Santiago Pérez Martinez",
-        contraseña: ""
-    },
     Yeison_Torres_Ochoa: {
         nombre: "Yeison Torres Ochoa",
         contraseña: ""
@@ -475,7 +471,7 @@ selector.addEventListener('change', function () {
     ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
-    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]);
+    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
 });
 
@@ -1084,7 +1080,6 @@ function contarTurnos() {
             "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
             "maira.mosquera": { nombre: "Maira_Mosquera_Blandon" },
             "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
-            "santiago.perez": { nombre: "Santiago_Pérez_Martinez" }
         };
 
         const table = document.getElementById('Table1');

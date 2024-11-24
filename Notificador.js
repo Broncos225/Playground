@@ -5,12 +5,6 @@ let agentesN = {
         letra: "A",
         contraseña: ""
     },
-    Santiago_Pérez_Martinez: {
-        nombre: "Santiago Pérez Martínez",
-        usuario: "santiago.perez",
-        letra: "C",
-        contraseña: ""
-    },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
         usuario: "yesica.cano",
