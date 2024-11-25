@@ -228,7 +228,7 @@ function cargarDatos() {
 }
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0, contH = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
 
     for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
@@ -266,18 +266,7 @@ function contDescansos() {
             contF += 1;
         }
     }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('G' + i);
-        if (celda.textContent == 'D') {
-            contG += 1;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('H' + i);
-        if (celda.textContent == 'D') {
-            contH += 1;
-        }
-    }
+
     var celdaA = document.getElementById("1");
     celdaA.textContent = contA;
     var celdaB = document.getElementById("2");
@@ -290,10 +279,6 @@ function contDescansos() {
     celdaE.textContent = contE;
     var celdaF = document.getElementById("6");
     celdaF.textContent = contF;
-    var celdaG = document.getElementById("7");
-    celdaG.textContent = contG;
-    var celdaH = document.getElementById("8");
-    celdaH.textContent = contH;
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -537,7 +522,7 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0 };
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
     var tiposTurno0 = ['NN', 'D'];
@@ -739,7 +724,7 @@ function Festivos() {
         "Septiembre": [],
         "Octubre": [14],
         "Noviembre": [4, 11],
-        "Diciembre": [8]
+        "Diciembre": [8, 25]
     }
     const fecha = new Date();
     const dia = "Dia" + fecha.getDate();
