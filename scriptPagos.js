@@ -283,3 +283,114 @@ document.getElementById("btnCierre").addEventListener("click", function () {
 
 // Llamar a la función para inicializar el saludo
 actualizarSaludo();
+
+
+// Función para convertir turnos
+function convertirTurnos() {
+    const textoTurnos = document.getElementById("turnos").value.trim();
+    if (!textoTurnos) {
+        document.getElementById("resultado").textContent = "Por favor, introduce turnos.";
+        return;
+    }
+
+    // Separar los turnos ingresados
+    const listaTurnos = textoTurnos.split(/\s+/);
+
+    // Convertir cada turno a su franja horaria
+    const resultados = listaTurnos.map(turno => {
+        const horario = turnos[turno] || "Horario no definido";
+        return `${horario}`;
+    });
+
+    // Mostrar el resultado
+    document.getElementById("resultado").innerHTML = resultados.join("<br>");
+    document.getElementById("copiar").style.display = "inline-block"; // Mostrar botón de copiar
+}
+
+// Función para copiar el resultado al portapapeles
+function copiarResultado() {
+    const resultadoTexto = document.getElementById("resultado").innerText;
+    navigator.clipboard.writeText(resultadoTexto)
+        .then(() => {
+            alert("Resultado copiado al portapapeles.");
+        })
+        .catch(err => {
+            alert("Hubo un error al copiar: " + err);
+        });
+}
+
+function copiarHoras() {
+    const resultadoTexto = document.getElementById("valor").innerText;
+    navigator.clipboard.writeText(resultadoTexto)
+        .then(() => {
+            alert("Resultado copiado al portapapeles.");
+        })
+        .catch(err => {
+            alert("Hubo un error al copiar: " + err);
+        });
+}
+
+// Añadir evento al botón
+document.getElementById("convertir").addEventListener("click", convertirTurnos);
+document.getElementById("copiar").addEventListener("click", copiarResultado);
+document.getElementById("copiarV").addEventListener("click", copiarHoras);
+
+
+function calcularValorTurno() {
+    const textoTurnos = document.getElementById("turnos").value.trim();
+    if (!textoTurnos) {
+        document.getElementById("valor").textContent = "Por favor, introduce turnos.";
+        return;
+    }
+
+    // Definir las categorías de turnos
+    const tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
+    const tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
+    const tiposTurno0 = ['NN', 'D', 'DV'];
+    const tiposTurno9_5 = ['T1T'];
+    const tiposTurno5 = ['T4NA'];
+
+    // Separar los turnos ingresados
+    const listaTurnos = textoTurnos.split(/\s+/);
+
+    // Determinar el valor por cada turno
+    const resultadosValor = listaTurnos.map(turno => {
+        if (tiposTurno7_5.includes(turno)) return `7,5`;
+        if (tiposTurno5.includes(turno)) return '5';
+        if (tiposTurno8.includes(turno)) return `8`;
+        if (tiposTurno0.includes(turno)) return `0`;
+        if (tiposTurno8_5.includes(turno)) return `8,5`;
+        if (tiposTurno9_5.includes(turno)) return `9,5`;
+        return `Valor no definido`; // Por si el turno no está en las listas
+    });
+
+    // Mostrar el resultado
+    document.getElementById("valor").innerHTML = resultadosValor.join("<br>");
+    document.getElementById("copiarV").style.display = "inline-block"; // Mostrar botón de copiar
+}
+
+// Añadir la llamada a calcularValorTurno después de convertirTurnos
+document.getElementById("convertirTurnoHora").addEventListener("click", calcularValorTurno);
+
+
+const turnos = {
+    T1: "07:00 a 03:30",
+    T1N: "07:00 a 04:00",
+    T1T: "07:00 a 05:30",
+    T2: "09:00 a 05:30",
+    T2N: "09:00 a 06:00",
+    T3: "10:00 a 06:30",
+    T3N: "09:30 a 06:30",
+    T4: "10:30 a 07:00",
+    T4N: "10:00 a 07:00",
+    T4NA: "10:00 a 03:00",
+    T5: "11:30 a 08:00",
+    T5N: "11:00 a 08:00",
+    T6: "01:00 a 09:30",
+    T6N: "12:30 a 09:30",
+    TSA: "08:00 a 04:00",
+    D: "Descanso",
+    DF: "Día Familiar",
+    DV: "Día Vacaciones",
+    IN: "Incapacidad"
+};

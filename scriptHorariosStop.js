@@ -93,6 +93,7 @@ function actualizarColorCelda(celda) {
         case 'T4N':
         case 'T4D':
         case 'T4A':
+        case 'T4NA':
             color = colorT4;
             celda.style.color = 'black';
             break;
@@ -362,17 +363,17 @@ let agentes = {
     },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
-        letra: "D",
+        letra: "B",
         contraseña: ""
     },
     Andrés_Felipe_Vidal_Medina: {
         nombre: "Andrés Felipe Vidal Medina",
-        letra: "E",
+        letra: "B",
         contraseña: ""
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
-        letra: "F",
+        letra: "D",
         contraseña: ""
     },
     Oscar_Luis_Cabrera_Pacheco: {
@@ -381,10 +382,6 @@ let agentes = {
     },
     Juan_Pablo_Vidal_Saldarriaga: {
         nombre: "Juan Pablo Vidal Saldarriaga",
-        contraseña: ""
-    },
-    Maira_Mosquera_Blandon: {
-        nombre: "Maira Mosquera Blandon",
         contraseña: ""
     },
     Yeison_Torres_Ochoa: {
@@ -525,11 +522,12 @@ function contHoras() {
     var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
-    var tiposTurno0 = ['NN', 'D'];
+    var tiposTurno0 = ['NN', 'D', 'DV'];
     var tiposTurno8_5 = ['T2U'];
     var tiposTurno9_5 = ['T1T'];
     var tiposTurno6_5 = ['T6U'];
-    var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const tiposTurno5 = ['T4NA'];
+    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
 
     letras.forEach(function (letra) {
         for (var i = 1; i < 32; i++) {
@@ -545,6 +543,8 @@ function contHoras() {
                 contadores[letra] += 6.5;
             } else if (tiposTurno9_5.includes(contenido)) {
                 contadores[letra] += 9.5;
+            } else if (tiposTurno5.includes(contenido)) {
+                contadores[letra] += 5;
             }
         }
     });
