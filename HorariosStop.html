@@ -396,7 +396,41 @@
                             <td contenteditable="true" id="F30"></td>
                             <td contenteditable="true" id="F31"></td>
                         </tr>
-
+                        <tr>
+                            <td style="background-color: white;">Nuevo</td>
+                            <td contenteditable="true" id="G1"></td>
+                            <td contenteditable="true" id="G2"></td>
+                            <td contenteditable="true" id="G3"></td>
+                            <td contenteditable="true" id="G4"></td>
+                            <td contenteditable="true" id="G5"></td>
+                            <td contenteditable="true" id="G6"></td>
+                            <td contenteditable="true" id="G7"></td>
+                            <td contenteditable="true" id="G8"></td>
+                            <td contenteditable="true" id="G9"></td>
+                            <td contenteditable="true" id="G10"></td>
+                            <td contenteditable="true" id="G11"></td>
+                            <td contenteditable="true" id="G12"></td>
+                            <td contenteditable="true" id="G13"></td>
+                            <td contenteditable="true" id="G14"></td>
+                            <td contenteditable="true" id="G15"></td>
+                            <td contenteditable="true" id="G16"></td>
+                            <td contenteditable="true" id="G17"></td>
+                            <td contenteditable="true" id="G18"></td>
+                            <td contenteditable="true" id="G19"></td>
+                            <td contenteditable="true" id="G20"></td>
+                            <td contenteditable="true" id="G21"></td>
+                            <td contenteditable="true" id="G22"></td>
+                            <td contenteditable="true" id="G23"></td>
+                            <td contenteditable="true" id="G24"></td>
+                            <td contenteditable="true" id="G25"></td>
+                            <td contenteditable="true" id="G26"></td>
+                            <td contenteditable="true" id="G27"></td>
+                            <td contenteditable="true" id="G28"></td>
+                            <td contenteditable="true" id="G29"></td>
+                            <td contenteditable="true" id="G30"></td>
+                            <td contenteditable="true" id="G31"></td>
+                        </tr>
+                        
 
                     </tbody>
                     <!-- Agrega más filas para cada trabajador -->
@@ -432,6 +466,10 @@
                         <td id="6"></td>
                         <td id="16"></td>
                     </tr>
+                    <tr>
+                        <td id="7"></td>
+                        <td id="17"></td>
+                    </tr>
                 </table>
             </div>
         </div>
@@ -465,73 +503,7 @@
             </div>
         </div>
 
-        <div id="Solicitudes">
-            <h2 style="margin-bottom: 0">Solicitudes</h2>
-            <button id="btnIntercambioTurno"></button>
-            <div id="NuevaSolicitud">
-                <form class="Form" method="post">
-                    <div class="Divs">
-                        <label for="Solicitante">Solicitante:</label>
-                        <select type="text" id="Solicitante" name="Solicitante" required">
-                            <option value=""></option>
-                            <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
-                            <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
-                            <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
-                            <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
-                            <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
-                        </select>
-                    </div>
-                    <div class="Divs">
-                        <label for="Receptor">Receptor:</label>
-                        <select type="text" id="Receptor" name="Receptor" required>
-                            <option value=""></option>
-                            <optgroup label="Agentes">
-                                <option value="Anderson_Cano_Londoño">Anderson Cano Londoño</option>
-                                <option value="Miguel_Cadavid_Naranjo">Miguel Cadavid Naranjo</option>
-                                <option value="Milton_Alexis_Calle_Londoño">Milton Alexis Calle Londoño</option>
-                                <option value="Yesica_Johana_Cano_Quintero">Yesica Johana Cano Quintero</option>
-                                <option value="Andrés_Felipe_Vidal_Medina">Andrés Felipe Vidal Medina</option>
-                                <option value="Andrés_Felipe_Yepes_Tascón">Andrés Felipe Yepes Tascón</option>
-                            </optgroup>
-                            <optgroup label="Descansos">
-                                <option value="D">Descanso</option>
-                                <option value="DF">Día de la familia</option>
-                                <option value="AS">Apoyo Sura</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="Divs">
-                        <label for="DiaSolicitado">Día solicitado:</label>
-                        <input type="date" id="DiaSolicitado" name="DiaSolicitado" required>
-                        <input id="btnEnviar" value="Enviar">
-                    </div>
-
-                </form>
-            </div>
-            <div id="TablaSol">
-                <table id="Table2">
-                    <thead>
-                        <tr>
-                            <th>Número de solicitud</th>
-                            <th>Solicitante</th>
-                            <th>Receptor</th>
-                            <th>Día Solicitado</th>
-                            <th>Turno del Solicitante</th>
-                            <th>Turno del Receptor</th>
-                            <th>Fecha de solicitud</th>
-                            <th>Aprobación del Receptor</th>
-                            <th>Aprobación del Jefe</th>
-                            <th>Estado de la solicitud</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Las filas de datos irán aquí -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+        
         <div id="Informacion">
             <div class="Turnos">
                 <h2>Turnos</h2>
@@ -639,104 +611,6 @@
 
 
 
-            <div class="Calculos">
-                <h2>Cálculos automáticos</h2>
-                <div class="tablas">
-                    <table id="TablaCalculos">
-                        <tr>
-                            <th style="font-size: medium;">Asesores</th>
-                            <th style="font-size: medium;">Dias x mes</th>
-                            <th style="font-size: medium;">Dias x año</th>
-                            <th style="font-size: medium;">Dias pendientes</th>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;">Anderson Cano Londoño</td>
-                            <td id="DenM1"></td>
-                            <td id="DenA1"></td>
-                            <td id="DP1"></td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;">Miguel Cadavid Naranjo </td>
-                            <td id="DenM2"></td>
-                            <td id="DenA2"></td>
-                            <td id="DP2"></td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;">Milton Alexis Calle Londoño </td>
-                            <td id="DenM3"></td>
-                            <td id="DenA3"></td>
-                            <td id="DP3"></td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;">Yesica Johana Cano Quintero </td>
-                            <td id="DenM4"></td>
-                            <td id="DenA4"></td>
-                            <td id="DP4"></td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;">Andrés Felipe Vidal Medina </td>
-                            <td id="DenM5"></td>
-                            <td id="DenA5"></td>
-                            <td id="DP5"></td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold;">Andrés Felipe Yepes Tascón </td>
-                            <td id="DenM6"></td>
-                            <td id="DenA6"></td>
-                            <td id="DP6"></td>
-                        </tr>
-                    </table>
-                    <table id="TiposDias">
-                        <thead>
-                            <tr>
-                                <th style="font-size: small;" colspan="4">Razón de salida</th>
-                            </tr>
-                            <tr>
-                                <th style="font-size: smaller;">IN</th>
-                                <th style="font-size: smaller;">DV</th>
-                                <th style="font-size: smaller;">T</th>
-                                <th style="font-size: smaller;">MD</th>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td id="IN1"></td>
-                            <td id="DV1"></td>
-                            <td id="T1"></td>
-                            <td id="MD1"></td>
-                        </tr>
-                        <tr>
-                            <td id="IN2"></td>
-                            <td id="DV2"></td>
-                            <td id="T2"></td>
-                            <td id="MD2"></td>
-                        </tr>
-                        <tr>
-                            <td id="IN3"></td>
-                            <td id="DV3"></td>
-                            <td id="T3"></td>
-                            <td id="MD3"></td>
-                        </tr>
-                        <tr>
-                            <td id="IN4"></td>
-                            <td id="DV4"></td>
-                            <td id="T4"></td>
-                            <td id="MD4"></td>
-                        </tr>
-                        <tr>
-                            <td id="IN5"></td>
-                            <td id="DV5"></td>
-                            <td id="T5"></td>
-                            <td id="MD5"></td>
-                        </tr>
-                        <tr>
-                            <td id="IN6"></td>
-                            <td id="DV6"></td>
-                            <td id="T6"></td>
-                            <td id="MD6"></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
             <div id="myModal" class="modal">
                 <div class="modal-content2">
                     <div id="modal-content"

@@ -14,18 +14,15 @@ const db = firebase.database();
 window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
-    ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Maira Mosquera Blandon", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
     colorCelda();
     Festivos();
     cambiarBordeColumna();
-    cargarVacaciones();
     contarTurnos();
 };
 
@@ -229,7 +226,7 @@ function cargarDatos() {
 }
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0;
 
     for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
@@ -267,6 +264,12 @@ function contDescansos() {
             contF += 1;
         }
     }
+    for (var i = 1; i < 32; i++) {
+        var celda = document.getElementById('G' + i);
+        if (celda.textContent == 'D') {
+            contG += 1;
+        }
+    }
 
     var celdaA = document.getElementById("1");
     celdaA.textContent = contA;
@@ -280,6 +283,8 @@ function contDescansos() {
     celdaE.textContent = contE;
     var celdaF = document.getElementById("6");
     celdaF.textContent = contF;
+    var celdaG = document.getElementById("7");
+    celdaG.textContent = contG;
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -451,11 +456,8 @@ selector.addEventListener('change', function () {
     ocultarFilas("Milton Alexis Calle Londoño", ["Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
-    ocultarFilas("Oculto", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Nuevo 2", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
-    ocultarFilas("Santiago Pérez Martinez", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Jhonatan Gamboa Mena", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio","Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
 });
 
 
@@ -486,7 +488,6 @@ selectMes.addEventListener('change', function () {
     diaSemana();
     Festivos();
     cambiarBordeColumna();
-    cargarVacaciones();
 });
 
 selectAño.addEventListener('change', function () {
@@ -496,7 +497,6 @@ selectAño.addEventListener('change', function () {
     diaSemana();
     Festivos();
     cambiarBordeColumna();
-    cargarVacaciones();
 });
 
 function diaSemana() {
@@ -519,7 +519,7 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
     var tiposTurno0 = ['NN', 'D', 'DV'];
@@ -527,7 +527,7 @@ function contHoras() {
     var tiposTurno9_5 = ['T1T'];
     var tiposTurno6_5 = ['T6U'];
     const tiposTurno5 = ['T4NA'];
-    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
+    var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
     letras.forEach(function (letra) {
         for (var i = 1; i < 32; i++) {
@@ -808,120 +808,6 @@ function cambiarBordeColumna() {
     }
 }
 
-
-
-let agentesV = {
-    Anderson_Cano_Londoño: {
-        nombre: "Anderson Cano Londoño",
-        fechaIngreso: "2023-11-01",
-    },
-    Milton_Alexis_Calle_Londoño: {
-        nombre: "Milton Alexis Calle Londoño",
-        fechaIngreso: "2023-02-02",
-    },
-    Yesica_Johana_Cano_Quintero: {
-        nombre: "Yesica Johana Cano Quintero",
-        fechaIngreso: "2023-11-14",
-    },
-    Andrés_Felipe_Vidal_Medina: {
-        nombre: "Andrés Felipe Vidal Medina",
-        fechaIngreso: "2023-10-17",
-    },
-    Andrés_Felipe_Yepes_Tascón: {
-        nombre: "Andrés Felipe Yepes Tascón",
-        fechaIngreso: "2023-10-17",
-    },
-}
-
-function CalculoDiasPendientes(agente) {
-    var diasVacaciones = 0;
-    const [year, month, day] = agentesV[agente].fechaIngreso.split('-');
-    const fechaIngreso = new Date(year, month - 1, day);
-    const fechaActual = new Date();
-
-    fechaActual.setDate(1);
-    fechaActual.setDate(fechaActual.getDate() - 1);
-
-    const diferencia = fechaActual - fechaIngreso;
-    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-    diasVacaciones = Math.floor((dias / 365) * 15);
-    return diasVacaciones;
-}
-
-async function CalculoDiasAño(agente) {
-    const añoSeleccionado = document.getElementById('Año').value;
-    const nombreAgente = agentesV[agente].nombre;
-    var diasAño = 0;
-    var incapacidad = 0;
-    var vacaciones = 0;
-    var medioDia = 0;
-    var tramites = 0;
-
-    let promises = [];
-    for (var i = 1; i <= 12; i++) {
-        for (var j = 2; j <= 32; j++) {
-            let promise = db.ref('celdas/' + nombreAgente + '/' + j + '/' + añoSeleccionado + '/' + i).once('value');
-            promises.push(promise);
-        }
-    }
-    let results = await Promise.all(promises);
-    results.forEach(snapshot => {
-        const data = snapshot.val();
-        if (data && (data.texto == 'IN' || data.texto == 'DV')) {
-            diasAño += 1;
-            if (data.texto == 'IN') {
-                incapacidad += 1;
-            } else if (data.texto == 'DV') {
-                vacaciones += 1;
-            }
-        } else if (data && data.texto == 'T') {
-            tramites += 1;
-        } else if (data && data.texto == 'MD') {
-            medioDia += 1;
-        }
-    });
-    return { incapacidad, vacaciones, tramites, medioDia, diasAño };
-}
-
-async function CalculoDiasMes(agente) {
-    const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
-    const añoSeleccionado = document.getElementById('Año').value;
-    const nombreAgente = agentesV[agente].nombre;
-
-    var diasMes = 0;
-    let promises = [];
-    for (var j = 2; j <= 32; j++) {
-        let promise = db.ref('celdas/' + nombreAgente + '/' + j + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
-        promises.push(promise);
-    }
-    let results = await Promise.all(promises);
-    results.forEach(snapshot => {
-        const data = snapshot.val();
-        if (data && (data.texto == 'IN' || data.texto == 'DV')) {
-            diasMes += 1;
-        }
-    });
-    return diasMes;
-}
-
-async function cargarVacaciones() {
-    const agentesArray = Object.keys(agentesV);
-    for (let index = 0; index < agentesArray.length; index++) {
-        const agente = agentesArray[index];
-        const diasPendientes = await CalculoDiasPendientes(agente);
-        const diasMes = await CalculoDiasMes(agente);
-        const { incapacidad, vacaciones, tramites, medioDia, diasAño } = await CalculoDiasAño(agente);
-        const diasNoIncapacidad = diasAño - incapacidad; // Restar los días de incapacidad de los días del año
-        document.getElementById("DP" + (index + 1)).textContent = diasPendientes - diasNoIncapacidad; // Restar los días que no son de incapacidad de los días pendientes
-        document.getElementById("DenA" + (index + 1)).textContent = diasAño;
-        document.getElementById("DenM" + (index + 1)).textContent = diasMes;
-        document.getElementById("IN" + (index + 1)).textContent = incapacidad;
-        document.getElementById("DV" + (index + 1)).textContent = vacaciones;
-        document.getElementById("T" + (index + 1)).textContent = tramites;
-        document.getElementById("MD" + (index + 1)).textContent = medioDia;
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     var boton = document.querySelector('#menuButton');
     var botonesHerramientas = document.querySelector('#BotonesHerramientas');
@@ -1067,8 +953,8 @@ function contarTurnos() {
             "yesica.cano": { nombre: "Yesica_Johana_Cano_Quintero" },
             "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
             "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
-            "maira.mosquera": { nombre: "Maira_Mosquera_Blandon" },
             "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
+            "juan.vidal": { nombre: "Juan_Pablo_Vidal_Saldarriaga" },
         };
 
         const table = document.getElementById('Table1');
