@@ -66,7 +66,8 @@ function actualizarColorCelda(celda) {
         case 'T1N':
         case 'T1D':
         case 'T1U':
-        case 'T1 - T1U':
+        case 'T1T':
+        case 'T1 - T1T':
             color = colorT1;
             celda.style.color = 'black';
             break;
@@ -540,7 +541,8 @@ function contHoras() {
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
     var tiposTurno0 = ['NN', 'D'];
-    var tiposTurno8_5 = ['T1U', 'T2U'];
+    var tiposTurno8_5 = ['T2U'];
+    var tiposTurno9_5 = ['T1T'];
     var tiposTurno6_5 = ['T6U'];
     var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
@@ -556,6 +558,8 @@ function contHoras() {
                 contadores[letra] += 8.5;
             } else if (tiposTurno6_5.includes(contenido)) {
                 contadores[letra] += 6.5;
+            } else if (tiposTurno9_5.includes(contenido)) {
+                contadores[letra] += 9.5;
             }
         }
     });
