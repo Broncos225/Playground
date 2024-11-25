@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para cerrar sesión cada hora
     function scheduleSignOutEveryHour() {
         const now = new Date();
-        const millisTillNextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, 0) - now;
+        const millisTillNextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 2, 0, 0, 0) - now;
 
         setTimeout(() => {
             firebase.auth().signOut().then(() => {
