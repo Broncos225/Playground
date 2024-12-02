@@ -15,7 +15,7 @@ window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
-    ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
+    ocultarFilas("Fray Guillermo Guerrero Hinestroza", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -392,6 +392,10 @@ let agentes = {
         nombre: "Yeison Torres Ochoa",
         contraseña: ""
     },
+    Fray_Guillermo_Guerrero_Hinestroza: {
+        nombre: "Fray Guillermo Guerrero Hinestroza",
+        contraseña: ""
+    },
     D: {
         nombre: "Descanso",
         contraseña: "D"
@@ -455,7 +459,7 @@ selector.addEventListener('change', function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
     ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
-    ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
+    ocultarFilas("Fray Guillermo Guerrero Hinestroza", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
 });
 
 
@@ -953,6 +957,7 @@ function contarTurnos() {
             "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
             "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
             "juan.vidal": { nombre: "Juan_Pablo_Vidal_Saldarriaga" },
+            "fray.guerrero": { nombre: "Fray_Guillermo_Guerrero_Hinestroza" },
         };
 
         const table = document.getElementById('Table1');
