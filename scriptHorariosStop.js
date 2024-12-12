@@ -13,8 +13,8 @@ const db = firebase.database();
 
 window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
-    ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
-    ocultarFilas("Yeison Torres Ochoa", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
+    ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
+    ocultarFilas("Yeison Torres Ochoa", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Fray Guillermo Guerrero Hinestroza", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
     CuentaAsesor();
     diaSemana();
