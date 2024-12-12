@@ -359,7 +359,6 @@ function calcularValorTurno() {
         if (tiposTurno5.includes(turno)) return '5';
         if (tiposTurno8.includes(turno)) return `8`;
         if (tiposTurno0.includes(turno)) return `0`;
-        if (tiposTurno8_5.includes(turno)) return `8,5`;
         if (tiposTurno9_5.includes(turno)) return `9,5`;
         return `Valor no definido`; // Por si el turno no está en las listas
     });
