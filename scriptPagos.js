@@ -346,7 +346,7 @@ function calcularValorTurno() {
     // Definir las categorías de turnos
     const tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     const tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
-    const tiposTurno0 = ['NN', 'D', 'DV'];
+    const tiposTurno0 = ['NN', 'D', 'DV', 'LI'];
     const tiposTurno9_5 = ['T1T'];
     const tiposTurno5 = ['T4NA'];
 
