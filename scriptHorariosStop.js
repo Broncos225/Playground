@@ -14,7 +14,6 @@ const db = firebase.database();
 window.onload = function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Nuevo", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
     ocultarFilas("Yeison Torres Ochoa", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Fray Guillermo Guerrero Hinestroza", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
     CuentaAsesor();
@@ -230,7 +229,7 @@ function cargarDatos() {
 }
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
 
     for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
@@ -268,12 +267,7 @@ function contDescansos() {
             contF += 1;
         }
     }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('G' + i);
-        if (celda.textContent == 'D') {
-            contG += 1;
-        }
-    }
+
 
     var celdaA = document.getElementById("1");
     celdaA.textContent = contA;
@@ -287,8 +281,7 @@ function contDescansos() {
     celdaE.textContent = contE;
     var celdaF = document.getElementById("6");
     celdaF.textContent = contF;
-    var celdaG = document.getElementById("7");
-    celdaG.textContent = contG;
+
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -389,10 +382,6 @@ let agentes = {
         nombre: "Oscar Luis Cabrera Pacheco",
         contraseña: ""
     },
-    Juan_Pablo_Vidal_Saldarriaga: {
-        nombre: "Juan Pablo Vidal Saldarriaga",
-        contraseña: ""
-    },
     Yeison_Torres_Ochoa: {
         nombre: "Yeison Torres Ochoa",
         contraseña: ""
@@ -463,7 +452,6 @@ var selector = document.getElementById('Mes');
 selector.addEventListener('change', function () {
     ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
     ocultarFilas("Nuevo", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Juan Pablo Vidal Saldarriaga", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre"]);
     ocultarFilas("Yeison Torres Ochoa", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
     ocultarFilas("Fray Guillermo Guerrero Hinestroza", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
 });
@@ -527,7 +515,7 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
     var tiposTurno0 = ['NN', 'D', 'DV'];
@@ -535,7 +523,7 @@ function contHoras() {
     var tiposTurno9_5 = ['T1T'];
     var tiposTurno6_5 = ['T6U'];
     const tiposTurno5 = ['T4NA'];
-    var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
 
     letras.forEach(function (letra) {
         for (var i = 1; i < 32; i++) {
@@ -962,7 +950,6 @@ function contarTurnos() {
             "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
             "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
             "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
-            "juan.vidal": { nombre: "Juan_Pablo_Vidal_Saldarriaga" },
             "fray.guerrero": { nombre: "Fray_Guillermo_Guerrero_Hinestroza" },
         };
 
