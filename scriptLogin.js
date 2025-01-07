@@ -85,12 +85,10 @@ function getErrorMessage(error) {
 }
 
 let agentesA = {
-    "anderson.cano": { nombre: "Anderson_Cano_Londoño" },
     "yesica.cano": { nombre: "Yesica_Johana_Cano_Quintero" },
     "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
-    "juan.vidal": { nombre: "Juan_Pablo_Vidal_Saldarriaga" },
     "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
     "oscar.cabrera": { nombre: "Oscar_Luis_Cabrera_Pacheco" },
     "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
-    "fray.guerrero": { nombre: "Fray_Guillermo_Guerrero_Hinestroza" },
+    "juan.gonzalez": { nombre: "Juan_Manuel_González" }
 };
