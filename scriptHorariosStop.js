@@ -226,7 +226,7 @@ function cargarDatos() {
 }
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0;
 
     for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
@@ -258,12 +258,7 @@ function contDescansos() {
             contE += 1;
         }
     }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('F' + i);
-        if (celda.textContent == 'D') {
-            contF += 1;
-        }
-    }
+
 
 
     var celdaA = document.getElementById("1");
@@ -276,8 +271,7 @@ function contDescansos() {
     celdaD.textContent = contD;
     var celdaE = document.getElementById("5");
     celdaE.textContent = contE;
-    var celdaF = document.getElementById("6");
-    celdaF.textContent = contF;
+
 
 }
 
@@ -509,7 +503,7 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0};
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
     var tiposTurno0 = ['NN', 'D', 'DV'];
@@ -517,7 +511,7 @@ function contHoras() {
     var tiposTurno9_5 = ['T1T'];
     var tiposTurno6_5 = ['T6U'];
     const tiposTurno5 = ['T4NA'];
-    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
+    var letras = ['A', 'B', 'C', 'D', 'E'];
 
     letras.forEach(function (letra) {
         for (var i = 1; i < 32; i++) {
@@ -702,20 +696,21 @@ document.getElementById("btnExportarTexto").addEventListener("click", ExportaraT
 function Festivos() {
     var mes = document.getElementById("Mes").value;
     var ano = document.getElementById("Año").value;
-    var festivos2024 = {
-        "Enero": [1, 8],
+    var festivos = {
+        "Enero": [1, 6],
         "Febrero": [],
-        "Marzo": [25, 28, 29],
-        "Abril": [],
-        "Mayo": [1, 13],
-        "Junio": [3, 10],
-        "Julio": [1, 20],
-        "Agosto": [7, 19],
+        "Marzo": [24],
+        "Abril": [17, 18],
+        "Mayo": [1],
+        "Junio": [2, 23, 30],
+        "Julio": [20],
+        "Agosto": [7],
         "Septiembre": [],
-        "Octubre": [14],
-        "Noviembre": [4, 11],
+        "Octubre": [13],
+        "Noviembre": [3, 17],
         "Diciembre": [8, 25]
-    }
+    };
+    
     const fecha = new Date();
     const dia = "Dia" + fecha.getDate();
     const nombresDeMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -724,7 +719,7 @@ function Festivos() {
         var celda = document.getElementById("Dia" + i);
         celda.style.backgroundColor = "#e69500";
         celda.style.color = "Black";
-        if (festivos2024[mes].includes(i)) {
+        if (festivos[mes].includes(i)) {
             if (dia == "Dia" + i) {
                 celda.style.backgroundColor = "orange";
                 celda.style.color = "red";
