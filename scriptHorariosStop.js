@@ -12,10 +12,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 window.onload = function () {
-    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
-    ocultarFilas("Nuevo", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Yeison Torres Ochoa", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
-    ocultarFilas("Fray Guillermo Guerrero Hinestroza", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
+    ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
     diaSemana();
     cargarDatos();
@@ -386,8 +383,8 @@ let agentes = {
         nombre: "Yeison Torres Ochoa",
         contraseña: ""
     },
-    Fray_Guillermo_Guerrero_Hinestroza: {
-        nombre: "Fray Guillermo Guerrero Hinestroza",
+    Cristian_Garcia_Carmona: {
+        nombre: "Cristian Garcia Carmona",
         contraseña: ""
     },
     D: {
@@ -450,10 +447,7 @@ function ocultarFilas(nombre, mesesParam) {
 
 var selector = document.getElementById('Mes');
 selector.addEventListener('change', function () {
-    ocultarFilas("Andrés Felipe Vidal Medina", ["Junio", "Julio", "Agosto"]);
-    ocultarFilas("Nuevo", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
-    ocultarFilas("Yeison Torres Ochoa", ["Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto"]);
-    ocultarFilas("Fray Guillermo Guerrero Hinestroza", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre"]);
+    ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
 });
 
 
@@ -950,7 +944,7 @@ function contarTurnos() {
             "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
             "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
             "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
-            "fray.guerrero": { nombre: "Fray_Guillermo_Guerrero_Hinestroza" },
+            "cristian.garcia": { nombre: "Cristian_Garcia_Carmona" },
         };
 
         const table = document.getElementById('Table1');
