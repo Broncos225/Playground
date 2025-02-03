@@ -226,7 +226,7 @@ function cargarDatos() {
 }
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
 
     for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
@@ -258,6 +258,12 @@ function contDescansos() {
             contE += 1;
         }
     }
+    for (var i = 1; i < 32; i++) {
+        var celda = document.getElementById('F' + i);
+        if (celda.textContent == 'D') {
+            contF += 1;
+        }
+    }
 
 
 
@@ -271,6 +277,8 @@ function contDescansos() {
     celdaD.textContent = contD;
     var celdaE = document.getElementById("5");
     celdaE.textContent = contE;
+    var celdaF = document.getElementById("6");
+    celdaF.textContent = contF
 
 
 }
@@ -503,7 +511,7 @@ function diaSemana() {
 }
 
 function contHoras() {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0};
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0};
     var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
     var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
     var tiposTurno0 = ['NN', 'D', 'DV'];
@@ -511,7 +519,7 @@ function contHoras() {
     var tiposTurno9_5 = ['T1T'];
     var tiposTurno6_5 = ['T6U'];
     const tiposTurno5 = ['T4NA'];
-    var letras = ['A', 'B', 'C', 'D', 'E'];
+    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
 
     letras.forEach(function (letra) {
         for (var i = 1; i < 32; i++) {
