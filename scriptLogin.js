@@ -91,4 +91,5 @@ let agentesA = {
     "oscar.cabrera": { nombre: "Oscar_Luis_Cabrera_Pacheco" },
     "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
     "cristian.garcia": { nombre: "Cristian_García_Carmona" },
+    "ocaris.arango": { nombre: "Ocaris_David_Arango_Aguilar" },
 };

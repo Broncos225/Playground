@@ -389,6 +389,10 @@ let agentes = {
         nombre: "Cristian Garcia Carmona",
         contraseña: ""
     },
+    Ocaris_David_Arango_Aguilar: {
+        nombre: "Ocaris David Arango Aguilar",
+        contraseña: ""
+    },
     D: {
         nombre: "Descanso",
         contraseña: "D"
@@ -948,6 +952,7 @@ function contarTurnos() {
             "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
             "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
             "cristian.garcia": { nombre: "Cristian_Garcia_Carmona" },
+            "ocaris.arango": { nombre: "Ocaris_David_Arango_Aguilar" }
         };
 
         const table = document.getElementById('Table1');
