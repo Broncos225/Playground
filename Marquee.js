@@ -6,18 +6,6 @@ window.addEventListener('load', function () {
 });
 
 let agentes = {
-  Anderson_Cano_Londoño: {
-    nombre: "Anderson",
-    cumpleaños: [1,3]
-  },
-  Miguel_Cadavid_Naranjo: {
-    nombre: "Miguel",
-    cumpleaños: [5,6] // Added a birthday for the example
-  },
-  Milton_Alexis_Calle_Londoño: {
-    nombre: "Milton",
-    cumpleaños: [21,9]
-  },
   Yesica_Johana_Cano_Quintero: {
     nombre: "Yesica",
     cumpleaños: [15,11]
@@ -33,7 +21,19 @@ let agentes = {
   Oscar_Luis_Cabrera_Pacheco: {
     nombre: "Oscar",
     cumpleaños: [5,5]
-  }
+  },
+  Ocaris_David_Arango_Aguilar: {
+    nombre: "David",
+    cumpleaños: [8,3]
+  },
+  Cristian_Garcia_Carmona: {
+    nombre: "Cristian",
+    cumpleaños: [8,9]
+  },
+  Yeison_Torres_Ochoa: {
+    nombre: "Yeison",
+    cumpleaños: [12,9]
+  },	
 };
 
 
