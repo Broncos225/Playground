@@ -47,6 +47,7 @@ function actualizarColorCelda(celda) {
     var colorAS = '#063970';
     var colorD = '#e69500';
     var colorDV = '#88ed47';
+    var colorDP = '#76d7c4';
     const texto = celda.textContent.trim();
     let color;
     switch (texto) {
@@ -63,7 +64,6 @@ function actualizarColorCelda(celda) {
         case 'T1N':
         case 'T1D':
         case 'T1U':
-        case 'T1T':
         case 'T1 - T1T':
             color = colorT1;
             celda.style.color = 'black';
@@ -156,6 +156,10 @@ function actualizarColorCelda(celda) {
             break;
         case 'MD':
             color = colorT5;
+            celda.style.color = 'black';
+            break;
+        case 'DP':
+            color = colorDP;
             celda.style.color = 'black';
             break;
     }
