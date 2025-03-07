@@ -163,11 +163,11 @@ td {
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #6c82ff;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #f1e3e3;
 }
 
 #botones {
@@ -686,7 +686,6 @@ label {
     display: inline-block;
     width: 50px;
     text-align: right;
-    margin-right: px;
 }
 
 .custom-select {
@@ -1917,3 +1916,4 @@ input:checked+.slider:before {
     width: auto;
     padding: 5px;
 }
+

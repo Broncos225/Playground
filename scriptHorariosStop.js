@@ -19,7 +19,6 @@ window.onload = function () {
     colorCelda();
     Festivos();
     cambiarBordeColumna();
-    contarTurnos();
 };
 
 function colorCelda() {
@@ -33,138 +32,43 @@ function colorCelda() {
     });
 }
 
+
 function actualizarColorCelda(celda) {
-
-    celda.style.color = '';
-    var colorT1 = '#fcfb8d';
-    var colorT2 = '#afed87';
-    var colorT3 = '#87beed';
-    var colorT4 = '#c5b4fa';
-    var colorT5 = '#fcbdc4';
-    var colorT6 = '#fc818d';
-    var colorT7 = '#FFC85C';
-    var colorTSA = '#FFA500';
-    var colorAS = '#063970';
-    var colorD = '#e69500';
-    var colorDV = '#88ed47';
-    var colorDP = '#76d7c4';
     const texto = celda.textContent.trim();
-    let color;
-    switch (texto) {
-        case 'LI':
-            color = '#0c769e';
-            break;
 
-        case '':
-            color = 'white';
-            celda.style.color = 'black';
-            break;
-        case 'T1':
-        case 'T1R1':
-        case 'T1N':
-        case 'T1D':
-        case 'T1U':
-        case 'T1 - T1T':
-            color = colorT1;
-            celda.style.color = 'black';
-            break;
-        case 'T2':
-        case 'T2R1':
-        case 'T2N':
-        case 'T2D':
-        case 'T2U':
-        case 'T2 - T2U':
-            color = colorT2;
-            celda.style.color = 'black';
-            break;
-        case 'T3':
-        case 'T3R1':
-        case 'T3N':
-        case 'T3D':
-        case 'T3AD':
-            color = colorT3;
-            celda.style.color = 'black';
-            break;
-        case 'T4':
-        case 'T4R1':
-        case 'T4N':
-        case 'T4D':
-        case 'T4A':
-        case 'T4NA':
-            color = colorT4;
-            celda.style.color = 'black';
-            break;
-        case 'T5':
-        case 'T5R1':
-        case 'T5N':
-        case 'T5D':
-            color = colorT5;
-            celda.style.color = 'black';
-            break;
-        case 'T6':
-        case 'T6R1':
-        case 'T6N':
-        case 'T6D':
-        case 'T6AD':
-        case 'T6U':
-            color = colorT6;
-            celda.style.color = 'black';
-            break;
-        case 'T7':
-        case 'T7R1':
-            color = colorT7;
-            celda.style.color = 'black';
-            break;
-        case 'D':
-        case 'DF':
-            if (!celda.classList.contains('titulos')) {
-                color = 'white';
-                celda.style.color = 'red';
-            } else {
-                color = colorD;
-                celda.style.color = 'red';
-            }
-            break;
-        case 'TSA':
-            color = colorTSA;
-            celda.style.color = 'black';
-            break;
-        case 'AS':
-        case 'ASR1':
-            color = colorAS;
-            celda.style.color = 'white';
-            break;
-        case 'NN':
-            color = 'gray';
-            celda.style.color = 'gray';
-            break;
-        case 'R1':
-            color = 'white';
-            celda.style.color = 'black';
-            break;
-        case 'IN':
-            color = 'red';
-            celda.style.color = 'black';
-            break;
-        case 'DV':
-            color = colorDV;
-            celda.style.color = 'black';
-            break;
-        case 'T':
-            color = colorT3;
-            celda.style.color = 'black';
-            break;
-        case 'MD':
-            color = colorT5;
-            celda.style.color = 'black';
-            break;
-        case 'DP':
-            color = colorDP;
-            celda.style.color = 'black';
-            break;
+    // Verificar si la celda tiene la clase "DiasSemana"
+    if (celda.classList.contains('DiaSemana')) {
+        return; // No hacer nada si la celda tiene la clase "DiasSemana"
     }
-    celda.style.backgroundColor = color;
+
+    // Referencia a la base de datos de Firebase
+    const dbRef = firebase.database().ref('Turnos/' + texto);
+
+    // Obtener los colores de fondo y texto desde Firebase
+    dbRef.once('value').then((snapshot) => {
+        const data = snapshot.val();
+
+        if (data) {
+            // Asegurarse de que los colores tengan el "#" al inicio
+            const colorFondo = data.ColorF ? `#${data.ColorF}` : '#ffffff'; // Color de fondo por defecto si no existe
+            const colorTexto = data.ColorT ? `#${data.ColorT}` : '#000000'; // Color de texto por defecto si no existe
+
+            // Aplicar los colores a la celda
+            celda.style.backgroundColor = colorFondo;
+            celda.style.color = colorTexto;
+        } else {
+            // Si no hay datos en Firebase, aplicar colores por defecto
+            celda.style.backgroundColor = '#ffffff'; // Blanco
+            celda.style.color = '#000000'; // Negro
+        }
+    }).catch((error) => {
+        console.error("Error al obtener datos de Firebase:", error);
+        // En caso de error, aplicar colores por defecto
+        celda.style.backgroundColor = '#ffffff'; // Blanco
+        celda.style.color = '#000000'; // Negro
+    });
 }
+
 
 document.getElementById('form').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -205,29 +109,133 @@ function guardarCeldas() {
 
 
 
+// Función para cargar datos y contar horas simultáneamente
 function cargarDatos() {
-    const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
+    const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1;
     const añoSeleccionado = document.getElementById('Año').value;
     const celdas = document.querySelectorAll('#Table td');
+
+    // Mostrar indicador de carga
+    const cargandoDiv = document.createElement('div');
+    cargandoDiv.id = 'cargando';
+    cargandoDiv.textContent = 'Cargando datos...';
+    cargandoDiv.style.position = 'fixed';
+    cargandoDiv.style.top = '50%';
+    cargandoDiv.style.left = '50%';
+    cargandoDiv.style.transform = 'translate(-50%, -50%)';
+    cargandoDiv.style.padding = '10px 20px';
+    cargandoDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
+    cargandoDiv.style.color = 'white';
+    cargandoDiv.style.borderRadius = '5px';
+    cargandoDiv.style.zIndex = '9999';
+    document.body.appendChild(cargandoDiv);
+
+    // Crear promesas para todas las operaciones de carga
+    const promesas = [];
+
+    // Cache para guardar valores de cantidades y evitar consultas repetidas
+    const cantidadesCache = {};
+
+    // Comenzar a precargar las cantidades de turnos en paralelo con la carga de celdas
+    const precargaTurnos = firebase.database().ref('Turnos').once('value')
+        .then(snapshot => {
+            const turnos = snapshot.val();
+            if (turnos) {
+                Object.keys(turnos).forEach(turno => {
+                    if (turnos[turno].Cantidad) {
+                        cantidadesCache[turno] = parseFloat(turnos[turno].Cantidad);
+                    }
+                });
+            }
+            return cantidadesCache;
+        })
+        .catch(error => {
+            console.error("Error al precargar cantidades de turnos:", error);
+            return {};
+        });
+
+    // Añadir la precarga a las promesas
+    promesas.push(precargaTurnos);
+
+    // Cargar datos de celdas
     celdas.forEach((celda) => {
         const idCelda = celda.cellIndex + 1;
         const nombreFila = celda.parentNode.cells[0].textContent.trim();
-        db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value')
+
+        const promesa = db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value')
             .then(snapshot => {
                 const data = snapshot.val();
                 if (data) {
                     celda.textContent = data.texto;
                     actualizarColorCelda(celda);
                 }
-                contDescansos();
-                contHoras(); // Call the function here
             })
             .catch(error => {
                 console.error("Error al cargar datos:", error);
             });
+
+        promesas.push(promesa);
     });
 
+    // Cuando todas las promesas se completen, calcular las horas usando el cache
+    Promise.all(promesas)
+        .then(() => {
+            // Calcular contadores usando el cache
+            const contadores = calcularHorasConCache(cantidadesCache);
+            contDescansos();
+            document.body.removeChild(cargandoDiv);
+        })
+        .catch(error => {
+            console.error("Error en la carga de datos:", error);
+            document.body.removeChild(cargandoDiv);
+        });
 }
+
+// Función para calcular horas usando el cache de cantidades
+function calcularHorasConCache(cantidadesCache) {
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+    // Recorremos cada letra y cada día
+    for (const letra of letras) {
+        for (let i = 1; i < 32; i++) {
+            const celda = document.getElementById(letra + i);
+
+            // Verificamos que la celda exista
+            if (!celda) {
+                continue;
+            }
+
+            const turno = celda.textContent;
+
+            // Si el contenido de la celda no está vacío, consultamos el cache
+            if (turno && turno.trim() !== '') {
+                const cantidad = cantidadesCache[turno];
+
+                // Si existe un valor en el cache, lo sumamos al contador
+                if (cantidad !== undefined && !isNaN(cantidad)) {
+                    contadores[letra] += cantidad;
+                }
+            }
+        }
+    }
+
+    // Actualizamos las celdas con los totales
+    letras.forEach(function (letra, index) {
+        const celda = document.getElementById((index + 11).toString());
+        if (celda) {
+            celda.textContent = contadores[letra];
+        }
+    });
+
+    return contadores;
+}
+
+function iniciarConteoHoras() {
+    console.log("Iniciando conteo...");
+    contHoras()
+}
+
 
 function contDescansos() {
     var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
@@ -361,11 +369,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 let agentes = {
-    Anderson_Cano_Londoño: {
-        nombre: "Anderson Cano Londoño",
-        letra: "A",
-        contraseña: ""
-    },
     Yesica_Johana_Cano_Quintero: {
         nombre: "Yesica Johana Cano Quintero",
         letra: "B",
@@ -472,7 +475,6 @@ var currentYear = new Date().getFullYear();
 
 selectMes.selectedIndex = mesActual;
 titulo.textContent = nombresMeses[mesActual];
-cargarDatos();
 
 for (let i = 0; i < selectAño.options.length; i++) {
     if (+selectAño.options[i].value === currentYear) {
@@ -517,44 +519,6 @@ function diaSemana() {
     }
     colorCelda();
 }
-
-function contHoras() {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0};
-    var tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
-    var tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
-    var tiposTurno0 = ['NN', 'D', 'DV'];
-    var tiposTurno8_5 = ['T2U'];
-    var tiposTurno9_5 = ['T1T'];
-    var tiposTurno6_5 = ['T6U'];
-    const tiposTurno5 = ['T4NA'];
-    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
-
-    letras.forEach(function (letra) {
-        for (var i = 1; i < 32; i++) {
-            var celda = document.getElementById(letra + i);
-            var contenido = celda.textContent;
-            if (tiposTurno7_5.includes(contenido)) {
-                contadores[letra] += 7.5;
-            } else if (tiposTurno8.includes(contenido)) {
-                contadores[letra] += 8;
-            } else if (tiposTurno8_5.includes(contenido)) {
-                contadores[letra] += 8.5;
-            } else if (tiposTurno6_5.includes(contenido)) {
-                contadores[letra] += 6.5;
-            } else if (tiposTurno9_5.includes(contenido)) {
-                contadores[letra] += 9.5;
-            } else if (tiposTurno5.includes(contenido)) {
-                contadores[letra] += 5;
-            }
-        }
-    });
-
-    letras.forEach(function (letra, index) {
-        var celda = document.getElementById((index + 11).toString());
-        celda.textContent = contadores[letra];
-    });
-}
-
 
 
 const checkInterval = 200;
@@ -638,74 +602,89 @@ function limpiarCeldasEditables() {
 
 document.getElementById('btnLimpiar').addEventListener('click', limpiarCeldasEditables);
 
-function ExportaraTexto() {
+async function ExportaraTexto() {
     var nombreAsesorActual = localStorage.getItem("nombreAsesorActual");
     if (!nombreAsesorActual) {
         alert("Por favor seleccione un asesor para exportar los datos");
         return;
     }
 
+    // Reemplazar guiones bajos por espacios
+    nombreAsesorActual = nombreAsesorActual.replace(/_/g, " ");
+
     let confirmacion = confirm("¿Está seguro de que desea copiar los datos de la tabla al portapapeles?");
     if (!confirmacion) {
         return;
     }
-    var Letra = agentes[nombreAsesorActual].letra;
+
     let texto = "";
     var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    var horariosTurnos = {
-        "T1": "7:00 - 4:00",
-        "T2": "9:00 - 6:00",
-        "T3": "09:30 - 6:30",
-        "T4": "10:00 - 7:00",
-        "T5": "11:00 - 8:00",
-        "T6": "12:30 - 9:30",
-        "T7": "8:00 - 5:00",
-        "TSA": "8:00 - 4:00",
-        "T2R1": "10:00 - 6:00",
-        "T3R1": "10:30 - 6:30",
-        "T4R1": "11:00 - 7:00",
-        "T5R1": "12:00 - 8:00",
-        "T6R1": "1:30 - 9:30",
-        "T7R1": "9:00 - 5:00",
-        "NN": "Ninguno",
-        "D": "Descanso",
-        "AS": "Apoyo Sura 06:30 am - 05:00 pm",
-        "ASR1": "Apoyo Sura 06:30 am - 04:00 pm",
-        "DF": "Día de la familia",
-        "IN": "Incapacidad",
-        "DV": "Vacaciones",
-        "T": "Tramites",
-        "MD": "Medio día",
-    }
-    agentes[nombreAsesorActual].nombre;
     var mes = document.getElementById("Mes").value;
-    texto += "Turnos de " + agentes[nombreAsesorActual].nombre + " en " + mes + ":" + "\n" + "\n";
+    var numeroMes = meses.indexOf(mes);
+    var ano = document.getElementById("Año").value;
+
+    texto += "Turnos de " + nombreAsesorActual + " en " + mes + ":" + "\n\n";
+
+    var tabla = document.getElementById("Table");
+    var filas = tabla.getElementsByTagName("tr");
+    var filaAsesor = null;
+
+    for (var i = 0; i < filas.length; i++) {
+        var celdas = filas[i].getElementsByTagName("td");
+        if (celdas.length > 0 && celdas[0].textContent === nombreAsesorActual) {
+            filaAsesor = filas[i];
+            break;
+        }
+    }
+
+    if (!filaAsesor) {
+        alert("No se encontró el asesor en la tabla");
+        return;
+    }
+
+    var celdasDias = filaAsesor.getElementsByTagName("td");
+    var diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
     for (let i = 1; i <= 31; i++) {
-        var turno = document.getElementById(Letra + i).textContent;
-        var horario = horariosTurnos[turno];
-        var dia = document.getElementById("Dia" + i).textContent;
-        var numeroMes = meses.indexOf(mes);
-        var ano = document.getElementById("Año").value;
+        var turno = celdasDias[i].textContent.trim();
+        var dia = i;
         var fecha = new Date(ano, numeroMes, dia);
+
         if (isNaN(fecha.getTime())) {
             alert("Fecha inválida: " + ano + "-" + mes + "-" + dia);
             return;
         }
-        var diaSemana = fecha.getDay();
 
-        var diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-        diaSemana = diasSemana[diaSemana];
+        var diaSemana = diasSemana[fecha.getDay()];
 
-        texto += diaSemana + " " + dia + ": (" + turno + ") " + horario + "\n";
+        try {
+            var turnoRef = firebase.database().ref('Turnos/' + turno);
+            var snapshot = await turnoRef.once('value');
+            var apertura = snapshot.child('Apertura').val();
+            var cierre = snapshot.child('Cierre').val();
+
+            // Verificar si apertura o cierre es "12:00 AM"
+            if (apertura === "12:00 AM" || cierre === "12:00 AM") {
+                var descripcion = snapshot.child('Descripcion').val();
+                texto += `${diaSemana} ${dia}: (${turno}) ${descripcion}\n`;
+            } else {
+                var horario = apertura + " - " + cierre;
+                texto += `${diaSemana} ${dia}: (${turno}) ${horario}\n`;
+            }
+
+        } catch (error) {
+            console.error('Error al consultar la base de datos', error);
+        }
     }
-    navigator.clipboard.writeText(texto)
-        .then(() => {
-            alert("Datos copiados al portapapeles");
-        })
-        .catch(error => {
-            console.error('Falla en la copia en el portapeles', error);
-        });
+
+    try {
+        await navigator.clipboard.writeText(texto);
+        alert("Datos copiados al portapapeles");
+    } catch (error) {
+        console.error('Falla en la copia al portapapeles', error);
+    }
 }
+
 
 document.getElementById("btnExportarTexto").addEventListener("click", ExportaraTexto);
 
@@ -726,7 +705,7 @@ function Festivos() {
         "Noviembre": [3, 17],
         "Diciembre": [8, 25]
     };
-    
+
     const fecha = new Date();
     const dia = "Dia" + fecha.getDate();
     const nombresDeMeses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -822,43 +801,43 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function exportarIcs() {
+async function exportarIcs() {
     var nombreAsesor = document.getElementById('AsesorActual').textContent;
     var prefijo = "Bienvenido/a ";
     if (nombreAsesor.startsWith(prefijo)) {
         nombreAsesor = nombreAsesor.substring(prefijo.length);
     }
 
-    var horariosTurnos = {
-        "T1N": "7:00 AM - 4:00 PM",
-        "T2N": "9:00 AM - 6:00 PM",
-        "T3N": "09:30 AM - 6:30 PM",
-        "T4N": "10:00 AM - 7:00 PM",
-        "T5N": "11:00 AM - 8:00 PM",
-        "T6N": "12:30 PM - 9:30 PM",
-        "TSA": "8:00 AM - 4:00 PM",
-        "T1": "7:00 AM - 3:30 PM",
-        "T2": "9:00 AM - 5:30 PM",
-        "T3": "09:30 AM - 6:00 PM",
-        "T4": "10:00 AM - 6:30 PM",
-        "T5": "11:00 AM - 7:30 PM",
-        "T6": "1:00 PM - 9:30 PM",
-        "T2R1": "10:00 AM - 6:00 PM",
-        "T3R1": "10:30 AM - 6:30 PM",
-        "T4R1": "11:00 AM - 7:00 PM",
-        "T5R1": "12:00 PM - 8:00 PM",
-        "T6R1": "1:30 PM - 9:30 PM",
-        "T7R1": "9:00 AM - 5:00 PM",
-        "NN": "Ninguno",
-        "D": "Descanso",
-        "AS": "Apoyo Sura 06:30 AM - 05:00 PM",
-        "ASR1": "Apoyo Sura 06:30 AM - 04:00 PM",
-        "DF": "Día de la familia",
-        "IN": "Incapacidad",
-        "DV": "Vacaciones",
-        "T": "Tramites",
-        "MD": "Medio día"
-    };
+    // Consultar los horarios de los turnos desde Firebase
+    var horariosTurnos = {};
+    try {
+        var turnosRef = firebase.database().ref('Turnos/'); // Referencia a la raíz de los turnos
+        const snapshot = await turnosRef.once('value'); // Obtén todos los turnos
+        if (snapshot.exists()) {
+            const turnosData = snapshot.val(); // Datos de todos los turnos
+            for (const turno in turnosData) {
+                const apertura = turnosData[turno]?.Apertura; // Hora de apertura
+                const cierre = turnosData[turno]?.Cierre; // Hora de cierre
+                if (apertura && cierre) {
+                    if (apertura === "12:00 AM" && cierre === "12:00 AM") {
+                        // Si es un turno de todo el día, usamos la descripción
+                        horariosTurnos[turno] = "Todo el día";
+                    } else {
+                        // Si no, combinamos apertura y cierre
+                        horariosTurnos[turno] = `${apertura} - ${cierre}`;
+                    }
+                } else {
+                    console.log(`Datos incompletos para el turno ${turno}`);
+                }
+            }
+        } else {
+            console.log("No se encontraron datos de turnos en Firebase.");
+            return;
+        }
+    } catch (error) {
+        console.error("Error al consultar los turnos desde Firebase:", error);
+        return;
+    }
 
     var meses = {
         "enero": 0,
@@ -912,6 +891,11 @@ function exportarIcs() {
                         var start = new Date(fecha.setHours(0, 0, 0));
                         var end = new Date(fecha.setHours(23, 59, 59));
                         cal.addEvent('Descanso', `Día de descanso para ${nombreAsesor}`, 'Casa', start, end);
+                    } else if (horario === "Todo el día") {
+                        var fecha = new Date(año, mes, j);
+                        var start = new Date(fecha.setHours(0, 0, 0));
+                        var end = new Date(fecha.setHours(23, 59, 59));
+                        cal.addEvent(`Turno ${turno}`, `Turno ${turno} para ${nombreAsesor} (Todo el día)`, 'Arus', start, end);
                     } else if (horario.includes(" - ")) {
                         var fecha = new Date(año, mes, j);
                         var [horaInicio, horaFin] = horario.split(" - ");
@@ -939,40 +923,44 @@ function exportarIcs() {
     cal.download(`${nombreAsesor}_horarios`);
 }
 
+// Referencia a la base de datos
+const turnosRef = firebase.database().ref('Turnos/');
 
-function contarTurnos() {
-    const rootRef = db.ref('celdas');
-    rootRef.once('value', (snapshot) => {
-        const data = snapshot.val();
-        if (!data) {
-            console.error('No se encontraron datos en la base de datos.');
-            return;
+// Leer datos de Firebase
+turnosRef.on('value', (snapshot) => {
+    const turnos = snapshot.val();
+    const table = document.getElementById('turnosTable');
+
+    // Limpiar la tabla antes de agregar nuevos datos
+    while (table.rows.length > 1) {
+        table.deleteRow(1);
+    }
+
+    // Iterar sobre los turnos y agregarlos a la tabla
+    for (const turno in turnos) {
+        const row = table.insertRow(-1);
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        cell1.textContent = turno;
+        cell1.style.fontWeight = 'bold';
+
+        // Obtener los valores de Apertura, Cierre y Descripcion
+        const apertura = turnos[turno].Apertura.toLowerCase();
+        const cierre = turnos[turno].Cierre.toLowerCase();
+        const descripcion = turnos[turno].Descripcion || ''; // Usar descripción si está disponible
+
+        // Verificar si Apertura y Cierre son "12:00 am"
+        if (apertura === "12:00 am" && cierre === "12:00 am") {
+            // Mostrar la descripción en lugar de los horarios
+            cell2.textContent = descripcion;
+        } else {
+            // Mostrar los horarios en minúsculas
+            cell2.textContent = `${apertura} a ${cierre}`;
         }
 
-        const agentesA = {
-            "anderson.cano": { nombre: "Anderson_Cano_Londoño" },
-            "yesica.cano": { nombre: "Yesica_Johana_Cano_Quintero" },
-            "andres.vidal": { nombre: "Andrés_Felipe_Vidal_Medina" },
-            "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
-            "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
-            "cristian.garcia": { nombre: "Cristian_Garcia_Carmona" },
-            "ocaris.arango": { nombre: "Ocaris_David_Arango_Aguilar" }
-        };
-
-        const table = document.getElementById('Table1');
-
-        for (let agente in agentesA) {
-            const nombre = agentesA[agente].nombre;
-            const row = table.insertRow();
-            const cell1 = row.insertCell();
-            const cell2 = row.insertCell();
-            cell1.textContent = agentes[nombre].nombre;
-            cell2.textContent = 0;
-            cell2.id = `Turnos${nombre}`;
-        }
-
-
-    }, (error) => {
-        console.error('Error al leer los datos de la base de datos:', error);
-    });
-}
+        cell2.style.whiteSpace = 'nowrap'; // Evita que el texto haga wrap
+        cell2.style.overflow = 'hidden';   // Oculta el contenido que se desborda
+        cell2.style.textOverflow = 'ellipsis'; // Muestra "..." cuando el texto no quepa
+        colorCelda(); // Asegúrate de que esta función esté definida
+    }
+});

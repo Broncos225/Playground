@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
     <link rel="icon" href="Icono.ico">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="stylesPagos.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
     <title>Calculadora de notas</title>
@@ -61,13 +62,87 @@
             <button id="btnCierre">Cierre</button>
         </div>
 
+        <div class="container" style="text-align: center;">
+            <h1 id="Titulo">Turnos</h1>
+            <div style="margin-bottom: 10px;">
+                <button id="btnNuevoTurno" class="btn-primary">Nuevo Turno</button>
+            </div>
+        
+            <!-- Modal personalizado para Nuevo Turno -->
+            <div id="modalNuevoTurno" class="modal-custom">
+                <div class="modal-content-custom">
+                    <div class="modal-header-custom">
+                        <h5>Agregar Nuevo Turno</h5>
+                        <span class="close-btn">&times;</span>
+                    </div>
+                    <div class="modal-body-custom">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nuevo-id">ID</label>
+                                <input type="text" id="nuevo-id" placeholder="Ingrese un ID único para el turno">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nuevo-apertura">Apertura</label>
+                                <select id="nuevo-apertura" class="form-control"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nuevo-cantidad">Cantidad</label>
+                                <input type="number" id="nuevo-cantidad">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nuevo-cierre">Cierre</label>
+                                <select id="nuevo-cierre" class="form-control"></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="nuevo-descripcion">Descripción</label>
+                                <input type="text" id="nuevo-descripcion">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nuevo-colorF">Color Fondo</label>
+                                <input type="color" class="Colorpicker" style="width: 70%; border: 1px solid #ffffff; border-radius: 10px; padding: 0;" id="nuevo-colorF" value="#FFFFFF">
+                            </div>
+                            <div class="form-group">
+                                <label for="nuevo-colorT">Color Texto</label>
+                                <input type="color" class="Colorpicker" style="width: 70%; border: 1px solid #ffffff; border-radius: 10px; padding: 0;" id="nuevo-colorT" value="#000000">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer-custom" style="display: flex; flex-direction: row; gap: 10px;">
+                        <button type="button" id="btnLimpiar">Limpiar campos</button>
+                        <button type="button" id="btnCancelar">Cancelar</button>
+                        <button type="button" id="btnGuardarNuevo">Guardar Turno</button>
+                    </div>
+                </div>
+            </div>
+        
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Apertura</th>
+                        <th>Cantidad</th>
+                        <th>Cierre</th>
+                        <th>Color Fondo</th>
+                        <th>Color Texto</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaTurnos"></tbody>
+            </table>
+        </div>
         <h1 id="Titulo">Conversor de turno</h1>
         <textarea id="turnos" rows="4" cols="50"></textarea><br><br>
         <button id="convertir">Convertir Turnos</button>
         <button id="convertirTurnoHora">Convertir Horas</button>
         <button id="copiar" style="display: none;">Copiar Resultado</button>
         <button id="copiarV" style="display: none;">Copiar Valor</button>
-
         <div>
             <p id="resultado"></p>
             <p id="valor" style="font-weight: bold;"></p>

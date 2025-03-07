@@ -13,230 +13,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth() + 1;
-
-// Función para cargar los datos desde Firebase
-async function cargarDatos() {
-    const promesasPrimeraQuincena = [];
-    const promesasSegundaQuincena = [];
-    var asesor = localStorage.getItem("nombreAsesorActual");
-    var asesorConEspacios = asesor.replace(/_/g, ' ');
-
-
-    for (let i = 1; i <= 15; i++) {
-        const ref = firebase.database().ref(`celdas/${asesorConEspacios}/${i + 1}/${year}/${month}`);
-
-        const promesa = new Promise((resolve, reject) => {
-            ref.on('value', (snapshot) => {
-                const data = snapshot.val();
-                const cell = document.getElementById(`Dia${i}`);
-
-                if (cell && data) {
-                    cell.innerHTML = data.texto;
-                }
-                resolve();
-            }, (error) => {
-                console.error(`Error al leer datos para el día ${i}:`, error);
-                reject(error);
-            });
-        });
-
-        promesasPrimeraQuincena.push(promesa);
-    }
-
-    for (let i = 16; i <= 31; i++) {
-        const ref = firebase.database().ref(`celdas/${asesorConEspacios}/${i + 1}/${year}/${month}`);
-
-        const promesa = new Promise((resolve, reject) => {
-            ref.on('value', (snapshot) => {
-                const data = snapshot.val();
-                const cell = document.getElementById(`Dia${i}`);
-
-                if (cell && data) {
-                    cell.innerHTML = data.texto;
-                }
-                resolve();
-            }, (error) => {
-                console.error(`Error al leer datos para el día ${i}:`, error);
-                reject(error);
-            });
-        });
-
-        promesasSegundaQuincena.push(promesa);
-    }
-
-    // Espera a que todas las promesas se resuelvan para cada quincena
-    await Promise.all(promesasPrimeraQuincena);
-    await Promise.all(promesasSegundaQuincena);
-
-    asignarValores();
-    calcularTotalQuincenas();
-}
-
-
-// Función para asignar valores después de cargar los datos
-function asignarValores() {
-    let Turnos = {
-        T1: { nombre: "T1", HN: 7.5, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T1N: { nombre: "T1N", HN: 8, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T1U: { nombre: "T1U", HN: 8.5, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T2: { nombre: "T2", HN: 7.5, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T2N: { nombre: "T2N", HN: 8, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T2U: { nombre: "T2U", HN: 8.5, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T3: { nombre: "T3", HN: 7.5, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T3N: { nombre: "T3N", HN: 8, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T4: { nombre: "T4", HN: 7.5, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T4N: { nombre: "T4N", HN: 8, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T5: { nombre: "T5", HN: 7.5, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T5N: { nombre: "T5N", HN: 8, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T6: { nombre: "T6", HN: 7, RNO: 0.5, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T6N: { nombre: "T6N", HN: 7.5, RNO: 0.5, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        T6U: { nombre: "T6U", HN: 6, RNO: 0.5, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        TSA: { nombre: "TSA", HN: 8, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        NN: { nombre: "NN", HN: 0, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 },
-        D: { nombre: "D", HN: 0, RNO: 0, HEDO: 0, HENO: 0, FSC: 0, DFN: 0 }
-    };
-
-    for (let i = 1; i <= 32; i++) {
-        const diaId = `Dia${i}`;
-        const diaElement = document.getElementById(diaId);
-
-        if (diaElement) {
-            const diaValue = diaElement.innerText || diaElement.value;
-            const turno = Turnos[diaValue];
-
-            if (turno !== undefined) {
-                const keys = Object.keys(turno);
-                keys.forEach(key => {
-                    if (key !== 'nombre') {
-                        const valorId = `${key}${i}`;
-                        const valorElement = document.getElementById(valorId);
-                        if (valorElement) {
-                            valorElement.innerText = turno[key];
-                        }
-                    }
-                });
-            }
-        }
-    }
-}
-
-
-// Llama a la función principal para cargar datos
-cargarDatos();
-
-function calcularTotalQuincenas() {
-    const tipos = ['HN', 'RNO', 'HEDO', 'HENO', 'FSC', 'DFN']; // Tipos de valores que deseas sumar
-
-    tipos.forEach(tipo => {
-        let totalPrimeraQuincena = 0;
-        let totalSegundaQuincena = 0;
-
-        // Calcular total de la primera quincena (días 1-15)
-        for (let i = 1; i <= 15; i++) {
-            const valorElement = document.getElementById(`${tipo}${i}`);
-
-            if (valorElement && valorElement.innerText.trim() !== "") {
-                const valor = parseFloat(valorElement.innerText);
-
-                if (!isNaN(valor)) {
-                    totalPrimeraQuincena += valor;
-                }
-            }
-        }
-
-        // Calcular total de la segunda quincena (días 16-31)
-        for (let i = 16; i <= 31; i++) {
-            const valorElement = document.getElementById(`${tipo}${i}`);
-
-            if (valorElement && valorElement.innerText.trim() !== "") {
-                const valor = parseFloat(valorElement.innerText);
-
-                if (!isNaN(valor)) {
-                    totalSegundaQuincena += valor;
-                }
-            }
-        }
-
-        // Mostrar totales de cada quincena
-        document.getElementById(`Total${tipo}Q1`).innerText = totalPrimeraQuincena;
-        document.getElementById(`Total${tipo}Q2`).innerText = totalSegundaQuincena;
-
-        // Mostrar total por quincenas en días
-        document.getElementById(`Dias${tipo}Q1`).innerText = totalPrimeraQuincena / 8;
-        document.getElementById(`Dias${tipo}Q2`).innerText = totalSegundaQuincena / 8;
-
-    });
-
-    // Calcular y mostrar el total general por quincena
-    const totalGeneralQ1 = tipos.reduce((sum, tipo) => sum + parseFloat(document.getElementById(`Total${tipo}Q1`).innerText), 0);
-    const totalGeneralQ2 = tipos.reduce((sum, tipo) => sum + parseFloat(document.getElementById(`Total${tipo}Q2`).innerText), 0);
-
-    document.getElementById(`SumaCantTotalQ1`).innerText = totalGeneralQ1;
-    document.getElementById(`SumaCantTotalQ2`).innerText = totalGeneralQ2;
-
-    document.getElementById(`SumaDiasTotalQ1`).innerText = totalGeneralQ1 / 8;
-    document.getElementById(`SumaDiasTotalQ2`).innerText = totalGeneralQ2 / 8;
-    actualizarTodosLosValores();
-
-}
-function actualizarTodosLosValores() {
-    // Obtén el salario base desde el elemento con id "Salario"
-    var salarioBase = parseFloat(document.getElementById("Salario").value);
-    var horaBase = salarioBase / 192;
-    console.log(`Salario Base: ${salarioBase}, Hora Base: ${horaBase}`); // Verifica el cálculo de horaBase
-
-    // Tabla de incrementos según el tipo de hora
-    var incremento = {
-        "HN": 1,
-        "RNO": 0.35,
-        "HEDO": 1.25,
-        "HENO": 1.75,
-        "FSC": 1.75,
-        "DFN": 2.1
-    };
-
-    // Variables para acumular las sumas totales de las quincenas
-    var sumaTotalQ1 = 0;
-    var sumaTotalQ2 = 0;
-
-    // Itera sobre cada tipo de hora para ambas quincenas
-    for (var tipo in incremento) {
-        if (incremento.hasOwnProperty(tipo)) {
-            // Obtén y convierte el valor de las horas trabajadas en la primera quincena
-            var HorasQ1Text = document.getElementById(`Total${tipo}Q1`).innerText;
-            var HorasQ1 = parseFloat(HorasQ1Text);
-            if (isNaN(HorasQ1)) HorasQ1 = 0;  // Manejo de posibles valores no numéricos
-
-            // Calcula el valor para la primera quincena
-            var valorCalculadoQ1 = HorasQ1 * horaBase * incremento[tipo];
-            console.log(`Horas Q1 para ${tipo}: ${HorasQ1}, Valor Calculado Q1: ${valorCalculadoQ1.toFixed(2)}`);
-            document.getElementById(`Valor${tipo}Q1`).innerText = valorCalculadoQ1.toFixed(2);
-
-            // Obtén y convierte el valor de las horas trabajadas en la segunda quincena
-            var HorasQ2Text = document.getElementById(`Total${tipo}Q2`).innerText;
-            var HorasQ2 = parseFloat(HorasQ2Text);
-            if (isNaN(HorasQ2)) HorasQ2 = 0;  // Manejo de posibles valores no numéricos
-
-            // Calcula el valor para la segunda quincena
-            var valorCalculadoQ2 = HorasQ2 * horaBase * incremento[tipo];
-            console.log(`Horas Q2 para ${tipo}: ${HorasQ2}, Valor Calculado Q2: ${valorCalculadoQ2.toFixed(2)}`);
-            document.getElementById(`Valor${tipo}Q2`).innerText = valorCalculadoQ2.toFixed(2);
-
-            // Suma los valores de las quincenas
-            sumaTotalQ1 += valorCalculadoQ1;
-            sumaTotalQ2 += valorCalculadoQ2;
-        }
-    }
-
-    // Actualiza los totales en los elementos correspondientes
-    document.getElementById(`SumaValorTotalQ1`).innerText = sumaTotalQ1.toFixed(2);
-    document.getElementById(`SumaValorTotalQ2`).innerText = sumaTotalQ2.toFixed(2);
-}
-
-
 
 // Función para actualizar el saludo dinámicamente
 function actualizarSaludo() {
@@ -284,28 +60,111 @@ document.getElementById("btnCierre").addEventListener("click", function () {
 // Llamar a la función para inicializar el saludo
 actualizarSaludo();
 
-
-// Función para convertir turnos
-function convertirTurnos() {
+async function obtenerDatosTurno(turnoId) {
+    try {
+      const snapshot = await db.ref(`Turnos/${turnoId}`).once('value');
+      const datosTurno = snapshot.val();
+      
+      if (datosTurno) {
+        return {
+          apertura: datosTurno.Apertura || "",
+          cierre: datosTurno.Cierre || "",
+          cantidad: datosTurno.Cantidad || 0,
+          descripcion: datosTurno.Descripcion || ""
+        };
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error(`Error al obtener datos del turno ${turnoId}:`, error);
+      return null;
+    }
+  }
+  
+  async function convertirTurnos() {
     const textoTurnos = document.getElementById("turnos").value.trim();
     if (!textoTurnos) {
-        document.getElementById("resultado").textContent = "Por favor, introduce turnos.";
-        return;
+      document.getElementById("resultado").textContent = "Por favor, introduce turnos.";
+      return;
     }
-
+  
+    // Mostrar indicador de carga
+    document.getElementById("resultado").textContent = "Consultando turnos...";
+    
     // Separar los turnos ingresados
     const listaTurnos = textoTurnos.split(/\s+/);
-
-    // Convertir cada turno a su franja horaria
-    const resultados = listaTurnos.map(turno => {
-        const horario = turnos[turno] || "Horario no definido";
-        return `${horario}`;
-    });
-
-    // Mostrar el resultado
-    document.getElementById("resultado").innerHTML = resultados.join("<br>");
-    document.getElementById("copiar").style.display = "inline-block"; // Mostrar botón de copiar
-}
+    
+    // Array para almacenar las promesas
+    const promesas = [];
+    
+    // Para cada turno, crear una promesa que obtenga sus datos
+    for (const turno of listaTurnos) {
+      const promesa = obtenerDatosTurno(turno).then(datosTurno => {
+        if (!datosTurno) {
+          return "Horario no definido";
+        }
+        
+        // Si apertura y cierre son ambos "12:00 AM", usar la descripción
+        if (datosTurno.apertura === "12:00 AM" && datosTurno.cierre === "12:00 AM") {
+          return datosTurno.descripcion;
+        } else {
+          return `${datosTurno.apertura} a ${datosTurno.cierre}`;
+        }
+      });
+      
+      promesas.push(promesa);
+    }
+    
+    try {
+      // Esperar a que todas las promesas se resuelvan
+      const resultados = await Promise.all(promesas);
+      
+      // Mostrar el resultado
+      document.getElementById("resultado").innerHTML = resultados.join("<br>");
+      document.getElementById("copiar").style.display = "inline-block"; // Mostrar botón de copiar
+    } catch (error) {
+      console.error("Error al consultar los turnos:", error);
+      document.getElementById("resultado").textContent = "Error al consultar los turnos. Inténtalo de nuevo.";
+    }
+  }
+  
+  async function calcularValorTurno() {
+    const textoTurnos = document.getElementById("turnos").value.trim();
+    if (!textoTurnos) {
+      document.getElementById("valor").textContent = "Por favor, introduce turnos.";
+      return;
+    }
+    
+    // Mostrar indicador de carga
+    document.getElementById("valor").textContent = "Calculando valores...";
+    
+    // Separar los turnos ingresados
+    const listaTurnos = textoTurnos.split(/\s+/);
+    
+    // Array para almacenar las promesas
+    const promesas = [];
+    
+    // Para cada turno, obtener su valor desde Firebase
+    for (const turno of listaTurnos) {
+      const promesa = obtenerDatosTurno(turno).then(datosTurno => {
+        return datosTurno ? datosTurno.cantidad.toString() : "Valor no definido";
+      });
+      
+      promesas.push(promesa);
+    }
+    
+    try {
+      // Esperar a que todas las promesas se resuelvan
+      const resultadosValor = await Promise.all(promesas);
+      
+      // Mostrar el resultado
+      document.getElementById("valor").innerHTML = resultadosValor.join("<br>");
+      document.getElementById("copiarV").style.display = "inline-block"; // Mostrar botón de copiar
+    } catch (error) {
+      console.error("Error al calcular los valores de los turnos:", error);
+      document.getElementById("valor").textContent = "Error al calcular los valores. Inténtalo de nuevo.";
+    }
+  }
 
 // Función para copiar el resultado al portapapeles
 function copiarResultado() {
@@ -330,66 +189,455 @@ function copiarHoras() {
         });
 }
 
+
+// Añadir la llamada a calcularValorTurno después de convertirTurnos
+document.getElementById("convertirTurnoHora").addEventListener("click", calcularValorTurno);
+
 // Añadir evento al botón
 document.getElementById("convertir").addEventListener("click", convertirTurnos);
 document.getElementById("copiar").addEventListener("click", copiarResultado);
 document.getElementById("copiarV").addEventListener("click", copiarHoras);
 
+const turnosRef = db.ref("Turnos");
+const modal = document.getElementById("modalNuevoTurno");
+const btnNuevoTurno = document.getElementById("btnNuevoTurno");
+const closeBtn = document.querySelector(".close-btn");
+const btnCancelar = document.getElementById("btnCancelar");
+const btnGuardarNuevo = document.getElementById("btnGuardarNuevo");
 
-function calcularValorTurno() {
-    const textoTurnos = document.getElementById("turnos").value.trim();
-    if (!textoTurnos) {
-        document.getElementById("valor").textContent = "Por favor, introduce turnos.";
-        return;
-    }
+// Función para cargar los turnos desde Firebase y mostrarlos en la tabla
+function cargarTurnos() {
+    turnosRef.on("value", snapshot => {
+        const turnos = snapshot.val();
+        const tabla = document.getElementById("tablaTurnos");
+        tabla.innerHTML = ""; // Limpiar la tabla antes de agregar nuevos datos
 
-    // Definir las categorías de turnos
-    const tiposTurno7_5 = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
-    const tiposTurno8 = ['T1N', 'T2N', 'T3N', 'T4N', 'T5N', 'T6N', 'TSA', 'DF'];
-    const tiposTurno0 = ['NN', 'D', 'DV', 'LI'];
-    const tiposTurno9_5 = ['T1T'];
-    const tiposTurno5 = ['T4NA'];
+        for (const key in turnos) {
+            if (turnos.hasOwnProperty(key)) {
+                const turno = turnos[key];
+                // Remover el # del color si existe
+                const colorF = turno.ColorF.startsWith('#') ? turno.ColorF.substring(1) : turno.ColorF;
+                const colorT = turno.ColorT.startsWith('#') ? turno.ColorT.substring(1) : turno.ColorT;
 
-    // Separar los turnos ingresados
-    const listaTurnos = textoTurnos.split(/\s+/);
+                // Separar la hora en componentes (hora y periodo)
+                const [horaApertura, periodoApertura] = separarHoraYPeriodo(turno.Apertura);
+                const [horaCierre, periodoCierre] = separarHoraYPeriodo(turno.Cierre);
 
-    // Determinar el valor por cada turno
-    const resultadosValor = listaTurnos.map(turno => {
-        if (tiposTurno7_5.includes(turno)) return `7,5`;
-        if (tiposTurno5.includes(turno)) return '5';
-        if (tiposTurno8.includes(turno)) return `8`;
-        if (tiposTurno0.includes(turno)) return `0`;
-        if (tiposTurno9_5.includes(turno)) return `9,5`;
-        return `Valor no definido`; // Por si el turno no está en las listas
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td style="background-color: #${colorF}; color: #${colorT}; text-align: center"><b>${key}</b></td>
+                    <td>
+                        <div class="d-flex" style="display: flex; flex-direction: row; gap: 5px;">
+                            <select class="form-control hora-selector mr-1" id="apertura-hora-${key}" data-turno-id="${key}">
+                                ${generarOpcionesHorasNumeros(horaApertura)}
+                            </select>
+                            <select class="form-control periodo-selector" id="apertura-periodo-${key}" data-turno-id="${key}">
+                                <option value="AM" ${periodoApertura === 'AM' ? 'selected' : ''}>AM</option>
+                                <option value="PM" ${periodoApertura === 'PM' ? 'selected' : ''}>PM</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td><input type="number" class="form-control" value="${turno.Cantidad}" id="cantidad-${key}"></td>
+                    <td>
+                        <div class="d-flex" style="display: flex; flex-direction: row; gap: 5px;">
+                            <select class="form-control hora-selector mr-1" id="cierre-hora-${key}" data-turno-id="${key}">
+                                ${generarOpcionesHorasNumeros(horaCierre)}
+                            </select>
+                            <select class="form-control periodo-selector" id="cierre-periodo-${key}" data-turno-id="${key}">
+                                <option value="AM" ${periodoCierre === 'AM' ? 'selected' : ''}>AM</option>
+                                <option value="PM" ${periodoCierre === 'PM' ? 'selected' : ''}>PM</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td><input type="color" class="form-control form-control-color Colorpicker" value="#${colorF}" id="colorF-${key}"></td>
+                    <td><input type="color" class="form-control form-control-color Colorpicker" value="#${colorT}" id="colorT-${key}"></td>
+                    <td><input type="text" class="form-control" value="${turno.Descripcion}" id="descripcion-${key}"></td>
+                    <td style="display: flex; flex-direction: row; gap: 5px;">
+                        <button style="background-color: #154360; color: white" onclick="confirmarGuardarTurno('${key}')">
+                            <i class="fas fa-save"></i> 
+                        </button>
+                        <button style="background-color: #cb4335; color: white" onclick="confirmarEliminarTurno('${key}')">
+                            <i class="fas fa-trash"></i> 
+                        </button>
+                    </td>
+                `;
+
+                tabla.appendChild(fila);
+            }
+        }
+
+        // Eliminar los event listeners para los selectores de hora y periodo
+        // que actualizaban la cantidad automáticamente
     });
-
-    // Mostrar el resultado
-    document.getElementById("valor").innerHTML = resultadosValor.join("<br>");
-    document.getElementById("copiarV").style.display = "inline-block"; // Mostrar botón de copiar
 }
 
-// Añadir la llamada a calcularValorTurno después de convertirTurnos
-document.getElementById("convertirTurnoHora").addEventListener("click", calcularValorTurno);
+// Función para separar la hora del periodo (AM/PM)
+function separarHoraYPeriodo(horaCompleta) {
+    // Si ya está en formato de objeto, devolver como está
+    if (typeof horaCompleta === 'object') {
+        return [horaCompleta.hora, horaCompleta.periodo];
+    }
+    
+    // Si es un string en formato "HH:MM AM/PM"
+    const partes = horaCompleta.split(' ');
+    if (partes.length === 2) {
+        return [partes[0], partes[1]];
+    }
+    
+    // Valor por defecto
+    return ["12:00", "AM"];
+}
 
+// Función para generar opciones de horas solo con números (cada 30 min)
+function generarOpcionesHorasNumeros(horaSeleccionada) {
+    let opciones = '';
+    
+    // Si la hora seleccionada incluye periodo, extraer solo la parte de la hora
+    if (horaSeleccionada.includes(' ')) {
+        horaSeleccionada = horaSeleccionada.split(' ')[0];
+    }
+    
+    for (let hora = 1; hora <= 12; hora++) {
+        for (let minuto = 0; minuto < 60; minuto += 30) {
+            const minutoStr = minuto === 0 ? '00' : minuto.toString();
+            const valorHora = `${hora}:${minutoStr}`;
+            
+            const seleccionado = valorHora === horaSeleccionada ? 'selected' : '';
+            opciones += `<option value="${valorHora}" ${seleccionado}>${valorHora}</option>`;
+        }
+    }
+    return opciones;
+}
 
-const turnos = {
-    T1: "07:00 a 03:30",
-    T1N: "07:00 a 04:00",
-    T1T: "07:00 a 05:30",
-    T2: "09:00 a 05:30",
-    T2N: "09:00 a 06:00",
-    T3: "10:00 a 06:30",
-    T3N: "09:30 a 06:30",
-    T4: "10:30 a 07:00",
-    T4N: "10:00 a 07:00",
-    T4NA: "10:00 a 03:00",
-    T5: "11:30 a 08:00",
-    T5N: "11:00 a 08:00",
-    T6: "01:00 a 09:30",
-    T6N: "12:30 a 09:30",
-    TSA: "08:00 a 04:00",
-    D: "Descanso",
-    DF: "Día Familiar",
-    DV: "Día Vacaciones",
-    IN: "Incapacidad"
+// Función para confirmar antes de guardar un turno
+function confirmarGuardarTurno(turnoId) {
+    const turnoActual = {
+        Apertura: obtenerHoraCompleta(`apertura-hora-${turnoId}`, `apertura-periodo-${turnoId}`),
+        Cierre: obtenerHoraCompleta(`cierre-hora-${turnoId}`, `cierre-periodo-${turnoId}`),
+        Cantidad: document.getElementById(`cantidad-${turnoId}`).value,
+        Descripcion: document.getElementById(`descripcion-${turnoId}`).value,
+        ColorF: document.getElementById(`colorF-${turnoId}`).value,
+        ColorT: document.getElementById(`colorT-${turnoId}`).value
+    };
+    
+    if (confirm(`¿Desea guardar los cambios del turno ${turnoId}?\n\nApertura: ${turnoActual.Apertura}\nCierre: ${turnoActual.Cierre}\nCantidad: ${turnoActual.Cantidad}\nDescripción: ${turnoActual.Descripcion}`)) {
+        guardarTurnoFirebase(turnoId);
+        cerrarModal();
+    } else {
+        // Recargar los datos actuales de la base de datos
+        turnosRef.child(turnoId).once("value", snapshot => {
+            if (snapshot.exists()) {
+                const turno = snapshot.val();
+                const [horaApertura, periodoApertura] = separarHoraYPeriodo(turno.Apertura);
+                const [horaCierre, periodoCierre] = separarHoraYPeriodo(turno.Cierre);
+                
+                // Restablecer valores
+                document.getElementById(`apertura-hora-${turnoId}`).value = horaApertura;
+                document.getElementById(`apertura-periodo-${turnoId}`).value = periodoApertura;
+                document.getElementById(`cierre-hora-${turnoId}`).value = horaCierre;
+                document.getElementById(`cierre-periodo-${turnoId}`).value = periodoCierre;
+                document.getElementById(`cantidad-${turnoId}`).value = turno.Cantidad;
+                document.getElementById(`colorF-${turnoId}`).value = `#${turno.ColorF}`;
+                document.getElementById(`colorT-${turnoId}`).value = `#${turno.ColorT}`;
+                document.getElementById(`descripcion-${turnoId}`).value = turno.Descripcion;
+                
+                mostrarAlerta("Cambios cancelados", "info");
+            }
+        });
+    }
+}
+
+// Función para obtener la hora completa (hora + periodo)
+function obtenerHoraCompleta(horaSelectId, periodoSelectId) {
+    const hora = document.getElementById(horaSelectId).value;
+    const periodo = document.getElementById(periodoSelectId).value;
+    return `${hora} ${periodo}`;
+}
+
+function guardarTurnoFirebase(turnoId) {
+    const colorFValue = document.getElementById(`colorF-${turnoId}`).value;
+    const colorTValue = document.getElementById(`colorT-${turnoId}`).value;
+    
+    // Remover el # del color si existe
+    const colorF = colorFValue.startsWith('#') ? colorFValue.substring(1) : colorFValue;
+    const colorT = colorTValue.startsWith('#') ? colorTValue.substring(1) : colorTValue;
+
+    // Obtener la hora completa (hora + periodo)
+    const apertura = obtenerHoraCompleta(`apertura-hora-${turnoId}`, `apertura-periodo-${turnoId}`);
+    const cierre = obtenerHoraCompleta(`cierre-hora-${turnoId}`, `cierre-periodo-${turnoId}`);
+
+    const nuevoTurno = {
+        Apertura: apertura,
+        Cantidad: parseFloat(document.getElementById(`cantidad-${turnoId}`).value),
+        Cierre: cierre,
+        ColorF: colorF,
+        ColorT: colorT,
+        Descripcion: document.getElementById(`descripcion-${turnoId}`).value
+    };
+
+    turnosRef.child(turnoId).update(nuevoTurno)
+        .then(() => {
+            mostrarAlerta("Turno actualizado correctamente", "success");
+        })
+        .catch(error => {
+            console.error("Error al actualizar turno:", error);
+            mostrarAlerta("Error al actualizar turno", "danger");
+        });
+}
+
+// Función para confirmar antes de eliminar un turno
+function confirmarEliminarTurno(turnoId) {
+    turnosRef.child(turnoId).once("value", snapshot => {
+        if (snapshot.exists()) {
+            const turno = snapshot.val();
+            if (confirm(`¿Estás seguro de eliminar el turno ${turnoId}?\n\nApertura: ${turno.Apertura}\nCierre: ${turno.Cierre}\nCantidad: ${turno.Cantidad}\nDescripción: ${turno.Descripcion}`)) {
+                eliminarTurno(turnoId);
+            }
+        }
+    });
+}
+
+function eliminarTurno(turnoId) {
+    turnosRef.child(turnoId).remove()
+        .then(() => {
+            mostrarAlerta("Turno eliminado correctamente", "success");
+        })
+        .catch(error => {
+            console.error("Error al eliminar turno:", error);
+            mostrarAlerta("Error al eliminar el turno", "danger");
+        });
+}
+
+function agregarNuevoTurno() {
+    const turnoId = document.getElementById("nuevo-id").value.trim();
+    
+    // Validar que se haya ingresado un ID
+    if (!turnoId) {
+        mostrarAlerta("Debe ingresar un ID para el turno", "danger");
+        return;
+    }
+    
+    // Verificar si el ID ya existe
+    turnosRef.child(turnoId).once("value", snapshot => {
+        if (snapshot.exists()) {
+            mostrarAlerta("El ID ya existe. Por favor, elija otro ID", "danger");
+            return;
+        }
+        
+        const horaApertura = document.getElementById("nuevo-apertura-hora").value;
+        const periodoApertura = document.getElementById("nuevo-apertura-periodo").value;
+        const horaCierre = document.getElementById("nuevo-cierre-hora").value;
+        const periodoCierre = document.getElementById("nuevo-cierre-periodo").value;
+        
+        const apertura = `${horaApertura} ${periodoApertura}`;
+        const cierre = `${horaCierre} ${periodoCierre}`;
+        // Usar el valor manual en lugar de calcularlo
+        const cantidad = document.getElementById("nuevo-cantidad").value;
+        
+        // Preparar los colores
+        const colorFValue = document.getElementById("nuevo-colorF").value;
+        const colorTValue = document.getElementById("nuevo-colorT").value;
+        const colorF = colorFValue.startsWith('#') ? colorFValue.substring(1) : colorFValue;
+        const colorT = colorTValue.startsWith('#') ? colorTValue.substring(1) : colorTValue;
+        
+        // Confirmar la creación del nuevo turno
+        if (confirm(`¿Desea crear el turno ${turnoId}?\n\nApertura: ${apertura}\nCierre: ${cierre}\nCantidad: ${cantidad}\nDescripción: ${document.getElementById("nuevo-descripcion").value}`)) {
+            // Si el ID no existe, proceder a crear el turno
+            const nuevoTurno = {
+                Apertura: apertura,
+                Cantidad: parseFloat(cantidad),
+                Cierre: cierre,
+                ColorF: colorF,
+                ColorT: colorT,
+                Descripcion: document.getElementById("nuevo-descripcion").value
+            };
+            
+            // Usar el ID personalizado en lugar de dejar que Firebase genere uno
+            turnosRef.child(turnoId).set(nuevoTurno)
+                .then(() => {
+                    mostrarAlerta("Nuevo turno agregado correctamente", "success");
+                    cerrarModal();
+                    limpiarFormularioNuevo();
+                })
+                .catch(error => {
+                    console.error("Error al agregar nuevo turno:", error);
+                    mostrarAlerta("Error al agregar el turno", "danger");
+                });
+        }
+    });
+}
+
+function limpiarFormularioNuevo() {
+    document.getElementById("nuevo-id").value = "";
+    
+    // Resetear selectores de hora
+    if (document.getElementById("nuevo-apertura-hora")) {
+        document.getElementById("nuevo-apertura-hora").selectedIndex = 0;
+        document.getElementById("nuevo-apertura-periodo").selectedIndex = 0;
+        document.getElementById("nuevo-cierre-hora").selectedIndex = 0;
+        document.getElementById("nuevo-cierre-periodo").selectedIndex = 0;
+    }
+    
+    document.getElementById("nuevo-cantidad").value = "";
+    document.getElementById("nuevo-colorF").value = "#FFFFFF";
+    document.getElementById("nuevo-colorT").value = "#000000";
+    document.getElementById("nuevo-descripcion").value = "";
+}
+
+function mostrarAlerta(mensaje, tipo) {
+    // Crear elemento de alerta
+    const alertaDiv = document.createElement("div");
+    alertaDiv.className = `alerta alerta-${tipo}`;
+    alertaDiv.innerHTML = mensaje;
+    
+    // Estilos para la alerta
+    alertaDiv.style.padding = "10px 15px";
+    alertaDiv.style.marginBottom = "15px";
+    alertaDiv.style.borderRadius = "4px";
+    
+    if (tipo === "success") {
+        alertaDiv.style.backgroundColor = "#d4edda";
+        alertaDiv.style.color = "#155724";
+        alertaDiv.style.border = "1px solid #c3e6cb";
+    } else if (tipo === "danger") {
+        alertaDiv.style.backgroundColor = "#f8d7da";
+        alertaDiv.style.color = "#721c24";
+        alertaDiv.style.border = "1px solid #f5c6cb";
+    } else if (tipo === "info") {
+        alertaDiv.style.backgroundColor = "#d1ecf1";
+        alertaDiv.style.color = "#0c5460";
+        alertaDiv.style.border = "1px solid #bee5eb";
+    }
+    
+    // Insertar alerta antes de la tabla
+    const container = document.querySelector(".container");
+    container.insertBefore(alertaDiv, document.querySelector("table").parentNode);
+    
+    // Remover la alerta después de 3 segundos
+    setTimeout(() => {
+        alertaDiv.remove();
+    }, 3000);
+}
+
+// Funciones para inicializar los selectores de hora en el modal
+function inicializarSelectorHoras() {
+    const nuevoAperturaHoraSelect = document.getElementById("nuevo-apertura-hora");
+    const nuevoCierreHoraSelect = document.getElementById("nuevo-cierre-hora");
+    
+    if (nuevoAperturaHoraSelect && nuevoCierreHoraSelect) {
+        // Limpiar contenido existente
+        nuevoAperturaHoraSelect.innerHTML = generarOpcionesHorasNumeros("8:00");
+        nuevoCierreHoraSelect.innerHTML = generarOpcionesHorasNumeros("5:00");
+        
+        // Establecer períodos por defecto (AM para apertura, PM para cierre)
+        document.getElementById("nuevo-apertura-periodo").value = "AM";
+        document.getElementById("nuevo-cierre-periodo").value = "PM";
+        
+        // No agregamos los event listeners para actualizar cantidad automáticamente
+    }
+}
+
+// Funciones para el modal
+function abrirModal() {
+    modal.style.display = "block";
+    limpiarFormularioNuevo();
+    inicializarSelectorHoras();
+}
+
+function cerrarModal() {
+    modal.style.display = "none";
+}
+
+// Event Listeners para el modal
+btnNuevoTurno.addEventListener("click", abrirModal);
+closeBtn.addEventListener("click", cerrarModal);
+btnLimpiar.addEventListener("click", limpiarFormularioNuevo);
+btnCancelar.addEventListener("click", cerrarModal);
+btnGuardarNuevo.addEventListener("click", agregarNuevoTurno);
+
+// Cerrar el modal si se hace clic fuera de él
+window.addEventListener("click", (event) => {
+    if (event.target == modal) {
+        cerrarModal();
+    }
+});
+
+// Exponer funciones al ámbito global
+window.guardarTurnoFirebase = guardarTurnoFirebase;
+window.eliminarTurno = eliminarTurno;
+window.confirmarGuardarTurno = confirmarGuardarTurno;
+window.confirmarEliminarTurno = confirmarEliminarTurno;
+
+// Inicializar
+window.onload = function() {
+    // Reemplazar los inputs con selectores separados para hora y periodo
+    reemplazarInputsConSelectores();
+    cargarTurnos();
 };
+
+function reemplazarInputsConSelectores() {
+    // Formulario de nuevo turno
+    const nuevoAperturaInput = document.getElementById("nuevo-apertura");
+    const nuevoCierreInput = document.getElementById("nuevo-cierre");
+    
+    if (nuevoAperturaInput && nuevoCierreInput) {
+        // Crear contenedor para apertura
+        const aperturaContainer = document.createElement("div");
+        aperturaContainer.className = "d-flex";
+        aperturaContainer.style.display = "flex";
+        aperturaContainer.style.justifyContent = "center";
+        aperturaContainer.style.gap = "5px";
+        
+        // Crear select para hora de apertura
+        const aperturaHoraSelect = document.createElement("select");
+        aperturaHoraSelect.id = "nuevo-apertura-hora";
+        aperturaHoraSelect.className = "form-control mr-1";
+        aperturaHoraSelect.innerHTML = generarOpcionesHorasNumeros("8:00");
+        
+        // Crear select para periodo de apertura
+        const aperturaPeriodoSelect = document.createElement("select");
+        aperturaPeriodoSelect.id = "nuevo-apertura-periodo";
+        aperturaPeriodoSelect.className = "form-control";
+        aperturaPeriodoSelect.innerHTML = `
+            <option value="AM" selected>AM</option>
+            <option value="PM">PM</option>
+        `;
+        
+        // Agregar a contenedor
+        aperturaContainer.appendChild(aperturaHoraSelect);
+        aperturaContainer.appendChild(aperturaPeriodoSelect);
+        
+        // Reemplazar el input original
+        nuevoAperturaInput.parentNode.replaceChild(aperturaContainer, nuevoAperturaInput);
+        
+        // Hacer lo mismo para cierre
+        const cierreContainer = document.createElement("div");
+        cierreContainer.className = "d-flex";
+        cierreContainer.style.display = "flex";
+        cierreContainer.style.justifyContent = "center";
+        cierreContainer.style.gap = "5px";
+        
+        const cierreHoraSelect = document.createElement("select");
+        cierreHoraSelect.id = "nuevo-cierre-hora";
+        cierreHoraSelect.className = "form-control mr-1";
+        cierreHoraSelect.innerHTML = generarOpcionesHorasNumeros("5:00");
+        
+        const cierrePeriodoSelect = document.createElement("select");
+        cierrePeriodoSelect.id = "nuevo-cierre-periodo";
+        cierrePeriodoSelect.className = "form-control";
+        cierrePeriodoSelect.innerHTML = `
+            <option value="AM">AM</option>
+            <option value="PM" selected>PM</option>
+        `;
+        
+        cierreContainer.appendChild(cierreHoraSelect);
+        cierreContainer.appendChild(cierrePeriodoSelect);
+        
+        nuevoCierreInput.parentNode.replaceChild(cierreContainer, nuevoCierreInput);
+        
+        // Hacer que el campo cantidad sea editable en lugar de solo lectura
+        document.getElementById("nuevo-cantidad").readOnly = false;
+        
+        // Ya no agregamos los event listeners para actualizar cantidad automáticamente
+    }
+}
