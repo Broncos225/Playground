@@ -823,7 +823,7 @@ label {
 @media only screen and (max-width: 100x) {
     .TablaDescansos {
         padding: 0px;
-        padding-bottom: 17px;
+        padding-bottom: 15px;
     }
 }
 
