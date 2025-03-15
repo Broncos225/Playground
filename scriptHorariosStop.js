@@ -927,6 +927,9 @@ async function exportarIcs() {
 const turnosRef = firebase.database().ref('Turnos/');
 
 // Leer datos de Firebase
+// Leer datos de Firebase
+// Leer datos de Firebase
+// Leer datos de Firebase
 turnosRef.on('value', (snapshot) => {
     const turnos = snapshot.val();
     const table = document.getElementById('turnosTable');
@@ -936,31 +939,47 @@ turnosRef.on('value', (snapshot) => {
         table.deleteRow(1);
     }
 
-    // Iterar sobre los turnos y agregarlos a la tabla
-    for (const turno in turnos) {
+    const turnosArray = Object.entries(turnos); // Convertir objeto en array de pares clave-valor
+
+    for (let i = 0; i < turnosArray.length; i += 2) {
         const row = table.insertRow(-1);
-        const cell1 = row.insertCell(0);
-        const cell2 = row.insertCell(1);
-        cell1.textContent = turno;
-        cell1.style.fontWeight = 'bold';
+        
+        for (let j = 0; j < 2; j++) { // Iterar para crear dos columnas de datos
+            if (i + j < turnosArray.length) {
+                const [turno, datos] = turnosArray[i + j];
+                const cell1 = row.insertCell(-1);
+                const cell2 = row.insertCell(-1);
+                
+                // Aplicar contenido y estilos a cell1
+                cell1.textContent = turno;
+                cell1.style.width = '1%';
+                cell1.style.fontWeight = 'bold';
+                cell1.style.backgroundColor = 'rgb(81, 92, 251)';
+                cell1.style.color = 'rgb(255, 255, 255)';
+                cell1.style.padding = '5px';
+                cell1.style.textAlign = 'center';
 
-        // Obtener los valores de Apertura, Cierre y Descripcion
-        const apertura = turnos[turno].Apertura.toLowerCase();
-        const cierre = turnos[turno].Cierre.toLowerCase();
-        const descripcion = turnos[turno].Descripcion || ''; // Usar descripción si está disponible
+                const apertura = datos.Apertura.toLowerCase();
+                const cierre = datos.Cierre.toLowerCase();
+                const descripcion = datos.Descripcion || '';
 
-        // Verificar si Apertura y Cierre son "12:00 am"
-        if (apertura === "12:00 am" && cierre === "12:00 am") {
-            // Mostrar la descripción en lugar de los horarios
-            cell2.textContent = descripcion;
-        } else {
-            // Mostrar los horarios en minúsculas
-            cell2.textContent = `${apertura} a ${cierre}`;
+                // Aplicar contenido según condición de horario
+                cell2.textContent = (apertura === "12:00 am" && cierre === "12:00 am") 
+                    ? descripcion 
+                    : `${apertura} a ${cierre}`;
+
+                // Aplicar estilos directamente a cell2
+                cell2.style.whiteSpace = 'nowrap';
+                cell2.style.overflow = 'hidden';
+                cell2.style.textOverflow = 'ellipsis';
+
+                // Aplicar función de color a cell2
+                colorCelda(cell2);
+            } else {
+                // Si hay un número impar de turnos, agregar celdas vacías
+                row.insertCell(-1);
+                row.insertCell(-1);
+            }
         }
-
-        cell2.style.whiteSpace = 'nowrap'; // Evita que el texto haga wrap
-        cell2.style.overflow = 'hidden';   // Oculta el contenido que se desborda
-        cell2.style.textOverflow = 'ellipsis'; // Muestra "..." cuando el texto no quepa
-        colorCelda(); // Asegúrate de que esta función esté definida
     }
 });
