@@ -533,7 +533,7 @@ function cambiarPaddingSegunScroll() {
     const tabla = document.getElementById('Tabla');
     const otroDiv = document.getElementById('TablaDescansos');
 
-    otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '17px' : '0px';
+    otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '15px' : '0px';
 }
 
 cambiarPaddingSegunScroll();
