@@ -11,11 +11,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-window.onload = function () {
+window.onload = async function () {
     ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
     diaSemana();
-    cargarDatos();
+    await cargarDatos();
     colorCelda();
     Festivos();
     cambiarBordeColumna();
@@ -110,7 +110,7 @@ function guardarCeldas() {
 
 
 // Función para cargar datos y contar horas simultáneamente
-function cargarDatos() {
+async function cargarDatos() {
     const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1;
     const añoSeleccionado = document.getElementById('Año').value;
     const celdas = document.querySelectorAll('#Table td');
@@ -483,19 +483,19 @@ for (let i = 0; i < selectAño.options.length; i++) {
     }
 }
 
-selectMes.addEventListener('change', function () {
+selectMes.addEventListener('change', async function () {
     var mesSeleccionado = selectMes.selectedIndex;
     titulo.textContent = nombresMeses[mesSeleccionado];
-    cargarDatos();
+    await cargarDatos();
     diaSemana();
     Festivos();
     cambiarBordeColumna();
 });
 
-selectAño.addEventListener('change', function () {
+selectAño.addEventListener('change', async function () {
     var mesSeleccionado = selectMes.selectedIndex;
     titulo.textContent = nombresMeses[mesSeleccionado];
-    cargarDatos();
+    await cargarDatos();
     diaSemana();
     Festivos();
     cambiarBordeColumna();
