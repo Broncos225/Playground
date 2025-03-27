@@ -22,7 +22,7 @@ window.onload = function () {
 };
 
 function colorCelda() {
-    const celdas = document.querySelectorAll('Table td');
+    const celdas = document.querySelectorAll('#Table td');
     celdas.forEach(celda => {
         celda.addEventListener('input', () => {
             actualizarColorCelda(celda);
