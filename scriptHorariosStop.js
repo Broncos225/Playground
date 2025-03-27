@@ -16,13 +16,13 @@ window.onload = function () {
     CuentaAsesor();
     diaSemana();
     cargarDatos();
-    colorCelda();
     Festivos();
     cambiarBordeColumna();
+    colorCelda();
 };
 
 function colorCelda() {
-    const celdas = document.querySelectorAll('#Table td');
+    const celdas = document.querySelectorAll('table td:not(#Descansos td)');
     celdas.forEach(celda => {
         celda.addEventListener('input', () => {
             actualizarColorCelda(celda);
