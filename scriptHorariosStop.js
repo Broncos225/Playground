@@ -486,19 +486,19 @@ for (let i = 0; i < selectAño.options.length; i++) {
 selectMes.addEventListener('change', function () {
     var mesSeleccionado = selectMes.selectedIndex;
     titulo.textContent = nombresMeses[mesSeleccionado];
+    cargarDatos();
     diaSemana();
     Festivos();
     cambiarBordeColumna();
-    cargarDatos();
 });
 
 selectAño.addEventListener('change', function () {
     var mesSeleccionado = selectMes.selectedIndex;
     titulo.textContent = nombresMeses[mesSeleccionado];
+    cargarDatos();
     diaSemana();
     Festivos();
     cambiarBordeColumna();
-    cargarDatos();
 });
 
 function diaSemana() {
