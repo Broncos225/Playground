@@ -62,109 +62,114 @@ actualizarSaludo();
 
 async function obtenerDatosTurno(turnoId) {
     try {
-      const snapshot = await db.ref(`Turnos/${turnoId}`).once('value');
-      const datosTurno = snapshot.val();
-      
-      if (datosTurno) {
-        return {
-          apertura: datosTurno.Apertura || "",
-          cierre: datosTurno.Cierre || "",
-          cantidad: datosTurno.Cantidad || 0,
-          descripcion: datosTurno.Descripcion || ""
-        };
-      } else {
-        return null;
-      }
+        const snapshot = await db.ref(`Turnos/${turnoId}`).once('value');
+        const datosTurno = snapshot.val();
+
+        if (datosTurno) {
+            return {
+                apertura: datosTurno.Apertura || "",
+                cierre: datosTurno.Cierre || "",
+                cantidad: datosTurno.Cantidad || 0,
+                descripcion: datosTurno.Descripcion || ""
+            };
+        } else {
+            return null;
+        }
     } catch (error) {
-      console.error(`Error al obtener datos del turno ${turnoId}:`, error);
-      return null;
+        console.error(`Error al obtener datos del turno ${turnoId}:`, error);
+        return null;
     }
-  }
-  
-  async function convertirTurnos() {
+}
+
+async function convertirTurnos() {
     const textoTurnos = document.getElementById("turnos").value.trim();
     if (!textoTurnos) {
-      document.getElementById("resultado").textContent = "Por favor, introduce turnos.";
-      return;
+        document.getElementById("resultado").textContent = "Por favor, introduce turnos.";
+        return;
     }
-  
+
     // Mostrar indicador de carga
     document.getElementById("resultado").textContent = "Consultando turnos...";
-    
+
     // Separar los turnos ingresados
     const listaTurnos = textoTurnos.split(/\s+/);
-    
+
     // Array para almacenar las promesas
     const promesas = [];
-    
+
     // Para cada turno, crear una promesa que obtenga sus datos
     for (const turno of listaTurnos) {
-      const promesa = obtenerDatosTurno(turno).then(datosTurno => {
-        if (!datosTurno) {
-          return "Horario no definido";
-        }
-        
-        // Si apertura y cierre son ambos "12:00 AM", usar la descripción
-        if (datosTurno.apertura === "12:00 AM" && datosTurno.cierre === "12:00 AM") {
-          return datosTurno.descripcion;
-        } else {
-          return `${datosTurno.apertura} a ${datosTurno.cierre}`;
-        }
-      });
-      
-      promesas.push(promesa);
+        const promesa = obtenerDatosTurno(turno).then(datosTurno => {
+            if (!datosTurno) {
+                return "Horario no definido";
+            }
+
+            // Si apertura y cierre son ambos "12:00 AM", usar la descripción
+            if (datosTurno.apertura === "12:00 AM" && datosTurno.cierre === "12:00 AM") {
+                return datosTurno.descripcion;
+            } else {
+                return `${datosTurno.apertura} a ${datosTurno.cierre}`;
+            }
+        });
+
+        promesas.push(promesa);
     }
-    
+
     try {
-      // Esperar a que todas las promesas se resuelvan
-      const resultados = await Promise.all(promesas);
-      
-      // Mostrar el resultado
-      document.getElementById("resultado").innerHTML = resultados.join("<br>");
-      document.getElementById("copiar").style.display = "inline-block"; // Mostrar botón de copiar
+        // Esperar a que todas las promesas se resuelvan
+        const resultados = await Promise.all(promesas);
+
+        // Mostrar el resultado
+        document.getElementById("resultado").innerHTML = resultados.join("<br>");
+        document.getElementById("copiar").style.display = "inline-block"; // Mostrar botón de copiar
     } catch (error) {
-      console.error("Error al consultar los turnos:", error);
-      document.getElementById("resultado").textContent = "Error al consultar los turnos. Inténtalo de nuevo.";
+        console.error("Error al consultar los turnos:", error);
+        document.getElementById("resultado").textContent = "Error al consultar los turnos. Inténtalo de nuevo.";
     }
-  }
-  
-  async function calcularValorTurno() {
+}
+
+async function calcularValorTurno() {
     const textoTurnos = document.getElementById("turnos").value.trim();
     if (!textoTurnos) {
-      document.getElementById("valor").textContent = "Por favor, introduce turnos.";
-      return;
+        document.getElementById("valor").textContent = "Por favor, introduce turnos.";
+        return;
     }
-    
+
     // Mostrar indicador de carga
     document.getElementById("valor").textContent = "Calculando valores...";
-    
+
     // Separar los turnos ingresados
     const listaTurnos = textoTurnos.split(/\s+/);
-    
+
     // Array para almacenar las promesas
     const promesas = [];
-    
+
     // Para cada turno, obtener su valor desde Firebase
     for (const turno of listaTurnos) {
-      const promesa = obtenerDatosTurno(turno).then(datosTurno => {
-        return datosTurno ? datosTurno.cantidad.toString() : "Valor no definido";
-      });
-      
-      promesas.push(promesa);
+        const promesa = obtenerDatosTurno(turno).then(datosTurno => {
+            return datosTurno ? datosTurno.cantidad.toString() : "Valor no definido";
+        });
+
+        promesas.push(promesa);
     }
-    
     try {
-      // Esperar a que todas las promesas se resuelvan
-      const resultadosValor = await Promise.all(promesas);
-      
-      // Mostrar el resultado
-      document.getElementById("valor").innerHTML = resultadosValor.join("<br>");
-      document.getElementById("copiarV").style.display = "inline-block"; // Mostrar botón de copiar
+        // Esperar a que todas las promesas se resuelvan
+        const resultadosValor = await Promise.all(promesas);
+
+        // Reemplazar puntos por comas en cada resultado y luego unirlos
+        const resultadosFormateados = resultadosValor.map(resultado =>
+            resultado.toString().replace(/\./g, ',')
+        );
+
+        // Mostrar el resultado formateado
+        document.getElementById("valor").innerHTML = resultadosFormateados.join("<br>");
+
+        document.getElementById("copiarV").style.display = "inline-block"; // Mostrar botón de copiar
     } catch (error) {
-      console.error("Error al calcular los valores de los turnos:", error);
-      document.getElementById("valor").textContent = "Error al calcular los valores. Inténtalo de nuevo.";
+        console.error("Error al calcular los valores de los turnos:", error);
+        document.getElementById("valor").textContent = "Error al calcular los valores. Inténtalo de nuevo.";
     }
-  }
+}
 
 // Función para copiar el resultado al portapapeles
 function copiarResultado() {
@@ -277,13 +282,13 @@ function separarHoraYPeriodo(horaCompleta) {
     if (typeof horaCompleta === 'object') {
         return [horaCompleta.hora, horaCompleta.periodo];
     }
-    
+
     // Si es un string en formato "HH:MM AM/PM"
     const partes = horaCompleta.split(' ');
     if (partes.length === 2) {
         return [partes[0], partes[1]];
     }
-    
+
     // Valor por defecto
     return ["12:00", "AM"];
 }
@@ -291,17 +296,17 @@ function separarHoraYPeriodo(horaCompleta) {
 // Función para generar opciones de horas solo con números (cada 30 min)
 function generarOpcionesHorasNumeros(horaSeleccionada) {
     let opciones = '';
-    
+
     // Si la hora seleccionada incluye periodo, extraer solo la parte de la hora
     if (horaSeleccionada.includes(' ')) {
         horaSeleccionada = horaSeleccionada.split(' ')[0];
     }
-    
+
     for (let hora = 1; hora <= 12; hora++) {
         for (let minuto = 0; minuto < 60; minuto += 30) {
             const minutoStr = minuto === 0 ? '00' : minuto.toString();
             const valorHora = `${hora}:${minutoStr}`;
-            
+
             const seleccionado = valorHora === horaSeleccionada ? 'selected' : '';
             opciones += `<option value="${valorHora}" ${seleccionado}>${valorHora}</option>`;
         }
@@ -319,7 +324,7 @@ function confirmarGuardarTurno(turnoId) {
         ColorF: document.getElementById(`colorF-${turnoId}`).value,
         ColorT: document.getElementById(`colorT-${turnoId}`).value
     };
-    
+
     if (confirm(`¿Desea guardar los cambios del turno ${turnoId}?\n\nApertura: ${turnoActual.Apertura}\nCierre: ${turnoActual.Cierre}\nCantidad: ${turnoActual.Cantidad}\nDescripción: ${turnoActual.Descripcion}`)) {
         guardarTurnoFirebase(turnoId);
         cerrarModal();
@@ -330,7 +335,7 @@ function confirmarGuardarTurno(turnoId) {
                 const turno = snapshot.val();
                 const [horaApertura, periodoApertura] = separarHoraYPeriodo(turno.Apertura);
                 const [horaCierre, periodoCierre] = separarHoraYPeriodo(turno.Cierre);
-                
+
                 // Restablecer valores
                 document.getElementById(`apertura-hora-${turnoId}`).value = horaApertura;
                 document.getElementById(`apertura-periodo-${turnoId}`).value = periodoApertura;
@@ -340,7 +345,7 @@ function confirmarGuardarTurno(turnoId) {
                 document.getElementById(`colorF-${turnoId}`).value = `#${turno.ColorF}`;
                 document.getElementById(`colorT-${turnoId}`).value = `#${turno.ColorT}`;
                 document.getElementById(`descripcion-${turnoId}`).value = turno.Descripcion;
-                
+
                 mostrarAlerta("Cambios cancelados", "info");
             }
         });
@@ -357,7 +362,7 @@ function obtenerHoraCompleta(horaSelectId, periodoSelectId) {
 function guardarTurnoFirebase(turnoId) {
     const colorFValue = document.getElementById(`colorF-${turnoId}`).value;
     const colorTValue = document.getElementById(`colorT-${turnoId}`).value;
-    
+
     // Remover el # del color si existe
     const colorF = colorFValue.startsWith('#') ? colorFValue.substring(1) : colorFValue;
     const colorT = colorTValue.startsWith('#') ? colorTValue.substring(1) : colorTValue;
@@ -410,36 +415,36 @@ function eliminarTurno(turnoId) {
 
 function agregarNuevoTurno() {
     const turnoId = document.getElementById("nuevo-id").value.trim();
-    
+
     // Validar que se haya ingresado un ID
     if (!turnoId) {
         mostrarAlerta("Debe ingresar un ID para el turno", "danger");
         return;
     }
-    
+
     // Verificar si el ID ya existe
     turnosRef.child(turnoId).once("value", snapshot => {
         if (snapshot.exists()) {
             mostrarAlerta("El ID ya existe. Por favor, elija otro ID", "danger");
             return;
         }
-        
+
         const horaApertura = document.getElementById("nuevo-apertura-hora").value;
         const periodoApertura = document.getElementById("nuevo-apertura-periodo").value;
         const horaCierre = document.getElementById("nuevo-cierre-hora").value;
         const periodoCierre = document.getElementById("nuevo-cierre-periodo").value;
-        
+
         const apertura = `${horaApertura} ${periodoApertura}`;
         const cierre = `${horaCierre} ${periodoCierre}`;
         // Usar el valor manual en lugar de calcularlo
         const cantidad = document.getElementById("nuevo-cantidad").value;
-        
+
         // Preparar los colores
         const colorFValue = document.getElementById("nuevo-colorF").value;
         const colorTValue = document.getElementById("nuevo-colorT").value;
         const colorF = colorFValue.startsWith('#') ? colorFValue.substring(1) : colorFValue;
         const colorT = colorTValue.startsWith('#') ? colorTValue.substring(1) : colorTValue;
-        
+
         // Confirmar la creación del nuevo turno
         if (confirm(`¿Desea crear el turno ${turnoId}?\n\nApertura: ${apertura}\nCierre: ${cierre}\nCantidad: ${cantidad}\nDescripción: ${document.getElementById("nuevo-descripcion").value}`)) {
             // Si el ID no existe, proceder a crear el turno
@@ -451,7 +456,7 @@ function agregarNuevoTurno() {
                 ColorT: colorT,
                 Descripcion: document.getElementById("nuevo-descripcion").value
             };
-            
+
             // Usar el ID personalizado en lugar de dejar que Firebase genere uno
             turnosRef.child(turnoId).set(nuevoTurno)
                 .then(() => {
@@ -469,7 +474,7 @@ function agregarNuevoTurno() {
 
 function limpiarFormularioNuevo() {
     document.getElementById("nuevo-id").value = "";
-    
+
     // Resetear selectores de hora
     if (document.getElementById("nuevo-apertura-hora")) {
         document.getElementById("nuevo-apertura-hora").selectedIndex = 0;
@@ -477,7 +482,7 @@ function limpiarFormularioNuevo() {
         document.getElementById("nuevo-cierre-hora").selectedIndex = 0;
         document.getElementById("nuevo-cierre-periodo").selectedIndex = 0;
     }
-    
+
     document.getElementById("nuevo-cantidad").value = "";
     document.getElementById("nuevo-colorF").value = "#FFFFFF";
     document.getElementById("nuevo-colorT").value = "#000000";
@@ -489,12 +494,12 @@ function mostrarAlerta(mensaje, tipo) {
     const alertaDiv = document.createElement("div");
     alertaDiv.className = `alerta alerta-${tipo}`;
     alertaDiv.innerHTML = mensaje;
-    
+
     // Estilos para la alerta
     alertaDiv.style.padding = "10px 15px";
     alertaDiv.style.marginBottom = "15px";
     alertaDiv.style.borderRadius = "4px";
-    
+
     if (tipo === "success") {
         alertaDiv.style.backgroundColor = "#d4edda";
         alertaDiv.style.color = "#155724";
@@ -508,11 +513,11 @@ function mostrarAlerta(mensaje, tipo) {
         alertaDiv.style.color = "#0c5460";
         alertaDiv.style.border = "1px solid #bee5eb";
     }
-    
+
     // Insertar alerta antes de la tabla
     const container = document.querySelector(".container");
     container.insertBefore(alertaDiv, document.querySelector("table").parentNode);
-    
+
     // Remover la alerta después de 3 segundos
     setTimeout(() => {
         alertaDiv.remove();
@@ -523,16 +528,16 @@ function mostrarAlerta(mensaje, tipo) {
 function inicializarSelectorHoras() {
     const nuevoAperturaHoraSelect = document.getElementById("nuevo-apertura-hora");
     const nuevoCierreHoraSelect = document.getElementById("nuevo-cierre-hora");
-    
+
     if (nuevoAperturaHoraSelect && nuevoCierreHoraSelect) {
         // Limpiar contenido existente
         nuevoAperturaHoraSelect.innerHTML = generarOpcionesHorasNumeros("8:00");
         nuevoCierreHoraSelect.innerHTML = generarOpcionesHorasNumeros("5:00");
-        
+
         // Establecer períodos por defecto (AM para apertura, PM para cierre)
         document.getElementById("nuevo-apertura-periodo").value = "AM";
         document.getElementById("nuevo-cierre-periodo").value = "PM";
-        
+
         // No agregamos los event listeners para actualizar cantidad automáticamente
     }
 }
@@ -569,7 +574,7 @@ window.confirmarGuardarTurno = confirmarGuardarTurno;
 window.confirmarEliminarTurno = confirmarEliminarTurno;
 
 // Inicializar
-window.onload = function() {
+window.onload = function () {
     // Reemplazar los inputs con selectores separados para hora y periodo
     reemplazarInputsConSelectores();
     cargarTurnos();
@@ -579,7 +584,7 @@ function reemplazarInputsConSelectores() {
     // Formulario de nuevo turno
     const nuevoAperturaInput = document.getElementById("nuevo-apertura");
     const nuevoCierreInput = document.getElementById("nuevo-cierre");
-    
+
     if (nuevoAperturaInput && nuevoCierreInput) {
         // Crear contenedor para apertura
         const aperturaContainer = document.createElement("div");
@@ -587,13 +592,13 @@ function reemplazarInputsConSelectores() {
         aperturaContainer.style.display = "flex";
         aperturaContainer.style.justifyContent = "center";
         aperturaContainer.style.gap = "5px";
-        
+
         // Crear select para hora de apertura
         const aperturaHoraSelect = document.createElement("select");
         aperturaHoraSelect.id = "nuevo-apertura-hora";
         aperturaHoraSelect.className = "form-control mr-1";
         aperturaHoraSelect.innerHTML = generarOpcionesHorasNumeros("8:00");
-        
+
         // Crear select para periodo de apertura
         const aperturaPeriodoSelect = document.createElement("select");
         aperturaPeriodoSelect.id = "nuevo-apertura-periodo";
@@ -602,26 +607,26 @@ function reemplazarInputsConSelectores() {
             <option value="AM" selected>AM</option>
             <option value="PM">PM</option>
         `;
-        
+
         // Agregar a contenedor
         aperturaContainer.appendChild(aperturaHoraSelect);
         aperturaContainer.appendChild(aperturaPeriodoSelect);
-        
+
         // Reemplazar el input original
         nuevoAperturaInput.parentNode.replaceChild(aperturaContainer, nuevoAperturaInput);
-        
+
         // Hacer lo mismo para cierre
         const cierreContainer = document.createElement("div");
         cierreContainer.className = "d-flex";
         cierreContainer.style.display = "flex";
         cierreContainer.style.justifyContent = "center";
         cierreContainer.style.gap = "5px";
-        
+
         const cierreHoraSelect = document.createElement("select");
         cierreHoraSelect.id = "nuevo-cierre-hora";
         cierreHoraSelect.className = "form-control mr-1";
         cierreHoraSelect.innerHTML = generarOpcionesHorasNumeros("5:00");
-        
+
         const cierrePeriodoSelect = document.createElement("select");
         cierrePeriodoSelect.id = "nuevo-cierre-periodo";
         cierrePeriodoSelect.className = "form-control";
@@ -629,15 +634,15 @@ function reemplazarInputsConSelectores() {
             <option value="AM">AM</option>
             <option value="PM" selected>PM</option>
         `;
-        
+
         cierreContainer.appendChild(cierreHoraSelect);
         cierreContainer.appendChild(cierrePeriodoSelect);
-        
+
         nuevoCierreInput.parentNode.replaceChild(cierreContainer, nuevoCierreInput);
-        
+
         // Hacer que el campo cantidad sea editable en lugar de solo lectura
         document.getElementById("nuevo-cantidad").readOnly = false;
-        
+
         // Ya no agregamos los event listeners para actualizar cantidad automáticamente
     }
 }
