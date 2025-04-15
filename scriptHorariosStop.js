@@ -400,6 +400,10 @@ let agentes = {
         nombre: "Ocaris David Arango Aguilar",
         contraseña: ""
     },
+    Maria_Susana_Ospina_Vanegas: {
+        nombre: "Maria Susana Ospina Vanegas",
+        contraseña: ""
+    },
     D: {
         nombre: "Descanso",
         contraseña: "D"
