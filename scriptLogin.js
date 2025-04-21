@@ -90,7 +90,6 @@ let agentesA = {
     "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
     "oscar.cabrera": { nombre: "Oscar_Luis_Cabrera_Pacheco" },
     "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
-    "cristian.garcia": { nombre: "Cristian_García_Carmona" },
     "maria.ospina": { nombre: "Maria_Susana_Ospina_Vanegas" },
     "ocaris.arango": { nombre: "Ocaris_David_Arango_Aguilar" },
 };

@@ -392,10 +392,6 @@ let agentes = {
         nombre: "Yeison Torres Ochoa",
         contraseña: ""
     },
-    Cristian_Garcia_Carmona: {
-        nombre: "Cristian Garcia Carmona",
-        contraseña: ""
-    },
     Ocaris_David_Arango_Aguilar: {
         nombre: "Ocaris David Arango Aguilar",
         contraseña: ""
