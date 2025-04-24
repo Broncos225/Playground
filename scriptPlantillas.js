@@ -14,104 +14,171 @@ const db = firebase.database();
 // JavaScript para el modal y el formulario
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-
         // Mostrar la pantalla de carga antes de iniciar la consulta
         var loadingScreen = document.getElementById("loadingScreen");
         loadingScreen.style.display = "flex";
 
-        // Usuario autenticado, listar archivos desde Firebase Realtime Database
-        db.ref('Plantillas').once('value').then(function (snapshot) {
-            var modulosPlantillas = document.getElementById("ModulosPlantillas");
-            modulosPlantillas.innerHTML = ''; // Limpiar la lista de módulos antes de agregar nuevos
+        // Obtener el nombre del asesor actual desde el localStorage
+        var asesorActual = localStorage.getItem('nombreAsesorActual');
 
-            var plantillas = []; // Array para almacenar las plantillas y sus tipos
-            var asesorActual = localStorage.getItem('nombreAsesorActual'); // Obtener el nombre del asesor actual desde el localStorage
+        // Primero, cargar los favoritos del usuario actual usando la ruta correcta
+        db.ref('Preferencias/' + asesorActual + '/Favoritos').once('value').then(function (favSnapshot) {
+            var favoritos = favSnapshot.val() || {};
 
-            snapshot.forEach(function (childSnapshot) {
-                var fileName = childSnapshot.key;
-                var moduleData = childSnapshot.val();
-                var moduleType = moduleData.Tipo;
-                var creador = moduleData.Creador;
+            // Luego, cargar todas las plantillas
+            return db.ref('Plantillas').once('value').then(function (snapshot) {
+                var modulosPlantillas = document.getElementById("ModulosPlantillas");
+                var favoritosPlantillas = document.getElementById("FavoritosPlantillas");
 
-                // Convertir el tipo numérico a texto
-                // Convertir el tipo numérico a texto
-                var typeText;
-                switch (moduleType) {
-                    case '1':
-                        typeText = 'Predeterminada';
-                        break;
-                    case '2':
-                        typeText = 'Solo personalizada';
-                        break;
-                    default:
-                        typeText = 'Desconocido'; // Para otros valores
-                        break;
-                }
+                // Limpiar la lista de módulos antes de agregar nuevos
+                modulosPlantillas.innerHTML = '';
+                favoritosPlantillas.innerHTML = '';
 
-                // Filtrar las plantillas personalizadas
-                if (moduleType === '2' && creador !== asesorActual) {
-                    return; // Saltar esta plantilla si es personalizada y el creador no coincide con el asesor actual
-                }
 
-                var newDiv = document.createElement("div");
-                newDiv.className = "Modulo2";
-                newDiv.setAttribute("data-type", moduleType); // Agregar un atributo de datos para el tipo
+                var plantillas = []; // Array para almacenar las plantillas
+                var plantillasFavoritas = []; // Array para almacenar las plantillas favoritas
 
-                newDiv.onclick = function () {
-                    showModal(fileName);
-                };
 
-                var typeSpan = document.createElement("span");
-                typeSpan.className = "module-type";
-                typeSpan.textContent = typeText;
+                snapshot.forEach(function (childSnapshot) {
+                    var fileName = childSnapshot.key;
+                    var moduleData = childSnapshot.val();
+                    var moduleType = moduleData.Tipo;
+                    var creador = moduleData.Creador;
 
-                // Solo agregar el deleteSpan si el módulo es personalizado
-                if (moduleType === '2') {
-                    var deleteSpan = document.createElement("span");
-                    deleteSpan.className = "delete-module";
-                    deleteSpan.textContent = "❌";
+                    // Convertir el tipo numérico a texto
+                    var typeText;
+                    switch (moduleType) {
+                        case '1':
+                            typeText = 'Predeterminada';
+                            break;
+                        case '2':
+                            typeText = 'Solo personalizada';
+                            break;
+                        default:
+                            typeText = 'Desconocido'; // Para otros valores
+                            break;
+                    }
 
-                    // Agregar el manejador de eventos para la eliminación
-                    deleteSpan.onclick = function (event) {
-                        event.stopPropagation(); // Evita que se dispare el evento onclick del div contenedor
+                    // Filtrar las plantillas personalizadas
+                    if (moduleType === '2' && creador !== asesorActual) {
+                        return; // Saltar esta plantilla si es personalizada y el creador no coincide con el asesor actual
+                    }
 
-                        var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
-                        if (confirmacion) {
-                            // Eliminar la plantilla de Firebase
-                            db.ref('Plantillas/' + fileName).remove()
-                                .then(function () {
-                                    alert("Plantilla eliminada exitosamente.");
-                                    location.reload(); // Recargar la página para actualizar la lista de plantillas
-                                })
-                                .catch(function (error) {
-                                    console.error("Error al eliminar la plantilla: ", error);
-                                });
+                    var newDiv = document.createElement("div");
+                    newDiv.className = "Modulo2";
+                    newDiv.setAttribute("data-type", moduleType); // Agregar un atributo de datos para el tipo
+                    newDiv.setAttribute("data-name", fileName); // Agregar nombre como atributo
+
+                    newDiv.onclick = function (e) {
+                        // Solo mostrar el modal si no se hizo clic en la estrella
+                        if (!e.target.classList.contains('favorite-star')) {
+                            showModal(fileName);
                         }
                     };
 
-                    newDiv.appendChild(deleteSpan); // Añadir el botón de eliminación solo si es personalizado
+                    var typeSpan = document.createElement("span");
+                    typeSpan.className = "module-type";
+                    typeSpan.textContent = typeText;
+
+                    // Crear la estrella para favoritos
+                    var starSpan = document.createElement("span");
+                    starSpan.className = "favorite-star";
+                    starSpan.innerHTML = favoritos[fileName] ? "★" : "☆"; // Estrella llena si es favorito, vacía si no
+                    starSpan.setAttribute("data-name", fileName);
+                    starSpan.onclick = function (event) {
+                        event.stopPropagation(); // Evita que se dispare el evento onclick del div contenedor
+                        toggleFavorite(fileName, asesorActual, this);
+                    };
+
+                    // Solo agregar el deleteSpan si el módulo es personalizado
+                    if (moduleType === '2') {
+                        var deleteSpan = document.createElement("span");
+                        deleteSpan.className = "delete-module";
+                        deleteSpan.textContent = "❌";
+
+                        // Agregar el manejador de eventos para la eliminación
+                        deleteSpan.onclick = function (event) {
+                            event.stopPropagation(); // Evita que se dispare el evento onclick del div contenedor
+
+                            var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
+                            if (confirmacion) {
+                                // Eliminar la plantilla de Firebase
+                                db.ref('Plantillas/' + fileName).remove()
+                                    .then(function () {
+                                        // También eliminar de favoritos si existe, usando la ruta correcta
+                                        if (favoritos[fileName]) {
+                                            db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
+                                        }
+                                        alert("Plantilla eliminada exitosamente.");
+                                        location.reload(); // Recargar la página para actualizar la lista de plantillas
+                                    })
+                                    .catch(function (error) {
+                                        console.error("Error al eliminar la plantilla: ", error);
+                                    });
+                            }
+                        };
+
+                        newDiv.appendChild(deleteSpan); // Añadir el botón de eliminación solo si es personalizado
+                    }
+
+                    var newH2 = document.createElement("h2");
+                    newH2.textContent = fileName;
+
+                    newDiv.appendChild(starSpan); // Añadir la estrella
+                    newDiv.appendChild(typeSpan); // Añadir el tipo
+                    newDiv.appendChild(newH2);
+
+                    // Clonar el div para favoritos si es necesario
+                    if (favoritos[fileName]) {
+                        var favDiv = newDiv.cloneNode(true);
+                        // Actualizar los manejadores de eventos en el clon
+                        favDiv.onclick = function (e) {
+                            if (!e.target.classList.contains('favorite-star')) {
+                                showModal(fileName);
+                            }
+                        };
+                        var favStar = favDiv.querySelector('.favorite-star');
+                        favStar.onclick = function (event) {
+                            event.stopPropagation();
+                            toggleFavorite(fileName, asesorActual, this);
+
+                            // Actualizar todas las estrellas con el mismo nombre
+                            var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
+                            allStars.forEach(function (star) {
+                                star.innerHTML = this.innerHTML;
+                            }, this);
+                        };
+
+                        // Agregar a la sección de favoritos
+                        plantillasFavoritas.push(favDiv);
+                    }
+
+                    plantillas.push(newDiv); // Agregar el div al array
+                });
+
+                // Si no hay favoritos, mostrar mensaje
+                if (plantillasFavoritas.length === 0) {
+                    var noFavMessage = document.createElement("p");
+                    noFavMessage.textContent = "No tienes plantillas favoritas. Marca una plantilla con ★ para añadirla aquí.";
+                    noFavMessage.className = "no-favorites-message";
+                    favoritosPlantillas.appendChild(noFavMessage);
+                } else {
+                    // Añadir todos los divs de favoritos al contenedor
+                    favoritosPlantillas.append(...plantillasFavoritas);
                 }
 
-                var newH2 = document.createElement("h2");
-                newH2.textContent = fileName;
+                // Añadir todos los divs al contenedor principal
+                modulosPlantillas.append(...plantillas);
 
-                newDiv.appendChild(typeSpan); // Añadir el tipo al principio del div
-                newDiv.appendChild(newH2);
+                // Configurar búsqueda y filtro después de agregar elementos
+                configurarBusqueda();
+                configurarFiltro();
 
-                plantillas.push(newDiv); // Agregar el div al array
+                // Ocultar la pantalla de carga una vez que la consulta haya terminado
+                loadingScreen.style.display = "none";
             });
-
-            modulosPlantillas.append(...plantillas); // Añadir todos los divs al contenedor
-
-            // Configurar búsqueda y filtro después de agregar elementos
-            configurarBusqueda();
-            configurarFiltro();
-
-            // Ocultar la pantalla de carga una vez que la consulta haya terminado
-            loadingScreen.style.display = "none";
         }).catch(function (error) {
-            console.log("Error al listar los archivos: ", error);
-
+            console.log("Error al cargar favoritos o plantillas: ", error);
             // Ocultar la pantalla de carga en caso de error
             loadingScreen.style.display = "none";
         });
@@ -160,6 +227,146 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log('No user is signed in');
     }
 });
+
+// Función para alternar el estado de favorito
+function toggleFavorite(fileName, asesorActual, starElement) {
+    // Determinar si actualmente es un favorito
+    var isFavorite = starElement.innerHTML === "★";
+
+    // Referencia a la sección de favoritos
+    var favSection = document.getElementById("FavoritosPlantillas");
+
+    // Usar la ruta correcta en Preferencias en lugar de Usuarios
+    var favoritosRef = db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName);
+
+    if (isFavorite) {
+        // ELIMINAR DE FAVORITOS
+        favoritosRef.remove()
+            .then(function () {
+                // Actualizar todas las estrellas con el mismo nombre a estado no-favorito
+                var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
+                allStars.forEach(function (star) {
+                    star.innerHTML = "☆";
+                });
+
+                // Eliminar el elemento de la sección de favoritos
+                var favItem = favSection.querySelector('.Modulo2[data-name="' + fileName + '"]');
+                if (favItem) {
+                    favItem.remove();
+                }
+
+                // Si no quedan favoritos, mostrar mensaje
+                if (favSection.querySelectorAll('.Modulo2').length === 0 &&
+                    !favSection.querySelector('.no-favorites-message')) {
+                    var noFavMessage = document.createElement("p");
+                    noFavMessage.textContent = "No tienes plantillas favoritas. Marca una plantilla con ★ para añadirla aquí.";
+                    noFavMessage.className = "no-favorites-message";
+                    favSection.appendChild(noFavMessage);
+                }
+
+                // Reproducir sonido de notificación
+                var audio = document.getElementById('notificationSound');
+                if (audio) {
+                    audio.play().catch(e => console.log("Error al reproducir sonido:", e));
+                }
+
+                // Mostrar notificación
+                mostrarNotificacion("Eliminado de favoritos");
+            })
+            .catch(function (error) {
+                console.error("Error al quitar de favoritos: ", error);
+                mostrarNotificacion("Error al quitar de favoritos");
+            });
+    } else {
+        // AÑADIR A FAVORITOS
+        favoritosRef.set(true)
+            .then(function () {
+                // Actualizar todas las estrellas con el mismo nombre a estado favorito
+                var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
+                allStars.forEach(function (star) {
+                    star.innerHTML = "★";
+                });
+
+                // Eliminar mensaje de no favoritos si existe
+                var noFavMessage = favSection.querySelector(".no-favorites-message");
+                if (noFavMessage) {
+                    noFavMessage.remove();
+                }
+
+                // Clonar el elemento y añadirlo a la sección de favoritos si no existe ya
+                var existingFavItem = favSection.querySelector('.Modulo2[data-name="' + fileName + '"]');
+                if (!existingFavItem) {
+                    var originalItem = document.querySelector('.Modulo2[data-name="' + fileName + '"]');
+                    if (originalItem) {
+                        var favItem = originalItem.cloneNode(true);
+
+                        // Actualizar los manejadores de eventos en el clon
+                        favItem.onclick = function (e) {
+                            if (!e.target.classList.contains('favorite-star')) {
+                                showModal(fileName);
+                            }
+                        };
+
+                        var favStar = favItem.querySelector('.favorite-star');
+                        favStar.onclick = function (event) {
+                            event.stopPropagation();
+                            toggleFavorite(fileName, asesorActual, this);
+                        };
+
+                        // Añadir el botón de eliminar si es necesario
+                        if (originalItem.querySelector('.delete-module')) {
+                            var deleteSpan = favItem.querySelector('.delete-module');
+                            deleteSpan.onclick = function (event) {
+                                event.stopPropagation();
+                                var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
+                                if (confirmacion) {
+                                    db.ref('Plantillas/' + fileName).remove()
+                                        .then(function () {
+                                            if (favItem) {
+                                                favoritosRef.remove();
+                                            }
+                                            mostrarNotificacion("Plantilla eliminada exitosamente");
+                                            location.reload();
+                                        })
+                                        .catch(function (error) {
+                                            console.error("Error al eliminar la plantilla: ", error);
+                                        });
+                                }
+                            };
+                        }
+
+                        // Añadir a la sección de favoritos
+                        favSection.appendChild(favItem);
+                    }
+                }
+
+                // Reproducir sonido de notificación
+                var audio = document.getElementById('notificationSound');
+                if (audio) {
+                    audio.play().catch(e => console.log("Error al reproducir sonido:", e));
+                }
+
+                // Mostrar notificación
+                mostrarNotificacion("Añadido a favoritos");
+            })
+            .catch(function (error) {
+                console.error("Error al añadir a favoritos: ", error);
+                mostrarNotificacion("Error al añadir a favoritos");
+            });
+    }
+}
+
+// Función para mostrar notificaciones
+function mostrarNotificacion(mensaje) {
+    var notification = document.getElementById('notification');
+    notification.textContent = mensaje;
+    notification.style.opacity = '1';
+
+    // Ocultar la notificación después de 2 segundos
+    setTimeout(function () {
+        notification.style.opacity = '0';
+    }, 2000);
+}
 
 function configurarBusqueda() {
     var input = document.getElementById('busqueda');
