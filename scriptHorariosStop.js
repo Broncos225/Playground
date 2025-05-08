@@ -374,8 +374,8 @@ let agentes = {
         letra: "B",
         contraseña: ""
     },
-    Andrés_Felipe_Vidal_Medina: {
-        nombre: "Andrés Felipe Vidal Medina",
+    Johan_Guzman_Alarcon: {
+        nombre: "Johan Guzman Alarcon",
         letra: "B",
         contraseña: ""
     },
