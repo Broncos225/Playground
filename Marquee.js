@@ -25,7 +25,15 @@ let agentes = {
   Yeison_Torres_Ochoa: {
     nombre: "Yeison",
     cumpleaños: [12,9]
-  },	
+  },
+  Johan_Guzman_Alarcon: {
+    nombre: "Johan",
+    cumpleaños: [21,10]
+  },
+  Maria_Susana_Ospina_Vanegas: {
+    nombre: "Susana",
+    cumpleaños: [22,2]
+  }
 };
 
 
