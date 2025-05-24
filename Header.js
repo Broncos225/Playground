@@ -1,3 +1,5 @@
+// Copyright (c) 2024 Andrés Felipe Yepes Tascón
+// Licensed under the MIT License. See LICENSE file for details.
 window.addEventListener('scroll', function() {
     var header = document.querySelector('nav');
     if (window.innerWidth > 968) { /* Cambia 968 a la anchura mínima que quieras */

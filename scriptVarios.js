@@ -1,3 +1,5 @@
+// Copyright (c) 2024 Andrés Felipe Yepes Tascón
+// Licensed under the MIT License. See LICENSE file for details.
 window.onload = function() {
     var img = document.getElementById('image');
     var canvas = document.getElementById('canvas');

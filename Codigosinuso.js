@@ -1,4 +1,5 @@
-
+// Copyright (c) 2024 Andrés Felipe Yepes Tascón
+// Licensed under the MIT License. See LICENSE file for details.
 document.getElementById('NuevaSolicitud').style.display = 'none';
 document.getElementById('TablaSol').style.display = 'block';
 document.getElementById('btnIntercambioTurno').textContent = "Generar una nueva solicitud";

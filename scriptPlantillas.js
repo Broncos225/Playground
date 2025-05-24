@@ -1,3 +1,5 @@
+// Copyright (c) 2024 Andrés Felipe Yepes Tascón
+// Licensed under the MIT License. See LICENSE file for details.
 const firebaseConfig = {
     apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
     authDomain: "playgroundbdstop.firebaseapp.com",

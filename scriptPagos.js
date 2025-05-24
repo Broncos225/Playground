@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Andrés Felipe Yepes Tascón
+// Licensed under the MIT License. See LICENSE file for details.
+
 // Configuración de Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
