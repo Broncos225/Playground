@@ -1,0 +1,571 @@
+﻿Tipo de servicio;Área del servicio;Categoria padre;Categoria Hijo;Sintoma / Detalle;Prioridad;SLA /ANS (Min);Recepción del caso;Pruebas de descartes;Escalamiento 1;Escalamiento 2;¿Susceptible de cierre en mesa?;Observaciones
+Incidente;Aplicaciones de negocio;CEGID;Error dispositivo fiscal;CEGID.Error dispositivo fiscal;SLA CRÍTICO;30;Mesa de ayuda;I-6109-26-Instructivo Error Dispositivo Fiscal;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;Indisponibilidad del servicio;CEGID.Indisponibilidad del servicio;SLA CRÍTICO;30;Mesa de ayuda;;"Camilo Florian 
+Santiago Montes";Proveedor;NO;
+Incidente;Aplicaciones de negocio;CEGID;Bloqueo de usuario;CEGID.Bloqueo de usuario;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;Error configuración;CEGID.Error configuración;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;Error FOS 5;CEGID.Error FOS 5;SLA CRÍTICO;30;Mesa de ayuda;I-6109-73-Instructivo Error Cegid F0S5;"Camilo Florian 
+Santiago Montes";Proveedor;NO;
+Incidente;Aplicaciones de negocio;CEGID;Error notas entrega;CEGID.Error notas entrega;SLA CRÍTICO;30;Mesa de ayuda;I-6109-85-Instructivo Cargar Nota de Entrega;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;No inicia Front;CEGID.No inicia Front;SLA CRÍTICO;30;Mesa de ayuda;I-6109-71-Instructivo Instalar CEGID;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;Error condición comercial;CEGID.Error condición comercial;SLA CRÍTICO;30;Mesa de ayuda;;Michael Aristizabal - Analista BI;Proveedor;NO;
+Incidente;Aplicaciones de negocio;CEGID;Error desconocido;CEGID.Error desconocido;SLA CRÍTICO;30;Mesa de ayuda;;"Camilo Florian 
+Santiago Montes";Proveedor;NO;
+Incidente;Aplicaciones de negocio;CEGID;Crear PLU faltante Cedi;CEGID.Crear PLU faltante Cedi;SLA CRÍTICO;30;Mesa de ayuda;I-6109-57-Instructivo Crear y Cargar Plu Cegid;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;Crear PlU faltante Recuperación;CEGID.Crear PlU faltante Recuperación;SLA CRÍTICO;30;Mesa de ayuda;I-6109-57-Instructivo Crear y Cargar Plu Cegid;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;Acceso a Cegid;CEGID.Acceso a Cegid;SLA CRÍTICO;30;Mesa de ayuda;I-6109-84-Instructivo  de Acceso a Cegid;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;No imprime Z;CEGID.No imprime Z;SLA CRÍTICO;30;Mesa de ayuda;I-6109-11-Instructivo No Imprime Z;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Incidente;Aplicaciones de negocio;CEGID;Diferencia precio - Etiqueta;CEGID.Diferencia precio - Etiqueta;SLA CRÍTICO;30;Mesa de ayuda;Este error lo revisa el equipo de aplicaciones y bases de datos ;Juan Diego Mercado - Analista de aplicaciones;Proveedor;NO;
+Incidente;Aplicaciones de negocio;CEGID;Falla al cargar crédito;CEGID.Falla al cargar crédito;SLA CRÍTICO;30;Mesa de ayuda;"Este tipo de caso es cuando el crédito o abono quedo cargado en Kaiowa pero no trae la información a Cegid:
+*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
+*Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Juan Jaramillo - Analista de aplicaciones;Proveedor;NO;
+Incidente;Aplicaciones de negocio;CEGID;Falla al cargar abono;CEGID.Falla al cargar abono;SLA CRÍTICO;30;Mesa de ayuda;"Este tipo de caso es cuando el crédito o abono quedo cargado en Kaiowa pero no trae la información a Cegid:
+*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
+*Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Juan Jaramillo - Analista de aplicaciones;Proveedor;NO;
+Incidente;Aplicaciones de negocio;CEGID;Error en informe diario de ventas;CEGID.Error en informe diario de ventas;SLA CRÍTICO;30;Mesa de ayuda;I-6109-68-Instructivo Error Informe Diario De Ventas;"Camilo Florian 
+Santiago Montes";Proveedor;NO;
+Solicitud;Aplicaciones de negocio;CEGID;Crear nuevo cargo en CEGID;CEGID.Crear nuevo cargo en CEGID;SLA ALTO;240;Mesa de ayuda;I-6109-41-Instructivo Creación de Nuevo Cargo en Cegid;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Generar permisos de punteo con contraseña;CEGID.Generar permisos de punteo con contraseña;SLA ALTO;240;Mesa de ayuda;I-6109-41-Instructivo Creación de Nuevo Cargo en Cegid;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Devolución de prendas en préstamo;CEGID.Devolución de prendas en préstamo;SLA ALTO;240;Mesa de ayuda;I-6109-48-Instructivo Devolución de Prendas en Préstamo;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Reporte de clientes con crédito - Mes de cumpleaños;CEGID.Reporte de clientes con crédito - Mes de cumpleaños;SLA ALTO;240;Mesa de ayuda;I-6109-49-Instructivo Reporte Clientes Crédito Mes de Cumpleaños;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Modificar información de tienda en factura;CEGID.Modificar información de tienda en factura;SLA ALTO;240;Mesa de ayuda;I-6109-51-Instructivo Modificar Información de Tienda en Factura;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Agregar flete a factura;CEGID.Agregar flete a factura;SLA ALTO;240;Mesa de ayuda;I-6109-52-Instructivo Agregar Flete a la Factura;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Devolución de crédito empleado;CEGID.Devolución de crédito empleado;SLA ALTO;240;Mesa de ayuda;I-6109-66-Instructivo Devolución de Crédito Empleado;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Carga de PLU en NumRot;CEGID.Carga de PLU en NumRot;SLA ALTO;240;Mesa de ayuda;I-6109-67-Instructivo Carga de PLU en NumRot;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Retiro de personal en tienda;CEGID.Retiro de personal en tienda;SLA ALTO;240;Mesa de ayuda;I-6109-69-Instructivo Retiro de Personal de Tiendas;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Imprimir políticas de privacidad;CEGID.Imprimir políticas de privacidad;SLA ALTO;240;Mesa de ayuda;I-6109-77-Instructivo Imprimir Políticas de Privacidad;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Permisos de Conceptos y Medios de Pago;CEGID.Permisos de Conceptos y Medios de Pago;SLA ALTO;240;Mesa de ayuda;I-6109-78-Instructivo Permisos de Conceptos y Medios de Pago;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Instalar TAXBOX;CEGID.Instalar TAXBOX;SLA ALTO;240;Mesa de ayuda;I-6109-53-Instructivo Instalar Taxbox;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Instalar CEGID;CEGID.Instalar CEGID;SLA ALTO;240;Mesa de ayuda;I-6109-71-Instructivo Instalar CEGID;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Asesoría / Acompañamiento;CEGID.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Modificar concepto de factura;CEGID.Modificar concepto de factura;SLA ALTO;240;Mesa de ayuda;I-6109-24-Instructivo Modificar Concepto de Factura;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar nota crédito;CEGID.Eliminar nota crédito;SLA ALTO;240;Mesa de ayuda;I-6109-25-Instructivo Eliminar Nota Crédito;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Reimpresión de albarán;CEGID.Reimpresión de albarán;SLA ALTO;240;Mesa de ayuda;I-6109-23-Instructivo Reimprimir Albaran;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar asesor;CEGID.Eliminar asesor;SLA ALTO;240;Mesa de ayuda;I-6109-21-Instructivo Eliminar Asesor;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Cambiar cédula cliente ;CEGID.Cambiar cédula cliente ;SLA ALTO;240;Mesa de ayuda;Se debe realizar la devolución de ticket e indicar a la asesora que debe de facturar con la cédula correcta del cliente;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Precios en cero;CEGID.Precios en cero;SLA ALTO;240;Mesa de ayuda;Tranferir a silvia Benitez;Juan Diego Mercado - Analista de aplicaciones;Proveedor;NO;
+Solicitud;Aplicaciones de negocio;CEGID;Generar presupuesto del mes;CEGID.Generar presupuesto del mes;SLA ALTO;240;Mesa de ayuda;I-6109-20-Instructivo Abrir Presupuesto del Mes;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Cambio de cargo;CEGID.Cambio de cargo;SLA ALTO;240;Mesa de ayuda;I-6109-13-Instructivo Cambio de Cargo en Cegid;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Modificación de medio de pago;CEGID.Modificación de medio de pago;SLA ALTO;240;Mesa de ayuda;Este tipo de casos solo APLICA cuando se realiza el cambio medio de pago de efectivo a crédito se hace una devolución de ticket (VER I-6109-17-Instructivo Devolución de Ticket), para los demás escenario se le debe indicar a la asesora de la tienda que debe reportar su petición al correo electrónico de contabilidad@stop.com.co;contabilidad@stop.com.co;"Camilo Florian 
+Santiago Montes";NO;
+Solicitud;Aplicaciones de negocio;CEGID;Creación de huella;CEGID.Creación de huella;SLA ALTO;240;Mesa de ayuda;I-6109-15-Instructivo Creación de Huella;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Reimpresión de Z;CEGID.Reimpresión de Z;SLA ALTO;240;Mesa de ayuda;I-6109-12-Instructivo Reimpresión de Z;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar reserva cliente ;CEGID.Eliminar reserva cliente ;SLA ALTO;240;Mesa de ayuda;I-6109-10-Instructivo Eliminar Reserva Cliente;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Cargar notas de entrega ;CEGID.Cargar notas de entrega ;SLA ALTO;240;Mesa de ayuda;I-6109-85-Instructivo Cargar Nota de Entrega;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar documento transferencia ;CEGID.Eliminar documento transferencia ;SLA ALTO;240;Mesa de ayuda;I-6109-14-Instructivo Eliminar Docuemento de Transferencia;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar documento de recepción;CEGID.Eliminar documento de recepción;SLA ALTO;240;Mesa de ayuda;I-6109-18-Instructivo Eliminar Documento de Recepción;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Cambio Concepto Caja Menor;CEGID.Cambio Concepto Caja Menor;SLA ALTO;240;Mesa de ayuda;I-6109-19-Instructivo Cambio Concepto Caja Menor;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Actualizar cliente;CEGID.Actualizar cliente;SLA ALTO;240;Mesa de ayuda;I-6109-09-Instructivo Actualizar Cliente;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Entrada extraordinaria;CEGID.Entrada extraordinaria;SLA ALTO;240;Mesa de ayuda;I-6109-016-Instructivo Entrada Extraordinarias;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Modificar vendedor;CEGID.Modificar vendedor;SLA ALTO;240;Mesa de ayuda;I-6109-07-Instructivo Modificar Vendedor;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Forzar punteo;CEGID.Forzar punteo;SLA ALTO;240;Mesa de ayuda;I-6109-08-Instructivo Forzar Punteo;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Devolución de ticket;CEGID.Devolución de ticket;SLA ALTO;240;Mesa de ayuda;I-6109-17-Instructivo Devolución de Ticket;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Crear usuario;CEGID.Crear usuario;SLA ALTO;240;Mesa de ayuda;I-6109-03-Instructivo Crear Usuario en CEGID;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Traslado de personal;CEGID.Traslado de personal;SLA ALTO;240;Mesa de ayuda;I-6109-04-Instructivo Traslado de Personal de Tienda;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Aplicar descuento en agotamiento;CEGID.Aplicar descuento en agotamiento;SLA ALTO;240;Mesa de ayuda;I-6109-05-Instructivo Aplicar Descuento en Agotamiento;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Cambio de cliente generico a real;CEGID.Cambio de cliente generico a real;SLA ALTO;240;Mesa de ayuda;I-6109-06-Instructivo Cambio de Cliente Generico a Real;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Cambiar tienda a control de inventario ;CEGID.Cambiar tienda a control de inventario ;SLA ALTO;240;Mesa de ayuda;I-6109-22-Instructivo Cambiar Tienda a Control de Inventario;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Restablecer contraseña;CEGID.Restablecer contraseña;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
+Santiago Montes";SI;
+Solicitud;Aplicaciones de negocio;CEGID;Diferencia en cierre de caja;CEGID.Diferencia en cierre de caja;SLA ALTO;240;Mesa de ayuda;Reportar a su analista contable o enviar correo con el reporte a contabilidad@stop.com.co;contabilidad@stop.com.co;"Camilo Florian 
+Santiago Montes";NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de fecha ;STOPING.Cambio de fecha ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio ;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de Grupo contable ;STOPING.Cambio de Grupo contable ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de factura ;STOPING.Cambio de factura ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de Precios ;STOPING.Cambio de Precios ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de mes ;STOPING.Cambio de mes ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Traslado de OP (Orden de producción);STOPING.Traslado de OP (Orden de producción);SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Ingresar fecha de envío ;STOPING.Ingresar fecha de envío ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Quitar fecha de envío ;STOPING.Quitar fecha de envío ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Habilitar OP (Orden de producción);STOPING.Habilitar OP (Orden de producción);SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Habilitar OT (Orden de trabajo);STOPING.Habilitar OT (Orden de trabajo);SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de consecutivo ;STOPING.Cambio de consecutivo ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Eliminar Plus dobles ;STOPING.Eliminar Plus dobles ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de Talla - Retallado ;STOPING.Cambio de Talla - Retallado ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Abrir OC (Orden compra);STOPING.Abrir OC (Orden compra);SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Crear Usuario Stoping ;STOPING.Crear Usuario Stoping ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de Fecha OC (Orden de compra);STOPING.Cambio de Fecha OC (Orden de compra);SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Reporte de telas mensuales ;STOPING.Reporte de telas mensuales ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Asesoría / Acompañamiento;STOPING.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de Referencia ;STOPING.Cambio de Referencia ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de asesora;STOPING.Cambio de asesora;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de trimestre ;STOPING.Cambio de trimestre ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Aplicaciones de negocio;STOPING;Cambio de nit;STOPING.Cambio de nit;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Incidente;Aplicaciones de negocio;STOPING;Indisponibilidad del servicio;STOPING.Indisponibilidad del servicio;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
+Incidente;Aplicaciones de negocio;Tarejta recaudo;Pérdida o daño de la tarjeta recauda;Tarejta recaudo.Pérdida o daño de la tarjeta recauda;SLA ALTO;60;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Incidente;Aplicaciones de negocio;Medios de pago - Bonos Big pass;No funciona QR;Medios de pago - Bonos Big pass.No funciona QR;SLA CRÍTICO;30;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Incidente;Aplicaciones de negocio;Medios de pago - Bonos Big pass;Cargue de información de otra tienda;Medios de pago - Bonos Big pass.Cargue de información de otra tienda;SLA CRÍTICO;30;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Incidente;Aplicaciones de negocio;Medios de pago - Bonos Big pass;Transacción fallida - Datafono;Medios de pago - Bonos Big pass.Transacción fallida - Datafono;SLA CRÍTICO;30;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Solicitud;Aplicaciones de negocio;Medios de pago - Bonos Big pass;No se genera voucher;Medios de pago - Bonos Big pass.No se genera voucher;SLA ALTO;240;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Solicitud;Aplicaciones de negocio;Medios de pago - Bonos Sodexo Convexo;Instalación de aplicación;Medios de pago - Bonos Sodexo Convexo.Instalación de aplicación;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Aplicaciones de negocio;Medios de pago - Bonos Sodexo Convexo;Restablecer contraseña;Medios de pago - Bonos Sodexo Convexo.Restablecer contraseña;SLA ALTO;240;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Solicitud;Aplicaciones de negocio;Medios de pago - Bonos Sodexo Convexo;Bloqueo de usuario;Medios de pago - Bonos Sodexo Convexo.Bloqueo de usuario;SLA ALTO;240;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Solicitud;Aplicaciones de negocio;Medios de pago - Bonos Sodexo Convexo;Crear usuario;Medios de pago - Bonos Sodexo Convexo.Crear usuario;SLA ALTO;240;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Solicitud;Aplicaciones de negocio;JAVA;Instalar JAVA y QZ;JAVA.Instalar JAVA y QZ;SLA ALTO;240;Mesa de ayuda;I-6109-63-Instructivo Instalación de Java y QZ en Equipos;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Aplicaciones de negocio;WORKMANAGER;Gestionar acceso a la aplicación;WORKMANAGER.Gestionar acceso a la aplicación;SLA MEDIO;360;Mesa de ayuda;Para permisos en WorkManager envíar correo a Sara Sánchez Moreno ssanchez@stop.com.co;Sara Sanchez Moreno - ssanchez@stop.com.co;Ervin Arley Caro;NO;
+Solicitud;Aplicaciones de negocio;Portal de procesos;Crear usuario;Portal de procesos.Crear usuario;SLA ALTO;240;Mesa de ayuda;I-6109-38-Instructivo Crear Usuario y Permisos Proceso;Mesa de ayuda;Alvaro Serna;SI;
+Solicitud;Aplicaciones de negocio;Portal de procesos;Cargar nota de entrega de bolsas;Portal de procesos.Cargar nota de entrega de bolsas;SLA ALTO;240;Mesa de ayuda;I-6109-56-Instructivo Cargar Nota de Entrega de Bolsas;Mesa de ayuda;Juan Diego Mercado;SI;
+Solicitud;Aplicaciones de negocio;Portal de procesos;Reimpresión de factura electrónica;Portal de procesos.Reimpresión de factura electrónica;SLA ALTO;240;Mesa de ayuda;I-6109-61-Instructivo Reimpresión de Factura Electrónica;Mesa de ayuda;Alvaro Serna;SI;
+Solicitud;Aplicaciones de negocio;Portal de procesos;Gestión de permisos;Portal de procesos.Gestión de permisos;SLA ALTO;240;Mesa de ayuda;I-6109-38-Instructivo Crear Usuario y Permisos Proceso;Mesa de ayuda;Alvaro Serna;SI;
+Incidente;Aplicaciones de negocio;Portal de procesos;No cargan ventas de CEGID;Portal de procesos.No cargan ventas de CEGID;SLA CRÍTICO;30;Mesa de ayuda;;Carlos Bustamante - Analista BI;Alexandra Beltran;NO;
+Incidente;Aplicaciones de negocio;Portal de procesos;Error Procesos ;Portal de procesos.Error Procesos ;SLA CRÍTICO;30;Mesa de ayuda;I-6109-47-Instructivo Error Procesos;Mesa de ayuda;Alvaro Serna;SI;
+Incidente;Aplicaciones de negocio;Intranet;Sin acceso a la herramienta;Intranet.Sin acceso a la herramienta;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Alvaro Serna;SI;
+Incidente;Aplicaciones de negocio;Intranet;Fallas de autenticación;Intranet.Fallas de autenticación;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Alvaro Serna;SI;
+Solicitud;Aplicaciones de negocio;Intranet;Crear usuario;Intranet.Crear usuario;SLA BAJO;480;Mesa de ayuda;I-6109-30- Instructivo Crear Usuario Intranet;Mesa de ayuda;Alvaro Serna;SI;
+Solicitud;Aplicaciones de negocio;Intranet;Gestión de permisos;Intranet.Gestión de permisos;SLA BAJO;480;Mesa de ayuda;I-6109-31-Intructivo Permisos Intranet;Mesa de ayuda;Alvaro Serna;SI;
+Solicitud;Aplicaciones de negocio;Crédito;Modificar datos de clientes - Kaiowa;Crédito.Modificar datos de clientes - Kaiowa;SLA ALTO;240;Mesa de ayuda;Enviar correo a Lina Gaviria lgaviria@stop.com.co  o Tatiana Alzate talzate@stop.com.co;Lina Gaviria - Auxiliar de créditos;Proveedor;NO;
+Solicitud;Aplicaciones de negocio;Crédito;Anular abono - Kaiowa;Crédito.Anular abono - Kaiowa;SLA ALTO;240;Mesa de ayuda;"*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
+*Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Mesa de ayuda;Juan David Jaramillo;SI;
+Solicitud;Aplicaciones de negocio;Crédito;Confirmación de abonos por PSE ;Crédito.Confirmación de abonos por PSE ;SLA ALTO;240;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
+Solicitud;Aplicaciones de negocio;Crédito;Anular credito - kaiowa;Crédito.Anular credito - kaiowa;SLA ALTO;240;Mesa de ayuda;"*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
+*Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Mesa de ayuda;Juan David Jaramillo;SI;
+Solicitud;Aplicaciones de negocio;Crédito;Borrar historial crediticio;Crédito.Borrar historial crediticio;SLA ALTO;240;Mesa de ayuda;;Juan David Jaramillo - Analista de Aplicaciones;Proveedor;NO;
+Incidente;Aplicaciones de negocio;Crédito;Indisponibilidad del servicio - Kaiowa;Crédito.Indisponibilidad del servicio - Kaiowa;SLA CRÍTICO;30;Mesa de ayuda;;Juan David Jaramillo - Analista de Aplicaciones;Proveedor;NO;
+Incidente;Aplicaciones de negocio;Crédito;No aplica abono - Kaiowa;Crédito.No aplica abono - Kaiowa;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;Juan David Jaramillo;SI;
+Incidente;Aplicaciones de negocio;Crédito;No aplica abono - SAC;Crédito.No aplica abono - SAC;SLA CRÍTICO;30;Mesa de ayuda;I-6109-29-Instructivo No Carga Abono SAC // I-6109-27-Instructivo Anular Abono SAC;Mesa de ayuda;Juan David Jaramillo;SI;
+Incidente;Aplicaciones de negocio;Crédito;Error desconocidos - Kaiowa;Crédito.Error desconocidos - Kaiowa;SLA CRÍTICO;30;Mesa de ayuda;;Juan David Jaramillo - Analista de Aplicaciones;Proveedor;NO;
+Incidente;Aplicaciones de negocio;Crédito;Intereses Condonados - SAC;Crédito.Intereses Condonados - SAC;SLA CRÍTICO;30;Mesa de ayuda;;Juan David Jaramillo - Analista de Aplicaciones;Proveedor;NO;
+Solicitud;Aplicaciones de negocio;Otras aplicaciones / Software;Restablecer contraseña;Otras aplicaciones / Software.Restablecer contraseña;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Alvaro Serna;SI;
+Solicitud;Aplicaciones de negocio;Otras aplicaciones / Software;Instalar Software;Otras aplicaciones / Software.Instalar Software;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Alvaro Serna;SI;
+Solicitud;Aplicaciones de negocio;Otras aplicaciones / Software;Crear usuario;Otras aplicaciones / Software.Crear usuario;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Alvaro Serna;SI;
+Incidente;Aplicaciones de negocio;Otras aplicaciones / Software;Indisponibilidad del servicio;Otras aplicaciones / Software.Indisponibilidad del servicio;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;Alvaro Serna;SI;
+Incidente;Servicios de Infraestructura TI;Internet;Lentitud en la navegación;Internet.Lentitud en la navegación;SLA CRÍTICO;30;Mesa de ayuda;I-6109-81-Instructivo Creación de Tickets - Conectividad;Mesa de ayuda;Aprendiz de Infraestructura - Auxiliar de centro de servicios;SI;
+Incidente;Servicios de Infraestructura TI;Internet;Sin conexión a internet - WIFI;Internet.Sin conexión a internet - WIFI;SLA CRÍTICO;30;Mesa de ayuda;I-6109-76-Instructivo Descartes Internet Tiendas;Mesa de ayuda;Aprendiz de Infraestructura - Auxiliar de centro de servicios;SI;
+Incidente;Servicios de Infraestructura TI;Internet;Sin conexión a internet - Cableado;Internet.Sin conexión a internet - Cableado;SLA CRÍTICO;30;Mesa de ayuda;I-6109-76-Instructivo Descartes Internet Tiendas;Mesa de ayuda;Aprendiz de Infraestructura - Auxiliar de centro de servicios;SI;
+Solicitud;Servicios de Infraestructura TI;Internet;Asesoría / Acompañamiento;Internet.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Aprendiz de Infraestructura - Auxiliar de centro de servicios;SI;
+Solicitud;Servicios de Infraestructura TI;Internet;Habilitar punto de red;Internet.Habilitar punto de red;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Aprendiz de Infraestructura - Auxiliar de centro de servicios;SI;
+Solicitud;Servicios de Infraestructura TI;Internet;Ampliación de canal;Internet.Ampliación de canal;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Aprendiz de Infraestructura - Auxiliar de centro de servicios;SI;
+Solicitud;Servicios de Infraestructura TI;Internet;Permisos de navegación en sitios web;Internet.Permisos de navegación en sitios web;SLA MEDIO;360;Mesa de ayuda;I-6109-83-Instructivo Permisos de Navegación en Sitios Web;Mesa de ayuda;Aprendiz de Infraestructura - Auxiliar de centro de servicios;SI;
+Incidente;Servicios de Infraestructura TI;Telefonia IP;Indisponibilidad del servicio;Telefonia IP.Indisponibilidad del servicio;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Infraestructura TI;Telefonia IP;Bloqueo de equipo;Telefonia IP.Bloqueo de equipo;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Infraestructura TI;Telefonia IP;No ingresan llamadas;Telefonia IP.No ingresan llamadas;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Infraestructura TI;Telefonia IP;No salen llamadas;Telefonia IP.No salen llamadas;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Infraestructura TI;Telefonia IP;Asesoría / Acompañamiento;Telefonia IP.Asesoría / Acompañamiento;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Infraestructura TI;Telefonia IP;Asignar PIN de llamadas;Telefonia IP.Asignar PIN de llamadas;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Infraestructura TI;Telefonia IP;Asignación de teléfono ;Telefonia IP.Asignación de teléfono ;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Infraestructura TI;Telefonia IP;Asignación de extensión;Telefonia IP.Asignación de extensión;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Infraestructura TI;Telefonia IP;Habilitar permisos de llamadas;Telefonia IP.Habilitar permisos de llamadas;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Infraestructura TI;Telefonia IP;Configuración de teléfono;Telefonia IP.Configuración de teléfono;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Infraestructura TI;Emisora;Indisponibilidad del servicio;Emisora.Indisponibilidad del servicio;SLA ALTO;60;Mesa de ayuda;Camilo Florian - Analista  de infraestructura;Servicio al cliente;;NO;
+Solicitud;Servicios de Infraestructura TI;Emisora;Configuración del servicio;Emisora.Configuración del servicio;SLA MEDIO;360;Mesa de ayuda;I-6109-37-Instructivo Instalación Emisora;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Servicios de Infraestructura TI;Emisora;Instalación de emisora;Emisora.Instalación de emisora;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Servicios de seguridad TI;Antivirus;Indisponibilidad del servicio;Antivirus.Indisponibilidad del servicio;SLA ALTO;60;Mesa de ayuda;;Mateo Herrera;Mateo Herrera ;NO;
+Solicitud;Servicios de seguridad TI;Antivirus;Asesoría / Acompañamiento;Antivirus.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Solicitud;Servicios de seguridad TI;Antivirus;Actualizar antivirus;Antivirus.Actualizar antivirus;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Solicitud;Servicios de seguridad TI;Antivirus;Configurar Antivirus;Antivirus.Configurar Antivirus;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Solicitud;Servicios de seguridad TI;Antivirus;Instalación de Antivirus;Antivirus.Instalación de Antivirus;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Solicitud;Servicios de seguridad TI;Antivirus;Solicitar permisos de navegación;Antivirus.Solicitar permisos de navegación;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Solicitud;Servicios de seguridad TI;Antivirus;Bloqueo de página de internet / aplicativo;Antivirus.Bloqueo de página de internet / aplicativo;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Incidente;Servicios de seguridad TI;Seguridad;Correo sospechoso;Seguridad.Correo sospechoso;SLA ALTO;60;Mesa de ayuda;I-6109-80-Instructivo Correo Sospechoso;Mesa de ayuda;Mateo Herrera ;SI;
+Incidente;Servicios de seguridad TI;Seguridad;Archivo sospechoso;Seguridad.Archivo sospechoso;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Incidente;Servicios de seguridad TI;Seguridad;Incidente de seguridad;Seguridad.Incidente de seguridad;SLA ALTO;60;Mesa de ayuda;;Mateo Herrera  ;Proveedor;NO;
+Incidente;Servicios de seguridad TI;Seguridad;Novedad en navegación;Seguridad.Novedad en navegación;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Incidente;Servicios de seguridad TI;Seguridad;Error de conexión a la VPN;Seguridad.Error de conexión a la VPN;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera ;SI;
+Incidente;Servicios de seguridad TI;Seguridad;Robo o pérdida de información;Seguridad.Robo o pérdida de información;SLA ALTO;60;Mesa de ayuda;;Mateo Herrera  ;Proveedor;NO;
+Solicitud;Servicios de seguridad TI;Seguridad;Asesoría / Acompañamiento;Seguridad.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera;SI;
+Solicitud;Servicios de seguridad TI;Seguridad;Configurar conexión VPN Forticlient;Seguridad.Configurar conexión VPN Forticlient;SLA ALTO;240;Mesa de ayuda;I-6109-82-Instructivo Configuración de VPN Forticlient;Mesa de ayuda;Mateo Herrera;SI;
+Solicitud;Servicios de seguridad TI;Seguridad;Activar VPN a usuario;Seguridad.Activar VPN a usuario;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Mateo Herrera;SI;
+Solicitud;Servicios de seguridad TI;Seguridad;Actualización de Firewall;Seguridad.Actualización de Firewall;SLA ALTO;240;Mesa de ayuda;;Mateo Herrera  ;Proveedor;NO;
+Incidente;Servicios de Office 365;Teams;Falla al compartir documentos;Teams.Falla al compartir documentos;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Teams;Indisponibilidad del servicio;Teams.Indisponibilidad del servicio;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Teams;Falla de conexión a reunión;Teams.Falla de conexión a reunión;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Teams;Falla al compartir pantalla;Teams.Falla al compartir pantalla;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Teams;Falla de video;Teams.Falla de video;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Teams;Falla de sonido;Teams.Falla de sonido;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Teams;Sin acceso a la herramienta;Teams.Sin acceso a la herramienta;SLA ALTO;60;Mesa de ayuda;I-6109-36-Instructivo No Abre Teams;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Office;Instalar Open Office;Office.Instalar Open Office;SLA BAJO;480;Mesa de ayuda;I-6109-72-Instructivo Instalar OpenOffice;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Teams;Instalar Teams;Teams.Instalar Teams;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Teams;Configuración de herramienta;Teams.Configuración de herramienta;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Teams;Asesoría / Acompañamiento;Teams.Asesoría / Acompañamiento;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Teams;Actualizar herramienta;Teams.Actualizar herramienta;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Correo;Indisponibilidad del servicio;Correo.Indisponibilidad del servicio;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Correo;Buzón lleno;Correo.Buzón lleno;SLA ALTO;60;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Incidente;Servicios de Office 365;Correo;No ingresan correos electrónicos;Correo.No ingresan correos electrónicos;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Correo;No salen correos eléctrónicos;Correo.No salen correos eléctrónicos;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Correo;Fallas al adjuntar documentos;Correo.Fallas al adjuntar documentos;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Correo;Fallas de autenticación;Correo.Fallas de autenticación;SLA ALTO;60;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Correo;Crear grupos de distribución;Correo.Crear grupos de distribución;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Solicitud;Servicios de Office 365;Correo;Agragar tienda a grupo de distribución;Correo.Agragar tienda a grupo de distribución;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Correo;Restablecer contraseña usuario de tienda;Correo.Restablecer contraseña usuario de tienda;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Correo;Restablecer contraseña usuario admin.;Correo.Restablecer contraseña usuario admin.;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Correo;Modificar grupos de distribución;Correo.Modificar grupos de distribución;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Solicitud;Servicios de Office 365;Correo;Gestionar capacidad de correo;Correo.Gestionar capacidad de correo;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Solicitud;Servicios de Office 365;Correo;Ingresar equipo al dominio;Correo.Ingresar equipo al dominio;SLA ALTO;240;Mesa de ayuda;I-6109-70-Instructivo Ingresar Equipo al Dominio;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Correo;Realizar Back up;Correo.Realizar Back up;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Solicitud;Servicios de Office 365;Correo;Asesoría / Acompañamiento;Correo.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Correo;Crear cuenta;Correo.Crear cuenta;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Solicitud;Servicios de Office 365;Correo;Restablecer contraseña;Correo.Restablecer contraseña;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Solicitud;Servicios de Office 365;Correo;Configuración de cuenta;Correo.Configuración de cuenta;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Correo;Crear grupos de distribución;Correo.Crear grupos de distribución;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Solicitud;Servicios de Office 365;Correo;Modificar grupos de distribución;Correo.Modificar grupos de distribución;SLA ALTO;240;Mesa de ayuda;;Juan Esteban Gutiérrez;Proveedor;NO;
+Incidente;Servicios de Office 365;One Drive;Indisponibilidad del servicio;One Drive.Indisponibilidad del servicio;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;One Drive;Fallas en sincronización;One Drive.Fallas en sincronización;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;One Drive;Fallas al cargar documentos;One Drive.Fallas al cargar documentos;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;One Drive;Duplicidad de información;One Drive.Duplicidad de información;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;One Drive;Pérdida de información;One Drive.Pérdida de información;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;One Drive;Sin acceso a la herramienta;One Drive.Sin acceso a la herramienta;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;One Drive;Asesoría / Acompañamiento;One Drive.Asesoría / Acompañamiento;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;One Drive;Configuración de la herramienta;One Drive.Configuración de la herramienta;SLA BAJO;480;Mesa de ayuda;I-6109-33-Configuración de OneDrive;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;One Drive;Instalar servicio;One Drive.Instalar servicio;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Red interna;Acceso a red o ruta compartida;Red interna.Acceso a red o ruta compartida;SLA BAJO;480;Mesa de ayuda;;Juan Esteban Gutiérrez ;;NO;
+Solicitud;Servicios de Office 365;Sharepoint;Gestión almacenamiento;Sharepoint.Gestión almacenamiento;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Solicitud;Servicios de Office 365;Sharepoint;Sincronización de Archivos;Sharepoint.Sincronización de Archivos;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Servicios de Office 365;Sharepoint;Indisponibilidad del servicio;Sharepoint.Indisponibilidad del servicio;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan Esteban Gutiérrez;SI;
+Incidente;Dispositivos tecnológicos;Datáfono;Daño físico;Datáfono.Daño físico;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Datáfono;Dispositivo no enciende;Datáfono.Dispositivo no enciende;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Datáfono;Indisponibilidad del servicio;Datáfono.Indisponibilidad del servicio;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Datáfono;Configurar dispositivo - Crediban;Datáfono.Configurar dispositivo - Crediban;SLA ALTO;240;Mesa de ayuda;I-6109-43-Instructivo Configuración de Datáfono Crédibanco;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Datáfono;Configurar dispositivo - Redeban;Datáfono.Configurar dispositivo - Redeban;SLA ALTO;240;Mesa de ayuda;I-6109-40-Instructivo Configuración de Datáfono Redeban;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Datáfono;Compra de terminal MC330;Datáfono.Compra de terminal MC330;SLA BAJO;15 DÍAS;Mesa de ayuda;I-6109-43-Instructivo Configuración de Datáfono Crédibanco;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Datáfono;Asesoría / Acompañamiento;Datáfono.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Datáfono;Mantenimiento preventivo;Datáfono.Mantenimiento preventivo;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Datáfono;Asignación de dispositivo;Datáfono.Asignación de dispositivo;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Daño físico;Impresoras.Daño físico;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Impresora no enciende;Impresoras.Impresora no enciende;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Dispositivo no enciende;Impresoras.Dispositivo no enciende;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Toner / Cartucho agotado;Impresoras.Toner / Cartucho agotado;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Fallas en digitacilización de documento;Impresoras.Fallas en digitacilización de documento;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Fallas en copiado;Impresoras.Fallas en copiado;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Papel agotado;Impresoras.Papel agotado;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Fallas en la calidad de impresión;Impresoras.Fallas en la calidad de impresión;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Indisponibilidad del servicio;Impresoras.Indisponibilidad del servicio;SLA MEDIO;240;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Impresoras;Atasco o bloqueo de impresora;Impresoras.Atasco o bloqueo de impresora;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Restablecer contraseña;Impresoras.Restablecer contraseña;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Compra impresora multifuncional;Impresoras.Compra impresora multifuncional;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Impresoras;Compra impresora POS;Impresoras.Compra impresora POS;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Impresoras;Compra Scaner Zebra;Impresoras.Compra Scaner Zebra;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Impresoras;Configurar dispositivo;Impresoras.Configurar dispositivo;SLA BAJO;480;Mesa de ayuda;I-6109-39-Instructivo Configuración de Impresora // I-6109-75-Instructivo Configuración Impresora Compartida;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Tendida de cableado;Impresoras.Tendida de cableado;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Asesoría / Acompañamiento;Impresoras.Asesoría / Acompañamiento;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Creación de usuario;Impresoras.Creación de usuario;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Mantenimiento preventivo;Impresoras.Mantenimiento preventivo;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Predeterminar impresora;Impresoras.Predeterminar impresora;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Suministro de papel;Impresoras.Suministro de papel;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Suministro de toner / Cartucho;Impresoras.Suministro de toner / Cartucho;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Impresoras;Movimiento / Traslado de impresora;Impresoras.Movimiento / Traslado de impresora;SLA BAJO;480;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Lectores;Indisponibilidad del servicio;Lectores.Indisponibilidad del servicio;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Incidente;Dispositivos tecnológicos;Lectores;Daño físico;Lectores.Daño físico;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;Lectores;Compra de lector de huella;Lectores.Compra de lector de huella;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Lectores;Configuración del dispositivo;Lectores.Configuración del dispositivo;SLA MEDIO;360;Mesa de ayuda;I-6109-42-Instructivo Configuración de Lectores;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Lectores;Asesoría / Acompañamiento;Lectores.Asesoría / Acompañamiento;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Lectores;Mantenimiento preventivo;Lectores.Mantenimiento preventivo;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;Lectores;Tendida de cableado;Lectores.Tendida de cableado;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;;NO;
+Incidente;Dispositivos tecnológicos;Equipos de computo;Corta Duracion de Bateria;Equipos de computo.Corta Duracion de Bateria;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Incidente;Dispositivos tecnológicos;Equipos de computo;Dispositivo no enciende;Equipos de computo.Dispositivo no enciende;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Incidente;Dispositivos tecnológicos;Equipos de computo;Lentitud General del Dispositivo;Equipos de computo.Lentitud General del Dispositivo;SLA MEDIO;240;Mesa de ayuda;I-6109-46-Instructivo Lentitud de Equipo de Cómputo;Mesa de ayuda;Juan José Agudelo;SI;
+Incidente;Dispositivos tecnológicos;Equipos de computo;Daño físico de pantalla;Equipos de computo.Daño físico de pantalla;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Incidente;Dispositivos tecnológicos;Equipos de computo;Daño físico de teclado;Equipos de computo.Daño físico de teclado;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Incidente;Dispositivos tecnológicos;Equipos de computo;Daño físico de Mouse;Equipos de computo.Daño físico de Mouse;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Incidente;Dispositivos tecnológicos;Equipos de computo;Daño físico de CPU;Equipos de computo.Daño físico de CPU;SLA MEDIO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra de licencias;Equipos de computo.Compra de licencias;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Configurar hora del sistema;Equipos de computo.Configurar hora del sistema;SLA MEDIO;360;Mesa de ayuda;I-6109-50-Instructivo Error al Cambiar la Hora del Sistema;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Equipo de computo;Equipos de computo.Equipo de computo;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra teclado;Equipos de computo.Compra teclado;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra Mouse;Equipos de computo.Compra Mouse;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra pantalla;Equipos de computo.Compra pantalla;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra portatil;Equipos de computo.Compra portatil;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra cámara web;Equipos de computo.Compra cámara web;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra disco SSD ;Equipos de computo.Compra disco SSD ;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra switches;Equipos de computo.Compra switches;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra de parlante;Equipos de computo.Compra de parlante;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra de diadema;Equipos de computo.Compra de diadema;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra conversor HDMI;Equipos de computo.Compra conversor HDMI;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra Memoria RAM;Equipos de computo.Compra Memoria RAM;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra de disco externo;Equipos de computo.Compra de disco externo;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra de wacon;Equipos de computo.Compra de wacon;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Compra de Polycom;Equipos de computo.Compra de Polycom;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Asesoría / Acompañamiento;Equipos de computo.Asesoría / Acompañamiento;SLA MEDIO;360;Mesa de ayuda;;Mesa de ayuda;Juan José Agudelo;SI;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Mantenimiento preventivo;Equipos de computo.Mantenimiento preventivo;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Cambio de partes;Equipos de computo.Cambio de partes;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Tendida de cableado;Equipos de computo.Tendida de cableado;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Aumento de memoria;Equipos de computo.Aumento de memoria;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Back up de informacion;Equipos de computo.Back up de informacion;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Juan Esteban Gutiérrez;NO;
+Solicitud;Dispositivos tecnológicos;Equipos de computo;Actualizar sistema operativo;Equipos de computo.Actualizar sistema operativo;SLA MEDIO;360;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;;NO;
+Incidente;Dispositivos tecnológicos;UPS;Daño físico;UPS.Daño físico;SLA CRÍTICO;30;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Incidente;Dispositivos tecnológicos;UPS;Fallas en UPS;UPS.Fallas en UPS;SLA CRÍTICO;30;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;UPS;Compra de UPS;UPS.Compra de UPS;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;UPS;Mantenimiento preventivo;UPS.Mantenimiento preventivo;SLA ALTO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;UPS;Tendida de cableado;UPS.Tendida de cableado;SLA ALTO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;Alexandra Mejía - Compras;NO;
+Solicitud;Dispositivos tecnológicos;UPS;Asesoría / Acompañamiento;UPS.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Juan José Aguelo - soporte en sitio;;NO;
+Solicitud;Dispositivos tecnológicos;Video Beam;Compra de Video Beam;Video Beam.Compra de Video Beam;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Video Beam;Mantenimiento preventivo;Video Beam.Mantenimiento preventivo;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Puestos de trabajo;Compra base ergonómica;Puestos de trabajo.Compra base ergonómica;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Solicitud;Dispositivos tecnológicos;Puestos de trabajo;Compra de cajones monederos;Puestos de trabajo.Compra de cajones monederos;SLA BAJO;15 DÍAS;Mesa de ayuda;;Alexandra Mejia - Compras;;NO;
+Incidente;Aplicaciones de negocio;WMS;Bloqueo en cuentas WMS;WMS.Bloqueo en cuentas WMS;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Juan Diego Mercado;NO;
+Incidente;Aplicaciones de negocio;WMS;Fallo en impresión PUT;WMS.Fallo en impresión PUT;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Proveedor ;NO;
+Incidente;Aplicaciones de negocio;WMS;Fallo en impresión LIM;WMS.Fallo en impresión LIM;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Proveedor ;NO;
+Incidente;Aplicaciones de negocio;WMS;Caída sitio LIM;WMS.Caída sitio LIM;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Proveedor ;NO;
+Incidente;Aplicaciones de negocio;WMS;Caída PUT;WMS.Caída PUT;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Proveedor ;NO;
+Incidente;Aplicaciones de negocio;WMS;Lentitud LIM;WMS.Lentitud LIM;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Proveedor ;NO;
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Se está consultando los datos del cliente en la opción “Mas información” y no carga la página. ;SLA ALTO;60;Mesa de ayuda;"Borrar Cookies y archivos temporales del navegador.
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+a) Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Se está consultando los datos del cliente en la opción “Cliente nuevo” y no carga la página.;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegador.
+
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Se  consulta un cliente y el resultado de la búsqueda trae los datos de otro;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegador.
+
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Al crear un cliente muestra el mensaje “Error al enviar datos”;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegador.
+
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Portal web comercio Stop;Error en aplicación;Cliente no puede ingresar al portal “Paga tu crédito”;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegado.
+b) Validar y corregir (De ser necesario) la fecha de nacimiento del cliente.
+
+Si la falla persiste escala el caso al ""Escalamiento 1"" ";Mesa de ayuda;Juan Diego Cano;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Portal web comercio Yoyo;Error en aplicación;Cliente no puede ingresar al portal “Paga tu crédito”;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegado.
+b) Validar y corregir (De ser necesario) la fecha de nacimiento del cliente.
+
+Si la falla persiste escala el caso al ""Escalamiento 1"" ";Mesa de ayuda;Juan Diego Cano;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Cegid;Error en aplicación;No trae la transacción para finalizar el crédito que viene de Leancore;SLA ALTO;60;Mesa de ayuda;"a) Cerrar Cegid y volver a abrir
+
+Si la falla persiste escala el caso al ""Escalamiento 1""";Mesa de ayuda;Juan David Jaramillo;NO;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Cegid;Error en aplicación;No trae la transacción para finalizar el recaudo de Abonos que viene de Leancore;SLA ALTO;60;Mesa de ayuda;"a) Cerrar Cegid y volver a abrir
+
+Si la falla persiste escala el caso al ""Escalamiento 1""";Mesa de ayuda;Juan David Jaramillo;NO;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;No llega el OTP de uso del cupo;SLA ALTO;60;Mesa de ayuda;"a) Si el medio de envío del OTP es correo electrónico, validar que éste no esté en correos no deseados (Remitente:  info@leancore.co)
+b) Intentar con los otros dos medios de envío del OTP.
+
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito
+* Email o celular del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;No llega el OTP de actualización de datos del cliente;SLA ALTO;60;Mesa de ayuda;"a) Si el medio de envío del OTP es correo electrónico, validar que éste no esté en correos no deseados (Remitente:  info@leancore.co)
+b) Intentar con los otros dos medios de envío del OTP. 
+
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito
+* Email o celular del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;No llega el OTP de creación del cliente;SLA ALTO;60;Mesa de ayuda;"a) Si el medio de envío del OTP es correo electrónico, validar que éste no esté en correos no deseados (Remitente:  info@leancore.co)
+b) Intentar con los otros dos medios de envío del OTP. 
+
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito
+* Email o celular del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;No se habilita la cámara para tomar fotografía del cliente;SLA ALTO;60;Mesa de ayuda;"a) Completar la creación del cliente sin foto.
+b) Restablecer la configuración del navegador
+c) Editar la información del cliente y editar la fotografía.
+d) Aceptar los permisos de la cámara para el navegador
+e) Tomar la fotografía
+
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;El cliente es de contado, solicita crédito y no trae la información correcta.;SLA ALTO;60;Mesa de ayuda;"a) Editar la información del cliente en Appunti.
+b) Volver a consultar el cliente en Leancore
+
+Si la falla persiste, escalar el caso al ""Escalamiento 1""
+Información:
+* Cédula del cliente
+* Pantallazo de error";Mesa de ayuda;Juan David Jaramillo;SI;SLA Lenacore: 4 Horas
+Solicitud;Aplicaciones de negocio;Crédito;Anular abono - Leancore;Crédito.Anular abono - Leancore;SLA ALTO;240;Mesa de ayuda;"a) La asesora de tienda debe enviar el correo a: centrodeservicios@stop.com.co
+Información:
+* Cédula del cliente
+* Código del crédito
+* Código del abono
+b) Una vez eliminado, el agente de la mesa de ayuda se debe realizar la devolución en Cegid.
+c) El agente de la mesa de ayuda se pone en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.
+I-6109-97-Instructivo como anular abono en el dashboard de Leancore.pdf
+
+Si la anulación genera error, se escala el caso a la Mesa de Ayuda de Leancore
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Código (Centro de costos) y nombre de la tienda.
+* Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 24 Horas
+Solicitud;Aplicaciones de negocio;Crédito;Anular credito - Leancore;Crédito.Anular credito - Leancore;SLA ALTO;240;Mesa de ayuda;"a) La asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co.
+Información:
+* Cédula del cliente
+* Código del crédito
+* Código del abono
+b) Una vez eliminado, el agente de la mesa de ayuda se debe realizar la devolución en Cegid.
+b) El agente de la mesa de ayuda se pone en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono. 
+I-6109-96-Instructivo como anular crédito en el dashboard de Leancore.pdf
+
+Si la anulación genera error, se escala el caso a la Mesa de Ayuda de Leancore:
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Cédula del cliente
+* Código del crédito
+* Código del abono";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 24 Horas
+Solicitud;Aplicaciones de negocio;Crédito;Expedición paz y salvo crédito  - Leancore;Crédito.Expedición paz y salvo crédito  - Leancore;SLA ALTO;240;Mesa de ayuda;"a) La asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co 
+Información:
+* Cédula del cliente
+* Código del crédito
+b) Una vez generado, el agente de la mesa de ayuda se lo envía a la asesora de tienda.
+I-6109-98-Instructivo como generar paz y salvo de crédito en el dashboard de Leancore.pdf
+
+Si la generación del paz y salvo genera error, se escala el caso a la Mesa de Ayuda de Leancore
+Enviar correo a:
+soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Pantallazo del error
+* Cédula del cliente
+* Código del crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 24 Horas
+Solicitud;Aplicaciones de negocio;App Web Leancore;Gestionar acceso a la aplicación;App Web Leancore.Gestionar acceso a la aplicación;SLA MEDIO;360;Mesa de ayuda;"a) La líder de tienda debe enviar el correo a centrodeservicios@stop.com.co
+Información:
+* Nombre completo
+* Cédula
+* Código de código (Centro de costos)
+* Nombre de tienda
+b) El agente de la mesa reportar la solicitud a soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Nombre completo
+* Cédula
+* Código de código (Centro de costos)
+* Nombre de tienda";Mesa de ayuda;Mesa de ayuda Leancore;NO;SLA Lenacore: 24 Horas
+Solicitud;Aplicaciones de negocio;Dashboard Leancore;Gestionar acceso a la aplicación;Dashboard Leancore.Gestionar acceso a la aplicación;SLA MEDIO;360;Mesa de ayuda;"a) La líder de tienda debe enviar el correo a centrodeservicios@stop.com.co.
+Información:
+* Nombre completo
+* Email
+* Cédula
+* Código de código
+* Nombre de tienda
+b) El agente de la mesa reportar el solicitud a soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Nombre completo
+* Email
+* Cédula
+* Código de código
+* Nombre de tienda";Mesa de ayuda;Mesa de ayuda Leancore;NO;SLA Lenacore: 24 Horas
+Solicitud;Aplicaciones de negocio;App Web Leancore;Error de autenticación / Olvido contraseña;App Web Leancore.Error de autenticación / Olvido contraseña;SLA MEDIO;360;Mesa de ayuda;"a) El asesor tienda debe enviar el correo a centrodeservicios@stop.com.co:
+Información:
+* Nombre completo
+* Cédula
+* Código de tienda
+* Nombre de tienda
+b) El agente de la mesa reportar el solicitud a soporte@leancore.co y support@leancore.zendesk.com
+Información:
+* Nombre completo
+* Cédula
+* Código de tienda
+* Nombre de tienda";Mesa de ayuda;Mesa de ayuda Leancore;NO;SLA Lenacore: 24 Horas
+Solicitud;Aplicaciones de negocio;Dashboard Leancore;Error de autenticación / Olvido contraseña;Dashboard Leancore.Error de autenticación / Olvido contraseña;SLA MEDIO;360;Mesa de ayuda;"a) El asesor tienda debe enviar el correo a centrodeservicios@stop.com.co
+Información:
+*Nombre completo
+* Cédula
+* Email
+* Código de tienda
+* Nombre de tienda
+b) El agente de la mesa reportar el solicitud a soporte@leancore.co y support@leancore.zendesk.com";Mesa de ayuda;Mesa de ayuda Leancore;NO;SLA Lenacore: 24 Horas
+Incidente;Aplicaciones de negocio;Cegid;Error en aplicación;"Se finalizó el crédito que viene de Leancore y el metodo de pago quedó en ""A fiananciar"" y no cambió a ""A financiar Leancore""";SLA ALTO;60;Mesa de ayuda;"a) Cerrar Cegid y volver a abrir
+
+Si la falla persiste escala el caso al ""Escalamiento 1""
+Información:
+* Cédula del cliente
+* Código del crédito
+* Pantallazo de error";Mesa de ayuda;Juan David Jaramillo;NO;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Cegid;Error en aplicación;"Se finalizó el crédito que viene de Kaiowa y el metodo de pago quedó en ""A fiananciar"" y no cambió a ""A financiar Kaiowa""";SLA ALTO;60;Mesa de ayuda;"a) Cerrar Cegid y volver a abrir
+
+Si la falla persiste escala el caso al ""Escalamiento 1""
+Información:
+* Cédula del cliente
+* Código del crédito
+* Pantallazo de error";Mesa de ayuda;Juan David Jaramillo;NO;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Gestión Abonos;Error en aplicación;El cliente realiza un abono en tienda o desde el portal de comercio (Yoyo o Stop) y no se ve aplicado el abono en el portal Gestión Abonos. El abono es de un crédito de Leancore;SLA ALTO;60;Mesa de ayuda;"a) Cerrar Cegid y volver a abrir
+
+Si la falla persiste escala el caso al ""Escalamiento 1""
+Información:
+* Cédula del cliente
+* Código del crédito
+* Código de crédito
+* Pantallazo de error";Mesa de ayuda;Juan David Jaramillo;NO;SLA Lenacore: 4 Horas
+Incidente;Aplicaciones de negocio;Gestión Abonos;Error en aplicación;El cliente realiza un abono en tienda o desde el portal de comercio (Yoyo o Stop) y no se ve aplicado el abono en el portal Gestión Abonos.  El abono es de un crédito de Kaiowa;SLA ALTO;60;Mesa de ayuda;"a) Cerrar Cegid y volver a abrir
+
+Si la falla persiste escala el caso al ""Escalamiento 1""
+Información:
+* Cédula del cliente
+* Código del crédito
+* Código de crédito
+* Pantallazo de error";Mesa de ayuda;Juan David Jaramillo;NO;SLA Lenacore: 4 Horas

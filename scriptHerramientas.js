@@ -200,7 +200,7 @@ let datosTablaMatriz = [];
 
 document.addEventListener("DOMContentLoaded", function () {
     function cargarDatosMatriz() {
-        fetch('Matriz.csv')
+        fetch('MatrizV4.csv')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error HTTP: ' + response.status);
@@ -211,7 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 datosTablaMatriz = Papa.parse(data, {
                     header: true,
                     skipEmptyLines: true,
-                    dynamicTyping: true
+                    dynamicTyping: true,
+                    delimiter: ';' // Agrega esta línea para especificar el punto y coma como delimitador
                 }).data;
                 actualizarTabla(datosTablaMatriz, 'Matriz');
             }).catch(error => console.error('Error al cargar el archivo CSV matriz.csv:', error));
