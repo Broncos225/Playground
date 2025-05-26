@@ -12,8 +12,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-// JavaScript para el modal
-// JavaScript para el modal y el formulario
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // Mostrar la pantalla de carga antes de iniciar la consulta
@@ -36,10 +35,8 @@ firebase.auth().onAuthStateChanged(function (user) {
                 modulosPlantillas.innerHTML = '';
                 favoritosPlantillas.innerHTML = '';
 
-
                 var plantillas = []; // Array para almacenar las plantillas
                 var plantillasFavoritas = []; // Array para almacenar las plantillas favoritas
-
 
                 snapshot.forEach(function (childSnapshot) {
                     var fileName = childSnapshot.key;
@@ -57,23 +54,22 @@ firebase.auth().onAuthStateChanged(function (user) {
                             typeText = 'Solo personalizada';
                             break;
                         default:
-                            typeText = 'Desconocido'; // Para otros valores
+                            typeText = 'Desconocido';
                             break;
                     }
 
-                    // Filtrar las plantillas personalizadas
-                    if (moduleType === '2' && creador !== asesorActual) {
-                        return; // Saltar esta plantilla si es personalizada y el creador no coincide con el asesor actual
-                    }
-
+                    // CAMBIO: Ya no filtramos plantillas personalizadas - se muestran todas
                     var newDiv = document.createElement("div");
                     newDiv.className = "Modulo2";
-                    newDiv.setAttribute("data-type", moduleType); // Agregar un atributo de datos para el tipo
-                    newDiv.setAttribute("data-name", fileName); // Agregar nombre como atributo
+                    newDiv.setAttribute("data-type", moduleType);
+                    newDiv.setAttribute("data-name", fileName);
+                    newDiv.setAttribute("data-creator", creador || ''); // Añadir creador como atributo
 
                     newDiv.onclick = function (e) {
-                        // Solo mostrar el modal si no se hizo clic en la estrella
-                        if (!e.target.classList.contains('favorite-star')) {
+                        // Solo mostrar el modal si no se hizo clic en botones de control
+                        if (!e.target.classList.contains('favorite-star') && 
+                            !e.target.classList.contains('delete-module') && 
+                            !e.target.classList.contains('edit-module')) {
                             showModal(fileName);
                         }
                     };
@@ -85,77 +81,80 @@ firebase.auth().onAuthStateChanged(function (user) {
                     // Crear la estrella para favoritos
                     var starSpan = document.createElement("span");
                     starSpan.className = "favorite-star";
-                    starSpan.innerHTML = favoritos[fileName] ? "★" : "☆"; // Estrella llena si es favorito, vacía si no
+                    starSpan.innerHTML = favoritos[fileName] ? "★" : "☆";
                     starSpan.setAttribute("data-name", fileName);
                     starSpan.onclick = function (event) {
-                        event.stopPropagation(); // Evita que se dispare el evento onclick del div contenedor
+                        event.stopPropagation();
                         toggleFavorite(fileName, asesorActual, this);
                     };
 
-                    // Solo agregar el deleteSpan si el módulo es personalizado
-                    if (moduleType === '2') {
+                    // CAMBIO: Solo agregar botones de editar y eliminar si el usuario actual es el creador
+                    if (moduleType === '2' && creador === asesorActual) {
+                        // Botón de editar
+                        var editSpan = document.createElement("span");
+                        editSpan.className = "edit-module";
+                        editSpan.textContent = "✏️";
+                        editSpan.title = "Editar plantilla";
+
+                        editSpan.onclick = function (event) {
+                            event.stopPropagation();
+                            editTemplate(fileName, moduleData);
+                        };
+
+                        // Botón de eliminar
                         var deleteSpan = document.createElement("span");
                         deleteSpan.className = "delete-module";
                         deleteSpan.textContent = "❌";
+                        deleteSpan.title = "Eliminar plantilla";
 
-                        // Agregar el manejador de eventos para la eliminación
                         deleteSpan.onclick = function (event) {
-                            event.stopPropagation(); // Evita que se dispare el evento onclick del div contenedor
+                            event.stopPropagation();
 
                             var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
                             if (confirmacion) {
-                                // Eliminar la plantilla de Firebase
                                 db.ref('Plantillas/' + fileName).remove()
                                     .then(function () {
-                                        // También eliminar de favoritos si existe, usando la ruta correcta
                                         if (favoritos[fileName]) {
                                             db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
                                         }
-                                        alert("Plantilla eliminada exitosamente.");
-                                        location.reload(); // Recargar la página para actualizar la lista de plantillas
+                                        mostrarNotificacion("Plantilla eliminada exitosamente");
+                                        location.reload();
                                     })
                                     .catch(function (error) {
                                         console.error("Error al eliminar la plantilla: ", error);
+                                        mostrarNotificacion("Error al eliminar la plantilla");
                                     });
                             }
                         };
 
-                        newDiv.appendChild(deleteSpan); // Añadir el botón de eliminación solo si es personalizado
+                        newDiv.appendChild(editSpan);
+                        newDiv.appendChild(deleteSpan);
+                    }
+
+                    // Mostrar el creador para plantillas personalizadas de otros usuarios
+                    if (moduleType === '2' && creador !== asesorActual && creador) {
+                        var creatorSpan = document.createElement("span");
+                        creatorSpan.className = "module-creator";
+                        creatorSpan.textContent = "Por: " + creador.replace(/_/g, ' ');
+                        newDiv.appendChild(creatorSpan);
                     }
 
                     var newH2 = document.createElement("h2");
                     newH2.textContent = fileName;
 
-                    newDiv.appendChild(starSpan); // Añadir la estrella
-                    newDiv.appendChild(typeSpan); // Añadir el tipo
+                    newDiv.appendChild(starSpan);
+                    newDiv.appendChild(typeSpan);
                     newDiv.appendChild(newH2);
 
                     // Clonar el div para favoritos si es necesario
                     if (favoritos[fileName]) {
                         var favDiv = newDiv.cloneNode(true);
                         // Actualizar los manejadores de eventos en el clon
-                        favDiv.onclick = function (e) {
-                            if (!e.target.classList.contains('favorite-star')) {
-                                showModal(fileName);
-                            }
-                        };
-                        var favStar = favDiv.querySelector('.favorite-star');
-                        favStar.onclick = function (event) {
-                            event.stopPropagation();
-                            toggleFavorite(fileName, asesorActual, this);
-
-                            // Actualizar todas las estrellas con el mismo nombre
-                            var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
-                            allStars.forEach(function (star) {
-                                star.innerHTML = this.innerHTML;
-                            }, this);
-                        };
-
-                        // Agregar a la sección de favoritos
+                        setupDivEventHandlers(favDiv, fileName, asesorActual, moduleType, creador, moduleData);
                         plantillasFavoritas.push(favDiv);
                     }
 
-                    plantillas.push(newDiv); // Agregar el div al array
+                    plantillas.push(newDiv);
                 });
 
                 // Si no hay favoritos, mostrar mensaje
@@ -165,99 +164,189 @@ firebase.auth().onAuthStateChanged(function (user) {
                     noFavMessage.className = "no-favorites-message";
                     favoritosPlantillas.appendChild(noFavMessage);
                 } else {
-                    // Añadir todos los divs de favoritos al contenedor
                     favoritosPlantillas.append(...plantillasFavoritas);
                 }
 
-                // Añadir todos los divs al contenedor principal
                 modulosPlantillas.append(...plantillas);
 
-                // Configurar búsqueda y filtro después de agregar elementos
                 configurarBusqueda();
                 configurarFiltro();
 
-                // Ocultar la pantalla de carga una vez que la consulta haya terminado
                 loadingScreen.style.display = "none";
             });
         }).catch(function (error) {
             console.log("Error al cargar favoritos o plantillas: ", error);
-            // Ocultar la pantalla de carga en caso de error
             loadingScreen.style.display = "none";
         });
 
-        // Configuración del modal
+        // Configuración del modal de crear plantilla
         var modal = document.getElementById("createTemplateModal");
         var btn = document.getElementById("openModalButton");
 
-        // Abrir el modal al hacer clic en el botón
         btn.onclick = function () {
+            // Limpiar el formulario
+            document.getElementById('crearPlantillaForm').reset();
+            document.getElementById('crearPlantillaForm').removeAttribute('data-editing');
+            document.querySelector('#createTemplateModal h2').textContent = 'Crear Nueva Plantilla';
+            document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Crear Plantilla';
             modal.style.display = "block";
         }
 
-        // Cerrar el modal al hacer clic fuera del contenido del modal
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         }
 
-        // Configurar el formulario para crear plantillas
+        // Configurar el formulario para crear/editar plantillas
         var form = document.getElementById('crearPlantillaForm');
         form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Evitar el envío del formulario de la manera tradicional
+            event.preventDefault();
 
             var nombrePlantilla = document.getElementById('nombrePlantilla').value;
             var apertura = document.getElementById('apertura').value;
             var cierre = document.getElementById('cierre').value;
-            var creador = localStorage.getItem('nombreAsesorActual') || 'Desconocido'; // Obtener el nombre del usuario autenticado
+            var creador = localStorage.getItem('nombreAsesorActual') || 'Desconocido';
+            var isEditing = form.hasAttribute('data-editing');
+            var originalName = form.getAttribute('data-original-name');
 
-            db.ref('Plantillas/' + nombrePlantilla).set({
-                Tipo: '2', // Siempre personalizado
+            var plantillaData = {
+                Tipo: '2',
                 Apertura: apertura,
                 Cierre: cierre,
                 Creador: creador
-            }).then(function () {
-                alert('Plantilla creada exitosamente.');
-                form.reset();
-                modal.style.display = "none"; // Cerrar el modal después de crear la plantilla
-                location.reload(); // Recargar la página para reflejar los cambios
-            }).catch(function (error) {
-                console.error("Error al crear la plantilla: ", error);
-            });
+            };
+
+            if (isEditing && originalName && originalName !== nombrePlantilla) {
+                // Si cambió el nombre, eliminar la plantilla anterior y crear una nueva
+                db.ref('Plantillas/' + originalName).remove()
+                    .then(function () {
+                        return db.ref('Plantillas/' + nombrePlantilla).set(plantillaData);
+                    })
+                    .then(function () {
+                        mostrarNotificacion('Plantilla actualizada exitosamente.');
+                        form.reset();
+                        form.removeAttribute('data-editing');
+                        form.removeAttribute('data-original-name');
+                        modal.style.display = "none";
+                        location.reload();
+                    })
+                    .catch(function (error) {
+                        console.error("Error al actualizar la plantilla: ", error);
+                        mostrarNotificacion("Error al actualizar la plantilla");
+                    });
+            } else {
+                // Crear nueva plantilla o actualizar existente sin cambio de nombre
+                var targetName = isEditing ? originalName : nombrePlantilla;
+                db.ref('Plantillas/' + targetName).set(plantillaData)
+                    .then(function () {
+                        var mensaje = isEditing ? 'Plantilla actualizada exitosamente.' : 'Plantilla creada exitosamente.';
+                        mostrarNotificacion(mensaje);
+                        form.reset();
+                        form.removeAttribute('data-editing');
+                        form.removeAttribute('data-original-name');
+                        modal.style.display = "none";
+                        location.reload();
+                    })
+                    .catch(function (error) {
+                        console.error("Error al guardar la plantilla: ", error);
+                        mostrarNotificacion("Error al guardar la plantilla");
+                    });
+            }
         });
     } else {
         console.log('No user is signed in');
     }
 });
 
+// Función para configurar manejadores de eventos en divs clonados
+function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador, moduleData) {
+    div.onclick = function (e) {
+        if (!e.target.classList.contains('favorite-star') && 
+            !e.target.classList.contains('delete-module') && 
+            !e.target.classList.contains('edit-module')) {
+            showModal(fileName);
+        }
+    };
+
+    var favStar = div.querySelector('.favorite-star');
+    if (favStar) {
+        favStar.onclick = function (event) {
+            event.stopPropagation();
+            toggleFavorite(fileName, asesorActual, this);
+        };
+    }
+
+    var editBtn = div.querySelector('.edit-module');
+    if (editBtn) {
+        editBtn.onclick = function (event) {
+            event.stopPropagation();
+            editTemplate(fileName, moduleData);
+        };
+    }
+
+    var deleteBtn = div.querySelector('.delete-module');
+    if (deleteBtn) {
+        deleteBtn.onclick = function (event) {
+            event.stopPropagation();
+            var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
+            if (confirmacion) {
+                db.ref('Plantillas/' + fileName).remove()
+                    .then(function () {
+                        db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
+                        mostrarNotificacion("Plantilla eliminada exitosamente");
+                        location.reload();
+                    })
+                    .catch(function (error) {
+                        console.error("Error al eliminar la plantilla: ", error);
+                        mostrarNotificacion("Error al eliminar la plantilla");
+                    });
+            }
+        };
+    }
+}
+
+// Nueva función para editar plantillas
+function editTemplate(fileName, moduleData) {
+    var modal = document.getElementById("createTemplateModal");
+    var form = document.getElementById('crearPlantillaForm');
+    
+    // Llenar el formulario con los datos existentes
+    document.getElementById('nombrePlantilla').value = fileName;
+    document.getElementById('apertura').value = moduleData.Apertura || '';
+    document.getElementById('cierre').value = moduleData.Cierre || '';
+    
+    // Marcar el formulario como modo edición
+    form.setAttribute('data-editing', 'true');
+    form.setAttribute('data-original-name', fileName);
+    
+    // Cambiar el texto del modal y botón
+    document.querySelector('#createTemplateModal h2').textContent = 'Editar Plantilla';
+    document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Actualizar Plantilla';
+    
+    modal.style.display = "block";
+}
+
 // Función para alternar el estado de favorito
 function toggleFavorite(fileName, asesorActual, starElement) {
-    // Determinar si actualmente es un favorito
     var isFavorite = starElement.innerHTML === "★";
-
-    // Referencia a la sección de favoritos
     var favSection = document.getElementById("FavoritosPlantillas");
-
-    // Usar la ruta correcta en Preferencias en lugar de Usuarios
     var favoritosRef = db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName);
 
     if (isFavorite) {
         // ELIMINAR DE FAVORITOS
         favoritosRef.remove()
             .then(function () {
-                // Actualizar todas las estrellas con el mismo nombre a estado no-favorito
                 var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
                 allStars.forEach(function (star) {
                     star.innerHTML = "☆";
                 });
 
-                // Eliminar el elemento de la sección de favoritos
                 var favItem = favSection.querySelector('.Modulo2[data-name="' + fileName + '"]');
                 if (favItem) {
                     favItem.remove();
                 }
 
-                // Si no quedan favoritos, mostrar mensaje
                 if (favSection.querySelectorAll('.Modulo2').length === 0 &&
                     !favSection.querySelector('.no-favorites-message')) {
                     var noFavMessage = document.createElement("p");
@@ -266,13 +355,11 @@ function toggleFavorite(fileName, asesorActual, starElement) {
                     favSection.appendChild(noFavMessage);
                 }
 
-                // Reproducir sonido de notificación
                 var audio = document.getElementById('notificationSound');
                 if (audio) {
                     audio.play().catch(e => console.log("Error al reproducir sonido:", e));
                 }
 
-                // Mostrar notificación
                 mostrarNotificacion("Eliminado de favoritos");
             })
             .catch(function (error) {
@@ -283,72 +370,42 @@ function toggleFavorite(fileName, asesorActual, starElement) {
         // AÑADIR A FAVORITOS
         favoritosRef.set(true)
             .then(function () {
-                // Actualizar todas las estrellas con el mismo nombre a estado favorito
                 var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
                 allStars.forEach(function (star) {
                     star.innerHTML = "★";
                 });
 
-                // Eliminar mensaje de no favoritos si existe
                 var noFavMessage = favSection.querySelector(".no-favorites-message");
                 if (noFavMessage) {
                     noFavMessage.remove();
                 }
 
-                // Clonar el elemento y añadirlo a la sección de favoritos si no existe ya
                 var existingFavItem = favSection.querySelector('.Modulo2[data-name="' + fileName + '"]');
                 if (!existingFavItem) {
                     var originalItem = document.querySelector('.Modulo2[data-name="' + fileName + '"]');
                     if (originalItem) {
                         var favItem = originalItem.cloneNode(true);
+                        
+                        // Obtener datos del módulo original
+                        var moduleType = originalItem.getAttribute('data-type');
+                        var creador = originalItem.getAttribute('data-creator');
+                        var asesorActual = localStorage.getItem('nombreAsesorActual');
+                        
+                        // Configurar manejadores de eventos
+                        db.ref('Plantillas/' + fileName).once('value').then(function(snapshot) {
+                            var moduleData = snapshot.val();
+                            setupDivEventHandlers(favItem, fileName, asesorActual, moduleType, creador, moduleData);
+                        });
 
-                        // Actualizar los manejadores de eventos en el clon
-                        favItem.onclick = function (e) {
-                            if (!e.target.classList.contains('favorite-star')) {
-                                showModal(fileName);
-                            }
-                        };
-
-                        var favStar = favItem.querySelector('.favorite-star');
-                        favStar.onclick = function (event) {
-                            event.stopPropagation();
-                            toggleFavorite(fileName, asesorActual, this);
-                        };
-
-                        // Añadir el botón de eliminar si es necesario
-                        if (originalItem.querySelector('.delete-module')) {
-                            var deleteSpan = favItem.querySelector('.delete-module');
-                            deleteSpan.onclick = function (event) {
-                                event.stopPropagation();
-                                var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
-                                if (confirmacion) {
-                                    db.ref('Plantillas/' + fileName).remove()
-                                        .then(function () {
-                                            if (favItem) {
-                                                favoritosRef.remove();
-                                            }
-                                            mostrarNotificacion("Plantilla eliminada exitosamente");
-                                            location.reload();
-                                        })
-                                        .catch(function (error) {
-                                            console.error("Error al eliminar la plantilla: ", error);
-                                        });
-                                }
-                            };
-                        }
-
-                        // Añadir a la sección de favoritos
                         favSection.appendChild(favItem);
                     }
                 }
 
-                // Reproducir sonido de notificación
                 var audio = document.getElementById('notificationSound');
                 if (audio) {
                     audio.play().catch(e => console.log("Error al reproducir sonido:", e));
                 }
 
-                // Mostrar notificación
                 mostrarNotificacion("Añadido a favoritos");
             })
             .catch(function (error) {
@@ -364,7 +421,6 @@ function mostrarNotificacion(mensaje) {
     notification.textContent = mensaje;
     notification.style.opacity = '1';
 
-    // Ocultar la notificación después de 2 segundos
     setTimeout(function () {
         notification.style.opacity = '0';
     }, 2000);
@@ -380,15 +436,14 @@ function configurarBusqueda() {
         var tipoSeleccionado = document.getElementById('Tipos').value;
 
         pdfs.forEach(function (pdf) {
-            var title = pdf.getElementsByTagName('h2')[0].innerText.toUpperCase(); // Obtén el texto del título en mayúsculas
-            var type = pdf.getAttribute('data-type'); // Obtén el tipo de plantilla desde el atributo 'data-type'
+            var title = pdf.getElementsByTagName('h2')[0].innerText.toUpperCase();
+            var type = pdf.getAttribute('data-type');
             var typeMatches = tipoSeleccionado === "0" || type === tipoSeleccionado;
 
-            // Filtra por título y tipo
             if (title.indexOf(filter) > -1 && typeMatches) {
-                pdf.style.display = ""; // Muestra el div si coincide con la búsqueda y el filtro
+                pdf.style.display = "";
             } else {
-                pdf.style.display = "none"; // Oculta el div si no coincide
+                pdf.style.display = "none";
             }
         });
 
@@ -396,9 +451,9 @@ function configurarBusqueda() {
     });
 
     clearButton.addEventListener('click', function () {
-        input.value = ''; // Limpia el campo de búsqueda
+        input.value = '';
         pdfs.forEach(function (pdf) {
-            pdf.style.display = ""; // Muestra todas las plantillas
+            pdf.style.display = "";
         });
         verificarResultados();
     });
@@ -415,7 +470,7 @@ function configurarFiltro() {
             var type = pdf.getAttribute('data-type');
             var typeMatches = tipoSeleccionado === "0" || type === tipoSeleccionado;
 
-            pdf.style.display = typeMatches ? "" : "none"; // Filtra por tipo de plantilla
+            pdf.style.display = typeMatches ? "" : "none";
         });
 
         verificarResultados();
@@ -428,24 +483,6 @@ function verificarResultados() {
     document.getElementById('NoResultados').style.display = hayResultados ? 'none' : 'block';
 }
 
-
-function configurarFiltro() {
-    var select = document.getElementById('Tipos');
-    var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
-
-    select.addEventListener('change', function () {
-        console.log("Select changed"); // Para depuración
-        var tipoSeleccionado = select.value;
-        pdfs.forEach(function (pdf) {
-            var typeMatches = tipoSeleccionado == "0" || pdf.getAttribute("data-type") === tipoSeleccionado;
-            pdf.style.display = typeMatches ? "" : "none";
-        });
-        verificarResultados();
-    });
-}
-
-
-
 function showModal(fileName) {
     var modal = document.getElementById("myModal");
     modal.scrollTop = 0;
@@ -453,11 +490,9 @@ function showModal(fileName) {
     var modalApertura = document.querySelector("#myModal #modal-content #apertura");
     var modalCierre = document.querySelector("#myModal #modal-content #cierre");
 
-    // Obtener la hora actual
     var currentHour = new Date().getHours();
     var saludo;
 
-    // Determinar el saludo basado en la hora del día
     if (currentHour < 12) {
         saludo = "Buenos días";
     } else if (currentHour < 18) {
@@ -504,22 +539,20 @@ function showModal(fileName) {
 }
 
 function copiarTexto(id) {
-    var text = document.getElementById(id).innerHTML; // Cambiado a innerHTML
-    text = text.replace(/<br>/g, "\r\n").replace(/<\/p><p>/g, "\r\n").replace(/<p>/g, "").replace(/<\/p>/g, ""); // Añadido para conservar los saltos de línea y eliminar las etiquetas <p></p>
+    var text = document.getElementById(id).innerHTML;
+    text = text.replace(/<br>/g, "\r\n").replace(/<\/p><p>/g, "\r\n").replace(/<p>/g, "").replace(/<\/p>/g, "");
     var textArea = document.createElement("textarea");
-    textArea.style.fontFamily = "Nunito, sans-serif"; // Añadido para establecer el tipo de letra a Nunito
+    textArea.style.fontFamily = "Nunito, sans-serif";
     textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand("copy");
     document.body.removeChild(textArea);
 
-    // Muestra la notificación
     var notification = document.getElementById('notification2');
     notification.textContent = '¡Texto Copiado!';
     notification.style.opacity = '1';
 
-    // Oculta la notificación después de 1 segundo
     setTimeout(function () {
         notification.style.opacity = '0';
     }, 1000);
@@ -534,7 +567,6 @@ function closeModal() {
     document.querySelector('header').style.display = 'block';
 }
 
-// Añadir el manejador de eventos para el clic fuera del contenido del modal
 window.addEventListener('click', function (event) {
     var modals = document.querySelectorAll('.modal');
     modals.forEach(function (modal) {
@@ -580,8 +612,32 @@ style.innerHTML = `
             transform: rotate(0deg);
         }
         100% {
-            transform: rotate(360deg);
+            transform: rotate(360deg);module-creator
         }
+    }
+
+    .edit-module {
+        position: absolute;
+        top: 5px;
+        right: 35px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 3px;
+        padding: 2px 4px;
+        z-index: 10;
+    }
+
+    .delete-module {
+        right: 5px !important;
+    }
+
+    .module-creator {
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        font-size: 10px;
+        padding: 2px 4px;
+        border-radius: 3px;
     }
 `;
 document.head.appendChild(style);
@@ -594,6 +650,7 @@ loadingScreen.innerHTML = `
     <div>Cargando...</div>
 `;
 document.body.appendChild(loadingScreen);
+
 function redirectTo(url) {
     window.location.href = url;
 }

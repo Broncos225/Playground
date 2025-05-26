@@ -1187,9 +1187,13 @@ input[type='number']::-webkit-outer-spin-button {
     cursor: pointer;
 }
 
-.Modulo2:hover .module-type {
+.Modulo2:hover .module-type .module-creator {
     background-color: #000000;
     color: var(--color-primario);
+}
+
+.Modulo2:hover .module-creator{
+    color: white;
 }
 
 .modal {
@@ -1675,8 +1679,7 @@ input:checked+.slider:before {
     bottom: 5px;
     left: 5px;
     font-size: 0.8em;
-    color: #777;
-    background-color: #f0f0f0;
+    color: black;
     padding: 2px 4px;
     border-radius: 3px;
 }
