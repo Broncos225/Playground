@@ -67,9 +67,10 @@ firebase.auth().onAuthStateChanged(function (user) {
 
                     newDiv.onclick = function (e) {
                         // Solo mostrar el modal si no se hizo clic en botones de control
-                        if (!e.target.classList.contains('favorite-star') && 
-                            !e.target.classList.contains('delete-module') && 
-                            !e.target.classList.contains('edit-module')) {
+                        if (!e.target.classList.contains('favorite-star') &&
+                            !e.target.classList.contains('options-menu') &&
+                            !e.target.classList.contains('options-dropdown') &&
+                            !e.target.classList.contains('option-item')) {
                             showModal(fileName);
                         }
                     };
@@ -88,27 +89,37 @@ firebase.auth().onAuthStateChanged(function (user) {
                         toggleFavorite(fileName, asesorActual, this);
                     };
 
-                    // CAMBIO: Solo agregar botones de editar y eliminar si el usuario actual es el creador
+                    // CAMBIO: Solo agregar botón de opciones si el usuario actual es el creador
                     if (moduleType === '2' && creador === asesorActual) {
-                        // Botón de editar
-                        var editSpan = document.createElement("span");
-                        editSpan.className = "edit-module";
-                        editSpan.textContent = "✏️";
-                        editSpan.title = "Editar plantilla";
+                        // Crear el botón de opciones
+                        var optionsContainer = document.createElement("div");
+                        optionsContainer.className = "options-container";
 
-                        editSpan.onclick = function (event) {
+                        var optionsButton = document.createElement("span");
+                        optionsButton.className = "options-menu";
+                        optionsButton.innerHTML = "⋮";
+                        optionsButton.title = "Opciones";
+
+                        // Crear el menú desplegable
+                        var dropdown = document.createElement("div");
+                        dropdown.className = "options-dropdown";
+                        dropdown.style.display = "none";
+
+                        var editOption = document.createElement("div");
+                        editOption.className = "option-item";
+                        editOption.innerHTML = "✏️ Editar";
+                        editOption.onclick = function (event) {
                             event.stopPropagation();
+                            hideAllDropdowns();
                             editTemplate(fileName, moduleData);
                         };
 
-                        // Botón de eliminar
-                        var deleteSpan = document.createElement("span");
-                        deleteSpan.className = "delete-module";
-                        deleteSpan.textContent = "❌";
-                        deleteSpan.title = "Eliminar plantilla";
-
-                        deleteSpan.onclick = function (event) {
+                        var deleteOption = document.createElement("div");
+                        deleteOption.className = "option-item";
+                        deleteOption.innerHTML = "❌ Eliminar";
+                        deleteOption.onclick = function (event) {
                             event.stopPropagation();
+                            hideAllDropdowns();
 
                             var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
                             if (confirmacion) {
@@ -127,8 +138,21 @@ firebase.auth().onAuthStateChanged(function (user) {
                             }
                         };
 
-                        newDiv.appendChild(editSpan);
-                        newDiv.appendChild(deleteSpan);
+                        dropdown.appendChild(editOption);
+                        dropdown.appendChild(deleteOption);
+
+                        optionsButton.onclick = function (event) {
+                            event.stopPropagation();
+                            // Ocultar todos los otros dropdowns
+                            hideAllDropdowns();
+                            // Mostrar/ocultar este dropdown
+                            var isVisible = dropdown.style.display === "block";
+                            dropdown.style.display = isVisible ? "none" : "block";
+                        };
+
+                        optionsContainer.appendChild(optionsButton);
+                        optionsContainer.appendChild(dropdown);
+                        newDiv.appendChild(optionsContainer);
                     }
 
                     // Mostrar el creador para plantillas personalizadas de otros usuarios
@@ -259,12 +283,28 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
+// Función para ocultar todos los dropdowns
+function hideAllDropdowns() {
+    var dropdowns = document.querySelectorAll('.options-dropdown');
+    dropdowns.forEach(function (dropdown) {
+        dropdown.style.display = "none";
+    });
+}
+
+// Cerrar dropdowns al hacer clic fuera
+document.addEventListener('click', function (event) {
+    if (!event.target.closest('.options-container')) {
+        hideAllDropdowns();
+    }
+});
+
 // Función para configurar manejadores de eventos en divs clonados
 function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador, moduleData) {
     div.onclick = function (e) {
-        if (!e.target.classList.contains('favorite-star') && 
-            !e.target.classList.contains('delete-module') && 
-            !e.target.classList.contains('edit-module')) {
+        if (!e.target.classList.contains('favorite-star') &&
+            !e.target.classList.contains('options-menu') &&
+            !e.target.classList.contains('options-dropdown') &&
+            !e.target.classList.contains('option-item')) {
             showModal(fileName);
         }
     };
@@ -277,32 +317,45 @@ function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador,
         };
     }
 
-    var editBtn = div.querySelector('.edit-module');
-    if (editBtn) {
-        editBtn.onclick = function (event) {
+    var optionsButton = div.querySelector('.options-menu');
+    if (optionsButton) {
+        var dropdown = div.querySelector('.options-dropdown');
+        optionsButton.onclick = function (event) {
             event.stopPropagation();
-            editTemplate(fileName, moduleData);
+            hideAllDropdowns();
+            var isVisible = dropdown.style.display === "block";
+            dropdown.style.display = isVisible ? "none" : "block";
         };
-    }
 
-    var deleteBtn = div.querySelector('.delete-module');
-    if (deleteBtn) {
-        deleteBtn.onclick = function (event) {
-            event.stopPropagation();
-            var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
-            if (confirmacion) {
-                db.ref('Plantillas/' + fileName).remove()
-                    .then(function () {
-                        db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
-                        mostrarNotificacion("Plantilla eliminada exitosamente");
-                        location.reload();
-                    })
-                    .catch(function (error) {
-                        console.error("Error al eliminar la plantilla: ", error);
-                        mostrarNotificacion("Error al eliminar la plantilla");
-                    });
-            }
-        };
+        var editOption = div.querySelector('.option-item:first-child');
+        if (editOption) {
+            editOption.onclick = function (event) {
+                event.stopPropagation();
+                hideAllDropdowns();
+                editTemplate(fileName, moduleData);
+            };
+        }
+
+        var deleteOption = div.querySelector('.option-item:last-child');
+        if (deleteOption) {
+            deleteOption.onclick = function (event) {
+                event.stopPropagation();
+                hideAllDropdowns();
+                var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
+                if (confirmacion) {
+                    db.ref('Plantillas/' + fileName).remove()
+                        .then(function () {
+                            db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
+                            mostrarNotificacion("Plantilla eliminada exitosamente");
+                            location.reload();
+                        })
+                        .catch(function (error) {
+                            console.error("Error al eliminar la plantilla: ", error);
+                            mostrarNotificacion("Error al eliminar la plantilla");
+                        });
+                }
+            };
+        }
     }
 }
 
@@ -310,20 +363,20 @@ function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador,
 function editTemplate(fileName, moduleData) {
     var modal = document.getElementById("createTemplateModal");
     var form = document.getElementById('crearPlantillaForm');
-    
+
     // Llenar el formulario con los datos existentes
     document.getElementById('nombrePlantilla').value = fileName;
     document.getElementById('apertura').value = moduleData.Apertura || '';
     document.getElementById('cierre').value = moduleData.Cierre || '';
-    
+
     // Marcar el formulario como modo edición
     form.setAttribute('data-editing', 'true');
     form.setAttribute('data-original-name', fileName);
-    
+
     // Cambiar el texto del modal y botón
     document.querySelector('#createTemplateModal h2').textContent = 'Editar Plantilla';
     document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Actualizar Plantilla';
-    
+
     modal.style.display = "block";
 }
 
@@ -385,14 +438,14 @@ function toggleFavorite(fileName, asesorActual, starElement) {
                     var originalItem = document.querySelector('.Modulo2[data-name="' + fileName + '"]');
                     if (originalItem) {
                         var favItem = originalItem.cloneNode(true);
-                        
+
                         // Obtener datos del módulo original
                         var moduleType = originalItem.getAttribute('data-type');
                         var creador = originalItem.getAttribute('data-creator');
                         var asesorActual = localStorage.getItem('nombreAsesorActual');
-                        
+
                         // Configurar manejadores de eventos
-                        db.ref('Plantillas/' + fileName).once('value').then(function(snapshot) {
+                        db.ref('Plantillas/' + fileName).once('value').then(function (snapshot) {
                             var moduleData = snapshot.val();
                             setupDivEventHandlers(favItem, fileName, asesorActual, moduleType, creador, moduleData);
                         });
@@ -612,23 +665,59 @@ style.innerHTML = `
             transform: rotate(0deg);
         }
         100% {
-            transform: rotate(360deg);module-creator
+            transform: rotate(360deg);
         }
     }
 
-    .edit-module {
+    .options-container {
         position: absolute;
         top: 5px;
-        right: 35px;
-        cursor: pointer;
-        font-size: 16px;
-        border-radius: 3px;
-        padding: 2px 4px;
+        right: 30px;
         z-index: 10;
     }
 
-    .delete-module {
-        right: 5px !important;
+    .options-menu {
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 4px 8px;
+        border-radius: 3px;
+        background-color: rgba(255, 255, 255, 0.8);
+        user-select: none;
+    }
+
+    .options-menu:hover {
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+    .options-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        min-width: 120px;
+        z-index: 1000;
+    }
+
+    .option-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .option-item:last-child {
+        border-bottom: none;
+    }
+
+    .option-item:hover {
+        background-color: #f5f5f5;
     }
 
     .module-creator {
