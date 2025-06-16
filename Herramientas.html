@@ -1,631 +1,455 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Nunito"
-    />
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    />
 
-    <link rel="icon" href="Icono.ico" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito" />
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <title>Herramientas</title>
-  </head>
+  <link rel="icon" href="Icono.ico" />
 
-  <body>
-    <header>
-      <nav>
-        <div class="titulo">
-          <h2>
-            <a
-              href="index.html"
-              style="display: flex; align-items: center; gap: 10px"
-            >
-              <img
-                src="Icono.png"
-                width="45"
-                alt="Icono"
-                style="vertical-align: middle"
-              />
-              Playground
-            </a>
-          </h2>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <title>Herramientas</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <div class="titulo">
+        <h2>
+          <a href="index.html" style="display: flex; align-items: center; gap: 10px">
+            <img src="Icono.png" width="45" alt="Icono" style="vertical-align: middle" />
+            Playground
+            <div id="HoraAlmuerzos"></div>
+          </a>
+        </h2>
+      </div>
+      <ul class="botonesNav">
+        <li><a href="Calculadora.html">Calculadora</a></li>
+        <li><a href="Herramientas.html">Herramientas</a></li>
+        <li><a href="Plantillas.html">Plantillas</a></li>
+        <li><a href="Procedimientos.html">Procedimientos</a></li>
+        <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
+        <li>
+          <a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a>
+        </li>
+        <li>
+          <a id="usuario"><i class="far fa-user"></i></a>
+        </li>
+        <!--<li><a id="configuraciones" href="Configuraciones.html"><i class="fa fa-gear"></i></a></li>-->
+      </ul>
+    </nav>
+  </header>
+  <section>
+    <h1 id="Titulo">Herramientas</h1>
+    <div class="GModulos">
+      <div class="Modulo" id="M1">
+        <h2>Contactos de las tiendas</h2>
+        <div id="FormTiendas">
+          <input type="text" id="busqueda" placeholder="Buscar..." style="height: 36px" />
+          <button id="Limpiar2">Limpiar</button>
         </div>
-        <ul class="botonesNav">
-          <li><a href="Calculadora.html">Calculadora</a></li>
-          <li><a href="Herramientas.html">Herramientas</a></li>
-          <li><a href="Plantillas.html">Plantillas</a></li>
-          <li><a href="Procedimientos.html">Procedimientos</a></li>
-          <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
-          <li>
-            <a
-              href="https://anderson1178.github.io/js-vite-blackjack/"
-              target="_blank"
-              >BlackJack</a
-            >
-          </li>
-          <li>
-            <a id="usuario"><i class="far fa-user"></i></a>
-          </li>
-          <!--<li><a id="configuraciones" href="Configuraciones.html"><i class="fa fa-gear"></i></a></li>-->
-        </ul>
-      </nav>
-    </header>
-    <section>
-      <h1 id="Titulo">Herramientas</h1>
-      <div class="GModulos">
-        <div class="Modulo" id="M1">
-          <h2>Contactos de las tiendas</h2>
-          <div id="FormTiendas">
-            <input
-              type="text"
-              id="busqueda"
-              placeholder="Buscar..."
-              style="height: 36px"
-            />
-            <button id="Limpiar2">Limpiar</button>
-          </div>
-          <table id="Contactos">
-            <tr>
-              <th>CeCo</th>
-              <th>Tienda</th>
-              <th>Celular</th>
-              <th>Zona</th>
-              <th>Lider de zona</th>
-              <th>Correo</th>
-            </tr>
-          </table>
-        </div>
+        <table id="Contactos">
+          <tr>
+            <th>CeCo</th>
+            <th>Tienda</th>
+            <th>Celular</th>
+            <th>Zona</th>
+            <th>Lider de zona</th>
+            <th>Correo</th>
+          </tr>
+        </table>
+      </div>
 
-        <div class="Modulo" id="M2">
-          <h2>Matriz de escalamiento</h2>
-          <div id="FormTiendas">
-            <input
-              type="text"
-              id="busqueda2"
-              placeholder="Buscar..."
-              style="height: 36px"
-            />
-            <button id="Limpiar3">Limpiar</button>
-          </div>
-          <table id="Matriz">
-            <tr>
-              <th>Tipo de servicio</th>
-              <th>Área del servicio</th>
-              <th>Categoria padre</th>
-              <th>Categoria Hijo</th>
-              <th>Sintoma / Detalle</th>
-              <th>Prioridad</th>
-              <th>SLA /ANS (Min)</th>
-              <th>Recepción del caso</th>
-              <th>Pruebas de descartes</th>
-              <th>Escalamiento 1</th>
-              <th>Escalamiento 2</th>
-              <th>¿Susceptible de cierre en mesa?</th>
-              <th>Observaciones</th>
-            </tr>
-          </table>
+      <div class="Modulo" id="M2">
+        <h2>Matriz de escalamiento</h2>
+        <div id="FormTiendas">
+          <input type="text" id="busqueda2" placeholder="Buscar..." style="height: 36px" />
+          <button id="Limpiar3">Limpiar</button>
         </div>
+        <table id="Matriz">
+          <tr>
+            <th>Tipo de servicio</th>
+            <th>Área del servicio</th>
+            <th>Categoria padre</th>
+            <th>Categoria Hijo</th>
+            <th>Sintoma / Detalle</th>
+            <th>Prioridad</th>
+            <th>SLA /ANS (Min)</th>
+            <th>Recepción del caso</th>
+            <th>Pruebas de descartes</th>
+            <th>Escalamiento 1</th>
+            <th>Escalamiento 2</th>
+            <th>¿Susceptible de cierre en mesa?</th>
+            <th>Observaciones</th>
+          </tr>
+        </table>
+      </div>
 
-        <div class="Modulo" id="M3">
-          <h2>Descuentos</h2>
-          <div
-            id="Celda"
-            class="celda"
-            style="
+      <div class="Modulo" id="M3">
+        <h2>Descuentos</h2>
+        <div id="Celda" class="celda" style="
               display: flex;
               justify-content: center;
               align-items: center;
               gap: 10px;
               padding: 10px;
-            "
-          >
-            <div class="input-container">
-              <p style="margin: 0%; font-weight: bold">Valor</p>
-              <input
-                type="number"
-                placeholder="Valor"
-                min="0"
-                style="height: 36px"
-              />
-            </div>
-            <div class="input-container">
-              <p style="margin: 0%; font-weight: bold">Porcentaje</p>
-              <input
-                type="number"
-                placeholder="Porcentaje"
-                value="0"
-                min="0"
-                max="100"
-                style="height: 36px; width: 70px"
-              />
-            </div>
+            ">
+          <div class="input-container">
+            <p style="margin: 0%; font-weight: bold">Valor</p>
+            <input type="number" placeholder="Valor" min="0" style="height: 36px" />
           </div>
-          <div
-            style="
+          <div class="input-container">
+            <p style="margin: 0%; font-weight: bold">Porcentaje</p>
+            <input type="number" placeholder="Porcentaje" value="0" min="0" max="100"
+              style="height: 36px; width: 70px" />
+          </div>
+        </div>
+        <div style="
               flex-direction: column;
               display: flex;
               align-items: center;
               gap: 10px;
-            "
-          >
-            <label id="Resultado1" style="width: auto"></label>
-            <label id="Resultado11" style="width: auto"></label>
-            <button id="Limpiar" style="margin-bottom: 25px">Limpiar</button>
-          </div>
+            ">
+          <label id="Resultado1" style="width: auto"></label>
+          <label id="Resultado11" style="width: auto"></label>
+          <button id="Limpiar" style="margin-bottom: 25px">Limpiar</button>
         </div>
+      </div>
 
-        <div class="Modulo" id="M4">
-          <h1>Conversor de Minuta</h1>
-          <div style="text-align: center; width: 100%">
-            <div
-              style="
+      <div class="Modulo" id="M4">
+        <h1>Conversor de Minuta</h1>
+        <div style="text-align: center; width: 100%">
+          <div style="
                 display: flex;
                 align-items: center;
                 justify-content: space-around;
                 width: 100%;
                 gap: 20px;
-              "
-            >
-              <div style="width: 100%; margin-left: 10px">
-                <h2>CeCos</h2>
-                <textarea
-                  id="ListaTiendas"
-                  style="
+              ">
+            <div style="width: 100%; margin-left: 10px">
+              <h2>CeCos</h2>
+              <textarea id="ListaTiendas" style="
                     resize: none;
                     width: 100%;
                     height: 300px;
                     margin-bottom: 5px;
-                  "
-                ></textarea>
-              </div>
-              <div style="margin-left: 5px">
-                <a id="texto"></a>
-                <button
-                  id="convertir"
-                  style="height: fit-content; margin-bottom: 20px"
-                >
-                  Convertir
-                </button>
-                <button
-                  id="limpiarMinuta"
-                  style="height: fit-content; align-self: center"
-                >
-                  Limpiar
-                </button>
-              </div>
+                  "></textarea>
+            </div>
+            <div style="margin-left: 5px">
+              <a id="texto"></a>
+              <button id="convertir" style="height: fit-content; margin-bottom: 20px">
+                Convertir
+              </button>
+              <button id="limpiarMinuta" style="height: fit-content; align-self: center">
+                Limpiar
+              </button>
+            </div>
 
+            <div style="width: 100%; margin-right: 15px; margin-bottom: 5px">
               <div style="width: 100%; margin-right: 15px; margin-bottom: 5px">
-                <div
-                  style="width: 100%; margin-right: 15px; margin-bottom: 5px"
-                >
-                  <h2>Usuarios</h2>
-                  <textarea
-                    id="ListaTiendasJuntasComa"
-                    style="resize: none; width: 100%; height: 108px"
-                  ></textarea>
-                </div>
-                <div
-                  style="width: 100%; margin-right: 15px; margin-bottom: 5px"
-                >
-                  <h2>Establecimientos</h2>
-                  <textarea
-                    id="ListaTiendasJuntasPuntoComa"
-                    style="resize: none; width: 100%; height: 108px"
-                  ></textarea>
-                </div>
+                <h2>Usuarios</h2>
+                <textarea id="ListaTiendasJuntasComa" style="resize: none; width: 100%; height: 108px"></textarea>
+              </div>
+              <div style="width: 100%; margin-right: 15px; margin-bottom: 5px">
+                <h2>Establecimientos</h2>
+                <textarea id="ListaTiendasJuntasPuntoComa" style="resize: none; width: 100%; height: 108px"></textarea>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="Modulo" id="M5">
-          <h1>Enlaces</h1>
-          <div>
-            <table id="Enlaces">
-              <tr>
-                <th>Nombre</th>
-                <th>Enlace</th>
-              </tr>
-              <tr>
-                <td>Emisora STOP</td>
-                <td>
-                  <a
-                    href="https://www.latinamusic.co/stop"
-                    target="_blank"
-                    >https://www.latinamusic.co/stop</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Emisora YOYO</td>
-                <td>
-                  <a
-                    href="https://www.latinamusic.co/yoyo"
-                    target="_blank"
-                    >https://www.latinamusic.co/yoyo</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>SAC</td>
-                <td>
-                  <a
-                    href="https://sacweb.intercredito.com.co/siteminderagent/forms_es-ES/smpwservices_es-ES.fcc?TYPE=33554433&REALMOID=06-0003ed8c-8965-1bc7-81cf-00017f00f03d&GUID=&SMAUTHREASON=0&METHOD=GET&SMAGENTNAME=-SM-YfEVoz6%2bsw5RA%2b%2fmRsK9ulmsjvkB6kpDn7APGbZdItFMJqGG0hSKLxT%2fNUFV72zC&TARGET=-SM-https%3a%2f%2fsacweb%2eintercredito%2ecom%2eco%2f"
-                    target="_blank"
-                    >https://sacweb.intercredito.com.co/...</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Simulador de creditos</td>
-                <td>
-                  <a href="http://172.16.1.11:8045/" target="_blank"
-                    >http://172.16.1.11:8045/</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Su+Pay</td>
-                <td>
-                  <a href="https://sumasparati.mundosumas.com/primes/auth/login" target="_blank"
-                    >https://sumasparati.mundosumas.com/primes/auth/login</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>WoowUp</td>
-                <td>
-                  <a
-                    href="https://admin.woowup.com/?e=not_logged_in&to=%2Fapp%2Fbrain%2F%23!%2Fyoyojeans%2Fcustomers%2Fsearch"
-                    target="_blank"
-                    >https://admin.woowup.com/...</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>PowerApps</td>
-                <td>
-                  <a
-                    href="https://apps.powerapps.com/play/e/default-20f6b77f-9d7d-4ccb-9e18-9afc6354561c/a/4367c0e0-0828-4247-be2c-bb3d0ddb1f97?tenantId=20f6b77f-9d7d-4ccb-9e18-9afc6354561c"
-                    target="_blank"
-                    >https://apps.powerapps.com/play/...</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Datacredito</td>
-                <td>
-                  <a
-                    href="https://apps.datacredito.com.co/raw/user-account/login/web/index"
-                    target="_blank"
-                    >https://apps.datacredito.com.co/raw/user-account/login/web/index</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Coordinadora</td>
-                <td>
-                  <a
-                    href="https://guias.coordinadora.com/site/index.php#none"
-                    target="_blank"
-                    >https://guias.coordinadora.com/site/index.php#none</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Intranet</td>
-                <td>
-                  <a href="http://10.250.4.40/default.aspx" target="_blank"
-                    >http://10.250.4.40/default.aspx</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td rowspan="2">Procesos</td>
-                <td>
-                  <a href="http://svsy.stop.com.co:8087/" target="_blank"
-                    >http://svsy.stop.com.co:8087/</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <a href="http://10.160.0.51:8087/" target="_blank"
-                    >http://10.160.0.51:8087/</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Aula Virtual</td>
-                <td>
-                  <a href="http://54.243.238.132/moodle/login/index.php" target="_blank"
-                    >http://54.243.238.132/moodle/login/index.php</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Sodexo</td>
-                <td>
-                  <a
-                    href="https://transacciones.sodexhopass.com.co/AFILIADOS/pages/login"
-                    target="_blank"
-                    >https://transacciones.sodexhopass.com.co/AFILIADOS/pages/login</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Kaiowa STOP</td>
-                <td>
-                  <a
-                    href="https://app.kaiowa.co/ap/#/login?cid=ODkwOTExODk4LTVjaWFfc3RvcF9zYXM&codpv=325"
-                    target="_blank"
-                    >https://app.kaiowa.co/ap/#/login?cid=ODkwOTExODk4LTVjaWFfc3RvcF9zYXM&codpv=325</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Kaiowa YOYO</td>
-                <td>
-                  <a
-                    href="https://app.kaiowa.co/ap/#/login?cid=OTAwNDg2MzcwLTBjaWFfeW95bw&codpv=269"
-                    target="_blank"
-                    >https://app.kaiowa.co/ap/#/login?cid=OTAwNDg2MzcwLTBjaWFfeW95bw&codpv=269</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Kactus Nomina</td>
-                <td>
-                  <a
-                    href="https://servicios.almacenesstop.com:8088/WebKactus/frmLogin.aspx"
-                    target="_blank"
-                    >https://servicios.almacenesstop.com:8088/WebKactus/frmLogin.aspx</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Comisiones</td>
-                <td>
-                  <a
-                    href="https://comisiones.stop.local:9064/Informativa/Inicio"
-                    target="_blank"
-                    >https://comisiones.stop.local:9064/Informativa/Inicio</a
-                  >
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="Modulo" id="M6">
-          <h1>Instructivos</h1>
-          <div id="FormTiendas">
-            <input
-              type="text"
-              id="busqueda3"
-              placeholder="Buscar..."
-              style="height: 36px"
-            />
-            <button id="Limpiar4">Limpiar</button>
-          </div>
-          <div id="Gpdf" style="padding: 10px"></div>
-        </div>
-
-        <div class="Modulo" id="M7">
-          <h1>Extensiones Administrativas</h1>
-          <div id="FormTiendas">
-            <input
-              type="text"
-              id="busqueda4"
-              placeholder="Buscar..."
-              style="height: 36px"
-            />
-            <button id="Limpiar5">Limpiar</button>
-          </div>
-          <table id="Administrativas">
+      <div class="Modulo" id="M5">
+        <h1>Enlaces</h1>
+        <div>
+          <table id="Enlaces">
             <tr>
               <th>Nombre</th>
-              <th>Departamento</th>
-              <th>Extensión</th>
-              <th>Edificio</th>
+              <th>Enlace</th>
+            </tr>
+            <tr>
+              <td>Emisora STOP</td>
+              <td>
+                <a href="https://www.latinamusic.co/stop" target="_blank">https://www.latinamusic.co/stop</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Emisora YOYO</td>
+              <td>
+                <a href="https://www.latinamusic.co/yoyo" target="_blank">https://www.latinamusic.co/yoyo</a>
+              </td>
+            </tr>
+            <tr>
+              <td>SAC</td>
+              <td>
+                <a href="https://sacweb.intercredito.com.co/siteminderagent/forms_es-ES/smpwservices_es-ES.fcc?TYPE=33554433&REALMOID=06-0003ed8c-8965-1bc7-81cf-00017f00f03d&GUID=&SMAUTHREASON=0&METHOD=GET&SMAGENTNAME=-SM-YfEVoz6%2bsw5RA%2b%2fmRsK9ulmsjvkB6kpDn7APGbZdItFMJqGG0hSKLxT%2fNUFV72zC&TARGET=-SM-https%3a%2f%2fsacweb%2eintercredito%2ecom%2eco%2f"
+                  target="_blank">https://sacweb.intercredito.com.co/...</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Simulador de creditos</td>
+              <td>
+                <a href="http://172.16.1.11:8045/" target="_blank">http://172.16.1.11:8045/</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Su+Pay</td>
+              <td>
+                <a href="https://sumasparati.mundosumas.com/primes/auth/login"
+                  target="_blank">https://sumasparati.mundosumas.com/primes/auth/login</a>
+              </td>
+            </tr>
+            <tr>
+              <td>WoowUp</td>
+              <td>
+                <a href="https://admin.woowup.com/?e=not_logged_in&to=%2Fapp%2Fbrain%2F%23!%2Fyoyojeans%2Fcustomers%2Fsearch"
+                  target="_blank">https://admin.woowup.com/...</a>
+              </td>
+            </tr>
+            <tr>
+              <td>PowerApps</td>
+              <td>
+                <a href="https://apps.powerapps.com/play/e/default-20f6b77f-9d7d-4ccb-9e18-9afc6354561c/a/4367c0e0-0828-4247-be2c-bb3d0ddb1f97?tenantId=20f6b77f-9d7d-4ccb-9e18-9afc6354561c"
+                  target="_blank">https://apps.powerapps.com/play/...</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Datacredito</td>
+              <td>
+                <a href="https://apps.datacredito.com.co/raw/user-account/login/web/index"
+                  target="_blank">https://apps.datacredito.com.co/raw/user-account/login/web/index</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Coordinadora</td>
+              <td>
+                <a href="https://guias.coordinadora.com/site/index.php#none"
+                  target="_blank">https://guias.coordinadora.com/site/index.php#none</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Intranet</td>
+              <td>
+                <a href="http://10.250.4.40/default.aspx" target="_blank">http://10.250.4.40/default.aspx</a>
+              </td>
+            </tr>
+            <tr>
+              <td rowspan="2">Procesos</td>
+              <td>
+                <a href="http://svsy.stop.com.co:8087/" target="_blank">http://svsy.stop.com.co:8087/</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="http://10.160.0.51:8087/" target="_blank">http://10.160.0.51:8087/</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Aula Virtual</td>
+              <td>
+                <a href="http://54.243.238.132/moodle/login/index.php"
+                  target="_blank">http://54.243.238.132/moodle/login/index.php</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Sodexo</td>
+              <td>
+                <a href="https://transacciones.sodexhopass.com.co/AFILIADOS/pages/login"
+                  target="_blank">https://transacciones.sodexhopass.com.co/AFILIADOS/pages/login</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Kaiowa STOP</td>
+              <td>
+                <a href="https://app.kaiowa.co/ap/#/login?cid=ODkwOTExODk4LTVjaWFfc3RvcF9zYXM&codpv=325"
+                  target="_blank">https://app.kaiowa.co/ap/#/login?cid=ODkwOTExODk4LTVjaWFfc3RvcF9zYXM&codpv=325</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Kaiowa YOYO</td>
+              <td>
+                <a href="https://app.kaiowa.co/ap/#/login?cid=OTAwNDg2MzcwLTBjaWFfeW95bw&codpv=269"
+                  target="_blank">https://app.kaiowa.co/ap/#/login?cid=OTAwNDg2MzcwLTBjaWFfeW95bw&codpv=269</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Kactus Nomina</td>
+              <td>
+                <a href="https://servicios.almacenesstop.com:8088/WebKactus/frmLogin.aspx"
+                  target="_blank">https://servicios.almacenesstop.com:8088/WebKactus/frmLogin.aspx</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Comisiones</td>
+              <td>
+                <a href="https://comisiones.stop.local:9064/Informativa/Inicio"
+                  target="_blank">https://comisiones.stop.local:9064/Informativa/Inicio</a>
+              </td>
             </tr>
           </table>
         </div>
-        <div class="Modulo" id="M8">
-          <h1>Enlaces de los asesores</h1>
-          <div>
-            <table id="EnlacesArus">
-              <tr>
-                <th>Usuario</th>
-                <th>Enlace</th>
-              </tr>
-              <tr>
-                <td>Soporteadm</td>
-                <td>
-                  <a href="http://10.160.0.50:8080/" target="_blank"
-                    >AD Manager</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td class="nombreUsuario"></td>
-                <td>
-                  <a
-                    href="https://stop.arandasoft.com/asmsspecialist/index.html#/"
-                    target="_blank"
-                    >Aranda</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>centrodeservicios@stop.com.co</td>
-                <td>
-                  <a
-                    href="https://portal.ciriontechnologies.com/portal/#/login"
-                    target="_blank"
-                    >Cirion</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>centrodeservicios@stop.com.co</td>
-                <td>
-                  <a
-                    href="https://outlook.office.com/mail/AAMkAGU5YTE1ZTczLTgyNmItNGMwMy1hZTRlLTA2ODhkZDM1Y2QxNwAuAAAAAABDUr8NCmIlRaeB0fedVizDAQCtYioJr2vaToKXeUoGjn8HAAVvxWbpAAA%3D"
-                    target="_blank"
-                    >Correo centro de servicios</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>centro.servicios</td>
-                <td>
-                  <a
-                    href="https://www.numrot7.net/stopjeans/login"
-                    target="_blank"
-                    >NumRot</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>centrodeservicios@stop.com.co</td>
-                <td>
-                  <a href="https://servicio.triara.co/ess.do" target="_blank"
-                    >Internet Claro</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td class="nombreUsuario"></td>
-                <td>
-                  <a href="https://kiosko.arus.com.co/kioskoj/" target="_blank"
-                    >Kiosko</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td class="nombreUsuario"></td>
-                <td>
-                  <a
-                    href="https://mosaico.arus.com.co/authentication/login"
-                    target="_blank"
-                    >Mosaico integrador</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>nagios</td>
-                <td>
-                  <a href="http://10.160.0.52/nagios/" target="_blank"
-                    >Nagios</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td class="nombreUsuario"></td>
-                <td>
-                  <a
-                    href="https://gestionatuacceso.arus.com.co/webclient/index.html?#/selfservice/change-password"
-                    target="_blank"
-                    >Portal autoservicio Arus</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>agent/0000 (monitoreo.stop Stop20//)</td>
-                <td>
-                  <a
-                    href="http://10.0.0.208:8080/queuemetrics/autenticazione.jsp"
-                    target="_blank"
-                    >Queuemetrics</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td class="nombreUsuario"></td>
-                <td>
-                  <a
-                    href="https://biometricos.arus.com.co/Autogestion/Home"
-                    target="_blank"
-                    >Softcontrol</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td># de Cédula</td>
-                <td>
-                  <a
-                    href="http://10.160.0.49:9062/"
-                    target="_blank"
-                    >Actualizar fecha de nacimiento cliente</a
-                  >
-                </td>
-              </tr>
-              <tr>
-                <td>Datos propios</td>
-                <td>
-                  <a
-                    href="https://lc.leancore.co/"
-                    target="_blank"
-                    >LeanCore Dashboard</a
-                  >
-                </td>
-              </tr>
-            </table>
-          </div>
+      </div>
+      <div class="Modulo" id="M6">
+        <h1>Instructivos</h1>
+        <div id="FormTiendas">
+          <input type="text" id="busqueda3" placeholder="Buscar..." style="height: 36px" />
+          <button id="Limpiar4">Limpiar</button>
         </div>
+        <div id="Gpdf" style="padding: 10px"></div>
       </div>
 
-      <label id="Resultado"></label>
-      <div id="myModal2" class="modal">
-        <div class="modal-content2">
-          <span id="close2" style="position: absolute; right: 1; top: 0"
-            >&times;</span
-          >
-          <div
-            id="modal-content2"
-            style="
+      <div class="Modulo" id="M7">
+        <h1>Extensiones Administrativas</h1>
+        <div id="FormTiendas">
+          <input type="text" id="busqueda4" placeholder="Buscar..." style="height: 36px" />
+          <button id="Limpiar5">Limpiar</button>
+        </div>
+        <table id="Administrativas">
+          <tr>
+            <th>Nombre</th>
+            <th>Departamento</th>
+            <th>Extensión</th>
+            <th>Edificio</th>
+          </tr>
+        </table>
+      </div>
+      <div class="Modulo" id="M8">
+        <h1>Enlaces de los asesores</h1>
+        <div>
+          <table id="EnlacesArus">
+            <tr>
+              <th>Usuario</th>
+              <th>Enlace</th>
+            </tr>
+            <tr>
+              <td>Soporteadm</td>
+              <td>
+                <a href="http://10.160.0.50:8080/" target="_blank">AD Manager</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="nombreUsuario"></td>
+              <td>
+                <a href="https://stop.arandasoft.com/asmsspecialist/index.html#/" target="_blank">Aranda</a>
+              </td>
+            </tr>
+            <tr>
+              <td>centrodeservicios@stop.com.co</td>
+              <td>
+                <a href="https://portal.ciriontechnologies.com/portal/#/login" target="_blank">Cirion</a>
+              </td>
+            </tr>
+            <tr>
+              <td>centrodeservicios@stop.com.co</td>
+              <td>
+                <a href="https://outlook.office.com/mail/AAMkAGU5YTE1ZTczLTgyNmItNGMwMy1hZTRlLTA2ODhkZDM1Y2QxNwAuAAAAAABDUr8NCmIlRaeB0fedVizDAQCtYioJr2vaToKXeUoGjn8HAAVvxWbpAAA%3D"
+                  target="_blank">Correo centro de servicios</a>
+              </td>
+            </tr>
+            <tr>
+              <td>centro.servicios</td>
+              <td>
+                <a href="https://www.numrot7.net/stopjeans/login" target="_blank">NumRot</a>
+              </td>
+            </tr>
+            <tr>
+              <td>centrodeservicios@stop.com.co</td>
+              <td>
+                <a href="https://servicio.triara.co/ess.do" target="_blank">Internet Claro</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="nombreUsuario"></td>
+              <td>
+                <a href="https://kiosko.arus.com.co/kioskoj/" target="_blank">Kiosko</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="nombreUsuario"></td>
+              <td>
+                <a href="https://mosaico.arus.com.co/authentication/login" target="_blank">Mosaico integrador</a>
+              </td>
+            </tr>
+            <tr>
+              <td>nagios</td>
+              <td>
+                <a href="http://10.160.0.52/nagios/" target="_blank">Nagios</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="nombreUsuario"></td>
+              <td>
+                <a href="https://gestionatuacceso.arus.com.co/webclient/index.html?#/selfservice/change-password"
+                  target="_blank">Portal autoservicio Arus</a>
+              </td>
+            </tr>
+            <tr>
+              <td>agent/0000 (monitoreo.stop Stop20//)</td>
+              <td>
+                <a href="http://10.0.0.208:8080/queuemetrics/autenticazione.jsp" target="_blank">Queuemetrics</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="nombreUsuario"></td>
+              <td>
+                <a href="https://biometricos.arus.com.co/Autogestion/Home" target="_blank">Softcontrol</a>
+              </td>
+            </tr>
+            <tr>
+              <td># de Cédula</td>
+              <td>
+                <a href="http://10.160.0.49:9062/" target="_blank">Actualizar fecha de nacimiento cliente</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Datos propios</td>
+              <td>
+                <a href="https://lc.leancore.co/" target="_blank">LeanCore Dashboard</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <label id="Resultado"></label>
+    <div id="myModal2" class="modal">
+      <div class="modal-content2">
+        <span id="close2" style="position: absolute; right: 1; top: 0">&times;</span>
+        <div id="modal-content2" style="
               display: flex;
               flex-direction: column;
               align-items: center;
               gap: 10px;
-            "
-          >
-            <h2>¿Quiere cerrar la sesión?</h2>
-            <button id="btnCerrarSesion">Cerrar sesión</button>
-          </div>
+            ">
+          <h2>¿Quiere cerrar la sesión?</h2>
+          <button id="btnCerrarSesion">Cerrar sesión</button>
         </div>
       </div>
-      <audio
-        id="notificationSound"
-        src="notification.mp3"
-        preload="auto"
-      ></audio>
-      <button
-        id="btnMostrarReproductor"
-        style="display: flex; align-self: end; justify-self: end; border: 0"
-      ></button>
-    </section>
-    <footer>
-      <p>© 2024 Andrés Felipe Yepes Tascón</p>
-    </footer>
-    <script src="scriptMusica.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="scriptHerramientas.js"></script>
-    <script src="Notificador.js"></script>
-    <script src="Autorizacion.js" type="module" defer></script>
-    <script src="CerrarSesion.js" type="module" defer></script>
-  </body>
+    </div>
+    <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
+    <button id="btnMostrarReproductor" style="display: flex; align-self: end; justify-self: end; border: 0"></button>
+  </section>
+  <footer>
+    <p>© 2024 Andrés Felipe Yepes Tascón</p>
+  </footer>
+  <script src="scriptMusica.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  <script src="scriptHerramientas.js"></script>
+  <script src="Notificador.js"></script>
+  <script src="Autorizacion.js" type="module" defer></script>
+  <script src="CerrarSesion.js" type="module" defer></script>
+  <script src="Almuerzo.js" type="module" defer></script>
+</body>
+
 </html>

@@ -350,7 +350,9 @@ button .botonReiniciar:hover {
     display: flex;
     justify-content: center;
     font-family: 'Nunito', Arial, sans-serif;
-
+    font-size: small;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .gradient {
