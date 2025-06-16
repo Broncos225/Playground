@@ -346,7 +346,7 @@ button .botonReiniciar:hover {
     width: 150px;
 }
 
-#BotonesHorario {
+#HoraAlmuerzos {
     display: flex;
     justify-content: center;
     font-family: 'Nunito', Arial, sans-serif;
@@ -1964,3 +1964,4 @@ input:checked+.slider:before {
     color: #666;
     flex-grow: 4;
 }
+
