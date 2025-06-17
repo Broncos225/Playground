@@ -381,12 +381,12 @@ async function mostrarHorarioAlmuerzo() {
         switch (turnoAsesor.estado) {
             case 'activo':
                 icon = '🍽️';
-                mensaje = `${icon} <span style="font-weight: bold;">ALMUERZO AHORA</span> - ${turnText} ${rangeText}${turnoCompletoInfo}`;
+                mensaje = `${icon} <span style="font-weight: bold;">ALMUERZO AHORA</span> - ${rangeText}${turnoCompletoInfo}`;
                 className = 'active';
                 break;
             case 'proximo':
                 icon = '⏰';
-                mensaje = `${icon} Próximo almuerzo - ${turnText} ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
+                mensaje = `${icon} Próximo almuerzo - ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
                 className = 'proximo';
 
                 // Iniciar contador automático
