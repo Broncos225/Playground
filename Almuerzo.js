@@ -1,41 +1,32 @@
-// Copyright (c) 2024 Andrés Felipe Yepes Tascón
-// Licensed under the MIT License. See LICENSE file for details.
 let app;
 try {
-    app = firebase.app(); // Intenta obtener la app existente
+    app = firebase.app();
     console.log('Firebase ya está inicializado');
 } catch (error) {
-    // Si no existe, la inicializa
     const firebaseConfig = {
-        apiKey: "tu-api-key",
-        authDomain: "tu-project.firebaseapp.com",
-        databaseURL: "https://tu-project-default-rtdb.firebaseio.com",
-        projectId: "tu-project-id",
-        storageBucket: "tu-project.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "tu-app-id"
+        apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
+        authDomain: "playgroundbdstop.firebaseapp.com",
+        databaseURL: "https://playgroundbdstop-default-rtdb.firebaseio.com",
+        projectId: "playgroundbdstop",
+        storageBucket: "playgroundbdstop.appspot.com",
+        messagingSenderId: "808082296806",
+        appId: "1:808082296806:web:c1d0dc3c2fc5fbf6c9d027"
     };
     app = firebase.initializeApp(firebaseConfig);
     console.log('Firebase inicializado correctamente');
 }
 
-// Obtener referencia a la base de datos
 const db = firebase.database();
 
-// Función para extraer el turno base de un turno completo (ej: T1N → T1)
 function extraerTurnoBase(turnoCompleto) {
     if (!turnoCompleto) return null;
-
-    // Buscar patrones T1, T2, T3, T4, T5, T6 dentro del string
     const match = turnoCompleto.match(/T[1-6]/);
     return match ? match[0] : null;
 }
 
-// Función para obtener información del turno (horarios estáticos de almuerzo)
 function obtenerInfoAlmuerzoTurno(turnoCompleto) {
     if (!turnoCompleto) return null;
 
-    // Mapear los turnos con sus rangos horarios de almuerzo estáticos
     const horariosAlmuerzo = {
         'T1': { apertura: '11:30 AM', cierre: '12:30 PM' },
         'T2': { apertura: '12:15 PM', cierre: '1:15 PM' },
@@ -46,12 +37,10 @@ function obtenerInfoAlmuerzoTurno(turnoCompleto) {
         'TSA': { apertura: '12:00 PM', cierre: '12:30 PM' }
     };
 
-    // Primero buscar si es TSA exacto
     if (turnoCompleto === 'TSA') {
         return horariosAlmuerzo['TSA'];
     }
 
-    // Buscar patrones T1, T2, T3, T4, T5, T6 dentro del string
     const match = turnoCompleto.match(/T[1-6]/);
     if (match) {
         const turnoBase = match[0];
@@ -61,7 +50,67 @@ function obtenerInfoAlmuerzoTurno(turnoCompleto) {
     return null;
 }
 
-// Función para calcular tiempo faltante
+async function obtenerTurnosTrabajadoresDelDia() {
+    try {
+        const ahora = new Date();
+        const añoSeleccionado = ahora.getFullYear();
+        const mesSeleccionado = ahora.getMonth() + 1;
+        const diaActual = ahora.getDate() + 1;
+
+        const snapshot = await db.ref('celdas').once('value');
+        const celdasData = snapshot.val();
+        
+        if (!celdasData) return [];
+
+        const trabajadoresConTurno = [];
+
+        for (const nombreAsesor in celdasData) {
+            const rutaCompleta = celdasData[nombreAsesor]?.[diaActual]?.[añoSeleccionado]?.[mesSeleccionado];
+            
+            if (rutaCompleta && rutaCompleta.texto) {
+                const turnoBase = extraerTurnoBase(rutaCompleta.texto);
+                if (turnoBase) {
+                    trabajadoresConTurno.push({
+                        nombre: nombreAsesor,
+                        turnoCompleto: rutaCompleta.texto,
+                        turnoBase: turnoBase,
+                        numeroTurno: parseInt(turnoBase.replace('T', ''))
+                    });
+                }
+            }
+        }
+
+        trabajadoresConTurno.sort((a, b) => a.numeroTurno - b.numeroTurno);
+        
+        return trabajadoresConTurno;
+    } catch (error) {
+        console.error("Error al obtener turnos de trabajadores:", error);
+        return [];
+    }
+}
+
+function calcularTurnosAlmuerzoInteligente(trabajadoresConTurno) {
+    if (trabajadoresConTurno.length === 0) return {};
+
+    const distribucion = {};
+    const turnosAlmuerzoDisponibles = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'];
+    let indiceAlmuerzo = 0;
+
+    trabajadoresConTurno.forEach(trabajador => {
+        if (indiceAlmuerzo < turnosAlmuerzoDisponibles.length) {
+            const turnoAlmuerzoAsignado = turnosAlmuerzoDisponibles[indiceAlmuerzo];
+            distribucion[trabajador.nombre] = {
+                turnoTrabajo: trabajador.turnoBase,
+                turnoAlmuerzo: turnoAlmuerzoAsignado,
+                turnoCompleto: trabajador.turnoCompleto
+            };
+            indiceAlmuerzo++;
+        }
+    });
+
+    return distribucion;
+}
+
 function calcularTiempoFaltante(horaObjetivo) {
     const ahora = new Date();
     const [hora, minuto] = horaObjetivo.split(':').map(num => parseInt(num));
@@ -71,7 +120,7 @@ function calcularTiempoFaltante(horaObjetivo) {
 
     const diferencia = objetivoHoy.getTime() - ahora.getTime();
 
-    if (diferencia <= 0) return null; // Ya pasó la hora
+    if (diferencia <= 0) return null;
 
     const minutosFaltantes = Math.floor(diferencia / (1000 * 60));
     const horasFaltantes = Math.floor(minutosFaltantes / 60);
@@ -84,7 +133,6 @@ function calcularTiempoFaltante(horaObjetivo) {
     }
 }
 
-// Función para convertir hora en formato 12h a formato de objeto Date
 function parseHora12h(hora12h) {
     const match = hora12h.match(/(\d+):(\d+)\s*(AM|PM)/i);
     if (!match) return null;
@@ -102,7 +150,6 @@ function parseHora12h(hora12h) {
     return { horas, minutos };
 }
 
-// Función para obtener información del turno completo (apertura y cierre del turno laboral)
 async function obtenerInfoTurnoCompleto(turnoBase) {
     if (!turnoBase) return null;
 
@@ -125,19 +172,16 @@ async function obtenerInfoTurnoCompleto(turnoBase) {
     }
 }
 
-// Función para obtener el turno del día siguiente
 async function obtenerTurnoDiaSiguiente() {
     try {
-        // Obtener el nombre del asesor actual
         var nombreAsesorActual = localStorage.getItem("nombreAsesorActual");
         if (!nombreAsesorActual) {
             throw new Error("No se encontró el nombre del asesor actual");
         }
         nombreAsesorActual = nombreAsesorActual.replace(/_/g, " ");
 
-        // Obtener fecha del día siguiente
         const mañana = new Date();
-        mañana.setDate(mañana.getDate() + 2); // Día siguiente (+2 por el ajuste actual)
+        mañana.setDate(mañana.getDate() + 2);
 
         const añoSeleccionado = mañana.getFullYear();
         const mesSeleccionado = mañana.getMonth() + 1;
@@ -149,7 +193,6 @@ async function obtenerTurnoDiaSiguiente() {
         console.log("Año:", añoSeleccionado);
         console.log("Mes:", mesSeleccionado);
 
-        // Consultar Firebase para obtener el turno del día siguiente
         const promesa = db.ref('celdas/' + nombreAsesorActual + '/' + diaSiguiente + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
         const snapshot = await promesa;
         const turnoData = snapshot.val();
@@ -157,7 +200,6 @@ async function obtenerTurnoDiaSiguiente() {
         const turnoCompleto = turnoData ? turnoData.texto : null;
         const turnoBase = extraerTurnoBase(turnoCompleto);
 
-        // Obtener información del turno completo (apertura y cierre laboral) desde Firebase
         let rango = null;
         if (turnoBase) {
             const infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoBase);
@@ -184,44 +226,40 @@ async function obtenerTurnoDiaSiguiente() {
     }
 }
 
-// Función para obtener el turno de almuerzo del asesor actual desde Firebase
 async function obtenerTurnoAlmuerzoAsesor() {
     try {
-        // Obtener el nombre del asesor actual
         var nombreAsesorActual = localStorage.getItem("nombreAsesorActual");
         if (!nombreAsesorActual) {
             throw new Error("No se encontró el nombre del asesor actual");
         }
         nombreAsesorActual = nombreAsesorActual.replace(/_/g, " ");
 
-        // Obtener fecha actual
         const ahora = new Date();
         const añoSeleccionado = ahora.getFullYear();
-        const mesSeleccionado = ahora.getMonth() + 1; // 1-12 (junio = 6)
-        const diaActual = ahora.getDate() + 1; // Ajuste para el día (obtiene el día siguiente)
+        const mesSeleccionado = ahora.getMonth() + 1;
+        const diaActual = ahora.getDate() + 1;
 
-        // Debug: mostrar valores en consola
         console.log("Asesor:", nombreAsesorActual);
         console.log("Día:", diaActual);
         console.log("Año:", añoSeleccionado);
         console.log("Mes:", mesSeleccionado);
         console.log("Ruta Firebase:", 'celdas/' + nombreAsesorActual + '/' + diaActual + '/' + añoSeleccionado + '/' + mesSeleccionado);
 
-        // Consultar Firebase para obtener el turno del día actual
+        const trabajadoresDelDia = await obtenerTurnosTrabajadoresDelDia();
+        const distribucionAlmuerzos = calcularTurnosAlmuerzoInteligente(trabajadoresDelDia);
+
         const promesa = db.ref('celdas/' + nombreAsesorActual + '/' + diaActual + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
         const snapshot = await promesa;
-        const turnoAsignadoData = snapshot.val(); // This will be {texto: 'T2'} or null/undefined
+        const turnoAsignadoData = snapshot.val();
 
-        // Extract the actual turn string from the object
         const turnoCompleto = turnoAsignadoData ? turnoAsignadoData.texto : null;
-
-        // Extraer el turno base (T1, T2, etc.) del turno completo
         const turnoBase = extraerTurnoBase(turnoCompleto);
 
         console.log("Turno completo obtenido:", turnoCompleto);
         console.log("Turno base extraído:", turnoBase);
+        console.log("Distribución de almuerzos:", distribucionAlmuerzos);
 
-        if (!turnoCompleto) { // Si no hay turno asignado
+        if (!turnoCompleto) {
             return {
                 turnoCompleto: null,
                 turnoBase: null,
@@ -232,17 +270,18 @@ async function obtenerTurnoAlmuerzoAsesor() {
             };
         }
 
-        // Obtener información del turno de almuerzo (horarios estáticos)
+        const turnoAlmuerzoAsignado = distribucionAlmuerzos[nombreAsesorActual]?.turnoAlmuerzo;
+        console.log("Turno de almuerzo asignado:", turnoAlmuerzoAsignado);
+
         let infoAlmuerzo = null;
         let rango = null;
-        if (turnoCompleto) {
-            infoAlmuerzo = obtenerInfoAlmuerzoTurno(turnoCompleto);
+        if (turnoAlmuerzoAsignado) {
+            infoAlmuerzo = obtenerInfoAlmuerzoTurno(turnoAlmuerzoAsignado);
             if (infoAlmuerzo) {
                 rango = `${infoAlmuerzo.apertura} - ${infoAlmuerzo.cierre}`;
             }
         }
 
-        // Mapear estados especiales
         const estadosEspeciales = {
             'D': 'Descanso',
             'DV': 'Descanso/Vacaciones',
@@ -251,9 +290,7 @@ async function obtenerTurnoAlmuerzoAsesor() {
 
         console.log("¿Tiene horario de almuerzo válido?", turnoCompleto, infoAlmuerzo);
 
-        // Si no tiene un horario de almuerzo válido
         if (!infoAlmuerzo) {
-            // Verificar si es un estado especial conocido
             const estadoEspecial = estadosEspeciales[turnoCompleto];
 
             return {
@@ -266,13 +303,13 @@ async function obtenerTurnoAlmuerzoAsesor() {
             };
         }
 
-        // Verificar si está en horario de almuerzo actual y calcular tiempo faltante
         const estadoYTiempo = verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora);
         console.log("Estado y tiempo calculado:", estadoYTiempo);
 
         return {
             turnoCompleto: turnoCompleto,
             turnoBase: turnoBase,
+            turnoAlmuerzoAsignado: turnoAlmuerzoAsignado,
             rango: rango,
             estado: estadoYTiempo.estado,
             asesor: nombreAsesorActual,
@@ -293,7 +330,6 @@ async function obtenerTurnoAlmuerzoAsesor() {
     }
 }
 
-// Función auxiliar para verificar el estado del turno con tiempo faltante
 function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
     const horaActual = ahora.getHours();
     const minutosActuales = ahora.getMinutes();
@@ -303,7 +339,6 @@ function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
     console.log("Hora actual:", horaActual + ":" + minutosActuales);
     console.log("Tiempo actual en minutos:", tiempoActual);
 
-    // Parsear las horas de apertura y cierre
     const aperturaObj = parseHora12h(infoAlmuerzo.apertura);
     const cierreObj = parseHora12h(infoAlmuerzo.cierre);
 
@@ -332,16 +367,13 @@ function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
     }
 }
 
-// Función para mostrar el horario en el elemento HTML
 async function mostrarHorarioAlmuerzo() {
-    // Limpiar contador anterior
     if (contadorSimpleInterval) {
         clearInterval(contadorSimpleInterval);
         contadorSimpleInterval = null;
     }
     const elemento = document.getElementById('HoraAlmuerzos');
 
-    // Mostrar cargando mientras se obtienen los datos
     if (elemento) {
         elemento.innerHTML = `
             <p style="color: #6c757d; margin: 10px 0; font-size: 16px;">Cargando...</p>
@@ -349,30 +381,29 @@ async function mostrarHorarioAlmuerzo() {
     }
 
     try {
-        // Obtener tanto el turno de almuerzo como el turno del día siguiente
         const [turnoAsesor, turnoDiaSiguiente] = await Promise.all([
             obtenerTurnoAlmuerzoAsesor(),
             obtenerTurnoDiaSiguiente()
         ]);
 
         let mensaje = '';
-        let className = ''; // This will be the class for the main message container
-        let icon = '';      // To hold the emoji/icon
-        let turnText = '';  // To hold the 'T1', 'T2' etc.
-        let rangeText = ''; // To hold the time range
+        let className = '';
+        let icon = '';
+        let turnText = '';
+        let rangeText = '';
 
-        if (turnoAsesor.turnoBase) { // Only if a valid lunch turn exists
-            turnText = `<span class="bold-turn">${turnoAsesor.turnoBase}</span>`;
+        if (turnoAsesor.turnoAlmuerzoAsignado) {
+            turnText = `<span class="bold-turn">${turnoAsesor.turnoAlmuerzoAsignado}</span>`;
             rangeText = `${turnoAsesor.rango}`;
         }
 
-        // Información del turno completo si es diferente al base
         let turnoCompletoInfo = '';
         if (turnoAsesor.turnoCompleto && turnoAsesor.turnoCompleto !== turnoAsesor.turnoBase) {
-            turnoCompletoInfo = ` (${turnoAsesor.turnoCompleto})`;
+            turnoCompletoInfo = ` (Trabajo: ${turnoAsesor.turnoCompleto})`;
+        } else if (turnoAsesor.turnoBase) {
+            turnoCompletoInfo = ` (Trabajo: ${turnoAsesor.turnoBase})`;
         }
 
-        // Información de tiempo faltante
         let tiempoFaltanteInfo = '';
         if (turnoAsesor.tiempoFaltante) {
             tiempoFaltanteInfo = ` - <span style="color: #007bff; font-weight: bold;">Faltan ${turnoAsesor.tiempoFaltante}</span>`;
@@ -386,10 +417,9 @@ async function mostrarHorarioAlmuerzo() {
                 break;
             case 'proximo':
                 icon = '⏰';
-                mensaje = `${icon} Próximo almuerzo - ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
+                mensaje = `${icon} Próximo almuerzo ${turnText} - ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
                 className = 'proximo';
 
-                // Iniciar contador automático
                 if (turnoAsesor.infoAlmuerzo) {
                     setTimeout(() => {
                         if (contadorSimpleInterval) {
@@ -402,7 +432,7 @@ async function mostrarHorarioAlmuerzo() {
                 break;
             case 'finalizado':
                 icon = '✅';
-                mensaje = `${icon} Almuerzo finalizado - ${rangeText}${turnoCompletoInfo}`;
+                mensaje = `${icon} Almuerzo ${turnText} finalizado - ${rangeText}${turnoCompletoInfo}`;
                 className = 'finalizado';
                 break;
             case 'no_almuerza':
@@ -426,10 +456,9 @@ async function mostrarHorarioAlmuerzo() {
             default:
                 icon = '❓';
                 mensaje = `${icon} Estado desconocido`;
-                className = ''; // No specific class, rely on general container styles or a default
+                className = '';
         }
 
-        // Información del turno del día siguiente
         let mensajeDiaSiguiente = '';
         if (turnoDiaSiguiente.turnoCompleto) {
             let rangoMañana = '';
@@ -471,27 +500,19 @@ async function mostrarHorarioAlmuerzo() {
     }
 }
 
-// Función para actualizar automáticamente cada minuto (para mostrar tiempo faltante actualizado)
 function iniciarActualizacionAutomatica() {
-    // Mostrar inmediatamente
     mostrarHorarioAlmuerzo();
-
-    // Actualizar cada minuto para el tiempo faltante
     setInterval(mostrarHorarioAlmuerzo, 1 * 60 * 1000);
 }
 
-// Llamar la función cuando se cargue la página
 document.addEventListener('DOMContentLoaded', iniciarActualizacionAutomatica);
 
-// Función manual para forzar actualización
 function actualizarHorarioAlmuerzo() {
     mostrarHorarioAlmuerzo();
 }
 
-// Variables globales para el contador simple
 let contadorSimpleInterval = null;
 
-// Función para calcular tiempo faltante con segundos
 function calcularTiempoConSegundos(horaObjetivo) {
     const ahora = new Date();
     const match = horaObjetivo.match(/(\d+):(\d+)\s*(AM|PM)/i);
@@ -530,7 +551,6 @@ function calcularTiempoConSegundos(horaObjetivo) {
     }
 }
 
-// Función para actualizar solo el contador
 function actualizarContadorTexto() {
     const contadorElement = document.getElementById('contador-tiempo');
     if (!contadorElement) return;
