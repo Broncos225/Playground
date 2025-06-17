@@ -691,6 +691,10 @@ async function ExportaraTexto() {
 document.getElementById("btnExportarTexto").addEventListener("click", ExportaraTexto);
 
 function Festivos() {
+    const root = document.documentElement;
+    const styles = getComputedStyle(root);
+    const colorPrimario = styles.getPropertyValue('--color-primario').trim();
+
     var mes = document.getElementById("Mes").value;
     var ano = document.getElementById("Año").value;
     var festivos = {
@@ -714,7 +718,7 @@ function Festivos() {
     const mesActual = nombresDeMeses[fecha.getMonth()];
     for (let i = 1; i <= 31; i++) {
         var celda = document.getElementById("Dia" + i);
-        celda.style.backgroundColor = "#e69500";
+        celda.style.backgroundColor = colorPrimario;
         celda.style.color = "Black";
         if (festivos[mes].includes(i)) {
             if (dia == "Dia" + i) {

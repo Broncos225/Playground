@@ -31,7 +31,7 @@
                 <li><a href="HorariosStop.html">Horarios Stop Jeans</a></li>
                 <li><a href="https://anderson1178.github.io/js-vite-blackjack/" target="_blank">BlackJack</a></li>
                 <li><a id="usuario"><i class="far fa-user"></i></a></li>
-                <!--<li><a id="configuraciones" href="Configuraciones.html"><i class="fa fa-gear"></i></a></li>-->
+                <li><a id="configuraciones" href="Configuraciones.html"><i class="fa fa-gear"></i></a></li>
             </ul>
         </nav>
     </header>
@@ -67,7 +67,7 @@
             <div style="margin-bottom: 10px;">
                 <button id="btnNuevoTurno" class="btn-primary">Nuevo Turno</button>
             </div>
-        
+
             <!-- Modal personalizado para Nuevo Turno -->
             <div id="modalNuevoTurno" class="modal-custom">
                 <div class="modal-content-custom">
@@ -105,11 +105,15 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="nuevo-colorF">Color Fondo</label>
-                                <input type="color" class="Colorpicker" style="width: 70%; border: 1px solid #ffffff; border-radius: 10px; padding: 0;" id="nuevo-colorF" value="#FFFFFF">
+                                <input type="color" class="Colorpicker"
+                                    style="width: 70%; border: 1px solid #ffffff; border-radius: 10px; padding: 0;"
+                                    id="nuevo-colorF" value="#FFFFFF">
                             </div>
                             <div class="form-group">
                                 <label for="nuevo-colorT">Color Texto</label>
-                                <input type="color" class="Colorpicker" style="width: 70%; border: 1px solid #ffffff; border-radius: 10px; padding: 0;" id="nuevo-colorT" value="#000000">
+                                <input type="color" class="Colorpicker"
+                                    style="width: 70%; border: 1px solid #ffffff; border-radius: 10px; padding: 0;"
+                                    id="nuevo-colorT" value="#000000">
                             </div>
                         </div>
                     </div>
@@ -120,7 +124,7 @@
                     </div>
                 </div>
             </div>
-        
+
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
                     <tr>
@@ -153,7 +157,8 @@
         <p>© 2024 Andrés Felipe Yepes Tascón</p>
     </footer>
 
-
+    <script src="scriptConfiguraciones.js" type="module" defer></script>
+    <script src="PreferenciasGlobales.js" type="module" defer></script>
     <script src="scriptPagos.js" type="module"></script>
     <script src="Header.js"></script>
     <script src="Notificador.js"></script>
