@@ -59,14 +59,14 @@ async function obtenerTurnosTrabajadoresDelDia() {
 
         const snapshot = await db.ref('celdas').once('value');
         const celdasData = snapshot.val();
-        
+
         if (!celdasData) return [];
 
         const trabajadoresConTurno = [];
 
         for (const nombreAsesor in celdasData) {
             const rutaCompleta = celdasData[nombreAsesor]?.[diaActual]?.[añoSeleccionado]?.[mesSeleccionado];
-            
+
             if (rutaCompleta && rutaCompleta.texto) {
                 const turnoBase = extraerTurnoBase(rutaCompleta.texto);
                 if (turnoBase) {
@@ -81,7 +81,7 @@ async function obtenerTurnosTrabajadoresDelDia() {
         }
 
         trabajadoresConTurno.sort((a, b) => a.numeroTurno - b.numeroTurno);
-        
+
         return trabajadoresConTurno;
     } catch (error) {
         console.error("Error al obtener turnos de trabajadores:", error);
