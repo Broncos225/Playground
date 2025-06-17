@@ -1950,7 +1950,7 @@ input:checked+.slider:before {
     top: 1px;
     right: 5px;
     font-size: 25px;
-    color: #e69500;
+    color: var(--color-primario);
     cursor: pointer;
     z-index: 10;
     transition: transform 0.2s ease;
@@ -1967,3 +1967,6 @@ input:checked+.slider:before {
     flex-grow: 4;
 }
 
+#notification2 {
+    background-color: var(--color-primario);
+}

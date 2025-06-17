@@ -537,6 +537,9 @@ function verificarResultados() {
 }
 
 function showModal(fileName) {
+    const root = document.documentElement;
+    const styles = getComputedStyle(root);
+    const colorPrimario = styles.getPropertyValue('--color-primario').trim();
     var modal = document.getElementById("myModal");
     modal.scrollTop = 0;
     var modalTitulo = document.querySelector("#myModal #modal-content #titulo");
@@ -565,7 +568,7 @@ function showModal(fileName) {
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Apertura</h2>
-            <button onclick="copiarTexto('textoA')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
+            <button onclick="copiarTexto('textoA')" style="height: 40px; color: black; background-color: --color-primario;">Copiar texto</button>
         </div>
         <div id="textoA"><p>${saludo}<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
@@ -576,7 +579,7 @@ function showModal(fileName) {
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Cierre</h2>
-            <button onclick="copiarTexto('textoC')" style="height: 40px; color: black; background-color: #e69500;">Copiar texto</button>
+            <button onclick="copiarTexto('textoC')" style="height: 40px; color: black; background-color: --color-primario;">Copiar texto</button>
         </div>
         <div id="textoC"><p>${saludo}</p><p>${textoC}</p><p>Saludos.</p></div>
         `;

@@ -4,7 +4,7 @@ class PreferenciasColores {
         this.nombreUsuario = this.obtenerNombreUsuario();
         this.coloresDefecto = {
             primario: '#e69500',
-            secundario: '#e74c3c'
+            secundario: '#FFFFFF'
         };
         this.init();
     }
