@@ -31,6 +31,100 @@ function extraerTurnoBase(turnoCompleto) {
     return match ? match[0] : null;
 }
 
+// Función para obtener información del turno (horarios estáticos de almuerzo)
+function obtenerInfoAlmuerzoTurno(turnoCompleto) {
+    if (!turnoCompleto) return null;
+
+    // Mapear los turnos con sus rangos horarios de almuerzo estáticos
+    const horariosAlmuerzo = {
+        'T1': { apertura: '11:30 AM', cierre: '12:30 PM' },
+        'T2': { apertura: '12:15 PM', cierre: '1:15 PM' },
+        'T3': { apertura: '1:00 PM', cierre: '2:00 PM' },
+        'T4': { apertura: '1:45 PM', cierre: '2:45 PM' },
+        'T5': { apertura: '2:30 PM', cierre: '3:30 PM' },
+        'T6': { apertura: '3:15 PM', cierre: '4:15 PM' },
+        'TSA': { apertura: '12:00 PM', cierre: '12:30 PM' }
+    };
+
+    // Primero buscar si es TSA exacto
+    if (turnoCompleto === 'TSA') {
+        return horariosAlmuerzo['TSA'];
+    }
+
+    // Buscar patrones T1, T2, T3, T4, T5, T6 dentro del string
+    const match = turnoCompleto.match(/T[1-6]/);
+    if (match) {
+        const turnoBase = match[0];
+        return horariosAlmuerzo[turnoBase] || null;
+    }
+
+    return null;
+}
+
+// Función para calcular tiempo faltante
+function calcularTiempoFaltante(horaObjetivo) {
+    const ahora = new Date();
+    const [hora, minuto] = horaObjetivo.split(':').map(num => parseInt(num));
+
+    const objetivoHoy = new Date();
+    objetivoHoy.setHours(hora, minuto, 0, 0);
+
+    const diferencia = objetivoHoy.getTime() - ahora.getTime();
+
+    if (diferencia <= 0) return null; // Ya pasó la hora
+
+    const minutosFaltantes = Math.floor(diferencia / (1000 * 60));
+    const horasFaltantes = Math.floor(minutosFaltantes / 60);
+    const minutosRestantes = minutosFaltantes % 60;
+
+    if (horasFaltantes > 0) {
+        return `${horasFaltantes}h ${minutosRestantes}m`;
+    } else {
+        return `${minutosRestantes}m`;
+    }
+}
+
+// Función para convertir hora en formato 12h a formato de objeto Date
+function parseHora12h(hora12h) {
+    const match = hora12h.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!match) return null;
+
+    let [, horas, minutos, periodo] = match;
+    horas = parseInt(horas);
+    minutos = parseInt(minutos);
+
+    if (periodo.toUpperCase() === 'PM' && horas !== 12) {
+        horas += 12;
+    } else if (periodo.toUpperCase() === 'AM' && horas === 12) {
+        horas = 0;
+    }
+
+    return { horas, minutos };
+}
+
+// Función para obtener información del turno completo (apertura y cierre del turno laboral)
+async function obtenerInfoTurnoCompleto(turnoBase) {
+    if (!turnoBase) return null;
+
+    try {
+        const snapshot = await db.ref(`Turnos/${turnoBase}`).once('value');
+        const turnoInfo = snapshot.val();
+
+        if (turnoInfo && turnoInfo.Apertura && turnoInfo.Cierre) {
+            return {
+                apertura: turnoInfo.Apertura,
+                cierre: turnoInfo.Cierre,
+                cantidad: turnoInfo.Cantidad || null
+            };
+        }
+
+        return null;
+    } catch (error) {
+        console.error("Error al obtener información del turno completo:", error);
+        return null;
+    }
+}
+
 // Función para obtener el turno del día siguiente
 async function obtenerTurnoDiaSiguiente() {
     try {
@@ -61,9 +155,21 @@ async function obtenerTurnoDiaSiguiente() {
         const turnoData = snapshot.val();
 
         const turnoCompleto = turnoData ? turnoData.texto : null;
+        const turnoBase = extraerTurnoBase(turnoCompleto);
+
+        // Obtener información del turno completo (apertura y cierre laboral) desde Firebase
+        let rango = null;
+        if (turnoBase) {
+            const infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoBase);
+            if (infoTurnoCompleto) {
+                rango = `${infoTurnoCompleto.apertura} - ${infoTurnoCompleto.cierre}`;
+            }
+        }
 
         return {
             turnoCompleto: turnoCompleto,
+            turnoBase: turnoBase,
+            rango: rango,
             fecha: diaSiguiente + '/' + mesSeleccionado + '/' + añoSeleccionado
         };
 
@@ -71,6 +177,8 @@ async function obtenerTurnoDiaSiguiente() {
         console.error("Error al obtener turno del día siguiente:", error);
         return {
             turnoCompleto: null,
+            turnoBase: null,
+            rango: null,
             fecha: 'Error'
         };
     }
@@ -119,54 +227,57 @@ async function obtenerTurnoAlmuerzoAsesor() {
                 turnoBase: null,
                 rango: 'Sin turno asignado',
                 estado: 'sin_asignar',
-                asesor: nombreAsesorActual
+                asesor: nombreAsesorActual,
+                tiempoFaltante: null
             };
         }
 
-        // Mapear los turnos con sus rangos horarios
-        const mapaRangos = {
-            'T1': '11:30 am - 12:30 pm',
-            'T2': '12:15 pm - 1:15 pm',
-            'T3': '1:00 pm - 2:00 pm',
-            'T4': '1:45 pm - 2:45 pm',
-            'T5': '2:30 pm - 3:30 pm',
-            'T6': '3:15 pm - 4:15 pm'
-        };
+        // Obtener información del turno de almuerzo (horarios estáticos)
+        let infoAlmuerzo = null;
+        let rango = null;
+        if (turnoCompleto) {
+            infoAlmuerzo = obtenerInfoAlmuerzoTurno(turnoCompleto);
+            if (infoAlmuerzo) {
+                rango = `${infoAlmuerzo.apertura} - ${infoAlmuerzo.cierre}`;
+            }
+        }
 
         // Mapear estados especiales
         const estadosEspeciales = {
             'D': 'Descanso',
             'DV': 'Descanso/Vacaciones',
-            'TSA': 'Trabajo Sábado',
             'TSN': 'Trabajo Sin turno'
         };
 
-        console.log("¿Tiene turno base válido?", turnoBase && mapaRangos[turnoBase]);
+        console.log("¿Tiene horario de almuerzo válido?", turnoCompleto, infoAlmuerzo);
 
-        // Si no tiene un turno base válido para almuerzo
-        if (!turnoBase || !mapaRangos[turnoBase]) {
+        // Si no tiene un horario de almuerzo válido
+        if (!infoAlmuerzo) {
             // Verificar si es un estado especial conocido
             const estadoEspecial = estadosEspeciales[turnoCompleto];
 
             return {
                 turnoCompleto: turnoCompleto,
-                turnoBase: null,
+                turnoBase: turnoBase,
                 rango: estadoEspecial || 'Sin almuerzo',
                 estado: 'no_almuerza',
-                asesor: nombreAsesorActual
+                asesor: nombreAsesorActual,
+                tiempoFaltante: null
             };
         }
 
-        // Verificar si está en horario de almuerzo actual
-        const estado = verificarEstadoTurno(turnoBase, ahora);
-        console.log("Estado calculado:", estado);
+        // Verificar si está en horario de almuerzo actual y calcular tiempo faltante
+        const estadoYTiempo = verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora);
+        console.log("Estado y tiempo calculado:", estadoYTiempo);
 
         return {
             turnoCompleto: turnoCompleto,
             turnoBase: turnoBase,
-            rango: mapaRangos[turnoBase],
-            estado: estado,
-            asesor: nombreAsesorActual
+            rango: rango,
+            estado: estadoYTiempo.estado,
+            asesor: nombreAsesorActual,
+            tiempoFaltante: estadoYTiempo.tiempoFaltante,
+            infoAlmuerzo: infoAlmuerzo
         };
 
     } catch (error) {
@@ -176,53 +287,58 @@ async function obtenerTurnoAlmuerzoAsesor() {
             turnoBase: null,
             rango: 'Error al cargar',
             estado: 'error',
-            asesor: nombreAsesorActual || 'Desconocido'
+            asesor: nombreAsesorActual || 'Desconocido',
+            tiempoFaltante: null
         };
     }
 }
 
-// Función auxiliar para verificar el estado del turno
-function verificarEstadoTurno(turno, ahora) {
+// Función auxiliar para verificar el estado del turno con tiempo faltante
+function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
     const horaActual = ahora.getHours();
     const minutosActuales = ahora.getMinutes();
     const tiempoActual = horaActual * 60 + minutosActuales;
 
-    console.log("Verificando estado del turno:", turno);
+    console.log("Verificando estado del turno con info:", infoAlmuerzo);
     console.log("Hora actual:", horaActual + ":" + minutosActuales);
     console.log("Tiempo actual en minutos:", tiempoActual);
 
-    // Definir los rangos en minutos desde medianoche
-    const rangos = {
-        'T1': { inicio: 11 * 60 + 30, fin: 12 * 60 + 30 }, // 690-750
-        'T2': { inicio: 12 * 60 + 15, fin: 13 * 60 + 15 }, // 735-795
-        'T3': { inicio: 13 * 60 + 0, fin: 14 * 60 + 0 },  // 780-840
-        'T4': { inicio: 13 * 60 + 45, fin: 14 * 60 + 45 }, // 825-885
-        'T5': { inicio: 14 * 60 + 30, fin: 15 * 60 + 30 }, // 870-930
-        'T6': { inicio: 15 * 60 + 15, fin: 16 * 60 + 15 }  // 915-975
-    };
+    // Parsear las horas de apertura y cierre
+    const aperturaObj = parseHora12h(infoAlmuerzo.apertura);
+    const cierreObj = parseHora12h(infoAlmuerzo.cierre);
 
-    const rango = rangos[turno];
-    console.log("Rango del turno:", rango);
-
-    if (!rango) {
-        console.log("Turno no encontrado en rangos de tiempo");
-        return 'indefinido';
+    if (!aperturaObj || !cierreObj) {
+        console.log("Error al parsear las horas");
+        return { estado: 'indefinido', tiempoFaltante: null };
     }
 
-    if (tiempoActual >= rango.inicio && tiempoActual <= rango.fin) {
+    const inicioMinutos = aperturaObj.horas * 60 + aperturaObj.minutos;
+    const finMinutos = cierreObj.horas * 60 + cierreObj.minutos;
+
+    console.log("Rango del turno en minutos:", inicioMinutos, "-", finMinutos);
+
+    let tiempoFaltante = null;
+
+    if (tiempoActual >= inicioMinutos && tiempoActual <= finMinutos) {
         console.log("Estado: ACTIVO");
-        return 'activo';
-    } else if (tiempoActual < rango.inicio) {
+        return { estado: 'activo', tiempoFaltante: null };
+    } else if (tiempoActual < inicioMinutos) {
         console.log("Estado: PRÓXIMO");
-        return 'proximo';
+        tiempoFaltante = calcularTiempoFaltante(infoAlmuerzo.apertura);
+        return { estado: 'proximo', tiempoFaltante: tiempoFaltante };
     } else {
         console.log("Estado: FINALIZADO");
-        return 'finalizado';
+        return { estado: 'finalizado', tiempoFaltante: null };
     }
 }
 
 // Función para mostrar el horario en el elemento HTML
 async function mostrarHorarioAlmuerzo() {
+    // Limpiar contador anterior
+    if (contadorSimpleInterval) {
+        clearInterval(contadorSimpleInterval);
+        contadorSimpleInterval = null;
+    }
     const elemento = document.getElementById('HoraAlmuerzos');
 
     // Mostrar cargando mientras se obtienen los datos
@@ -256,20 +372,37 @@ async function mostrarHorarioAlmuerzo() {
             turnoCompletoInfo = ` (${turnoAsesor.turnoCompleto})`;
         }
 
+        // Información de tiempo faltante
+        let tiempoFaltanteInfo = '';
+        if (turnoAsesor.tiempoFaltante) {
+            tiempoFaltanteInfo = ` - <span style="color: #007bff; font-weight: bold;">Faltan ${turnoAsesor.tiempoFaltante}</span>`;
+        }
+
         switch (turnoAsesor.estado) {
             case 'activo':
                 icon = '🍽️';
-                mensaje = `${icon} <span style="font-weight: bold;">ALMUERZO AHORA</span> - ${turnText}${rangeText}${turnoCompletoInfo}`;
+                mensaje = `${icon} <span style="font-weight: bold;">ALMUERZO AHORA</span> - ${turnText} ${rangeText}${turnoCompletoInfo}`;
                 className = 'active';
                 break;
             case 'proximo':
                 icon = '⏰';
-                mensaje = `${icon} Próximo almuerzo - ${turnText} - ${rangeText}${turnoCompletoInfo}`;
+                mensaje = `${icon} Próximo almuerzo - ${turnText} ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
                 className = 'proximo';
+
+                // Iniciar contador automático
+                if (turnoAsesor.infoAlmuerzo) {
+                    setTimeout(() => {
+                        if (contadorSimpleInterval) {
+                            clearInterval(contadorSimpleInterval);
+                        }
+                        actualizarContadorTexto();
+                        contadorSimpleInterval = setInterval(actualizarContadorTexto, 1000);
+                    }, 100);
+                }
                 break;
             case 'finalizado':
                 icon = '✅';
-                mensaje = `${icon} Almuerzo finalizado - ${turnText} - ${rangeText}${turnoCompletoInfo}`;
+                mensaje = `${icon} Almuerzo finalizado - ${rangeText}${turnoCompletoInfo}`;
                 className = 'finalizado';
                 break;
             case 'no_almuerza':
@@ -299,9 +432,13 @@ async function mostrarHorarioAlmuerzo() {
         // Información del turno del día siguiente
         let mensajeDiaSiguiente = '';
         if (turnoDiaSiguiente.turnoCompleto) {
+            let rangoMañana = '';
+            if (turnoDiaSiguiente.rango) {
+                rangoMañana = ` - ${turnoDiaSiguiente.rango}`;
+            }
             mensajeDiaSiguiente = `
                 <div class="tomorrow-turn-info assigned">
-                    <strong>📅 Mañana:</strong> <span class="turn-value">${turnoDiaSiguiente.turnoCompleto}</span>
+                    <strong>📅 Mañana:</strong> <span class="turn-value">${turnoDiaSiguiente.turnoCompleto}</span>${rangoMañana}
                 </div>
             `;
         } else {
@@ -334,13 +471,13 @@ async function mostrarHorarioAlmuerzo() {
     }
 }
 
-// Función para actualizar automáticamente cada 5 minutos (para no saturar Firebase)
+// Función para actualizar automáticamente cada minuto (para mostrar tiempo faltante actualizado)
 function iniciarActualizacionAutomatica() {
     // Mostrar inmediatamente
     mostrarHorarioAlmuerzo();
 
-    // Actualizar cada 5 minutos
-    setInterval(mostrarHorarioAlmuerzo, 5 * 60 * 1000);
+    // Actualizar cada minuto para el tiempo faltante
+    setInterval(mostrarHorarioAlmuerzo, 1 * 60 * 1000);
 }
 
 // Llamar la función cuando se cargue la página
@@ -349,4 +486,68 @@ document.addEventListener('DOMContentLoaded', iniciarActualizacionAutomatica);
 // Función manual para forzar actualización
 function actualizarHorarioAlmuerzo() {
     mostrarHorarioAlmuerzo();
+}
+
+// Variables globales para el contador simple
+let contadorSimpleInterval = null;
+
+// Función para calcular tiempo faltante con segundos
+function calcularTiempoConSegundos(horaObjetivo) {
+    const ahora = new Date();
+    const match = horaObjetivo.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!match) return null;
+
+    let [, horas, minutos, periodo] = match;
+    horas = parseInt(horas);
+    minutos = parseInt(minutos);
+
+    if (periodo.toUpperCase() === 'PM' && horas !== 12) {
+        horas += 12;
+    } else if (periodo.toUpperCase() === 'AM' && horas === 12) {
+        horas = 0;
+    }
+
+    const objetivoHoy = new Date();
+    objetivoHoy.setHours(horas, minutos, 0, 0);
+
+    const diferencia = objetivoHoy.getTime() - ahora.getTime();
+
+    if (diferencia <= 0) return null;
+
+    const segundosFaltantes = Math.floor(diferencia / 1000);
+    const minutosFaltantes = Math.floor(segundosFaltantes / 60);
+    const horasFaltantes = Math.floor(minutosFaltantes / 60);
+
+    const segundosRestantes = segundosFaltantes % 60;
+    const minutosRestantes = minutosFaltantes % 60;
+
+    if (horasFaltantes > 0) {
+        return `${horasFaltantes}h ${minutosRestantes}m ${segundosRestantes}s`;
+    } else if (minutosRestantes > 0) {
+        return `${minutosRestantes}m ${segundosRestantes}s`;
+    } else {
+        return `${segundosRestantes}s`;
+    }
+}
+
+// Función para actualizar solo el contador
+function actualizarContadorTexto() {
+    const contadorElement = document.getElementById('contador-tiempo');
+    if (!contadorElement) return;
+
+    const horaObjetivo = contadorElement.getAttribute('data-hora-objetivo');
+    if (!horaObjetivo) return;
+
+    const tiempoRestante = calcularTiempoConSegundos(horaObjetivo);
+
+    if (!tiempoRestante) {
+        if (contadorSimpleInterval) {
+            clearInterval(contadorSimpleInterval);
+            contadorSimpleInterval = null;
+        }
+        mostrarHorarioAlmuerzo();
+        return;
+    }
+
+    contadorElement.textContent = ` - Faltan ${tiempoRestante}`;
 }
