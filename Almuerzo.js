@@ -193,6 +193,7 @@ async function obtenerTurnoDiaSiguiente() {
         console.log("Año:", añoSeleccionado);
         console.log("Mes:", mesSeleccionado);
 
+        // Obtener el turno asignado del día siguiente
         const promesa = db.ref('celdas/' + nombreAsesorActual + '/' + diaSiguiente + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
         const snapshot = await promesa;
         const turnoData = snapshot.val();
@@ -201,16 +202,63 @@ async function obtenerTurnoDiaSiguiente() {
         const turnoBase = extraerTurnoBase(turnoCompleto);
 
         let rango = null;
-        if (turnoBase) {
-            const infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoBase);
-            if (infoTurnoCompleto) {
-                rango = `${infoTurnoCompleto.apertura} - ${infoTurnoCompleto.cierre}`;
+        let descripcion = null;
+
+        if (turnoCompleto) {
+            // Primero intentar con el turno completo (ej: T4N, T1M, etc.)
+            let infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoCompleto);
+
+            // Si no encuentra el turno completo, intentar con el turno base (T1, T2, etc.)
+            if (!infoTurnoCompleto && turnoBase) {
+                infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoBase);
             }
+
+            if (infoTurnoCompleto && infoTurnoCompleto.apertura && infoTurnoCompleto.cierre) {
+                // Verificar si el turno empieza a las 12:00 AM
+                if (infoTurnoCompleto.apertura === "12:00 AM") {
+                    // Si empieza a las 12:00 AM, mostrar solo la descripción del turno
+                    // Intentar obtener descripción desde la base de datos
+                    try {
+                        const descSnapshot = await db.ref(`Turnos/${turnoCompleto}/Descripcion`).once('value');
+                        descripcion = descSnapshot.val();
+
+                        // Si no hay descripción para el turno completo, intentar con el turno base
+                        if (!descripcion && turnoBase) {
+                            const descSnapshotBase = await db.ref(`Turnos/${turnoBase}/Descripcion`).once('value');
+                            descripcion = descSnapshotBase.val();
+                        }
+
+                        if (descripcion) {
+                            rango = descripcion;
+                        } else {
+                            // Si no hay descripción específica, usar el turno completo
+                            rango = turnoCompleto;
+                        }
+                    } catch (error) {
+                        console.log("No se encontró descripción específica, usando turno completo");
+                        rango = turnoCompleto;
+                    }
+                } else {
+                    // Para otros horarios, mostrar el rango normal
+                    rango = `${infoTurnoCompleto.apertura} - ${infoTurnoCompleto.cierre}`;
+                }
+            }
+        } else if (turnoCompleto) {
+            // Para turnos especiales como 'D', 'DV', 'TSN', etc.
+            const estadosEspeciales = {
+                'D': 'Descanso',
+                'DV': 'Descanso/Vacaciones',
+                'TSN': 'Trabajo Sin turno',
+                'TSA': 'Turno Sala'
+            };
+
+            rango = estadosEspeciales[turnoCompleto] || turnoCompleto;
         }
 
         return {
             turnoCompleto: turnoCompleto,
             turnoBase: turnoBase,
+            turnoConsultado: turnoCompleto, // Agregamos el turno que realmente se consultó
             rango: rango,
             fecha: diaSiguiente + '/' + mesSeleccionado + '/' + añoSeleccionado
         };
@@ -399,9 +447,9 @@ async function mostrarHorarioAlmuerzo() {
 
         let turnoCompletoInfo = '';
         if (turnoAsesor.turnoCompleto && turnoAsesor.turnoCompleto !== turnoAsesor.turnoBase) {
-            turnoCompletoInfo = ` (Trabajo: ${turnoAsesor.turnoCompleto})`;
+            turnoCompletoInfo = ` - Turno: ${turnoAsesor.turnoCompleto}`;
         } else if (turnoAsesor.turnoBase) {
-            turnoCompletoInfo = ` (Trabajo: ${turnoAsesor.turnoBase})`;
+            turnoCompletoInfo = `  - Turno: ${turnoAsesor.turnoBase}`;
         }
 
         let tiempoFaltanteInfo = '';
@@ -417,7 +465,7 @@ async function mostrarHorarioAlmuerzo() {
                 break;
             case 'proximo':
                 icon = '⏰';
-                mensaje = `${icon} Próximo almuerzo ${turnText} - ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
+                mensaje = `${icon} Próximo almuerzo: ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
                 className = 'proximo';
 
                 if (turnoAsesor.infoAlmuerzo) {

@@ -652,7 +652,7 @@ nav li {
 nav a {
     color: rgb(0, 0, 0);
     text-align: center;
-    padding: 10px;
+    padding: 9px;
     /* Reduced redundancy */
     text-decoration: none;
     font-weight: bold;
