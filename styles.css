@@ -1756,7 +1756,7 @@ input:checked+.slider:before {
 
 .Items h4.selected {
     background-color: #000000;
-    color: #ffa600;
+    color: var(--color-primario);
 }
 
 #enlaces-container {
