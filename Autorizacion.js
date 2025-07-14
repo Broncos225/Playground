@@ -15,22 +15,25 @@ document.addEventListener('DOMContentLoaded', () => {
         firebase.initializeApp(firebaseConfig);
     }
 
-    // Función para cerrar sesión cada hora
-    function scheduleSignOutEveryHour() {
+    // Función para cerrar sesión cada 3 horas
+    function scheduleSignOutEveryThreeHours() {
         const now = new Date();
-        const millisTillNextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 2, 0, 0, 0) - now;
+        const currentHour = now.getHours();
+        const nextHour = Math.ceil((currentHour + 1) / 3) * 3; // próxima múltiplo de 3
+        const millisTillNextSignOut = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextHour, 0, 0, 0) - now;
 
         setTimeout(() => {
             firebase.auth().signOut().then(() => {
-                console.log('User signed out at the top of the hour.');
+                console.log('User signed out after 3 hours.');
                 localStorage.removeItem('lastLoginDate');
                 window.location.href = 'login.html';
             }).catch(error => {
                 console.error('Sign out error:', error);
             });
-            // Vuelve a programar para la próxima hora
-            scheduleSignOutEveryHour();
-        }, millisTillNextHour);
+
+            // Vuelve a programar para dentro de otras 3 horas
+            scheduleSignOutEveryThreeHours();
+        }, millisTillNextSignOut);
     }
 
     firebase.auth().onAuthStateChanged(user => {
@@ -42,6 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Programar el cierre de sesión cada hora
-    scheduleSignOutEveryHour();
+    // Programar el cierre de sesión cada 3 horas
+    scheduleSignOutEveryThreeHours();
 });
