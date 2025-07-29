@@ -1,7 +1,6 @@
 let app;
 try {
     app = firebase.app();
-    console.log('Firebase ya está inicializado');
 } catch (error) {
     const firebaseConfig = {
         apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
@@ -187,11 +186,6 @@ async function obtenerTurnoDiaSiguiente() {
         const mesSeleccionado = mañana.getMonth() + 1;
         const diaSiguiente = mañana.getDate();
 
-        console.log("Consultando turno del día siguiente:");
-        console.log("Asesor:", nombreAsesorActual);
-        console.log("Día siguiente:", diaSiguiente);
-        console.log("Año:", añoSeleccionado);
-        console.log("Mes:", mesSeleccionado);
 
         // Obtener el turno asignado del día siguiente
         const promesa = db.ref('celdas/' + nombreAsesorActual + '/' + diaSiguiente + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
@@ -287,11 +281,6 @@ async function obtenerTurnoAlmuerzoAsesor() {
         const mesSeleccionado = ahora.getMonth() + 1;
         const diaActual = ahora.getDate() + 1;
 
-        console.log("Asesor:", nombreAsesorActual);
-        console.log("Día:", diaActual);
-        console.log("Año:", añoSeleccionado);
-        console.log("Mes:", mesSeleccionado);
-        console.log("Ruta Firebase:", 'celdas/' + nombreAsesorActual + '/' + diaActual + '/' + añoSeleccionado + '/' + mesSeleccionado);
 
         const trabajadoresDelDia = await obtenerTurnosTrabajadoresDelDia();
         const distribucionAlmuerzos = calcularTurnosAlmuerzoInteligente(trabajadoresDelDia);
@@ -303,9 +292,6 @@ async function obtenerTurnoAlmuerzoAsesor() {
         const turnoCompleto = turnoAsignadoData ? turnoAsignadoData.texto : null;
         const turnoBase = extraerTurnoBase(turnoCompleto);
 
-        console.log("Turno completo obtenido:", turnoCompleto);
-        console.log("Turno base extraído:", turnoBase);
-        console.log("Distribución de almuerzos:", distribucionAlmuerzos);
 
         if (!turnoCompleto) {
             return {
@@ -319,7 +305,6 @@ async function obtenerTurnoAlmuerzoAsesor() {
         }
 
         const turnoAlmuerzoAsignado = distribucionAlmuerzos[nombreAsesorActual]?.turnoAlmuerzo;
-        console.log("Turno de almuerzo asignado:", turnoAlmuerzoAsignado);
 
         let infoAlmuerzo = null;
         let rango = null;
@@ -336,7 +321,6 @@ async function obtenerTurnoAlmuerzoAsesor() {
             'TSN': 'Trabajo Sin turno'
         };
 
-        console.log("¿Tiene horario de almuerzo válido?", turnoCompleto, infoAlmuerzo);
 
         if (!infoAlmuerzo) {
             const estadoEspecial = estadosEspeciales[turnoCompleto];
@@ -352,7 +336,6 @@ async function obtenerTurnoAlmuerzoAsesor() {
         }
 
         const estadoYTiempo = verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora);
-        console.log("Estado y tiempo calculado:", estadoYTiempo);
 
         return {
             turnoCompleto: turnoCompleto,
@@ -382,11 +365,6 @@ function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
     const horaActual = ahora.getHours();
     const minutosActuales = ahora.getMinutes();
     const tiempoActual = horaActual * 60 + minutosActuales;
-
-    console.log("Verificando estado del turno con info:", infoAlmuerzo);
-    console.log("Hora actual:", horaActual + ":" + minutosActuales);
-    console.log("Tiempo actual en minutos:", tiempoActual);
-
     const aperturaObj = parseHora12h(infoAlmuerzo.apertura);
     const cierreObj = parseHora12h(infoAlmuerzo.cierre);
 
@@ -398,19 +376,15 @@ function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
     const inicioMinutos = aperturaObj.horas * 60 + aperturaObj.minutos;
     const finMinutos = cierreObj.horas * 60 + cierreObj.minutos;
 
-    console.log("Rango del turno en minutos:", inicioMinutos, "-", finMinutos);
 
     let tiempoFaltante = null;
 
     if (tiempoActual >= inicioMinutos && tiempoActual <= finMinutos) {
-        console.log("Estado: ACTIVO");
         return { estado: 'activo', tiempoFaltante: null };
     } else if (tiempoActual < inicioMinutos) {
-        console.log("Estado: PRÓXIMO");
         tiempoFaltante = calcularTiempoFaltante(infoAlmuerzo.apertura);
         return { estado: 'proximo', tiempoFaltante: tiempoFaltante };
     } else {
-        console.log("Estado: FINALIZADO");
         return { estado: 'finalizado', tiempoFaltante: null };
     }
 }

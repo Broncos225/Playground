@@ -34,8 +34,6 @@
                     metaTheme.setAttribute('content', preferencias.colorPrimario);
                 }
 
-                console.log('Preferencias de colores aplicadas para:', nombreUsuario);
-
             } catch (error) {
                 console.error('Error al aplicar preferencias de colores:', error);
             }

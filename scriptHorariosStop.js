@@ -402,6 +402,10 @@ let agentes = {
         nombre: "Maria Susana Ospina Vanegas",
         contraseña: ""
     },
+    Juan_Manuel_Cano_Benítez: {
+        nombre: "Juan Manuel Cano Benítez",
+        contraseña: ""
+    },
     D: {
         nombre: "Descanso",
         contraseña: "D"
@@ -735,31 +739,6 @@ function Festivos() {
     }
 }
 
-var botonIzq = document.getElementById('Izq');
-var botonHoy = document.getElementById('Hoy');
-var botonDer = document.getElementById('Der');
-
-botonIzq.addEventListener('click', function () {
-    if (selectMes.selectedIndex > 0) {
-        selectMes.selectedIndex--;
-        selectMes.dispatchEvent(new Event('change'));
-    }
-});
-
-botonHoy.addEventListener('click', function () {
-    var fechaActual = new Date();
-    var mesActual = fechaActual.getMonth();
-    selectMes.selectedIndex = mesActual;
-    selectMes.dispatchEvent(new Event('change'));
-});
-
-botonDer.addEventListener('click', function () {
-    if (selectMes.selectedIndex < selectMes.options.length - 1) {
-        selectMes.selectedIndex++;
-        selectMes.dispatchEvent(new Event('change'));
-    }
-});
-
 function eliminarBordes() {
     const todasLasCeldas = document.querySelectorAll('#Table th, #Table td');
     todasLasCeldas.forEach(celda => {
@@ -984,5 +963,565 @@ turnosRef.on('value', (snapshot) => {
                 row.insertCell(-1);
             }
         }
+    }
+});
+// function getCompleteWeeksInMonth(year, month) {
+//     const firstDay = new Date(year, month - 1, 1);
+//     const lastDay = new Date(year, month, 0);
+//     const firstMonday = new Date(firstDay);
+//     const dayOfWeek = firstDay.getDay();
+//     const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+//     firstMonday.setDate(firstDay.getDate() - daysToSubtract);
+//     const lastSunday = new Date(lastDay);
+//     const lastDayOfWeek = lastDay.getDay();
+//     const daysToAdd = lastDayOfWeek === 0 ? 0 : 7 - lastDayOfWeek;
+//     lastSunday.setDate(lastDay.getDate() + daysToAdd);
+//     const timeDiff = lastSunday.getTime() - firstMonday.getTime();
+//     const weeks = Math.ceil(timeDiff / (1000 * 3600 * 24 * 7));
+//     return weeks;
+// }
+
+// function getCompleteWeekRanges(year, month) {
+//     const firstDay = new Date(year, month - 1, 1);
+//     const lastDay = new Date(year, month, 0);
+//     const firstMonday = new Date(firstDay);
+//     const dayOfWeek = firstDay.getDay();
+//     const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+//     firstMonday.setDate(firstDay.getDate() - daysToSubtract);
+//     const lastSunday = new Date(lastDay);
+//     const lastDayOfWeek = lastDay.getDay();
+//     const daysToAdd = lastDayOfWeek === 0 ? 0 : 7 - lastDayOfWeek;
+//     lastSunday.setDate(lastDay.getDate() + daysToAdd);
+//     const weeks = [];
+//     const currentDate = new Date(firstMonday);
+//     while (currentDate <= lastSunday) {
+//         const weekStart = new Date(currentDate);
+//         const weekEnd = new Date(currentDate);
+//         weekEnd.setDate(weekEnd.getDate() + 6);
+//         const startDay = weekStart.getDate();
+//         const startMonth = weekStart.getMonth() + 1;
+//         const endDay = weekEnd.getDate();
+//         const endMonth = weekEnd.getMonth() + 1;
+//         weeks.push({
+//             start: startDay,
+//             end: endDay,
+//             startMonth: startMonth,
+//             endMonth: endMonth,
+//             startDate: new Date(weekStart),
+//             endDate: new Date(weekEnd)
+//         });
+//         currentDate.setDate(currentDate.getDate() + 7);
+//     }
+//     return weeks;
+// }
+
+// function getMonthName(monthNumber) {
+//     const monthNames = [
+//         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+//         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+//     ];
+//     return monthNames[monthNumber - 1];
+// }
+
+// function getShortMonthName(monthNumber) {
+//     const shortMonthNames = [
+//         'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+//         'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+//     ];
+//     return shortMonthNames[monthNumber - 1];
+// }
+
+// function getCurrentMonthYear() {
+//     const mesSelect = document.getElementById("Mes");
+//     const anoSelect = document.getElementById("Año");
+//     if (!mesSelect || !anoSelect) {
+//         console.error('Selects de mes o año no encontrados');
+//         return null;
+//     }
+//     const mes = mesSelect.selectedIndex + 1;
+//     const ano = parseInt(anoSelect.options[anoSelect.selectedIndex].text);
+//     return { mes, ano };
+// }
+
+// function generateWeekColumns() {
+//     const dateInfo = getCurrentMonthYear();
+//     if (!dateInfo) return;
+    
+//     const { mes, ano } = dateInfo;
+//     if (!mes || !ano) {
+//         console.log('Por favor selecciona mes y año');
+//         return;
+//     }
+    
+//     const targetTable = document.getElementById('Table3');
+//     if (!targetTable) {
+//         console.error('Tabla Table3 no encontrada');
+//         return;
+//     }
+    
+//     const weekRanges = getCompleteWeekRanges(ano, mes);
+//     const monthNames = [
+//         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+//         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+//     ];
+    
+//     targetTable.innerHTML = '';
+    
+//     const headerRow = document.createElement('tr');
+//     headerRow.className = 'titulos';
+    
+//     const nameHeader = document.createElement('th');
+//     nameHeader.textContent = 'Nombre del asesor';
+//     headerRow.appendChild(nameHeader);
+    
+//     weekRanges.forEach((week, index) => {
+//         const weekHeader = document.createElement('th');
+//         weekHeader.className = 'titulos';
+//         let weekText = `Semana ${index + 1} (`;
+        
+//         if (week.startMonth === week.endMonth) {
+//             if (week.start === week.end) {
+//                 weekText += `${week.start} ${getShortMonthName(week.startMonth)})`;
+//             } else {
+//                 weekText += `${week.start}-${week.end} ${getShortMonthName(week.startMonth)})`;
+//             }
+//         } else {
+//             weekText += `${week.start} ${getShortMonthName(week.startMonth)} - ${week.end} ${getShortMonthName(week.endMonth)})`;
+//         }
+        
+//         weekHeader.textContent = weekText;
+//         headerRow.appendChild(weekHeader);
+//     });
+    
+//     targetTable.appendChild(headerRow);
+    
+//     console.log(`Generadas ${weekRanges.length} columnas de semanas completas para ${monthNames[mes - 1]} ${ano}`);
+//     console.log('Rangos de semanas:', weekRanges);
+    
+//     copyNamesToTable3WithWeeks(weekRanges.length);
+// }
+
+// // Función para obtener solo el día de la fecha
+// function getDayFromDate(date) {
+//     return date.getDate().toString();
+// }
+
+// // Función para consultar turnos de Firebase para una persona en una fecha específica
+// async function consultarTurnosFirebase(nombreFila, fecha, añoSeleccionado, mesSeleccionado) {
+//     try {
+//         const dia = getDayFromDate(fecha);
+//         const promesa = db.ref('celdas/' + nombreFila + '/' + dia + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
+//         const snapshot = await promesa;
+        
+//         if (snapshot.exists()) {
+//             const data = snapshot.val();
+//             return data; // Retorna los turnos encontrados
+//         } else {
+//             return null; // No hay turnos para esta fecha
+//         }
+//     } catch (error) {
+//         console.error(`Error al consultar Firebase para ${nombreFila} en día ${getDayFromDate(fecha)}:`, error);
+//         return null;
+//     }
+// }
+
+// async function calcularValoresPorSemanaFirebase() {
+//     const dateInfo = getCurrentMonthYear();
+//     if (!dateInfo) {
+//         console.error("Error: No se pudo obtener la fecha seleccionada.");
+//         return;
+//     }
+    
+//     const { mes, ano } = dateInfo;
+//     const añoSeleccionado = ano.toString();
+//     const mesSeleccionado = mes.toString();
+    
+//     const targetTable = document.getElementById('Table3');
+//     if (!targetTable) {
+//         console.error('Tabla Table3 no encontrada');
+//         return;
+//     }
+    
+//     const weekRanges = getCompleteWeekRanges(ano, mes);
+//     const rows = targetTable.querySelectorAll('tr');
+    
+//     // Procesar cada fila de empleados (empezar desde índice 1 para saltar el header)
+//     for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) {
+//         const row = rows[rowIndex];
+//         const nameCell = row.cells[0];
+//         if (!nameCell) continue;
+        
+//         const nombreFila = nameCell.textContent.trim();
+//         console.log(`Procesando: ${nombreFila}`);
+        
+//         // Calcular valores para cada semana
+//         for (let weekIndex = 0; weekIndex < weekRanges.length; weekIndex++) {
+//             const week = weekRanges[weekIndex];
+//             let totalSemana = 0;
+//             const detallesSemana = [];
+            
+//             // Procesar cada día de la semana
+//             for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+//                 const fechaActual = new Date(week.startDate);
+//                 fechaActual.setDate(fechaActual.getDate() + dayOffset);
+                
+//                 try {
+//                     // Consultar turnos en Firebase para esta fecha
+//                     const turnosData = await consultarTurnosFirebase(nombreFila, fechaActual, añoSeleccionado, mesSeleccionado);
+//                     console.log(nombreFila, fechaActual, añoSeleccionado, mesSeleccionado, turnosData);
+//                     if (turnosData) {
+//                         let totalDia = 0;
+                        
+//                         // Si turnosData es un objeto con propiedad 'texto' que contiene los turnos
+//                         if (turnosData.texto && typeof turnosData.texto === 'string') {
+//                             console.log(`Turnos encontrados para ${nombreFila}: ${turnosData.texto}`);
+                            
+//                             // Dividir los turnos (ej: "T1 T2N" -> ["T1", "T2N"])
+//                             const listaTurnosDia = turnosData.texto.trim().split(/\s+/);
+                            
+//                             for (const tipoTurno of listaTurnosDia) {
+//                                 if (tipoTurno.trim()) {
+//                                     try {
+//                                         // Consultar el valor del turno desde Turnos/{tipoTurno}/Cantidad
+//                                         const datosTurno = await obtenerDatosTurno(tipoTurno);
+//                                         console.log(`Datos del turno ${tipoTurno}:`, datosTurno);
+                                        
+//                                         if (datosTurno && datosTurno.cantidad) {
+//                                             // Convertir la cantidad a número
+//                                             const valor = parseFloat(datosTurno.cantidad.toString().replace(/,/g, '.'));
+//                                             if (!isNaN(valor)) {
+//                                                 totalDia += valor;
+//                                                 console.log(`Sumando ${valor} horas del turno ${tipoTurno}`);
+//                                             }
+//                                         } else {
+//                                             console.warn(`No se encontró cantidad para el turno ${tipoTurno}`);
+//                                         }
+//                                     } catch (error) {
+//                                         console.warn(`Error al obtener datos del turno ${tipoTurno}:`, error);
+//                                     }
+//                                 }
+//                             }
+//                         }
+//                         // Si turnosData es directamente un string con los turnos
+//                         else if (typeof turnosData === 'string') {
+//                             console.log(`Turnos encontrados para ${nombreFila}: ${turnosData}`);
+                            
+//                             const listaTurnosDia = turnosData.trim().split(/\s+/);
+                            
+//                             for (const tipoTurno of listaTurnosDia) {
+//                                 if (tipoTurno.trim()) {
+//                                     try {
+//                                         const datosTurno = await obtenerDatosTurno(tipoTurno);
+//                                         console.log(`Datos del turno ${tipoTurno}:`, datosTurno);
+                                        
+//                                         if (datosTurno && datosTurno.cantidad) {
+//                                             const valor = parseFloat(datosTurno.cantidad.toString().replace(/,/g, '.'));
+//                                             if (!isNaN(valor)) {
+//                                                 totalDia += valor;
+//                                                 console.log(`Sumando ${valor} horas del turno ${tipoTurno}`);
+//                                             }
+//                                         }
+//                                     } catch (error) {
+//                                         console.warn(`Error al obtener datos del turno ${tipoTurno}:`, error);
+//                                     }
+//                                 }
+//                             }
+//                         }
+                        
+//                         if (totalDia > 0) {
+//                             totalSemana += totalDia;
+//                             detallesSemana.push({
+//                                 fecha: fechaActual.toLocaleDateString(),
+//                                 valor: totalDia,
+//                                 turnos: turnosData
+//                             });
+//                             console.log(`Total del día ${fechaActual.toLocaleDateString()}: ${totalDia} horas`);
+//                         }
+//                     }
+//                 } catch (error) {
+//                     console.error(`Error procesando ${nombreFila} en fecha ${fechaActual}:`, error);
+//                 }
+//             }
+            
+//             // Actualizar la celda correspondiente en la tabla
+//             let cell = row.cells[weekIndex + 1];
+//             if (!cell) {
+//                 cell = document.createElement('td');
+//                 row.appendChild(cell);
+//             }
+            
+//             const valorFormateado = totalSemana.toLocaleString('es-ES', {
+//                 minimumFractionDigits: 2,
+//                 maximumFractionDigits: 2
+//             });
+            
+//             cell.textContent = valorFormateado;
+//             cell.style.textAlign = 'right';
+            
+//             if (totalSemana > 0) {
+//                 cell.style.backgroundColor = '#e8f5e8';
+//                 cell.style.fontWeight = 'bold';
+//             } else {
+//                 cell.style.backgroundColor = '';
+//                 cell.style.fontWeight = 'normal';
+//             }
+            
+//             console.log(`${nombreFila} - Semana ${weekIndex + 1}: ${totalSemana} horas`);
+//         }
+//     }
+    
+//     console.log('Cálculo de valores por semana completado');
+// }
+
+// // Función auxiliar para obtener los datos del turno desde Firebase
+// async function obtenerDatosTurno(tipoTurno) {
+//     try {
+//         // Consultar en la ruta Turnos/{tipoTurno}/Cantidad
+//         const turnoRef = db.ref(`Turnos/${tipoTurno}`);
+//         const snapshot = await turnoRef.once('value');
+//         const datosTurno = snapshot.val();
+        
+//         if (datosTurno) {
+//             return {
+//                 cantidad: datosTurno.Cantidad || datosTurno.cantidad || 0,
+//                 // Puedes agregar más propiedades si las necesitas
+//                 descripcion: datosTurno.Descripcion || datosTurno.descripcion || ''
+//             };
+//         }
+        
+//         return null;
+//     } catch (error) {
+//         console.error(`Error al obtener datos del turno ${tipoTurno}:`, error);
+//         throw error;
+//     }
+// }
+
+// // Función principal que genera columnas y calcula valores
+// async function generateWeekColumnsWithFirebaseValues() {
+//     generateWeekColumns();
+    
+//     // Esperar un poco para que la tabla se genere completamente
+//     setTimeout(async () => {
+//         await calcularValoresPorSemanaFirebase();
+//     }, 100);
+// }
+
+// function copyNamesToTable3WithWeeks(numberOfWeeks) {
+//     const sourceTable = document.getElementById('Table');
+//     const targetTable = document.getElementById('Table3');
+    
+//     if (!sourceTable || !targetTable) {
+//         console.error('Una o ambas tablas no se encontraron');
+//         return;
+//     }
+    
+//     const sourceRows = sourceTable.querySelectorAll('tr');
+    
+//     sourceRows.forEach((row, index) => {
+//         if (index < 3) return; // Saltar las primeras 3 filas
+        
+//         const firstCell = row.querySelector('td, th');
+//         if (firstCell) {
+//             const newRow = document.createElement('tr');
+//             const newCell = document.createElement(firstCell.tagName.toLowerCase());
+//             newCell.textContent = firstCell.textContent;
+//             newRow.appendChild(newCell);
+            
+//             // Crear celdas vacías para cada semana
+//             for (let i = 0; i < numberOfWeeks; i++) {
+//                 const weekCell = document.createElement('td');
+//                 weekCell.textContent = '';
+//                 weekCell.style.textAlign = 'center';
+//                 weekCell.style.minWidth = '60px';
+//                 newRow.appendChild(weekCell);
+//             }
+            
+//             targetTable.appendChild(newRow);
+//         }
+//     });
+// }
+
+// function copyNamesToTable3() {
+//     const sourceTable = document.getElementById('Table');
+//     const targetTable = document.getElementById('Table3');
+    
+//     if (!sourceTable || !targetTable) {
+//         console.error('Una o ambas tablas no se encontraron');
+//         return;
+//     }
+    
+//     const sourceRows = sourceTable.querySelectorAll('tr');
+//     targetTable.innerHTML = '';
+    
+//     sourceRows.forEach((row, index) => {
+//         if (index < 3) return;
+        
+//         const firstCell = row.querySelector('td, th');
+//         if (firstCell) {
+//             const newRow = document.createElement('tr');
+//             const newCell = document.createElement(firstCell.tagName.toLowerCase());
+//             newCell.textContent = firstCell.textContent;
+//             newRow.appendChild(newCell);
+//             targetTable.appendChild(newRow);
+//         }
+//     });
+    
+//     console.log('Nombres copiados exitosamente de Table a Table3');
+// }
+
+// function copyOnlyNamesToTable3() {
+//     const sourceTable = document.getElementById('Table');
+//     const targetTable = document.getElementById('Table3');
+    
+//     if (!sourceTable || !targetTable) {
+//         console.error('Una o ambas tablas no se encontraron');
+//         return;
+//     }
+    
+//     const dataRows = sourceTable.querySelectorAll('tr');
+//     targetTable.innerHTML = '';
+    
+//     dataRows.forEach((row, index) => {
+//         if (index < 3) return;
+        
+//         const firstDataCell = row.querySelector('td');
+//         if (firstDataCell) {
+//             const newRow = document.createElement('tr');
+//             const newCell = document.createElement('td');
+//             newCell.textContent = firstDataCell.textContent;
+//             newRow.appendChild(newCell);
+//             targetTable.appendChild(newRow);
+//         }
+//     });
+    
+//     console.log('Solo nombres (sin encabezados) copiados a Table3');
+// }
+
+// function setupNavigationButtons() {
+//     const izqButton = document.getElementById('Izq');
+//     const derButton = document.getElementById('Der');
+//     const hoyButton = document.getElementById('Hoy');
+//     const mesSelect = document.getElementById('Mes');
+//     const anoSelect = document.getElementById('Año');
+    
+//     if (izqButton) {
+//         izqButton.addEventListener('click', function (e) {
+//             e.preventDefault();
+//             let mesActual = mesSelect.selectedIndex;
+//             let anoActual = anoSelect.selectedIndex;
+            
+//             if (mesActual > 0) {
+//                 mesSelect.selectedIndex = mesActual - 1;
+//             } else {
+//                 mesSelect.selectedIndex = 11;
+//                 if (anoActual > 0) {
+//                     anoSelect.selectedIndex = anoActual - 1;
+//                 }
+//             }
+            
+//             mesSelect.dispatchEvent(new Event('change'));
+//             setTimeout(() => {
+//                 generateWeekColumnsWithFirebaseValues();
+//             }, 10);
+//         });
+//     }
+    
+//     if (derButton) {
+//         derButton.addEventListener('click', function (e) {
+//             e.preventDefault();
+//             let mesActual = mesSelect.selectedIndex;
+//             let anoActual = anoSelect.selectedIndex;
+            
+//             if (mesActual < 11) {
+//                 mesSelect.selectedIndex = mesActual + 1;
+//             } else {
+//                 mesSelect.selectedIndex = 0;
+//                 if (anoActual < anoSelect.options.length - 1) {
+//                     anoSelect.selectedIndex = anoActual + 1;
+//                 }
+//             }
+            
+//             mesSelect.dispatchEvent(new Event('change'));
+//             setTimeout(() => {
+//                 generateWeekColumnsWithFirebaseValues();
+//             }, 10);
+//         });
+//     }
+    
+//     if (hoyButton) {
+//         hoyButton.addEventListener('click', function (e) {
+//             e.preventDefault();
+//             const hoy = new Date();
+//             const mesActual = hoy.getMonth();
+//             const anoActual = hoy.getFullYear();
+            
+//             mesSelect.selectedIndex = mesActual;
+            
+//             for (let i = 0; i < anoSelect.options.length; i++) {
+//                 if (parseInt(anoSelect.options[i].text) === anoActual) {
+//                     anoSelect.selectedIndex = i;
+//                     break;
+//                 }
+//             }
+            
+//             mesSelect.dispatchEvent(new Event('change'));
+//             setTimeout(() => {
+//                 generateWeekColumnsWithFirebaseValues();
+//             }, 10);
+//         });
+//     }
+// }
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     const mesSelect = document.getElementById('Mes');
+//     const anoSelect = document.getElementById('Año');
+    
+//     if (mesSelect) {
+//         mesSelect.addEventListener('change', function () {
+//             setTimeout(() => {
+//                 generateWeekColumnsWithFirebaseValues();
+//             }, 10);
+//         });
+//     }
+    
+//     if (anoSelect) {
+//         anoSelect.addEventListener('change', function () {
+//             setTimeout(() => {
+//                 generateWeekColumnsWithFirebaseValues();
+//             }, 10);
+//         });
+//     }
+    
+//     setupNavigationButtons();
+    
+//     setTimeout(() => {
+//         if (mesSelect.selectedIndex >= 0 && anoSelect.selectedIndex >= 0) {
+//             generateWeekColumnsWithFirebaseValues();
+//         }
+//     }, 100);
+// });
+
+var botonIzq = document.getElementById('Izq');
+var botonHoy = document.getElementById('Hoy');
+var botonDer = document.getElementById('Der');
+
+botonIzq.addEventListener('click', function () {
+    if (selectMes.selectedIndex > 0) {
+        selectMes.selectedIndex--;
+        selectMes.dispatchEvent(new Event('change'));
+    }
+});
+
+botonHoy.addEventListener('click', function () {
+    var fechaActual = new Date();
+    var mesActual = fechaActual.getMonth();
+    selectMes.selectedIndex = mesActual;
+    selectMes.dispatchEvent(new Event('change'));
+});
+
+botonDer.addEventListener('click', function () {
+    if (selectMes.selectedIndex < selectMes.options.length - 1) {
+        selectMes.selectedIndex++;
+        selectMes.dispatchEvent(new Event('change'));
     }
 });
