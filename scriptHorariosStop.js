@@ -195,8 +195,8 @@ function cargarDatos() {
 
 // Función para calcular horas usando el cache de cantidades
 function calcularHorasConCache(cantidadesCache) {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
-    var letras = ['A', 'B', 'C', 'D', 'E', 'F'];
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
+    var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
     // Recorremos cada letra y cada día
     for (const letra of letras) {
@@ -240,7 +240,7 @@ function iniciarConteoHoras() {
 
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0;
+    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0;
 
     for (var i = 1; i < 32; i++) {
         var celda = document.getElementById('A' + i);
@@ -278,8 +278,12 @@ function contDescansos() {
             contF += 1;
         }
     }
-
-
+    for (var i = 1; i < 32; i++) {
+        var celda = document.getElementById('G' + i);
+        if (celda.textContent == 'D') {
+            contG += 1;
+        }
+    }
 
     var celdaA = document.getElementById("1");
     celdaA.textContent = contA;
@@ -292,8 +296,9 @@ function contDescansos() {
     var celdaE = document.getElementById("5");
     celdaE.textContent = contE;
     var celdaF = document.getElementById("6");
-    celdaF.textContent = contF
-
+    celdaF.textContent = contF;
+    var celdaG = document.getElementById("7");
+    celdaG.textContent = contG;
 
 }
 
