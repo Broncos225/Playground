@@ -138,41 +138,45 @@ async function calcularValorTurno() {
         return;
     }
 
-    // Mostrar indicador de carga
     document.getElementById("valor").textContent = "Calculando valores...";
 
-    // Separar los turnos ingresados
     const listaTurnos = textoTurnos.split(/\s+/);
-
-    // Array para almacenar las promesas
     const promesas = [];
 
-    // Para cada turno, obtener su valor desde Firebase
     for (const turno of listaTurnos) {
         const promesa = obtenerDatosTurno(turno).then(datosTurno => {
-            return datosTurno ? datosTurno.cantidad.toString() : "Valor no definido";
+            return datosTurno ? datosTurno.cantidad : null; // Guardar como número directamente
         });
-
         promesas.push(promesa);
     }
+
     try {
-        // Esperar a que todas las promesas se resuelvan
-        const resultadosValor = await Promise.all(promesas);
+        const resultados = await Promise.all(promesas);
 
-        // Reemplazar puntos por comas en cada resultado y luego unirlos
-        const resultadosFormateados = resultadosValor.map(resultado =>
-            resultado.toString().replace(/\./g, ',')
-        );
+        // Separar valores válidos e inválidos
+        const resultadosFormateados = [];
+        let suma = 0;
 
-        // Mostrar el resultado formateado
-        document.getElementById("valor").innerHTML = resultadosFormateados.join("<br>");
+        for (const valor of resultados) {
+            if (typeof valor === 'number' && !isNaN(valor)) {
+                resultadosFormateados.push(valor.toString().replace(/\./g, ','));
+                suma += valor;
+            } else {
+                resultadosFormateados.push("Valor no definido");
+            }
+        }
 
-        document.getElementById("copiarV").style.display = "inline-block"; // Mostrar botón de copiar
+        // Mostrar resultados individuales y la suma total
+        const resultadoFinal = resultadosFormateados.join("<br>") + `<br><br><strong>Total:</strong> ${suma.toLocaleString('es-CO')}`;
+        document.getElementById("valor").innerHTML = resultadoFinal;
+
+        document.getElementById("copiarV").style.display = "inline-block";
     } catch (error) {
         console.error("Error al calcular los valores de los turnos:", error);
         document.getElementById("valor").textContent = "Error al calcular los valores. Inténtalo de nuevo.";
     }
 }
+
 
 // Función para copiar el resultado al portapapeles
 function copiarResultado() {
