@@ -376,19 +376,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 let agentes = {
-    Yesica_Johana_Cano_Quintero: {
-        nombre: "Yesica Johana Cano Quintero",
-        letra: "B",
+    Karen_Riveros_Vega: {
+        nombre: "Karen Riveros Vega",
         contraseña: ""
     },
     Johan_Guzman_Alarcon: {
         nombre: "Johan Guzman Alarcon",
-        letra: "B",
         contraseña: ""
     },
     Andrés_Felipe_Yepes_Tascón: {
         nombre: "Andrés Felipe Yepes Tascón",
-        letra: "D",
         contraseña: ""
     },
     Oscar_Luis_Cabrera_Pacheco: {

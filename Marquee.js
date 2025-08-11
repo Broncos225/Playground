@@ -8,10 +8,6 @@ window.addEventListener('load', function () {
 });
 
 let agentes = {
-  Yesica_Johana_Cano_Quintero: {
-    nombre: "Yesica",
-    cumpleaños: [15,11]
-  },
   Andrés_Felipe_Yepes_Tascón: {
     nombre: "Andrés Yepes",
     cumpleaños: [2,5]
@@ -39,6 +35,10 @@ let agentes = {
   Juan_Manuel_Cano_Benítez: {
     nombre: "Juan",
     cumpleaños: [20,10]
+  },
+  Karen_Riveros_Vega: {
+    nombre: "Karen",
+    cumpleaños: [0,0] // No tiene cumpleaños registrado
   }
 };
 
