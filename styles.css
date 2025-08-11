@@ -405,9 +405,14 @@ button .botonReiniciar:hover {
     background-color: #B5B5B5;
 }
 
+#consultaSemana {
+    background-color: #b9f597;
+}
+
 #btnGuardar:hover,
 #btnExportar:hover,
 #btnExportarTexto:hover,
+#consultaSemana:hover,
 #btnLimpiar:hover,
 #btnImportar:hover,
 #btnEnviar:hover #btnEnviar2:hover {
