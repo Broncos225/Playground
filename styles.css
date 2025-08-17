@@ -363,6 +363,7 @@ button .botonReiniciar:hover {
 #btnGuardar,
 #btnImportar,
 #btnLimpiar,
+#btnPincelTurnos,
 #btnEnviar,
 #btnEnviar2 {
     padding: auto;
@@ -374,7 +375,10 @@ button .botonReiniciar:hover {
     cursor: pointer;
     border: solid 2px #000000;
     font-family: 'Nunito', Arial, sans-serif;
+}
 
+#btnPincelTurnos {
+    background-color: #e9e4c4;
 }
 
 #btnLimpiar {
@@ -413,6 +417,7 @@ button .botonReiniciar:hover {
 #btnExportar:hover,
 #btnExportarTexto:hover,
 #consultaSemana:hover,
+#btnPincelTurnos:hover,
 #btnLimpiar:hover,
 #btnImportar:hover,
 #btnEnviar:hover #btnEnviar2:hover {

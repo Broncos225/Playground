@@ -1247,7 +1247,7 @@ async function calcularValoresPorSemanaFirebase() {
                 // Obtener mes y año de la fecha actual
                 const mesActual = (fechaActual.getMonth() + 1).toString();
                 const anoActual = fechaActual.getFullYear().toString();
-                
+
                 // Calcular el día ajustado para Firebase
                 let diaFirebase = (fechaActual.getDate() + 1).toString();
 
@@ -1605,27 +1605,246 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 100);
 });
 
-// var botonIzq = document.getElementById('Izq');
-// var botonHoy = document.getElementById('Hoy');
-// var botonDer = document.getElementById('Der');
+// Variables globales para el modo pincel
+let modoPincel = false;
+let turnosDisponibles = [];
+let turnoSeleccionado = null;
+let menuTurnos = null;
 
-// botonIzq.addEventListener('click', function () {
-//     if (selectMes.selectedIndex > 0) {
-//         selectMes.selectedIndex--;
-//         selectMes.dispatchEvent(new Event('change'));
-//     }
-// });
+// Función para obtener los turnos con sus datos completos
+function obtenerTurnos() {
+    turnosRef.on('value', (snapshot) => {
+        const turnos = snapshot.val();
+        if (turnos) {
+            // Guardar los turnos completos para acceder a los colores
+            turnosDisponibles = turnos;
+            console.log('Turnos disponibles:', Object.keys(turnos));
+        }
+    });
+}
 
-// botonHoy.addEventListener('click', function () {
-//     var fechaActual = new Date();
-//     var mesActual = fechaActual.getMonth();
-//     selectMes.selectedIndex = mesActual;
-//     selectMes.dispatchEvent(new Event('change'));
-// });
+// Función para crear el menú de selección de turnos
+function crearMenuTurnos() {
+    // Eliminar menú existente si hay uno
+    if (menuTurnos) {
+        menuTurnos.remove();
+    }
 
-// botonDer.addEventListener('click', function () {
-//     if (selectMes.selectedIndex < selectMes.options.length - 1) {
-//         selectMes.selectedIndex++;
-//         selectMes.dispatchEvent(new Event('change'));
-//     }
-// });
+    menuTurnos = document.createElement('div');
+    menuTurnos.id = 'menuTurnos';
+    menuTurnos.style.cssText = `
+        position: fixed;
+        top: 50px;
+        left: 20px;
+        background: white;
+        border: 2px solid #515cfb;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+        min-width: 200px;
+    `;
+
+    // Título del menú
+    const titulo = document.createElement('h4');
+    titulo.textContent = 'Selecciona un turno:';
+    titulo.style.cssText = `
+        margin: 0 0 10px 0;
+        color: #515cfb;
+        font-size: 14px;
+    `;
+    menuTurnos.appendChild(titulo);
+
+    // Crear botones para cada turno
+    Object.entries(turnosDisponibles).forEach(([turnoId, datosTurno]) => {
+        const btnTurno = document.createElement('button');
+        btnTurno.textContent = turnoId;
+
+        // Crear una celda temporal para obtener el color
+        const tempCell = document.createElement('td');
+        tempCell.textContent = turnoId; // Importante: agregar el texto del turno
+        tempCell.style.cssText = 'position: absolute; left: -9999px; top: -9999px; visibility: hidden;';
+        document.body.appendChild(tempCell);
+
+        // Aplicar la función colorCelda para obtener el color
+        colorCelda(tempCell);
+        console.log(datosTurno);
+        const colorFondo = "#" + datosTurno.ColorF;
+
+        const colorTexto = "#" + datosTurno.ColorT;
+
+        // Remover la celda temporal
+        document.body.removeChild(tempCell);
+        btnTurno.style.cssText = `
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: ${colorFondo || '#f8f9fa'} !important;
+            color: ${colorTexto || 'black'};
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            font-weight: bold;
+        `;
+
+        // Guardar los colores originales como atributos
+        btnTurno.dataset.colorOriginal = colorFondo || '#f8f9fa';
+        btnTurno.dataset.colorTextoOriginal = colorTexto || 'black';
+
+        btnTurno.addEventListener('mouseenter', () => {
+            if (turnoSeleccionado !== turnoId) {
+                btnTurno.style.opacity = '0.8';
+                btnTurno.style.transform = 'scale(1.02)';
+            }
+        });
+
+        btnTurno.addEventListener('mouseleave', () => {
+            if (turnoSeleccionado !== turnoId) {
+                btnTurno.style.opacity = '1';
+                btnTurno.style.transform = 'scale(1)';
+            }
+        });
+
+        btnTurno.addEventListener('click', () => {
+            // Deseleccionar turno anterior
+            const botones = menuTurnos.querySelectorAll('button:not(#cerrarPincel)');
+            botones.forEach(btn => {
+                if (btn !== btnTurno) {
+                    btn.style.backgroundColor = btn.dataset.colorOriginal;
+                    btn.style.color = btn.dataset.colorTextoOriginal;
+                    btn.style.border = '1px solid #ddd';
+                    btn.style.transform = 'scale(1)';
+                }
+            });
+
+            // Seleccionar nuevo turno
+            turnoSeleccionado = turnoId;
+            btnTurno.style.border = '3px solid #fff';
+            btnTurno.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
+            btnTurno.style.transform = 'scale(1.05)';
+
+            // Cambiar cursor a modo pincel
+            document.body.style.cursor = 'crosshair';
+        });
+
+        menuTurnos.appendChild(btnTurno);
+    });
+
+    // Botón para cerrar el modo pincel
+    const btnCerrar = document.createElement('button');
+    btnCerrar.id = 'cerrarPincel';
+    btnCerrar.textContent = '❌ Cerrar pincel';
+    btnCerrar.style.cssText = `
+        display: block;
+        width: 100%;
+        margin-top: 15px;
+        padding: 8px;
+        border: 1px solid #dc3545;
+        border-radius: 4px;
+        background: #dc3545;
+        color: white;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    `;
+
+    btnCerrar.addEventListener('click', desactivarPincel);
+    menuTurnos.appendChild(btnCerrar);
+
+    document.body.appendChild(menuTurnos);
+}
+
+// Función para manejar el click en las celdas editables
+function manejarClickCelda(event) {
+    if (!modoPincel || !turnoSeleccionado) return;
+
+    const celda = event.target;
+
+    // Verificar que sea una celda editable
+    if (celda.tagName === 'TD' && celda.contentEditable === 'true') {
+        // Pintar la celda con el turno seleccionado
+        celda.textContent = turnoSeleccionado;
+
+        // Aplicar el color correspondiente al turno
+        colorCelda(celda);
+
+    }
+}
+
+// Función para activar el modo pincel
+function pincelTurnos() {
+    if (Object.keys(turnosDisponibles).length === 0) {
+        alert('No hay turnos disponibles. Espera a que se carguen los datos.');
+        return;
+    }
+
+    modoPincel = true;
+
+    // Crear y mostrar el menú de turnos
+    crearMenuTurnos();
+
+    // Agregar event listener para clicks en celdas
+    document.addEventListener('click', manejarClickCelda);
+
+    // Cambiar el estilo del botón
+    const btnPincel = document.getElementById('btnPincelTurnos');
+    if (btnPincel) {
+        btnPincel.style.backgroundColor = '#28a745';
+        btnPincel.style.color = 'white';
+        btnPincel.textContent = '🎨 Modo pincel activo';
+    }
+
+    console.log('Modo pincel activado');
+}
+
+// Función para desactivar el modo pincel
+function desactivarPincel() {
+    modoPincel = false;
+    turnoSeleccionado = null;
+
+    // Eliminar menú
+    if (menuTurnos) {
+        menuTurnos.remove();
+        menuTurnos = null;
+    }
+
+    // Remover event listener
+    document.removeEventListener('click', manejarClickCelda);
+
+    // Restaurar cursor
+    document.body.style.cursor = 'default';
+
+    // Restaurar botón
+    const btnPincel = document.getElementById('btnPincelTurnos');
+    if (btnPincel) {
+        btnPincel.style.backgroundColor = '';
+        btnPincel.style.color = '';
+        btnPincel.textContent = 'Pincel de turnos';
+    }
+
+    console.log('Modo pincel desactivado');
+}
+
+// Event listener para el botón pincel
+document.getElementById('btnPincelTurnos').addEventListener('click', () => {
+    if (!modoPincel) {
+        pincelTurnos();
+    } else {
+        desactivarPincel();
+    }
+});
+
+// Inicializar: obtener turnos al cargar
+obtenerTurnos();
+
+// Opcional: desactivar pincel con tecla Escape
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modoPincel) {
+        desactivarPincel();
+    }
+});
