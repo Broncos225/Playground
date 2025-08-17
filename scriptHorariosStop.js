@@ -1079,6 +1079,63 @@ function generateWeekColumns() {
     nameHeader.textContent = 'Nombre del asesor';
     headerRow.appendChild(nameHeader);
 
+    var festivos = {
+        "Enero": [1, 6],
+        "Febrero": [],
+        "Marzo": [24],
+        "Abril": [17, 18],
+        "Mayo": [1],
+        "Junio": [2, 23, 30],
+        "Julio": [20],
+        "Agosto": [7, 18],
+        "Septiembre": [],
+        "Octubre": [13],
+        "Noviembre": [3, 17],
+        "Diciembre": [8, 25]
+    };
+
+    // Función para verificar si una semana contiene festivos
+    function semanaContieneFestivo(week, mes) {
+        let tieneFestivo = false;
+
+        // Verificar si la semana está en un solo mes
+        if (week.startMonth === week.endMonth) {
+            const festivosDelMes = festivos[monthNames[week.startMonth - 1]];
+            // Verificar cada día de la semana
+            for (let dia = week.start; dia <= week.end; dia++) {
+                if (festivosDelMes && festivosDelMes.includes(dia)) {
+                    tieneFestivo = true;
+                    break;
+                }
+            }
+        } else {
+            // La semana abarca dos meses
+            // Verificar días del primer mes
+            const festivosDelPrimerMes = festivos[monthNames[week.startMonth - 1]];
+            const diasEnPrimerMes = new Date(2024, week.startMonth, 0).getDate(); // días del mes
+
+            for (let dia = week.start; dia <= diasEnPrimerMes; dia++) {
+                if (festivosDelPrimerMes && festivosDelPrimerMes.includes(dia)) {
+                    tieneFestivo = true;
+                    break;
+                }
+            }
+
+            // Verificar días del segundo mes si no se encontró festivo
+            if (!tieneFestivo) {
+                const festivosDelSegundoMes = festivos[monthNames[week.endMonth - 1]];
+                for (let dia = 1; dia <= week.end; dia++) {
+                    if (festivosDelSegundoMes && festivosDelSegundoMes.includes(dia)) {
+                        tieneFestivo = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return tieneFestivo;
+    }
+
     weekRanges.forEach((week, index) => {
         const weekHeader = document.createElement('th');
         weekHeader.className = 'titulos';
@@ -1092,6 +1149,11 @@ function generateWeekColumns() {
             }
         } else {
             weekText += `${week.start} ${getShortMonthName(week.startMonth)} - ${week.end} ${getShortMonthName(week.endMonth)})`;
+        }
+
+        // Usar la nueva función para verificar si hay festivos en la semana
+        if (semanaContieneFestivo(week, mes)) {
+            weekHeader.style.backgroundColor = 'red';
         }
 
         weekHeader.textContent = weekText;
@@ -1326,12 +1388,18 @@ async function calcularValoresPorSemanaFirebase() {
             cell.textContent = valorFormateado;
             cell.style.textAlign = 'right';
 
-            if (totalSemana > 0) {
-                cell.style.backgroundColor = '#e8f5e8';
+            if (totalSemana === 44) {
+                cell.style.backgroundColor = '#a6fda6ff'; // verde
                 cell.style.fontWeight = 'bold';
-            } else {
-                cell.style.backgroundColor = '';
+            } else if (totalSemana === 0) {
+                cell.style.backgroundColor = '#ffb3b9ff'; // rojo
                 cell.style.fontWeight = 'normal';
+            } else if (totalSemana > 0 && totalSemana < 44) {
+                cell.style.backgroundColor = '#ffd9a6'; // naranja suave
+                cell.style.fontWeight = 'normal';
+            } else if (totalSemana > 44) {
+                cell.style.backgroundColor = '#fffda6'; // amarillo suave
+                cell.style.fontWeight = 'bold';
             }
 
             console.log(`${nombreFila} - Semana ${weekIndex + 1}: ${totalSemana} horas`);
