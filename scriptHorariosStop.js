@@ -1672,7 +1672,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, 100);
 });
-
 // Variables globales para el modo pincel
 let modoPincel = false;
 let turnosDisponibles = [];
@@ -1693,37 +1692,88 @@ function obtenerTurnos() {
 
 // Función para crear el menú de selección de turnos
 function crearMenuTurnos() {
-    // Eliminar menú existente si hay uno
-    if (menuTurnos) {
-        menuTurnos.remove();
+    // Obtener el div donde se mostrará la lista
+    const listaTurnos = document.getElementById('ListaTurnos');
+    
+    if (!listaTurnos) {
+        console.error('No se encontró el div #ListaTurnos');
+        return;
     }
 
-    menuTurnos = document.createElement('div');
-    menuTurnos.id = 'menuTurnos';
-    menuTurnos.style.cssText = `
-        position: fixed;
-        top: 50px;
-        left: 20px;
-        background: white;
-        border: 2px solid #515cfb;
-        border-radius: 8px;
-        padding: 10px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        z-index: 1000;
-        max-height: 300px;
-        overflow-y: auto;
-        min-width: 200px;
+    // Limpiar contenido existente
+    listaTurnos.innerHTML = '';
+
+    // Aplicar estilos de cuadrícula al contenedor
+    listaTurnos.style.cssText = `
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 0;
     `;
 
-    // Título del menú
-    const titulo = document.createElement('h4');
-    titulo.textContent = 'Selecciona un turno:';
-    titulo.style.cssText = `
-        margin: 0 0 10px 0;
-        color: #515cfb;
-        font-size: 14px;
+    // Crear botón vacío con fondo BLANCO y texto VISIBLE
+    const btnVacio = document.createElement('button');
+    btnVacio.textContent = 'Vacío';
+    btnVacio.style.cssText = `
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: white !important;
+        color: black;
+        cursor: pointer;
+        font-size: 11px;
+        transition: all 0.2s;
+        font-weight: bold;
+        text-align: center;
+        width: 40px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     `;
-    menuTurnos.appendChild(titulo);
+
+    // Guardar los colores como atributos (para el botón, no para las celdas)
+    btnVacio.dataset.colorOriginal = 'white';
+    btnVacio.dataset.colorTextoOriginal = 'black';
+    btnVacio.style.width = 'fit-content';
+    btnVacio.style.height = 'fit-content';
+
+    btnVacio.addEventListener('mouseenter', () => {
+        if (turnoSeleccionado !== 'vacio') {
+            btnVacio.style.opacity = '0.8';
+            btnVacio.style.transform = 'scale(1.02)';
+        }
+    });
+
+    btnVacio.addEventListener('mouseleave', () => {
+        if (turnoSeleccionado !== 'vacio') {
+            btnVacio.style.opacity = '1';
+            btnVacio.style.transform = 'scale(1)';
+        }
+    });
+
+    btnVacio.addEventListener('click', () => {
+        // Deseleccionar turno anterior
+        const botones = listaTurnos.querySelectorAll('button:not(#cerrarPincel)');
+        botones.forEach(btn => {
+            if (btn !== btnVacio) {
+                btn.style.backgroundColor = btn.dataset.colorOriginal;
+                btn.style.color = btn.dataset.colorTextoOriginal;
+                btn.style.border = '1px solid #ddd';
+                btn.style.transform = 'scale(1)';
+            }
+        });
+
+        // Seleccionar botón vacío
+        turnoSeleccionado = 'vacio';
+        btnVacio.style.border = '3px solid #999';
+        btnVacio.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
+        btnVacio.style.transform = 'scale(1.05)';
+
+        // Cambiar cursor a modo pincel
+        document.body.style.cursor = 'crosshair';
+    });
+
+    listaTurnos.appendChild(btnVacio);
 
     // Crear botones para cada turno
     Object.entries(turnosDisponibles).forEach(([turnoId, datosTurno]) => {
@@ -1740,24 +1790,26 @@ function crearMenuTurnos() {
         colorCelda(tempCell);
         console.log(datosTurno);
         const colorFondo = "#" + datosTurno.ColorF;
-
         const colorTexto = "#" + datosTurno.ColorT;
 
         // Remover la celda temporal
         document.body.removeChild(tempCell);
+        
         btnTurno.style.cssText = `
-            display: block;
-            width: 100%;
-            margin: 5px 0;
-            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: ${colorFondo || '#f8f9fa'} !important;
             color: ${colorTexto || 'black'};
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             transition: all 0.2s;
             font-weight: bold;
+            text-align: center;
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         `;
 
         // Guardar los colores originales como atributos
@@ -1780,7 +1832,7 @@ function crearMenuTurnos() {
 
         btnTurno.addEventListener('click', () => {
             // Deseleccionar turno anterior
-            const botones = menuTurnos.querySelectorAll('button:not(#cerrarPincel)');
+            const botones = listaTurnos.querySelectorAll('button:not(#cerrarPincel)');
             botones.forEach(btn => {
                 if (btn !== btnTurno) {
                     btn.style.backgroundColor = btn.dataset.colorOriginal;
@@ -1800,7 +1852,7 @@ function crearMenuTurnos() {
             document.body.style.cursor = 'crosshair';
         });
 
-        menuTurnos.appendChild(btnTurno);
+        listaTurnos.appendChild(btnTurno);
     });
 
     // Botón para cerrar el modo pincel
@@ -1808,9 +1860,7 @@ function crearMenuTurnos() {
     btnCerrar.id = 'cerrarPincel';
     btnCerrar.textContent = '❌ Cerrar pincel';
     btnCerrar.style.cssText = `
-        display: block;
-        width: 100%;
-        margin-top: 15px;
+        grid-column: 1 / -1;
         padding: 8px;
         border: 1px solid #dc3545;
         border-radius: 4px;
@@ -1822,9 +1872,7 @@ function crearMenuTurnos() {
     `;
 
     btnCerrar.addEventListener('click', desactivarPincel);
-    menuTurnos.appendChild(btnCerrar);
-
-    document.body.appendChild(menuTurnos);
+    listaTurnos.appendChild(btnCerrar);
 }
 
 // Función para manejar el click en las celdas editables
@@ -1835,12 +1883,17 @@ function manejarClickCelda(event) {
 
     // Verificar que sea una celda editable
     if (celda.tagName === 'TD' && celda.contentEditable === 'true') {
-        // Pintar la celda con el turno seleccionado
-        celda.textContent = turnoSeleccionado;
-
-        // Aplicar el color correspondiente al turno
-        colorCelda(celda);
-
+        
+        if (turnoSeleccionado === 'vacio') {
+            // Para el turno "vacío": limpiar texto y hacer fondo transparente
+            celda.textContent = '';
+            celda.style.backgroundColor = 'white';
+            celda.style.color = '';
+        } else {
+            // Para turnos normales: poner el turno y aplicar color
+            celda.textContent = turnoSeleccionado;
+            colorCelda(celda);
+        }
     }
 }
 
@@ -1875,10 +1928,12 @@ function desactivarPincel() {
     modoPincel = false;
     turnoSeleccionado = null;
 
-    // Eliminar menú
-    if (menuTurnos) {
-        menuTurnos.remove();
-        menuTurnos = null;
+    // Limpiar el contenido del div ListaTurnos
+    const listaTurnos = document.getElementById('ListaTurnos');
+    if (listaTurnos) {
+        listaTurnos.innerHTML = '';
+        // Opcional: restablecer estilos del contenedor
+        listaTurnos.style.cssText = '';
     }
 
     // Remover event listener
