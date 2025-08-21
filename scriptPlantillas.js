@@ -13,6 +13,20 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// Add this code snippet inside the `firebase.auth().onAuthStateChanged` block
+var timerSwitch = document.getElementById('timerSwitch');
+
+// Cargar la preferencia del temporizador desde el localStorage al cargar la página
+var timerPreference = localStorage.getItem('timerActive');
+if (timerPreference === 'true') {
+    timerSwitch.checked = true;
+}
+
+// Guardar la preferencia del temporizador en el localStorage cada vez que cambia
+timerSwitch.addEventListener('change', function () {
+    localStorage.setItem('timerActive', this.checked);
+});
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // Mostrar la pantalla de carga antes de iniciar la consulta
@@ -594,25 +608,78 @@ function showModal(fileName) {
     modal.style.display = "block";
 }
 
-function copiarTexto(id) {
-    var text = document.getElementById(id).innerHTML;
-    text = text.replace(/<br>/g, "\r\n").replace(/<\/p><p>/g, "\r\n").replace(/<p>/g, "").replace(/<\/p>/g, "");
-    var textArea = document.createElement("textarea");
-    textArea.style.fontFamily = "Nunito, sans-serif";
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-
-    var notification = document.getElementById('notification2');
-    notification.textContent = '¡Texto Copiado!';
-    notification.style.opacity = '1';
-
-    setTimeout(function () {
-        notification.style.opacity = '0';
-    }, 1000);
+async function clearClipboard() {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(''); 
+        } else {
+            // Fallback (puede fallar sin gesto de usuario)
+            const ta = document.createElement('textarea');
+            ta.value = ' ';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (!ok) throw new Error('execCommand copy blocked');
+        }
+        mostrarNotificacion("Portapapeles borrado.");
+    } catch (e) {
+        console.error('No se pudo borrar el portapapeles:', e);
+        mostrarNotificacion("No se pudo borrar el portapapeles");
+    }
 }
+
+
+// This is the main function that copies the text and sets the timer.
+async function copiarTexto(id) {
+    // Construir texto plano desde el HTML
+    let text = document.getElementById(id).innerHTML;
+    text = text
+        .replace(/<br>/g, "\r\n")
+        .replace(/<\/p><p>/g, "\r\n")
+        .replace(/<p>/g, "")
+        .replace(/<\/p>/g, "");
+
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            // Fallback para entornos no seguros
+            const ta = document.createElement('textarea');
+            ta.style.fontFamily = "Nunito, sans-serif";
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            document.execCommand("copy");
+            document.body.removeChild(ta);
+        }
+        // Notificación de copiado
+        const notification = document.getElementById('notification2');
+        notification.textContent = '¡Texto Copiado!';
+        notification.style.opacity = '1';
+        setTimeout(() => { notification.style.opacity = '0'; }, 1000);
+    } catch (e) {
+        console.error('No se pudo copiar al portapapeles:', e);
+        mostrarNotificacion("No se pudo copiar al portapapeles");
+        return;
+    }
+
+    // Temporizador de borrado si el switch está activo
+    const timerSwitch = document.getElementById('timerSwitch');
+    if (timerSwitch && timerSwitch.checked) {
+        setTimeout(() => {
+            // Si la pestaña no tiene foco, espera a que vuelva y entonces borra
+            if (document.hasFocus()) {
+                clearClipboard();
+            } else {
+                window.addEventListener('focus', clearClipboard, { once: true });
+            }
+        }, 15000);
+    }
+}
+
 
 function closeModal() {
     var modals = document.querySelectorAll('.modal');

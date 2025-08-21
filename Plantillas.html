@@ -49,10 +49,19 @@
                     <option value="1">Predeterminadas</option>
                     <option value="2">Solo personalizadas</option>
                 </select>
+
             </div>
         </div>
-        <!-- Botón para abrir el modal -->
+
         <button id="openModalButton">Crear Plantilla</button>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-direction: column;">
+            <label style="white-space: nowrap; width: 150px;">Activar temporizador</label>
+            <label class="switch" style="margin-left: 10px;">
+                <input type="checkbox" id="timerSwitch">
+                <span class="slider round"></span>
+            </label>
+        </div>
 
         <div id="createTemplateModal" class="modal">
             <div class="modal-content">
@@ -130,7 +139,6 @@
                 </div>
             </div>
         </div>
-        <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
         <button id="btnMostrarReproductor"
             style="display: flex; align-self: end; justify-self: end; border: 0;"></button>
 
