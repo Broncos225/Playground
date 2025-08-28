@@ -363,3 +363,52 @@ firebase.auth().onAuthStateChanged(function(user) {
         console.log("Nadie ha iniciado sesión.");
     }
 });
+// Reemplaza la sección del DOMContentLoaded al final del archivo scriptHerramientas.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Envolver el contenido de cada módulo (excepto el título) en un div con clase 'module-content'
+    const modulos = document.querySelectorAll('.Modulo');
+    
+    modulos.forEach(modulo => {
+        const titulo = modulo.querySelector('h1, h2');
+        if (titulo) {
+            // Crear el contenedor para el contenido
+            const contenidoDiv = document.createElement('div');
+            contenidoDiv.className = 'module-content';
+            
+            // Mover todos los elementos después del título al contenedor
+            const elementosAMover = [];
+            let siguienteElemento = titulo.nextSibling;
+            
+            while (siguienteElemento) {
+                elementosAMover.push(siguienteElemento);
+                siguienteElemento = siguienteElemento.nextSibling;
+            }
+            
+            elementosAMover.forEach(elemento => {
+                contenidoDiv.appendChild(elemento);
+            });
+            
+            // Añadir el contenedor al módulo
+            modulo.appendChild(contenidoDiv);
+            
+            // Inicialmente colapsar todos los módulos
+            modulo.classList.add('collapsed');
+            
+            // Añadir event listener al título
+            titulo.addEventListener('click', function() {
+                // Si el módulo actual está colapsado, colapsar todos los demás primero
+                if (modulo.classList.contains('collapsed')) {
+                    // Colapsar todos los módulos
+                    modulos.forEach(otroModulo => {
+                        if (otroModulo !== modulo) {
+                            otroModulo.classList.add('collapsed');
+                        }
+                    });
+                }
+                
+                // Luego alternar el estado del módulo actual
+                modulo.classList.toggle('collapsed');
+            });
+        }
+    });
+});

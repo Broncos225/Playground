@@ -1017,10 +1017,12 @@ label {
 }
 
 .GModulos {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 1000px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    flex-direction: column;
     gap: 10px;
     width: 100%;
     height: auto;
@@ -1029,67 +1031,58 @@ label {
 .Modulo {
     border: 1px solid #000000;
     border-radius: 10px;
-    flex: 1 1 auto;
     width: 100%;
-    height: auto;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
     background-color: white;
-    overflow: auto;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-
-
-
-@media (min-width: 600px) {
-    .Modulo {
-        width: 50%;
-    }
-}
-
-@media (min-width: 900px) {
-    .Modulo {
-        width: 33.33%;
-    }
-
-}
-
-@media (max-width: 600px) {
-    .celda {
-        flex-direction: column;
-    }
-
-    .input-container {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        align-items: center;
-        /* Añadido para centrar verticalmente */
-        width: 100%;
-    }
-
-    .input-container p {
-        margin-right: 10px;
-    }
-}
-
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-}
-
-/* Para Chrome, Safari y Edge */
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-    -webkit-appearance: none;
+.Modulo h1,
+.Modulo h2 {
     margin: 0;
+    padding: 15px;
+    cursor: pointer;
+    user-select: none;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #000000;
+    position: relative;
 }
 
-#Table>tbody:nth-of-type(2)>tr>td:not(:first-child),
-#Table>tbody:nth-of-type(2)>tr:last-child>td:first-child {
-    border-bottom: 1px solid #000;
+.Modulo h1:hover,
+.Modulo h2:hover {
+    background-color: #e0e0e0;
+}
+
+.Modulo h1::after,
+.Modulo h2::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+.Modulo.collapsed h1::after,
+.Modulo.collapsed h2::after {
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+.module-content {
+    padding: 20px;
+    max-height: 1000px;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
+}
+
+.module-content input {
+    width: 100%;
+}
+
+.Modulo.collapsed .module-content {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 #Contactos,
@@ -1097,7 +1090,7 @@ input[type='number']::-webkit-outer-spin-button {
 #Enlaces,
 #EnlacesArus,
 #Administrativas {
-    margin: 10px;
+    margin-top: 10px;
     width: auto;
     overflow: auto;
     display: block;
@@ -1129,88 +1122,6 @@ input[type='number']::-webkit-outer-spin-button {
     text-align: center;
     font-weight: bold;
     border: 1px solid #000;
-}
-
-#EnlacesArus {
-    height: 342px;
-}
-
-#FormTiendas {
-    margin-left: 10px;
-    margin-right: 10px;
-    gap: 5px;
-    display: flex;
-}
-
-#busqueda,
-#busqueda2,
-#busqueda3,
-#busqueda4 {
-    flex-grow: 1;
-}
-
-.GModulos2 {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
-    height: min-content;
-    justify-content: start;
-    /* Alinea el conjunto de elementos a la izquierda */
-}
-
-@media (max-width: 738px) {
-    .GModulos2 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.Modulo2 {
-    border: 1px solid #000;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    flex-direction: column;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    position: relative;
-    /* Añadir esta línea para permitir el posicionamiento absoluto del span */
-}
-
-.module-type {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    font-size: 0.8em;
-    /* Tamaño de fuente más pequeño */
-    color: #000000;
-    background-color: var(--color-primario);
-    padding: 2px 4px;
-    border-radius: 10px;
-}
-
-.delete-module {
-    position: absolute;
-    top: 5px;
-    left: 125px;
-}
-
-.Modulo2:hover {
-    background-color: #000000;
-    color: var(--color-primario);
-    cursor: pointer;
-}
-
-.Modulo2:hover .module-type .module-creator {
-    background-color: #000000;
-    color: var(--color-primario);
-}
-
-.Modulo2:hover .module-creator {
-    color: white;
 }
 
 .modal {
@@ -1293,6 +1204,11 @@ section {
     background-color: white;
 }
 
+#FormTiendas {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
 
 @media screen and (max-width: 1200px) {
     #Informacion {
@@ -1513,9 +1429,7 @@ input:checked+.slider:before {
     }
 }
 
-#M3 {
-    display: flex;
-}
+
 
 .contenedor-modulos {
     display: grid;
