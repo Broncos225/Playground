@@ -28,7 +28,6 @@ function colorCelda() {
     celdas.forEach(celda => {
         celda.addEventListener('input', () => {
             actualizarColorCelda(celda);
-            guardarCelda(celda);
         });
         actualizarColorCelda(celda);
     });
@@ -77,38 +76,114 @@ document.getElementById('form').addEventListener('submit', function (event) {
     guardarCeldas();
 });
 
-function guardarCeldas() {
+async function guardarCeldas() {
     var passw = document.getElementById('pass').value;
     var contraseñaEncontrada = false;
+    var usuario = "";
 
     for (let agente in agentes) {
         if (agentes[agente].contraseña == passw) {
             contraseñaEncontrada = true;
+            usuario = agente;
             break;
         }
     }
 
     if (contraseñaEncontrada) {
         const celdas = document.querySelectorAll('#Table td');
-        const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1; // +1 porque los meses están 1-indexados
+        const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1;
         const añoSeleccionado = document.getElementById('Año').value;
 
-        celdas.forEach(celda => {
-            const texto = celda.textContent.trim();
-            const idCelda = celda.cellIndex + 1; // Obtén el índice de la celda (1-indexed)
-            const nombreFila = celda.parentNode.cells[0].textContent.trim(); // Obtén el nombre del agente
-            db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).set({
-                texto: texto,
+        // Crear un mapa de valores actuales desde Firebase en una sola consulta
+        const valoresActuales = new Map();
+        const promesasFirebase = [];
+
+        // Agrupar consultas por agente para reducir el número de consultas
+        const agentesCeldas = new Map();
+
+        for (const celda of celdas) {
+            const idCelda = celda.cellIndex + 1;
+            const nombreFila = celda.parentNode.cells[0].textContent.trim();
+            const clave = `${nombreFila}_${idCelda}`;
+
+            if (!agentesCeldas.has(nombreFila)) {
+                agentesCeldas.set(nombreFila, []);
+            }
+            agentesCeldas.get(nombreFila).push({
+                celda: idCelda,
+                clave: clave,
+                elemento: celda
             });
-        });
-        alert("Datos guardados");
-        location.reload();
+        }
+
+        // Hacer consultas por agente (menos consultas que celda por celda)
+        for (const [nombreFila, celdasAgente] of agentesCeldas) {
+            const promesa = db.ref(`celdas/${nombreFila}`).once('value').then(snapshot => {
+                const datosAgente = snapshot.val() || {};
+
+                celdasAgente.forEach(({ celda, clave, elemento }) => {
+                    const valorFirebase = datosAgente[celda]?.[añoSeleccionado]?.[mesSeleccionado]?.texto || '';
+                    valoresActuales.set(clave, valorFirebase);
+                });
+            });
+
+            promesasFirebase.push(promesa);
+        }
+
+        // Esperar a que todas las consultas terminen
+        await Promise.all(promesasFirebase);
+
+        // Filtrar cambios reales usando el mapa
+        const cambiosReales = [];
+
+        for (const celda of celdas) {
+            const texto = celda.textContent.trim();
+            const idCelda = celda.cellIndex + 1;
+            const nombreFila = celda.parentNode.cells[0].textContent.trim();
+            const clave = `${nombreFila}_${idCelda}`;
+            const valorActual = valoresActuales.get(clave);
+
+            if (valorActual !== texto) {
+                cambiosReales.push({
+                    agente: nombreFila,
+                    celda: idCelda,
+                    año: añoSeleccionado,
+                    mes: mesSeleccionado,
+                    nuevoValor: texto,
+                    valorAnterior: valorActual
+                });
+            }
+        }
+
+        if (cambiosReales.length > 0) {
+            // Guardar en historial
+            const timestamp = new Date().toISOString();
+            const historialRef = db.ref('Historial').push();
+            await historialRef.set({
+                timestamp: timestamp,
+                usuario: usuario,
+                cambios: cambiosReales
+            });
+
+            // Guardar los cambios en Firebase
+            const promesasGuardado = cambiosReales.map(cambio =>
+                db.ref('celdas/' + cambio.agente + '/' + cambio.celda + '/' + cambio.año + '/' + cambio.mes).set({
+                    texto: cambio.nuevoValor,
+                })
+            );
+
+            await Promise.all(promesasGuardado);
+
+            alert("Datos guardados");
+            location.reload();
+        } else {
+            alert("No se detectaron cambios para guardar");
+        }
     } else {
         alert("Contraseña incorrecta");
         document.getElementById('pass').value = "";
     }
 }
-
 
 
 // Función para cargar datos y contar horas simultáneamente
@@ -1162,9 +1237,6 @@ function generateWeekColumns() {
 
     targetTable.appendChild(headerRow);
 
-    console.log(`Generadas ${weekRanges.length} columnas de semanas completas para ${monthNames[mes - 1]} ${ano}`);
-    console.log('Rangos de semanas:', weekRanges);
-
     copyNamesToTable3WithWeeks(weekRanges.length);
 }
 
@@ -1685,7 +1757,6 @@ function obtenerTurnos() {
         if (turnos) {
             // Guardar los turnos completos para acceder a los colores
             turnosDisponibles = turnos;
-            console.log('Turnos disponibles:', Object.keys(turnos));
         }
     });
 }
@@ -1694,7 +1765,7 @@ function obtenerTurnos() {
 function crearMenuTurnos() {
     // Obtener el div donde se mostrará la lista
     const listaTurnos = document.getElementById('ListaTurnos');
-    
+
     if (!listaTurnos) {
         console.error('No se encontró el div #ListaTurnos');
         return;
@@ -1794,7 +1865,7 @@ function crearMenuTurnos() {
 
         // Remover la celda temporal
         document.body.removeChild(tempCell);
-        
+
         btnTurno.style.cssText = `
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -1883,7 +1954,7 @@ function manejarClickCelda(event) {
 
     // Verificar que sea una celda editable
     if (celda.tagName === 'TD' && celda.contentEditable === 'true') {
-        
+
         if (turnoSeleccionado === 'vacio') {
             // Para el turno "vacío": limpiar texto y hacer fondo transparente
             celda.textContent = '';
@@ -1971,3 +2042,304 @@ document.addEventListener('keydown', (event) => {
         desactivarPincel();
     }
 });
+
+// Función para guardar en el historial (solo los cambios reales)
+async function guardarEnHistorial(cambios, usuario) {
+    const timestamp = new Date().toISOString();
+    const historialRef = db.ref('Historial').push();
+
+    // Filtrar solo los cambios que tienen un valor diferente al anterior
+    const cambiosReales = await filtrarCambiosReales(cambios);
+
+    if (cambiosReales.length === 0) {
+        return null; // No hay cambios reales, no guardar en historial
+    }
+
+    await historialRef.set({
+        timestamp: timestamp,
+        usuario: usuario,
+        cambios: cambiosReales
+    });
+
+    return historialRef.key;
+}
+
+// Función para filtrar solo los cambios reales
+async function filtrarCambiosReales(cambios) {
+    // Esta función ya no se usa con la optimización, pero se mantiene por compatibilidad
+    return cambios;
+}
+// Función para cargar y mostrar el historial
+async function cargarHistorial() {
+    const historialContent = document.getElementById('historialContent');
+    historialContent.innerHTML = '<p>Cargando historial...</p>';
+
+    try {
+        const snapshot = await db.ref('Historial').orderByChild('timestamp').once('value');
+
+        if (!snapshot.exists()) {
+            historialContent.innerHTML = '<p>No hay registros en el historial.</p>';
+            return;
+        }
+
+        // Convertir a array y ordenar por timestamp descendente (más recientes primero)
+        registrosHistorial = [];
+        snapshot.forEach(childSnapshot => {
+            const registro = childSnapshot.val();
+            registro.id = childSnapshot.key;
+            registrosHistorial.push(registro);
+        });
+
+        registrosHistorial.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        paginaActual = 1;
+        mostrarPagina();
+        crearControlesPaginacion();
+    } catch (error) {
+        console.error("Error al cargar historial:", error);
+        historialContent.innerHTML = '<p>Error al cargar el historial.</p>';
+    }
+}
+
+// Variables globales para la paginación
+let registrosHistorial = [];
+let paginaActual = 1;
+const registrosPorPagina = 10;
+
+
+function mostrarPagina() {
+    const historialContent = document.getElementById('historialContent');
+    const inicio = (paginaActual - 1) * registrosPorPagina;
+    const fin = inicio + registrosPorPagina;
+    const registrosPagina = registrosHistorial.slice(inicio, fin);
+
+    if (registrosPagina.length === 0) {
+        historialContent.innerHTML = '<p>No hay registros para mostrar.</p>';
+        return;
+    }
+
+    let html = '<div class="historial-container">';
+
+    registrosPagina.forEach(registro => {
+        const fecha = new Date(registro.timestamp).toLocaleString();
+        const usuarioLimpio = registro.usuario.replace(/_/g, ' ');
+        const cantidadCambios = registro.cambios.length;
+
+        html += `
+            <div class="historial-item">
+                <div class="historial-header" onclick="window.toggleCambios('${registro.id}')">
+                    <span><strong>Usuario:</strong> ${usuarioLimpio} | <strong>Fecha:</strong> ${fecha}</span>
+                    <span class="cambios-count">${cantidadCambios} cambio${cantidadCambios !== 1 ? 's' : ''}</span>
+                    <span class="toggle-icon" id="icon-${registro.id}">▼</span>
+                </div>
+                <div class="historial-cambios" id="cambios-${registro.id}" style="display: none;">
+        `;
+
+        registro.cambios.forEach(cambio => {
+            const dia = cambio.celda - 1;
+            html += `
+                <div class="cambio-item">
+                    <strong>Agente:</strong> ${cambio.agente} | 
+                    <strong>Día:</strong> ${dia} | 
+                    <strong>Mes:</strong> ${cambio.mes} | 
+                    <strong>Año:</strong> ${cambio.año}<br>
+                    <span class="valor-anterior">Anterior: ${cambio.valorAnterior || '(vacío)'}</span> → 
+                    <span class="valor-nuevo">Nuevo: ${cambio.nuevoValor}</span>
+                </div>
+            `;
+        });
+
+        html += `
+                </div>
+            </div>
+        `;
+    });
+
+    html += '</div>';
+    historialContent.innerHTML = html;
+}
+// Agregar al final del código, después de definir las funciones:
+window.toggleCambios = toggleCambios;
+window.cambiarPagina = cambiarPagina;
+function toggleCambios(registroId) {
+    const cambiosDiv = document.getElementById(`cambios-${registroId}`);
+    const icon = document.getElementById(`icon-${registroId}`);
+
+    if (cambiosDiv.style.display === 'none') {
+        cambiosDiv.style.display = 'block';
+        icon.textContent = '▲';
+    } else {
+        cambiosDiv.style.display = 'none';
+        icon.textContent = '▼';
+    }
+}
+
+function crearControlesPaginacion() {
+    const totalPaginas = Math.ceil(registrosHistorial.length / registrosPorPagina);
+    const historialContent = document.getElementById('historialContent');
+
+    if (totalPaginas <= 1) return;
+
+    let paginacionHtml = '<div class="paginacion">';
+
+    // Botón anterior
+    if (paginaActual > 1) {
+        paginacionHtml += `<button onclick="cambiarPagina(${paginaActual - 1})">‹ Anterior</button>`;
+    }
+
+    // Números de página
+    for (let i = 1; i <= totalPaginas; i++) {
+        const activo = i === paginaActual ? ' class="activo"' : '';
+        paginacionHtml += `<button${activo} onclick="cambiarPagina(${i})">${i}</button>`;
+    }
+
+    // Botón siguiente
+    if (paginaActual < totalPaginas) {
+        paginacionHtml += `<button onclick="cambiarPagina(${paginaActual + 1})">Siguiente ›</button>`;
+    }
+
+    paginacionHtml += `</div>`;
+    paginacionHtml += `<div class="info-paginacion">Página ${paginaActual} de ${totalPaginas} (${registrosHistorial.length} registros total)</div>`;
+
+    historialContent.innerHTML += paginacionHtml;
+}
+
+function cambiarPagina(nuevaPagina) {
+    paginaActual = nuevaPagina;
+    mostrarPagina();
+    crearControlesPaginacion();
+}
+
+// Agregar estilos CSS al documento
+const estilosHistorial = `
+<style>
+.historial-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.historial-item {
+    border: 1px solid #ddd;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.historial-header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.historial-header:hover {
+    background-color: #e9ecef;
+}
+
+.cambios-count {
+    background-color: #007bff;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.toggle-icon {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.historial-cambios {
+    padding: 10px;
+    background-color: #fff;
+}
+
+.cambio-item {
+    padding: 6px;
+    margin-bottom: 6px;
+    background-color: #f8f9fa;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.valor-anterior {
+    color: #dc3545;
+}
+
+.valor-nuevo {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.paginacion {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 15px 0;
+}
+
+.paginacion button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.paginacion button:hover {
+    background: #f8f9fa;
+}
+
+.paginacion button.activo {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.info-paginacion {
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+    margin-top: 10px;
+}
+</style>
+`;
+// Corrección para el cierre del modal
+document.addEventListener('DOMContentLoaded', function () {
+    // Función para cerrar modal
+    function cerrarModalHistorial() {
+        document.getElementById('modalHistorial').style.display = 'none';
+    }
+
+    // Event listeners para cerrar el modal
+    const closeButton = document.querySelector('#modalHistorial .close');
+    if (closeButton) {
+        closeButton.removeEventListener('click', cerrarModalHistorial); // Remover listener anterior si existe
+        closeButton.addEventListener('click', cerrarModalHistorial);
+    }
+
+    // Botón para abrir modal
+    document.getElementById('btnHistorial').addEventListener('click', function () {
+        document.getElementById('modalHistorial').style.display = 'block';
+        cargarHistorial();
+    });
+
+    // Cerrar al hacer click fuera del modal
+    window.addEventListener('click', function (event) {
+        const modal = document.getElementById('modalHistorial');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+// Agregar los estilos al head si no existen
+if (!document.querySelector('#estilos-historial')) {
+    const style = document.createElement('style');
+    style.id = 'estilos-historial';
+    style.innerHTML = estilosHistorial;
+    document.head.appendChild(style);
+}

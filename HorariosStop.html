@@ -109,8 +109,11 @@
                 <button id="btnLimpiar">Limpiar</button>
             </div>
             <div class="vertical-bar"></div>
-            <button id="btnExportarTexto">Exportar a texto</button>
-            <button id="consultaSemana">Consultar semanas</button>
+            <div>
+                <button id="btnExportarTexto">Exportar a texto</button>
+                <button id="consultaSemana">Consultar semanas</button>
+                <button id="btnHistorial">Historial</button>
+            </div>
 
         </div>
         <div id="ListaTurnos"></div>
@@ -595,7 +598,14 @@
 
             <button id="btnMostrarReproductor" style="display: flex; align-self: end; border: 0;"></button>
 
-
+            <div id="modalHistorial">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Historial de Cambios</h2>
+                    <div id="historialContent"></div>
+                </div>
+            </div>
+            <div id="paginacionHistorial"></div>
     </section>
 
     <footer>
