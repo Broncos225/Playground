@@ -133,47 +133,108 @@ async function guardarCeldas() {
         // Esperar a que todas las consultas terminen
         await Promise.all(promesasFirebase);
 
-        // Filtrar cambios reales usando el mapa
-        const cambiosReales = [];
+        // --- Lógica de corrección ---
+        const cambiosParaGuardarEnFirebase = [];
+        const cambiosParaGuardarEnHistorial = [];
 
         for (const celda of celdas) {
-            const texto = celda.textContent.trim();
+            const nuevoValor = celda.textContent.trim();
             const idCelda = celda.cellIndex + 1;
             const nombreFila = celda.parentNode.cells[0].textContent.trim();
             const clave = `${nombreFila}_${idCelda}`;
-            const valorActual = valoresActuales.get(clave);
+            const valorAnterior = valoresActuales.get(clave);
 
-            if (valorActual !== texto) {
-                cambiosReales.push({
+            // Regla #1: Si no existe en Firebase y está vacía en la interfaz -> Guardar en Firebase pero NO en historial
+            // La condición `valorAnterior === ''` significa que no existe en Firebase.
+            // La condición `nuevoValor === ''` significa que está vacía en la interfaz.
+            if (valorAnterior === '' && nuevoValor === '') {
+                cambiosParaGuardarEnFirebase.push({
                     agente: nombreFila,
                     celda: idCelda,
                     año: añoSeleccionado,
                     mes: mesSeleccionado,
-                    nuevoValor: texto,
-                    valorAnterior: valorActual
+                    nuevoValor: nuevoValor
+                });
+            }
+            // Regla #2: Si no existe en Firebase y tiene contenido -> Guardar en Firebase Y en historial
+            // La condición `valorAnterior === ''` significa que no existe en Firebase.
+            // La condición `nuevoValor !== ''` significa que tiene contenido.
+            else if (valorAnterior === '' && nuevoValor !== '') {
+                cambiosParaGuardarEnFirebase.push({
+                    agente: nombreFila,
+                    celda: idCelda,
+                    año: añoSeleccionado,
+                    mes: mesSeleccionado,
+                    nuevoValor: nuevoValor
+                });
+                cambiosParaGuardarEnHistorial.push({
+                    agente: nombreFila,
+                    celda: idCelda,
+                    año: añoSeleccionado,
+                    mes: mesSeleccionado,
+                    nuevoValor: nuevoValor,
+                    valorAnterior: valorAnterior
+                });
+            }
+            // Regla #3: Si existe en Firebase y se vacía -> Guardar en Firebase pero NO en historial
+            // La condición `valorAnterior !== ''` significa que ya existe en Firebase.
+            // La condición `nuevoValor === ''` significa que se vació.
+            else if (valorAnterior !== '' && nuevoValor === '') {
+                cambiosParaGuardarEnFirebase.push({
+                    agente: nombreFila,
+                    celda: idCelda,
+                    año: añoSeleccionado,
+                    mes: mesSeleccionado,
+                    nuevoValor: nuevoValor
+                });
+            }
+            // Regla #4: Si existe en Firebase y cambia a otro contenido -> Guardar en Firebase Y en historial
+            // La condición `valorAnterior !== ''` significa que existe en Firebase.
+            // La condición `nuevoValor !== '' && valorAnterior !== nuevoValor` significa que cambió a otro contenido.
+            else if (valorAnterior !== '' && nuevoValor !== '' && valorAnterior !== nuevoValor) {
+                cambiosParaGuardarEnFirebase.push({
+                    agente: nombreFila,
+                    celda: idCelda,
+                    año: añoSeleccionado,
+                    mes: mesSeleccionado,
+                    nuevoValor: nuevoValor
+                });
+                cambiosParaGuardarEnHistorial.push({
+                    agente: nombreFila,
+                    celda: idCelda,
+                    año: añoSeleccionado,
+                    mes: mesSeleccionado,
+                    nuevoValor: nuevoValor,
+                    valorAnterior: valorAnterior
                 });
             }
         }
+        
+        // Ejecutar las promesas de guardado
+        const promesasGuardado = [];
 
-        if (cambiosReales.length > 0) {
-            // Guardar en historial
-            const timestamp = new Date().toISOString();
-            const historialRef = db.ref('Historial').push();
-            await historialRef.set({
-                timestamp: timestamp,
-                usuario: usuario,
-                cambios: cambiosReales
-            });
-
-            // Guardar los cambios en Firebase
-            const promesasGuardado = cambiosReales.map(cambio =>
-                db.ref('celdas/' + cambio.agente + '/' + cambio.celda + '/' + cambio.año + '/' + cambio.mes).set({
+        if (cambiosParaGuardarEnFirebase.length > 0) {
+            const firebasePromises = cambiosParaGuardarEnFirebase.map(cambio =>
+                db.ref(`celdas/${cambio.agente}/${cambio.celda}/${cambio.año}/${cambio.mes}`).set({
                     texto: cambio.nuevoValor,
                 })
             );
+            promesasGuardado.push(...firebasePromises);
+        }
 
+        if (cambiosParaGuardarEnHistorial.length > 0) {
+            const timestamp = new Date().toISOString();
+            const historialRef = db.ref('Historial').push();
+            const historialPromise = historialRef.set({
+                timestamp: timestamp,
+                usuario: usuario,
+                cambios: cambiosParaGuardarEnHistorial
+            });
+            promesasGuardado.push(historialPromise);
+        }
+
+        if (promesasGuardado.length > 0) {
             await Promise.all(promesasGuardado);
-
             alert("Datos guardados");
             location.reload();
         } else {
@@ -1870,7 +1931,6 @@ function crearMenuTurnos() {
 
         // Aplicar la función colorCelda para obtener el color
         colorCelda(tempCell);
-        console.log(datosTurno);
         const colorFondo = "#" + datosTurno.ColorF;
         const colorTexto = "#" + datosTurno.ColorT;
 
