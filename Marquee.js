@@ -10,35 +10,39 @@ window.addEventListener('load', function () {
 let agentes = {
   Andrés_Felipe_Yepes_Tascón: {
     nombre: "Andrés Yepes",
-    cumpleaños: [2,5]
+    cumpleaños: [2, 5]
   },
   Oscar_Luis_Cabrera_Pacheco: {
     nombre: "Oscar",
-    cumpleaños: [5,5]
+    cumpleaños: [5, 5]
   },
   Ocaris_David_Arango_Aguilar: {
     nombre: "David",
-    cumpleaños: [8,3]
+    cumpleaños: [8, 3]
   },
   Yeison_Torres_Ochoa: {
     nombre: "Yeison",
-    cumpleaños: [12,9]
+    cumpleaños: [12, 9]
   },
   Johan_Guzman_Alarcon: {
     nombre: "Johan",
-    cumpleaños: [21,10]
+    cumpleaños: [21, 10]
   },
   Maria_Susana_Ospina_Vanegas: {
     nombre: "Susana",
-    cumpleaños: [22,2]
+    cumpleaños: [22, 2]
   },
   Juan_Manuel_Cano_Benítez: {
     nombre: "Juan",
-    cumpleaños: [20,10]
+    cumpleaños: [20, 10]
   },
   Karen_Riveros_Vega: {
     nombre: "Karen",
-    cumpleaños: [0,0] // No tiene cumpleaños registrado
+    cumpleaños: [0, 0]
+  },
+  Diego_Alejandro_Úsuga_Yepes: {
+    nombre: "Diego",
+    cumpleaños: [0, 0]
   }
 };
 
@@ -58,7 +62,7 @@ function verificarCumpleaños(agentes) {
       banner.style.display = 'block';
       banner.classList.add('aparecer');
 
-      intervalo = setInterval(function() {
+      intervalo = setInterval(function () {
         const emoticonoAleatorio = emoticonos[Math.floor(Math.random() * emoticonos.length)];
         banner.textContent = `${emoticonoAleatorio} ¡Feliz cumpleaños ${agentes[agente].nombre}! ${emoticonoAleatorio}`;
       }, 1000); // Cambia el emoticono cada segundo
