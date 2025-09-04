@@ -1,10 +1,11 @@
 :root {
     --color-primario: ;
     --color-secundario: ;
+    --font-family: 'Nunito', Arial, sans-serif;
 }
 
 body {
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
     margin: 0;
     padding: 0;
 }
@@ -44,7 +45,7 @@ section {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: var(--font-family);
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
@@ -130,7 +131,7 @@ section {
 }
 
 .select {
-    font-family: Arial, Helvetica, sans-serif, sans-serif;
+    font-family: var(--font-family);
     outline: 0;
     background: transparent;
     color: #000000;
@@ -184,7 +185,7 @@ button {
     color: rgb(0, 0, 0);
     cursor: pointer;
     border: solid 2px #000000;
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
 }
 
 button:hover {
@@ -240,13 +241,13 @@ button .botonReiniciar:hover {
 #botones-container {
     display: flex;
     justify-content: center;
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
 }
 
 #botones {
     display: flex;
     justify-content: space-around;
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
 }
 
 
@@ -336,7 +337,7 @@ button .botonReiniciar:hover {
 
 
 #miSelector {
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
     outline: 0;
     background: transparent;
     color: #000000;
@@ -349,8 +350,8 @@ button .botonReiniciar:hover {
 #HoraAlmuerzos {
     display: flex;
     justify-content: center;
-    font-family: 'Nunito', Arial, sans-serif;
-    font-size: small;
+    font-family: var(--font-family);
+    font-size: 12px;
     flex-direction: column;
     align-items: flex-start;
 }
@@ -374,7 +375,7 @@ button .botonReiniciar:hover {
     color: rgb(0, 0, 0);
     cursor: pointer;
     border: solid 2px #000000;
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
 }
 
 #btnPincelTurnos {
@@ -430,7 +431,7 @@ button .botonReiniciar:hover {
 }
 
 #pass {
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
     outline: 0;
     background: transparent;
     color: #000000;
@@ -482,7 +483,7 @@ button .botonReiniciar:hover {
 #Solicitante,
 #Receptor,
 #SolExportar {
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
 }
 
 #Solicitudes {
@@ -629,7 +630,7 @@ button .botonReiniciar:hover {
 
 /* Global styles */
 body {
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
     margin: 0;
     padding: 0;
     background-color: var(--color-secundario);
@@ -706,7 +707,7 @@ label {
 }
 
 .custom-select {
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
     width: auto;
 }
 
@@ -1617,7 +1618,7 @@ input:checked+.slider:before {
     /* Remover el borde al enfocar */
     transition: background-color 0.3s ease;
     /* Transición suave del fondo */
-    font-family: 'Nunito', Arial, sans-serif;
+    font-family: var(--font-family);
 }
 
 #songSelector:hover {
@@ -1862,7 +1863,7 @@ input:checked+.slider:before {
 }
 
 .ql-editor {
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
 }
 
 .ql-snow {
@@ -1912,7 +1913,7 @@ input:checked+.slider:before {
 }
 
 .item-btn {
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-family);
     /* Asegúrate de que el botón use la misma fuente */
     font-weight: 600;
     /* Asegúrate de que el texto del botón sea visible */

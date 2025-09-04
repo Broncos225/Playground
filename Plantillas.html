@@ -39,30 +39,39 @@
         </nav>
     </header>
     <section>
-        <div>
-            <h1 id="Titulo">Plantillas</h1>
+        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; width: 100%;">
 
-            <div style="display: flex; flex-direction: column;">
-                <label for="Tipos" style="display: flex; width: auto;">Tipos de plantillas:</label>
-                <select id="Tipos" class="custom-select">
-                    <option value="0">Todas las plantillas</option>
-                    <option value="1">Predeterminadas</option>
-                    <option value="2">Solo personalizadas</option>
-                </select>
-
+            <div style="display: flex; width: 100%; justify-content: space-between; ">
+                <div
+                    style="display: flex; flex-direction: row; align-items: center; gap: 10px; justify-content: center; padding: 0px;">
+                    <p style="margin: 0px;" id="Encargado"></p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-direction: row;">
+                    <label style="white-space: nowrap; width: 150px;">Activar temporizador</label>
+                    <label class="switch" style="margin-left: 10px;">
+                        <input type="checkbox" id="timerSwitch">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
+            <div>
+                <h1 id="Titulo">Plantillas</h1>
+
+                <div style="display: flex; flex-direction: column; margin-bottom: 10px;">
+                    <label for="Tipos" style="display: flex; width: auto;">Tipos de plantillas:</label>
+                    <select id="Tipos" class="custom-select">
+                        <option value="0">Todas las plantillas</option>
+                        <option value="1">Predeterminadas</option>
+                        <option value="2">Solo personalizadas</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <button id="openModalButton">Crear Plantilla</button>
+
+
         </div>
-
-        <button id="openModalButton">Crear Plantilla</button>
-
-        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-direction: column;">
-            <label style="white-space: nowrap; width: 150px;">Activar temporizador</label>
-            <label class="switch" style="margin-left: 10px;">
-                <input type="checkbox" id="timerSwitch">
-                <span class="slider round"></span>
-            </label>
-        </div>
-
         <div id="createTemplateModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>

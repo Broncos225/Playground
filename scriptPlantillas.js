@@ -813,3 +813,221 @@ document.body.appendChild(loadingScreen);
 function redirectTo(url) {
     window.location.href = url;
 }
+// Función para convertir hora en formato "7:00 AM" a minutos desde medianoche
+function convertirHoraAMinutos(hora) {
+    const [tiempo, periodo] = hora.split(' ');
+    let [horas, minutos] = tiempo.split(':').map(Number);
+    
+    if (periodo === 'PM' && horas !== 12) {
+        horas += 12;
+    } else if (periodo === 'AM' && horas === 12) {
+        horas = 0;
+    }
+    
+    return horas * 60 + minutos;
+}
+
+// Función para obtener los minutos actuales desde medianoche
+function obtenerMinutosActuales() {
+    const ahora = new Date();
+    return ahora.getHours() * 60 + ahora.getMinutes();
+}
+
+// Función para verificar encargados especiales
+async function verificarEncargadosEspeciales() {
+    try {
+        const hoy = new Date();
+        const añoActual = hoy.getFullYear();
+        const mesActual = hoy.getMonth() + 1;
+        const diaActual = hoy.getDate();
+        const minutosActuales = obtenerMinutosActuales();
+        
+        const encargadosEspeciales = [];
+        const usuariosEspeciales = ["Juan Manuel Cano Benítez", "Karen Riveros Vega"];
+        
+        // Verificar si tienen turno diferente a "D"
+        for (const usuario of usuariosEspeciales) {
+            try {
+                const snapshot = await db.ref(`celdas/${usuario}/${diaActual}/${añoActual}/${mesActual}`).once('value');
+                const turnoData = snapshot.val();
+                
+                if (turnoData && turnoData.texto && turnoData.texto !== "D") {
+                    // Determinar horarios según día par/impar
+                    const esDiaPar = diaActual % 2 === 0;
+                    
+                    if (usuario === "Juan Manuel Cano Benítez") {
+                        if (esDiaPar) {
+                            // Días pares: 08:00 AM - 01:00 PM
+                            if (minutosActuales >= 8*60 && minutosActuales < 13*60) {
+                                encargadosEspeciales.push(usuario);
+                            }
+                        } else {
+                            // Días impares: 01:00 PM - 05:00 PM
+                            if (minutosActuales >= 13*60 && minutosActuales < 17*60) {
+                                encargadosEspeciales.push(usuario);
+                            }
+                        }
+                    } else if (usuario === "Karen Riveros Vega") {
+                        if (esDiaPar) {
+                            // Días pares: 01:00 PM - 05:00 PM
+                            if (minutosActuales >= 13*60 && minutosActuales < 17*60) {
+                                encargadosEspeciales.push(usuario);
+                            }
+                        } else {
+                            // Días impares: 08:00 AM - 01:00 PM
+                            if (minutosActuales >= 8*60 && minutosActuales < 13*60) {
+                                encargadosEspeciales.push(usuario);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error(`Error consultando turno especial para ${usuario}:`, error);
+            }
+        }
+        
+        return encargadosEspeciales;
+    } catch (error) {
+        console.error('Error verificando encargados especiales:', error);
+        return [];
+    }
+}
+
+// Función principal para obtener el encargado actual
+async function obtenerEncargadoActual() {
+    try {
+        // Lista de usuarios
+        const usuarios = [
+            "Andrés Felipe Yepes Tascón",
+            "Oscar Luis Cabrera Pacheco", 
+            "Yeison Torres Ochoa",
+            "Maria Susana Ospina Vanegas",
+            "Ocaris David Arango Aguilar",
+            "Johan Guzman Alarcon",
+            "Diego Alejandro Úsuga Yepes"
+        ];
+
+        // Obtener la fecha actual
+        const hoy = new Date();
+        const añoActual = hoy.getFullYear();
+        const mesActual = hoy.getMonth() + 1;
+        const diaActual = hoy.getDate() + 1;
+
+        // Obtener los horarios de los turnos
+        const snapshotTurnos = await db.ref('Turnos').once('value');
+        const horariosTurnos = snapshotTurnos.val();
+
+        if (!horariosTurnos) {
+            console.log('No se pudieron obtener los horarios de turnos');
+            return null;
+        }
+
+        // Array para almacenar usuarios con sus horarios
+        const usuariosConHorarios = [];
+
+        // Consultar turno para cada usuario
+        for (const usuario of usuarios) {
+            try {
+                const snapshot = await db.ref(`celdas/${usuario}/${diaActual}/${añoActual}/${mesActual}`).once('value');
+                const turnoData = snapshot.val();
+                
+                if (turnoData && turnoData.texto) {
+                    const codigoTurno = turnoData.texto; // Por ejemplo: "T1", "T3", "T6"
+                    
+                    // Buscar el horario correspondiente al turno
+                    const horarioTurno = horariosTurnos[codigoTurno];
+                    
+                    if (horarioTurno && horarioTurno.Apertura && horarioTurno.Cierre) {
+                        const inicioMinutos = convertirHoraAMinutos(horarioTurno.Apertura);
+                        const finMinutos = convertirHoraAMinutos(horarioTurno.Cierre);
+                        
+                        usuariosConHorarios.push({
+                            nombre: usuario,
+                            turno: codigoTurno,
+                            inicioMinutos: inicioMinutos,
+                            finMinutos: finMinutos,
+                            horarioTexto: `${horarioTurno.Apertura} - ${horarioTurno.Cierre}`
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error(`Error consultando turno para ${usuario}:`, error);
+            }
+        }
+
+        // Ordenar por hora de inicio
+        usuariosConHorarios.sort((a, b) => a.inicioMinutos - b.inicioMinutos);
+
+        // Mostrar todos los turnos del día (opcional para debug)
+        console.log('Turnos del día:');
+        usuariosConHorarios.forEach(usuario => {
+            console.log(`${usuario.nombre} - ${usuario.turno}: ${usuario.horarioTexto}`);
+        });
+
+        // Determinar quién está actualmente en turno
+        const minutosActuales = obtenerMinutosActuales();
+        console.log(`Hora actual: ${Math.floor(minutosActuales/60)}:${String(minutosActuales%60).padStart(2,'0')}`);
+
+        for (const usuario of usuariosConHorarios) {
+            if (minutosActuales >= usuario.inicioMinutos && minutosActuales < usuario.finMinutos) {
+                console.log(`Encargado actual: ${usuario.nombre}`);
+                return {
+                    nombre: usuario.nombre,
+                    turno: usuario.turno,
+                    horario: usuario.horarioTexto
+                };
+            }
+        }
+
+        // Si no hay nadie en turno actualmente
+        console.log('No hay nadie en turno en este momento');
+        return null;
+
+    } catch (error) {
+        console.error('Error obteniendo encargado actual:', error);
+        return null;
+    }
+}
+
+// Función para actualizar el div del encargado
+async function actualizarDivEncargado() {
+    const encargadoActual = await obtenerEncargadoActual();
+    const encargadosEspeciales = await verificarEncargadosEspeciales();
+    const divEncargado = document.getElementById('Encargado');
+    
+    if (divEncargado) {
+        if (encargadoActual) {
+            let contenido = `
+                <strong>Encargado Actual:</strong><br>
+                ${encargadoActual.nombre}
+            `;
+            
+            // Agregar encargados especiales al lado
+            if (encargadosEspeciales.length > 0) {
+                contenido += ` y ${encargadosEspeciales.join(', ')}`;
+            }
+            
+            contenido += `<br>
+                <medium>Turno ${encargadoActual.turno} (${encargadoActual.horario})</medium>
+            `;
+            
+            divEncargado.innerHTML = contenido;
+        } else {
+            divEncargado.innerHTML = '<em>No hay encargado en turno actualmente</em>';
+        }
+    }
+}
+
+// Función para inicializar y mantener actualizado el encargado
+function inicializarSistemaEncargado() {
+    // Actualizar inmediatamente
+    actualizarDivEncargado();
+    
+    // Actualizar cada minuto (60000 ms)
+    setInterval(actualizarDivEncargado, 60000);
+    
+    console.log('Sistema de encargado iniciado - Se actualiza cada minuto');
+}
+
+// Llamar esta función cuando la página esté lista
+inicializarSistemaEncargado();

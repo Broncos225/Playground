@@ -1,11 +1,25 @@
-// Configuraciones.js - Sistema de preferencias de colores
+// Configuraciones.js - Sistema de preferencias de colores y fuentes
 class PreferenciasColores {
     constructor() {
         this.nombreUsuario = this.obtenerNombreUsuario();
-        this.coloresDefecto = {
+        this.configuracionDefecto = {
             primario: '#e69500',
-            secundario: '#FFFFFF'
+            secundario: '#FFFFFF',
+            fuente: 'Arial, sans-serif' // Fuente por defecto
         };
+        this.fuentesDisponibles = [
+            { nombre: 'Arial', valor: 'Arial, sans-serif' },
+            { nombre: 'Helvetica', valor: 'Helvetica, Arial, sans-serif' },
+            { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
+            { nombre: 'Georgia', valor: 'Georgia, serif' },
+            { nombre: 'Verdana', valor: 'Verdana, Geneva, sans-serif' },
+            { nombre: 'Trebuchet MS', valor: '"Trebuchet MS", Helvetica, sans-serif' },
+            { nombre: 'Comic Sans MS', valor: '"Comic Sans MS", cursive' },
+            { nombre: 'Impact', valor: 'Impact, Charcoal, sans-serif' },
+            { nombre: 'Courier New', valor: '"Courier New", Courier, monospace' },
+            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' },
+            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" } // Fuente adicional
+        ];
         this.init();
     }
 
@@ -22,8 +36,23 @@ class PreferenciasColores {
     // Inicializar el sistema
     init() {
         this.cargarPreferencias();
+        this.configurarSelectFuente();
         this.configurarEventos();
-        this.aplicarColores();
+        this.aplicarConfiguracion();
+    }
+
+    // Configurar el select de fuentes si existe
+    configurarSelectFuente() {
+        const selectFuente = document.getElementById('FontFamily');
+        if (selectFuente && selectFuente.options.length === 0) {
+            // Solo llenar si está vacío
+            this.fuentesDisponibles.forEach(fuente => {
+                const option = document.createElement('option');
+                option.value = fuente.valor;
+                option.textContent = fuente.nombre;
+                selectFuente.appendChild(option);
+            });
+        }
     }
 
     // Cargar preferencias guardadas
@@ -34,41 +63,45 @@ class PreferenciasColores {
         if (preferenciasGuardadas) {
             try {
                 const preferencias = JSON.parse(preferenciasGuardadas);
-                this.coloresActuales = {
-                    primario: preferencias.colorPrimario || this.coloresDefecto.primario,
-                    secundario: preferencias.colorSecundario || this.coloresDefecto.secundario
+                this.configuracionActual = {
+                    primario: preferencias.colorPrimario || this.configuracionDefecto.primario,
+                    secundario: preferencias.colorSecundario || this.configuracionDefecto.secundario,
+                    fuente: preferencias.fuente || this.configuracionDefecto.fuente
                 };
             } catch (error) {
                 console.error('Error al cargar preferencias:', error);
-                this.coloresActuales = { ...this.coloresDefecto };
+                this.configuracionActual = { ...this.configuracionDefecto };
             }
         } else {
-            this.coloresActuales = { ...this.coloresDefecto };
+            this.configuracionActual = { ...this.configuracionDefecto };
         }
 
-        // Actualizar los inputs de color
-        this.actualizarInputsColor();
+        // Actualizar los inputs de color y fuente
+        this.actualizarInputsConfiguracion();
     }
 
-    // Actualizar los valores de los inputs de color
-    actualizarInputsColor() {
+    // Actualizar los valores de los inputs de configuración
+    actualizarInputsConfiguracion() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
+        const selectFuente = document.getElementById('FontFamily');
 
-        if (inputPrimario) inputPrimario.value = this.coloresActuales.primario;
-        if (inputSecundario) inputSecundario.value = this.coloresActuales.secundario;
+        if (inputPrimario) inputPrimario.value = this.configuracionActual.primario;
+        if (inputSecundario) inputSecundario.value = this.configuracionActual.secundario;
+        if (selectFuente) selectFuente.value = this.configuracionActual.fuente;
     }
 
-    // Aplicar colores a la página
-    aplicarColores() {
+    // Aplicar configuración completa a la página
+    aplicarConfiguracion() {
         const root = document.documentElement;
-        root.style.setProperty('--color-primario', this.coloresActuales.primario);
-        root.style.setProperty('--color-secundario', this.coloresActuales.secundario);
+        root.style.setProperty('--color-primario', this.configuracionActual.primario);
+        root.style.setProperty('--color-secundario', this.configuracionActual.secundario);
+        root.style.setProperty('--font-family', this.configuracionActual.fuente);
 
         // También actualizar el theme-color del meta tag
         const metaTheme = document.querySelector('meta[name="theme-color"]');
         if (metaTheme) {
-            metaTheme.setAttribute('content', this.coloresActuales.primario);
+            metaTheme.setAttribute('content', this.configuracionActual.primario);
         }
     }
 
@@ -76,6 +109,7 @@ class PreferenciasColores {
     guardarPreferencias() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
+        const selectFuente = document.getElementById('FontFamily');
 
         if (!inputPrimario || !inputSecundario) {
             console.error('No se encontraron los inputs de color');
@@ -85,6 +119,7 @@ class PreferenciasColores {
         const nuevasPreferencias = {
             colorPrimario: inputPrimario.value,
             colorSecundario: inputSecundario.value,
+            fuente: selectFuente ? selectFuente.value : this.configuracionDefecto.fuente,
             fechaGuardado: new Date().toISOString(),
             usuario: this.nombreUsuario
         };
@@ -93,14 +128,15 @@ class PreferenciasColores {
             const clave = this.generarClavePreferencias();
             localStorage.setItem(clave, JSON.stringify(nuevasPreferencias));
 
-            // Actualizar colores actuales
-            this.coloresActuales = {
+            // Actualizar configuración actual
+            this.configuracionActual = {
                 primario: nuevasPreferencias.colorPrimario,
-                secundario: nuevasPreferencias.colorSecundario
+                secundario: nuevasPreferencias.colorSecundario,
+                fuente: nuevasPreferencias.fuente
             };
 
-            // Aplicar los nuevos colores
-            this.aplicarColores();
+            // Aplicar la nueva configuración
+            this.aplicarConfiguracion();
 
             // Mostrar notificación de éxito
             this.mostrarNotificacion('Configuraciones guardadas correctamente', 'exito');
@@ -112,20 +148,25 @@ class PreferenciasColores {
         }
     }
 
-    // Restablecer a colores por defecto
+    // Restablecer a configuración por defecto
     restablecerPreferencias() {
-        const confirmacion = confirm('¿Está seguro que desea restablecer los colores a los valores por defecto?');
+        const confirmacion = confirm('¿Está seguro que desea restablecer la configuración a los valores por defecto?');
 
         if (confirmacion) {
             // Actualizar inputs
-            document.getElementById('ColorPrimario').value = this.coloresDefecto.primario;
-            document.getElementById('ColorSecundario').value = this.coloresDefecto.secundario;
+            const inputPrimario = document.getElementById('ColorPrimario');
+            const inputSecundario = document.getElementById('ColorSecundario');
+            const selectFuente = document.getElementById('FontFamily');
 
-            // Actualizar colores actuales
-            this.coloresActuales = { ...this.coloresDefecto };
+            if (inputPrimario) inputPrimario.value = this.configuracionDefecto.primario;
+            if (inputSecundario) inputSecundario.value = this.configuracionDefecto.secundario;
+            if (selectFuente) selectFuente.value = this.configuracionDefecto.fuente;
 
-            // Aplicar colores
-            this.aplicarColores();
+            // Actualizar configuración actual
+            this.configuracionActual = { ...this.configuracionDefecto };
+
+            // Aplicar configuración
+            this.aplicarConfiguracion();
 
             // Eliminar preferencias guardadas
             const clave = this.generarClavePreferencias();
@@ -135,15 +176,20 @@ class PreferenciasColores {
         }
     }
 
-    // Previsualizar colores en tiempo real
-    previsualizarColores() {
+    // Previsualizar cambios en tiempo real
+    previsualizarCambios() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
+        const selectFuente = document.getElementById('FontFamily');
 
         if (inputPrimario && inputSecundario) {
             const root = document.documentElement;
             root.style.setProperty('--color-primario', inputPrimario.value);
             root.style.setProperty('--color-secundario', inputSecundario.value);
+
+            if (selectFuente) {
+                root.style.setProperty('--font-family', selectFuente.value);
+            }
         }
     }
 
@@ -161,26 +207,30 @@ class PreferenciasColores {
             btnRestablecer.addEventListener('click', () => this.restablecerPreferencias());
         }
 
-        // Previsualización en tiempo real
+        // Previsualización en tiempo real para colores
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
 
         if (inputPrimario) {
-            inputPrimario.addEventListener('input', () => this.previsualizarColores());
+            inputPrimario.addEventListener('input', () => this.previsualizarCambios());
         }
 
         if (inputSecundario) {
-            inputSecundario.addEventListener('input', () => this.previsualizarColores());
+            inputSecundario.addEventListener('input', () => this.previsualizarCambios());
+        }
+
+        // Previsualización en tiempo real para fuente
+        const selectFuente = document.getElementById('FontFamily');
+        if (selectFuente) {
+            selectFuente.addEventListener('change', () => this.previsualizarCambios());
         }
     }
 
-    // Mostrar notificación (asumiendo que tienes el sistema de notificaciones)
+    // Mostrar notificación
     mostrarNotificacion(mensaje, tipo = 'info') {
-        // Si tienes una función de notificaciones personalizada, úsala aquí
         if (typeof mostrarNotificacion === 'function') {
             mostrarNotificacion(mensaje, tipo);
         } else {
-            // Fallback a alert si no hay sistema de notificaciones
             alert(mensaje);
         }
     }
@@ -204,6 +254,10 @@ class PreferenciasColores {
                     root.style.setProperty('--color-secundario', preferencias.colorSecundario);
                 }
 
+                if (preferencias.fuente) {
+                    root.style.setProperty('--font-family', preferencias.fuente);
+                }
+
                 // Actualizar theme-color
                 const metaTheme = document.querySelector('meta[name="theme-color"]');
                 if (metaTheme && preferencias.colorPrimario) {
@@ -213,6 +267,24 @@ class PreferenciasColores {
                 console.error('Error al aplicar preferencias globales:', error);
             }
         }
+    }
+
+    // Método para obtener las fuentes disponibles (útil para otras páginas)
+    static obtenerFuentesDisponibles() {
+        return [
+            { nombre: 'Arial', valor: 'Arial, sans-serif' },
+            { nombre: 'Helvetica', valor: 'Helvetica, Arial, sans-serif' },
+            { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
+            { nombre: 'Georgia', valor: 'Georgia, serif' },
+            { nombre: 'Verdana', valor: 'Verdana, Geneva, sans-serif' },
+            { nombre: 'Trebuchet MS', valor: '"Trebuchet MS", Helvetica, sans-serif' },
+            { nombre: 'Comic Sans MS', valor: '"Comic Sans MS", cursive' },
+            { nombre: 'Impact', valor: 'Impact, Charcoal, sans-serif' },
+            { nombre: 'Courier New', valor: '"Courier New", Courier, monospace' },
+            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' },
+            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" } // Fuente adicional
+
+        ];
     }
 
     // Método para exportar preferencias
@@ -244,14 +316,19 @@ class PreferenciasColores {
             try {
                 const preferencias = JSON.parse(e.target.result);
 
-                // Validar estructura
+                // Validar estructura básica
                 if (preferencias.colorPrimario && preferencias.colorSecundario) {
+                    // Si no tiene fuente, usar la por defecto
+                    if (!preferencias.fuente) {
+                        preferencias.fuente = this.configuracionDefecto.fuente;
+                    }
+
                     const clave = this.generarClavePreferencias();
                     localStorage.setItem(clave, JSON.stringify(preferencias));
 
                     // Recargar preferencias
                     this.cargarPreferencias();
-                    this.aplicarColores();
+                    this.aplicarConfiguracion();
 
                     this.mostrarNotificacion('Preferencias importadas correctamente', 'exito');
                 } else {
@@ -263,6 +340,21 @@ class PreferenciasColores {
             }
         };
         reader.readAsText(archivo);
+    }
+
+    // Método para obtener la configuración actual
+    obtenerConfiguracionActual() {
+        return { ...this.configuracionActual };
+    }
+
+    // Método para actualizar una configuración específica
+    actualizarConfiguracion(tipo, valor) {
+        if (this.configuracionActual.hasOwnProperty(tipo)) {
+            this.configuracionActual[tipo] = valor;
+            this.aplicarConfiguracion();
+            return true;
+        }
+        return false;
     }
 }
 
