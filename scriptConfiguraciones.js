@@ -4,10 +4,13 @@ class PreferenciasColores {
         this.nombreUsuario = this.obtenerNombreUsuario();
         this.configuracionDefecto = {
             primario: '#e69500',
-            secundario: '#FFFFFF',
-            fuente: 'Arial, sans-serif' // Fuente por defecto
+            secundario: '#e69500',
+            colorFondo: '#FFFFFF',
+            colorTexto: '#000000ff', // Nuevo color por defecto para el texto
+            fuente: 'Nunito, sans-serif' // Fuente por defecto
         };
         this.fuentesDisponibles = [
+            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
             { nombre: 'Arial', valor: 'Arial, sans-serif' },
             { nombre: 'Helvetica', valor: 'Helvetica, Arial, sans-serif' },
             { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
@@ -17,8 +20,7 @@ class PreferenciasColores {
             { nombre: 'Comic Sans MS', valor: '"Comic Sans MS", cursive' },
             { nombre: 'Impact', valor: 'Impact, Charcoal, sans-serif' },
             { nombre: 'Courier New', valor: '"Courier New", Courier, monospace' },
-            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' },
-            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" } // Fuente adicional
+            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' }
         ];
         this.init();
     }
@@ -66,6 +68,8 @@ class PreferenciasColores {
                 this.configuracionActual = {
                     primario: preferencias.colorPrimario || this.configuracionDefecto.primario,
                     secundario: preferencias.colorSecundario || this.configuracionDefecto.secundario,
+                    colorFondo: preferencias.colorFondo || this.configuracionDefecto.colorFondo,
+                    colorTexto: preferencias.colorTexto || this.configuracionDefecto.colorTexto,
                     fuente: preferencias.fuente || this.configuracionDefecto.fuente
                 };
             } catch (error) {
@@ -84,10 +88,14 @@ class PreferenciasColores {
     actualizarInputsConfiguracion() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
+        const inputColorFondo = document.getElementById('ColorFondo');
+        const inputColorTexto = document.getElementById('ColorTexto');
         const selectFuente = document.getElementById('FontFamily');
 
         if (inputPrimario) inputPrimario.value = this.configuracionActual.primario;
         if (inputSecundario) inputSecundario.value = this.configuracionActual.secundario;
+        if (inputColorFondo) inputColorFondo.value = this.configuracionActual.colorFondo;
+        if (inputColorTexto) inputColorTexto.value = this.configuracionActual.colorTexto;
         if (selectFuente) selectFuente.value = this.configuracionActual.fuente;
     }
 
@@ -96,6 +104,8 @@ class PreferenciasColores {
         const root = document.documentElement;
         root.style.setProperty('--color-primario', this.configuracionActual.primario);
         root.style.setProperty('--color-secundario', this.configuracionActual.secundario);
+        root.style.setProperty('--color-fondo', this.configuracionActual.colorFondo);
+        root.style.setProperty('--color-texto', this.configuracionActual.colorTexto);
         root.style.setProperty('--font-family', this.configuracionActual.fuente);
 
         // También actualizar el theme-color del meta tag
@@ -109,16 +119,20 @@ class PreferenciasColores {
     guardarPreferencias() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
+        const inputColorFondo = document.getElementById('ColorFondo');
+        const inputColorTexto = document.getElementById('ColorTexto');
         const selectFuente = document.getElementById('FontFamily');
 
-        if (!inputPrimario || !inputSecundario) {
-            console.error('No se encontraron los inputs de color');
+        if (!inputPrimario || !inputSecundario || !inputColorFondo || !inputColorTexto) {
+            console.error('No se encontraron todos los inputs de color');
             return false;
         }
 
         const nuevasPreferencias = {
             colorPrimario: inputPrimario.value,
             colorSecundario: inputSecundario.value,
+            colorFondo: inputColorFondo.value,
+            colorTexto: inputColorTexto.value,
             fuente: selectFuente ? selectFuente.value : this.configuracionDefecto.fuente,
             fechaGuardado: new Date().toISOString(),
             usuario: this.nombreUsuario
@@ -132,6 +146,8 @@ class PreferenciasColores {
             this.configuracionActual = {
                 primario: nuevasPreferencias.colorPrimario,
                 secundario: nuevasPreferencias.colorSecundario,
+                colorFondo: nuevasPreferencias.colorFondo,
+                colorTexto: nuevasPreferencias.colorTexto,
                 fuente: nuevasPreferencias.fuente
             };
 
@@ -156,10 +172,14 @@ class PreferenciasColores {
             // Actualizar inputs
             const inputPrimario = document.getElementById('ColorPrimario');
             const inputSecundario = document.getElementById('ColorSecundario');
+            const inputColorFondo = document.getElementById('ColorFondo');
+            const inputColorTexto = document.getElementById('ColorTexto');
             const selectFuente = document.getElementById('FontFamily');
 
             if (inputPrimario) inputPrimario.value = this.configuracionDefecto.primario;
             if (inputSecundario) inputSecundario.value = this.configuracionDefecto.secundario;
+            if (inputColorFondo) inputColorFondo.value = this.configuracionDefecto.colorFondo;
+            if (inputColorTexto) inputColorTexto.value = this.configuracionDefecto.colorTexto;
             if (selectFuente) selectFuente.value = this.configuracionDefecto.fuente;
 
             // Actualizar configuración actual
@@ -180,12 +200,16 @@ class PreferenciasColores {
     previsualizarCambios() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
+        const inputColorFondo = document.getElementById('ColorFondo');
+        const inputColorTexto = document.getElementById('ColorTexto');
         const selectFuente = document.getElementById('FontFamily');
 
-        if (inputPrimario && inputSecundario) {
+        if (inputPrimario && inputSecundario && inputColorFondo && inputColorTexto) {
             const root = document.documentElement;
             root.style.setProperty('--color-primario', inputPrimario.value);
             root.style.setProperty('--color-secundario', inputSecundario.value);
+            root.style.setProperty('--color-fondo', inputColorFondo.value);
+            root.style.setProperty('--color-texto', inputColorTexto.value);
 
             if (selectFuente) {
                 root.style.setProperty('--font-family', selectFuente.value);
@@ -210,6 +234,8 @@ class PreferenciasColores {
         // Previsualización en tiempo real para colores
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
+        const inputColorFondo = document.getElementById('ColorFondo');
+        const inputColorTexto = document.getElementById('ColorTexto');
 
         if (inputPrimario) {
             inputPrimario.addEventListener('input', () => this.previsualizarCambios());
@@ -217,6 +243,14 @@ class PreferenciasColores {
 
         if (inputSecundario) {
             inputSecundario.addEventListener('input', () => this.previsualizarCambios());
+        }
+
+        if (inputColorFondo) {
+            inputColorFondo.addEventListener('input', () => this.previsualizarCambios());
+        }
+
+        if (inputColorTexto) {
+            inputColorTexto.addEventListener('input', () => this.previsualizarCambios());
         }
 
         // Previsualización en tiempo real para fuente
@@ -254,6 +288,14 @@ class PreferenciasColores {
                     root.style.setProperty('--color-secundario', preferencias.colorSecundario);
                 }
 
+                if (preferencias.colorFondo) {
+                    root.style.setProperty('--color-fondo', preferencias.colorFondo);
+                }
+
+                if (preferencias.colorTexto) {
+                    root.style.setProperty('--color-texto', preferencias.colorTexto);
+                }
+
                 if (preferencias.fuente) {
                     root.style.setProperty('--font-family', preferencias.fuente);
                 }
@@ -272,6 +314,7 @@ class PreferenciasColores {
     // Método para obtener las fuentes disponibles (útil para otras páginas)
     static obtenerFuentesDisponibles() {
         return [
+            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
             { nombre: 'Arial', valor: 'Arial, sans-serif' },
             { nombre: 'Helvetica', valor: 'Helvetica, Arial, sans-serif' },
             { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
@@ -281,9 +324,7 @@ class PreferenciasColores {
             { nombre: 'Comic Sans MS', valor: '"Comic Sans MS", cursive' },
             { nombre: 'Impact', valor: 'Impact, Charcoal, sans-serif' },
             { nombre: 'Courier New', valor: '"Courier New", Courier, monospace' },
-            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' },
-            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" } // Fuente adicional
-
+            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' }
         ];
     }
 
@@ -317,10 +358,14 @@ class PreferenciasColores {
                 const preferencias = JSON.parse(e.target.result);
 
                 // Validar estructura básica
-                if (preferencias.colorPrimario && preferencias.colorSecundario) {
+                if (preferencias.colorPrimario && preferencias.colorSecundario && preferencias.colorFondo) {
                     // Si no tiene fuente, usar la por defecto
                     if (!preferencias.fuente) {
                         preferencias.fuente = this.configuracionDefecto.fuente;
+                    }
+                    // Si no tiene color de texto, usar el por defecto
+                    if (!preferencias.colorTexto) {
+                        preferencias.colorTexto = this.configuracionDefecto.colorTexto;
                     }
 
                     const clave = this.generarClavePreferencias();
@@ -361,7 +406,7 @@ class PreferenciasColores {
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function () {
     // Solo inicializar en la página de configuraciones
-    if (document.getElementById('ColorPrimario') && document.getElementById('ColorSecundario')) {
+    if (document.getElementById('ColorPrimario') && document.getElementById('ColorSecundario') && document.getElementById('ColorFondo') && document.getElementById('ColorTexto')) {
         window.preferenciasColores = new PreferenciasColores();
     } else {
         // En otras páginas, solo aplicar las preferencias

@@ -688,7 +688,7 @@ function cambiarPaddingSegunScroll() {
     const tabla = document.getElementById('Tabla');
     const otroDiv = document.getElementById('TablaDescansos');
 
-    otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '15px' : '0px';
+    otroDiv.style.paddingBottom = checkScrollbar(tabla) ? '16px' : '1px';
 }
 
 cambiarPaddingSegunScroll();
@@ -872,14 +872,14 @@ function Festivos() {
     for (let i = 1; i <= 31; i++) {
         var celda = document.getElementById("Dia" + i);
         celda.style.backgroundColor = colorPrimario;
-        celda.style.color = "Black";
+        celda.style.color = "var(--color-texto)";
         if (festivos[mes].includes(i)) {
             if (dia == "Dia" + i) {
-                celda.style.backgroundColor = "orange";
-                celda.style.color = "red";
+            celda.style.backgroundColor = "orange";
+            celda.style.color = "red";
             } else {
-                celda.style.backgroundColor = "red";
-                celda.style.color = "Black";
+            celda.style.backgroundColor = "red";
+            celda.style.color = "var(--color-texto)";
             }
         } else if (dia == "Dia" + i && mes == mesActual) {
             celda.style.backgroundColor = "#0051e6";

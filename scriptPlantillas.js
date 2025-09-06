@@ -582,7 +582,7 @@ function showModal(fileName) {
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Apertura</h2>
-            <button onclick="copiarTexto('textoA')" style="height: 40px; color: black; background-color: --color-primario;">Copiar texto</button>
+            <button onclick="copiarTexto('textoA')" style="height: 40px; color: var(--color-texto); background-color: var(--color-primario)">Copiar texto</button>
         </div>
         <div id="textoA"><p>${saludo}<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
@@ -593,7 +593,7 @@ function showModal(fileName) {
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Cierre</h2>
-            <button onclick="copiarTexto('textoC')" style="height: 40px; color: black; background-color: --color-primario;">Copiar texto</button>
+            <button onclick="copiarTexto('textoC')" style="height: 40px; color: var(--color-texto); background-color: var(--color-primario);">Copiar texto</button>
         </div>
         <div id="textoC"><p>${saludo}</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
@@ -752,7 +752,7 @@ style.innerHTML = `
         font-weight: bold;
         padding: 4px 8px;
         border-radius: 3px;
-        background-color: rgba(255, 255, 255, 0.8);
+        background-color: var(--color-secundario);
         user-select: none;
     }
 
@@ -809,11 +809,164 @@ loadingScreen.innerHTML = `
     <div>Cargando...</div>
 `;
 document.body.appendChild(loadingScreen);
+// Variables para almacenar el estado de las notificaciones
+let ultimoEncargadoNotificado = localStorage.getItem('ultimoEncargadoNotificado');
+let ultimaNotificacion = parseInt(localStorage.getItem('ultimaNotificacion')) || 0;
+const INTERVALO_NOTIFICACION = 1800 * 1000; // 30 minutos
 
+// Función para solicitar permisos de notificación
+function solicitarPermisosNotificacion() {
+    if (!("Notification" in window)) {
+        console.log("Este navegador no soporta notificaciones de escritorio.");
+        return;
+    }
+
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
+}
+
+// Llama a la función al cargar la página para pedir el permiso
+solicitarPermisosNotificacion();
+
+// Función para mostrar la notificación con sonido
+function mostrarNotificacion(nombreEncargado) {
+    if (Notification.permission === "granted") {
+        const opciones = {
+            body: '¡Es tu turno de revisar los aplicativos, VIP, Correo, Spool!',
+            icon: 'icono.png', 
+        };
+
+        const notificacion = new Notification(`⚠️ Hola, ${nombreEncargado}`, opciones);
+
+        // Reproducir sonido de notificación
+        const audio = new Audio('notification.mp3'); 
+        audio.play().catch(error => {
+            console.error("Error al reproducir el sonido:", error);
+        });
+
+        // Actualizar estado de notificación y guardarlo en localStorage
+        ultimaNotificacion = Date.now();
+        ultimoEncargadoNotificado = nombreEncargado;
+        
+        localStorage.setItem('ultimaNotificacion', ultimaNotificacion.toString());
+        localStorage.setItem('ultimoEncargadoNotificado', ultimoEncargadoNotificado);
+        
+        console.log(`Notificación enviada a ${nombreEncargado} a las ${new Date().toLocaleTimeString()}`);
+    }
+}
+
+// Función para verificar si debe notificar
+function debeNotificar(nombreEncargado) {
+    const ahora = Date.now();
+    
+    // Si cambió el encargado, permitir notificación inmediata
+    if (nombreEncargado !== ultimoEncargadoNotificado) {
+        console.log(`Cambio de encargado detectado: ${ultimoEncargadoNotificado} -> ${nombreEncargado}`);
+        return true;
+    }
+    
+    // Si es el mismo encargado, verificar si han pasado los segundos configurados
+    if (ahora - ultimaNotificacion >= INTERVALO_NOTIFICACION) {
+        console.log(`Han pasado ${INTERVALO_NOTIFICACION/1000} segundos desde la última notificación`);
+        return true;
+    }
+    
+    return false;
+}
+
+// Función principal para verificar y notificar
+async function revisarYNotificar() {
+    if (Notification.permission !== "granted") {
+        console.log("Permisos de notificación no otorgados.");
+        return;
+    }
+    
+    const nombreUsuarioStorage = localStorage.getItem('nombreAsesorActual');
+    const nombreUsuarioActual = nombreUsuarioStorage ? nombreUsuarioStorage.replace(/_/g, ' ') : null;
+    const encargadoActual = await obtenerEncargadoActual();
+
+    // Si no hay encargado actual, resetear estado
+    if (!encargadoActual) {
+        if (ultimoEncargadoNotificado !== null) {
+            console.log("No hay encargado actual, reseteando estado");
+            ultimoEncargadoNotificado = null;
+            ultimaNotificacion = 0;
+            
+            // Limpiar localStorage
+            localStorage.removeItem('ultimoEncargadoNotificado');
+            localStorage.removeItem('ultimaNotificacion');
+        }
+        return;
+    }
+
+    // Si el usuario actual coincide con el encargado y debe notificar
+    if (nombreUsuarioActual === encargadoActual.nombre) {
+        const divEncargado = document.getElementById('Encargado');
+        if (divEncargado) {
+            const root = document.documentElement;
+            const colorPrimario = getComputedStyle(root).getPropertyValue('--color-primario').trim();
+            divEncargado.style.backgroundColor = colorPrimario;
+            divEncargado.style.padding = '10px';
+            divEncargado.style.borderRadius = '8px';
+
+            // Calcular contraste: si el fondo es claro, usar negro; si es oscuro, usar blanco
+            function getContrastYIQ(hexcolor) {
+            hexcolor = hexcolor.replace('#', '').trim();
+            if (hexcolor.length === 3) {
+                hexcolor = hexcolor.split('').map(c => c + c).join('');
+            }
+            const r = parseInt(hexcolor.substr(0,2),16);
+            const g = parseInt(hexcolor.substr(2,2),16);
+            const b = parseInt(hexcolor.substr(4,2),16);
+            const yiq = ((r*299)+(g*587)+(b*114))/1000;
+            return yiq >= 128 ? 'black' : 'white';
+            }
+
+            // Si es una variable CSS tipo rgb(a), convertir a hex
+            function rgbToHex(rgb) {
+            const result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+            if (!result) return rgb;
+            return "#" + ((1 << 24) + (parseInt(result[1]) << 16) + (parseInt(result[2]) << 8) + parseInt(result[3])).toString(16).slice(1);
+            }
+
+            let colorHex = colorPrimario;
+            if (colorHex.startsWith('rgb')) {
+            colorHex = rgbToHex(colorHex);
+            }
+            divEncargado.style.color = getContrastYIQ(colorHex);
+        }
+        if (debeNotificar(encargadoActual.nombre)) {
+            mostrarNotificacion(encargadoActual.nombre);
+        } else {
+            const tiempoRestante = Math.ceil((INTERVALO_NOTIFICACION - (Date.now() - ultimaNotificacion)) / 1000);
+            console.log(`Próxima notificación en ${tiempoRestante} segundos`);
+        }
+    }
+}
+
+// Función para obtener el tiempo restante hasta la próxima notificación
+function tiempoHastaProximaNotificacion() {
+    if (ultimaNotificacion === 0) return 0;
+    const tiempoTranscurrido = Date.now() - ultimaNotificacion;
+    const tiempoRestante = INTERVALO_NOTIFICACION - tiempoTranscurrido;
+    return Math.max(0, Math.ceil(tiempoRestante / 1000)); // en segundos
+}
+
+// Función para limpiar estado de notificaciones (útil para debugging)
+function limpiarEstadoNotificaciones() {
+    ultimoEncargadoNotificado = null;
+    ultimaNotificacion = 0;
+    localStorage.removeItem('ultimoEncargadoNotificado');
+    localStorage.removeItem('ultimaNotificacion');
+    console.log("Estado de notificaciones limpiado");
+}
+
+// El resto de tu código se mantiene igual...
 function redirectTo(url) {
     window.location.href = url;
 }
-// Función para convertir hora en formato "7:00 AM" a minutos desde medianoche
+
 function convertirHoraAMinutos(hora) {
     const [tiempo, periodo] = hora.split(' ');
     let [horas, minutos] = tiempo.split(':').map(Number);
@@ -827,13 +980,11 @@ function convertirHoraAMinutos(hora) {
     return horas * 60 + minutos;
 }
 
-// Función para obtener los minutos actuales desde medianoche
 function obtenerMinutosActuales() {
     const ahora = new Date();
     return ahora.getHours() * 60 + ahora.getMinutes();
 }
 
-// Función para verificar encargados especiales
 async function verificarEncargadosEspeciales() {
     try {
         const hoy = new Date();
@@ -841,40 +992,40 @@ async function verificarEncargadosEspeciales() {
         const mesActual = hoy.getMonth() + 1;
         const diaActual = hoy.getDate();
         const minutosActuales = obtenerMinutosActuales();
-        
+
+        // No mostrar encargados especiales sábados (6) y domingos (0)
+        const diaSemana = hoy.getDay();
+        if (diaSemana === 0 || diaSemana === 6) {
+            return [];
+        }
+
         const encargadosEspeciales = [];
         const usuariosEspeciales = ["Juan Manuel Cano Benítez", "Karen Riveros Vega"];
-        
-        // Verificar si tienen turno diferente a "D"
+
         for (const usuario of usuariosEspeciales) {
             try {
                 const snapshot = await db.ref(`celdas/${usuario}/${diaActual}/${añoActual}/${mesActual}`).once('value');
                 const turnoData = snapshot.val();
-                
+
                 if (turnoData && turnoData.texto && turnoData.texto !== "D") {
-                    // Determinar horarios según día par/impar
                     const esDiaPar = diaActual % 2 === 0;
-                    
+
                     if (usuario === "Juan Manuel Cano Benítez") {
                         if (esDiaPar) {
-                            // Días pares: 08:00 AM - 01:00 PM
                             if (minutosActuales >= 8*60 && minutosActuales < 13*60) {
                                 encargadosEspeciales.push(usuario);
                             }
                         } else {
-                            // Días impares: 01:00 PM - 05:00 PM
                             if (minutosActuales >= 13*60 && minutosActuales < 17*60) {
                                 encargadosEspeciales.push(usuario);
                             }
                         }
                     } else if (usuario === "Karen Riveros Vega") {
                         if (esDiaPar) {
-                            // Días pares: 01:00 PM - 05:00 PM
                             if (minutosActuales >= 13*60 && minutosActuales < 17*60) {
                                 encargadosEspeciales.push(usuario);
                             }
                         } else {
-                            // Días impares: 08:00 AM - 01:00 PM
                             if (minutosActuales >= 8*60 && minutosActuales < 13*60) {
                                 encargadosEspeciales.push(usuario);
                             }
@@ -885,7 +1036,7 @@ async function verificarEncargadosEspeciales() {
                 console.error(`Error consultando turno especial para ${usuario}:`, error);
             }
         }
-        
+
         return encargadosEspeciales;
     } catch (error) {
         console.error('Error verificando encargados especiales:', error);
@@ -893,10 +1044,8 @@ async function verificarEncargadosEspeciales() {
     }
 }
 
-// Función principal para obtener el encargado actual
 async function obtenerEncargadoActual() {
     try {
-        // Lista de usuarios
         const usuarios = [
             "Andrés Felipe Yepes Tascón",
             "Oscar Luis Cabrera Pacheco", 
@@ -907,13 +1056,11 @@ async function obtenerEncargadoActual() {
             "Diego Alejandro Úsuga Yepes"
         ];
 
-        // Obtener la fecha actual
         const hoy = new Date();
         const añoActual = hoy.getFullYear();
         const mesActual = hoy.getMonth() + 1;
         const diaActual = hoy.getDate() + 1;
 
-        // Obtener los horarios de los turnos
         const snapshotTurnos = await db.ref('Turnos').once('value');
         const horariosTurnos = snapshotTurnos.val();
 
@@ -922,19 +1069,15 @@ async function obtenerEncargadoActual() {
             return null;
         }
 
-        // Array para almacenar usuarios con sus horarios
         const usuariosConHorarios = [];
 
-        // Consultar turno para cada usuario
         for (const usuario of usuarios) {
             try {
                 const snapshot = await db.ref(`celdas/${usuario}/${diaActual}/${añoActual}/${mesActual}`).once('value');
                 const turnoData = snapshot.val();
                 
                 if (turnoData && turnoData.texto) {
-                    const codigoTurno = turnoData.texto; // Por ejemplo: "T1", "T3", "T6"
-                    
-                    // Buscar el horario correspondiente al turno
+                    const codigoTurno = turnoData.texto;
                     const horarioTurno = horariosTurnos[codigoTurno];
                     
                     if (horarioTurno && horarioTurno.Apertura && horarioTurno.Cierre) {
@@ -955,16 +1098,10 @@ async function obtenerEncargadoActual() {
             }
         }
 
-        // Ordenar por hora de inicio
         usuariosConHorarios.sort((a, b) => a.inicioMinutos - b.inicioMinutos);
 
-        // Mostrar todos los turnos del día (opcional para debug)
-        console.log('Turnos del día:');
-        usuariosConHorarios.forEach(usuario => {
-            console.log(`${usuario.nombre} - ${usuario.turno}: ${usuario.horarioTexto}`);
-        });
 
-        // Determinar quién está actualmente en turno
+
         const minutosActuales = obtenerMinutosActuales();
         console.log(`Hora actual: ${Math.floor(minutosActuales/60)}:${String(minutosActuales%60).padStart(2,'0')}`);
 
@@ -979,7 +1116,6 @@ async function obtenerEncargadoActual() {
             }
         }
 
-        // Si no hay nadie en turno actualmente
         console.log('No hay nadie en turno en este momento');
         return null;
 
@@ -989,7 +1125,6 @@ async function obtenerEncargadoActual() {
     }
 }
 
-// Función para actualizar el div del encargado
 async function actualizarDivEncargado() {
     const encargadoActual = await obtenerEncargadoActual();
     const encargadosEspeciales = await verificarEncargadosEspeciales();
@@ -998,11 +1133,10 @@ async function actualizarDivEncargado() {
     if (divEncargado) {
         if (encargadoActual) {
             let contenido = `
-                <strong>Encargado Actual:</strong><br>
+                <strong>Encargado Actual de VIP, Correo y Spool</strong><br>
                 ${encargadoActual.nombre}
             `;
             
-            // Agregar encargados especiales al lado
             if (encargadosEspeciales.length > 0) {
                 contenido += ` y ${encargadosEspeciales.join(', ')}`;
             }
@@ -1018,16 +1152,19 @@ async function actualizarDivEncargado() {
     }
 }
 
-// Función para inicializar y mantener actualizado el encargado
 function inicializarSistemaEncargado() {
-    // Actualizar inmediatamente
     actualizarDivEncargado();
-    
-    // Actualizar cada minuto (60000 ms)
-    setInterval(actualizarDivEncargado, 60000);
+    setInterval(actualizarDivEncargado, 60000); // Actualiza cada minuto
+    setInterval(revisarYNotificar, 5000); // Revisa cada 5 segundos para mejor precisión
     
     console.log('Sistema de encargado iniciado - Se actualiza cada minuto');
+    console.log(`Sistema de notificaciones iniciado - Notifica cada ${INTERVALO_NOTIFICACION/1000} segundos`);
+    
+    // Log del estado inicial
+    if (ultimaNotificacion > 0) {
+        const tiempoRestante = Math.ceil((INTERVALO_NOTIFICACION - (Date.now() - ultimaNotificacion)) / 1000);
+        console.log(`Estado recuperado - Último notificado: ${ultimoEncargadoNotificado}, próxima notificación en ${tiempoRestante} segundos`);
+    }
 }
 
-// Llamar esta función cuando la página esté lista
 inicializarSistemaEncargado();

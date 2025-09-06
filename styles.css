@@ -1,11 +1,13 @@
 :root {
     --color-primario: ;
     --color-secundario: ;
+    --color-fondo: ;
     --font-family: 'Nunito', Arial, sans-serif;
 }
 
 body {
     font-family: var(--font-family);
+    color: var(--color-texto) !important;
     margin: 0;
     padding: 0;
 }
@@ -35,7 +37,7 @@ nav ul li {
 
 nav a {
     text-decoration: none;
-    color: #000000;
+    color: var(--color-texto);
     font-weight: bold;
 }
 
@@ -60,7 +62,7 @@ footer {
     justify-content: center;
     align-items: center;
     background-color: var(--color-primario);
-    color: #000000;
+    color: var(--color-texto);
     text-align: center;
     font-weight: bold;
     width: 100%;
@@ -134,7 +136,7 @@ section {
     font-family: var(--font-family);
     outline: 0;
     background: transparent;
-    color: #000000;
+    color: var(--color-texto);
     border: 1px solid rgb(0, 0, 0);
     padding: 4px;
     font-size: 16px;
@@ -181,15 +183,16 @@ button {
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: transparent;
-    color: rgb(0, 0, 0);
+    background-color: var(--color-secundario);
+    color: var(--color-texto);
     cursor: pointer;
     border: solid 2px #000000;
     font-family: var(--font-family);
 }
 
 button:hover {
-    background-color: var(--color-primario);
+    background-color: var(--color-texto);
+    color: var(--color-secundario);
 }
 
 
@@ -266,7 +269,7 @@ button .botonReiniciar:hover {
     overflow-x: auto;
     width: 100%;
     flex-direction: row;
-    border: 1px solid #000;
+    border: 1px solid #000 !important;
     border-bottom: none;
 }
 
@@ -282,7 +285,7 @@ button .botonReiniciar:hover {
     font-weight: bold;
     font-size: 15px;
     background-color: var(--color-primario);
-    color: #000000;
+    color: var(--color-texto);
     border-color: #f2f2f2;
 }
 
@@ -317,8 +320,8 @@ button .botonReiniciar:hover {
     font-weight: bold;
     font-size: 15px;
     background-color: var(--color-primario);
-    color: #000000;
-    border-color: #f2f2f2;
+    color: var(--color-texto);
+    border-color: var(--color-texto);
     text-align: center;
 }
 
@@ -371,35 +374,30 @@ button .botonReiniciar:hover {
     margin-left: 10px;
     border: none;
     border-radius: 4px;
-    background-color: transparent;
-    color: rgb(0, 0, 0);
+    background-color: var(--color-secundario);
     cursor: pointer;
     border: solid 2px #000000;
     font-family: var(--font-family);
 }
 
-#btnPincelTurnos {
+/* #btnPincelTurnos {
     background-color: #e9e4c4;
 }
 
 #btnLimpiar {
     background-color: #f0c8fa;
-    /* Rojo suave */
 }
 
 #btnImportar {
     background-color: #f5cf97;
-    /* Naranja suave */
 }
 
 #btnExportar {
     background-color: #b2dfdb;
-    /* Verde más claro */
 }
 
 #btnGuardar {
     background-color: #90caf9;
-    /* Azul más claro */
 }
 
 #btnExportarTexto {
@@ -416,7 +414,7 @@ button .botonReiniciar:hover {
 
 #btnHistorial {
     background-color: #f6f897;
-}
+} */
 
 #btnGuardar:hover,
 #btnExportar:hover,
@@ -427,7 +425,8 @@ button .botonReiniciar:hover {
 #btnLimpiar:hover,
 #btnImportar:hover,
 #btnEnviar:hover #btnEnviar2:hover {
-    background-color: var(--color-primario);
+    background-color: var(--color-texto);
+    color: var(--color-secundario);
 }
 
 #pass {
@@ -633,7 +632,7 @@ body {
     font-family: var(--font-family);
     margin: 0;
     padding: 0;
-    background-color: var(--color-secundario);
+    background-color: var(--color-fondo);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -666,7 +665,7 @@ nav li {
 }
 
 nav a {
-    color: rgb(0, 0, 0);
+    color: var(--color-texto);
     text-align: center;
     padding: 9px;
     /* Reduced redundancy */
@@ -676,8 +675,8 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #ffffff;
-    color: #000;
+    background-color: var(--color-secundario);
+    color: var(--color-texto);
 }
 
 /* Buttons styles */
@@ -764,9 +763,9 @@ label {
     }
 
     nav ul.botonesNav li a:hover {
-        background-color: #ffffff;
+        background-color: var(--color-secundario);
         /* Cambia el color de fondo al pasar el ratón para que contraste con el texto */
-        color: rgb(0, 0, 0);
+        color: var(--color-texto);
     }
 
     nav ul.botonesNav li a {
@@ -841,7 +840,7 @@ label {
 @media only screen and (max-width: 100x) {
     .TablaDescansos {
         padding: 0px;
-        padding-bottom: 15px;
+        padding-bottom: 16px;
     }
 }
 
@@ -876,9 +875,14 @@ label {
 
 }
 
-#Descansos th,
+#Descansos th {
+    text-align: center;
+}
+
 #Descansos td {
     text-align: center;
+    background-color: white;
+    color: black;
 }
 
 #Descansos tr {
@@ -986,14 +990,15 @@ label {
     height: 30x;
     width: 30px;
     padding: 3px;
-    background-color: transparent;
+    background-color: var(--color-secundario);
     font-weight: bold;
 }
 
 #Izq:hover,
 #Der:hover,
 #Hoy:hover {
-    background-color: var(--color-primario);
+    color: var(--color-secundario);
+    background-color: var(--color-texto);
 }
 
 #Table tbody tr td:first-child {
@@ -1014,7 +1019,7 @@ label {
 #titulos,
 #Dias,
 #Descansos th {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--color-texto);
 }
 
 .GModulos {
@@ -1030,7 +1035,8 @@ label {
 }
 
 .Modulo {
-    border: 1px solid #000000;
+    border: 1px solid var(--color-texto);
+    color: var(--color-primario);
     border-radius: 10px;
     flex: 1 1 auto;
     width: 100%;
@@ -1039,7 +1045,7 @@ label {
     justify-content: center;
     text-align: center;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--color-fondo);
     overflow: auto;
 
 }
@@ -1120,7 +1126,6 @@ input[type='number']::-webkit-outer-spin-button {
 #EnlacesArus th,
 #Administrativas th {
     background-color: var(--color-primario);
-    color: #000;
     white-space: nowrap;
     text-align: center;
     position: sticky;
@@ -1135,6 +1140,7 @@ input[type='number']::-webkit-outer-spin-button {
 #EnlacesArus tr td,
 #Administrativas tr td {
     white-space: nowrap !important;
+    color: black;
     text-align: center;
     font-weight: bold;
     border: 1px solid #000;
@@ -1175,8 +1181,9 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .Modulo2 {
-    border: 1px solid #000;
+    border: 1px solid var(--color-primario);
     border-radius: 10px;
+    background-color: var(--color-secundario);
     padding: 10px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -1184,8 +1191,8 @@ input[type='number']::-webkit-outer-spin-button {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
     position: relative;
+    color: var(--color-texto);
     /* Añadir esta línea para permitir el posicionamiento absoluto del span */
 }
 
@@ -1195,7 +1202,7 @@ input[type='number']::-webkit-outer-spin-button {
     left: 5px;
     font-size: 0.8em;
     /* Tamaño de fuente más pequeño */
-    color: #000000;
+    color: var(--color-texto);
     background-color: var(--color-primario);
     padding: 2px 4px;
     border-radius: 10px;
@@ -1208,18 +1215,18 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .Modulo2:hover {
-    background-color: #000000;
+    background-color: var(--color-texto);
     color: var(--color-primario);
     cursor: pointer;
 }
 
 .Modulo2:hover .module-type .module-creator {
-    background-color: #000000;
+    background-color: var(--color-primario);
     color: var(--color-primario);
 }
 
 .Modulo2:hover .module-creator {
-    color: white;
+    color: var(--color-primario);
 }
 
 .modal {
@@ -1438,7 +1445,7 @@ section {
 }
 
 input:checked+.slider {
-    background-color: var(--color-primario);
+    background-color: var(--color-secundario);
 }
 
 input:checked+.slider:before {
@@ -1639,6 +1646,12 @@ input:checked+.slider:before {
     justify-content: center;
     /* Alinea los elementos internos horizontalmente */
     border: 0;
+    background-color: transparent;
+}
+
+#btnMostrarReproductor:hover {
+    cursor: pointer;
+    background-color: var(--color-primario);
 }
 
 .Calculos {
@@ -1708,7 +1721,7 @@ input:checked+.slider:before {
     bottom: 5px;
     left: 5px;
     font-size: 0.8em;
-    color: black;
+    color: var(--color-texto);
     padding: 2px 4px;
     border-radius: 3px;
 }
@@ -1768,6 +1781,7 @@ input:checked+.slider:before {
 .Items h4,
 .AgregarItems {
     background: var(--color-primario);
+    color: var(--color-texto);
     border-radius: 5px;
     margin: 2.5px;
     padding: 5px;
@@ -1782,7 +1796,7 @@ input:checked+.slider:before {
 
 
 .Items h4.selected {
-    background-color: #000000;
+    background-color: var(--color-texto);
     color: var(--color-primario);
 }
 
@@ -1804,6 +1818,8 @@ input:checked+.slider:before {
     /* Ajusta el tamaño fijo que desees */
     display: flex;
     flex-direction: column;
+    color: var(--color-texto);
+    background-color: var(--color-fondo);
 }
 
 #descripcion-texto {
@@ -1996,6 +2012,7 @@ input:checked+.slider:before {
 
 #notification2 {
     background-color: var(--color-primario);
+    color: var(--color-texto);
 }
 
 
@@ -2012,7 +2029,7 @@ input:checked+.slider:before {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--color-fondo);
     margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
@@ -2023,7 +2040,7 @@ input:checked+.slider:before {
 }
 
 .close {
-    color: #aaa;
+    color: var(--color-texto);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -2035,7 +2052,7 @@ input:checked+.slider:before {
 
 .close:hover,
 .close:focus {
-    color: black;
+    color: var(--color-secundario);
     text-decoration: none;
 }
 
@@ -2046,4 +2063,19 @@ input:checked+.slider:before {
 
 .historial-item:last-child {
     border-bottom: none;
+}
+
+/* Excepción para tablas dentro de #Informacion */
+#Informacion table tbody tr {
+    border: none !important;
+}
+
+
+
+.options-menu {
+    background-color: var(--color-primario);
+}
+
+.input-container {
+    color: black;
 }

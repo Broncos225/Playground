@@ -43,14 +43,16 @@
       padding: 15px;
       cursor: pointer;
       user-select: none;
-      background-color: #f5f5f5;
+      background-color: var(--color-secundario);
+      color: var(--color-texto);
       border-bottom: 1px solid #000000;
       position: relative;
     }
 
     .Modulo h1:hover,
     .Modulo h2:hover {
-      background-color: #e0e0e0;
+      background-color: var(--color-texto);
+      color: var(--color-secundario);
     }
 
     .Modulo h1::after,
@@ -104,7 +106,7 @@
     #EnlacesArus th,
     #Administrativas th {
       background-color: var(--color-primario);
-      color: #000;
+      color: var(--color-texto);
       white-space: nowrap;
       text-align: center;
       position: sticky;
