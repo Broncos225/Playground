@@ -608,28 +608,6 @@ function showModal(fileName) {
     modal.style.display = "block";
 }
 
-async function clearClipboard() {
-    try {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(''); 
-        } else {
-            // Fallback (puede fallar sin gesto de usuario)
-            const ta = document.createElement('textarea');
-            ta.value = ' ';
-            document.body.appendChild(ta);
-            ta.focus();
-            ta.select();
-            const ok = document.execCommand('copy');
-            document.body.removeChild(ta);
-            if (!ok) throw new Error('execCommand copy blocked');
-        }
-        mostrarNotificacion("Portapapeles borrado.");
-    } catch (e) {
-        console.error('No se pudo borrar el portapapeles:', e);
-        mostrarNotificacion("No se pudo borrar el portapapeles");
-    }
-}
-
 
 // This is the main function that copies the text and sets the timer.
 async function copiarTexto(id) {
@@ -661,8 +639,6 @@ async function copiarTexto(id) {
         notification.style.opacity = '1';
         setTimeout(() => { notification.style.opacity = '0'; }, 1000);
     } catch (e) {
-        console.error('No se pudo copiar al portapapeles:', e);
-        mostrarNotificacion("No se pudo copiar al portapapeles");
         return;
     }
 
@@ -809,158 +785,158 @@ loadingScreen.innerHTML = `
     <div>Cargando...</div>
 `;
 document.body.appendChild(loadingScreen);
-// Variables para almacenar el estado de las notificaciones
-let ultimoEncargadoNotificado = localStorage.getItem('ultimoEncargadoNotificado');
-let ultimaNotificacion = parseInt(localStorage.getItem('ultimaNotificacion')) || 0;
-const INTERVALO_NOTIFICACION = 1800 * 1000; // 30 minutos
 
-// Función para solicitar permisos de notificación
-function solicitarPermisosNotificacion() {
-    if (!("Notification" in window)) {
-        console.log("Este navegador no soporta notificaciones de escritorio.");
-        return;
-    }
+// let ultimoEncargadoNotificado = localStorage.getItem('ultimoEncargadoNotificado');
+// let ultimaNotificacion = parseInt(localStorage.getItem('ultimaNotificacion')) || 0;
+// const INTERVALO_NOTIFICACION = 1800 * 1000; // 30 minutos
 
-    if (Notification.permission !== "granted") {
-        Notification.requestPermission();
-    }
-}
+// // Función para solicitar permisos de notificación
+// function solicitarPermisosNotificacion() {
+//     if (!("Notification" in window)) {
+//         console.log("Este navegador no soporta notificaciones de escritorio.");
+//         return;
+//     }
 
-// Llama a la función al cargar la página para pedir el permiso
-solicitarPermisosNotificacion();
+//     if (Notification.permission !== "granted") {
+//         Notification.requestPermission();
+//     }
+// }
 
-// Función para mostrar la notificación con sonido
-function mostrarNotificacion(nombreEncargado) {
-    if (Notification.permission === "granted") {
-        const opciones = {
-            body: '¡Es tu turno de revisar los aplicativos, VIP, Correo, Spool!',
-            icon: 'icono.png', 
-        };
+// // Llama a la función al cargar la página para pedir el permiso
+// solicitarPermisosNotificacion();
 
-        const notificacion = new Notification(`⚠️ Hola, ${nombreEncargado}`, opciones);
+// // Función para mostrar la notificación con sonido
+// function mostrarNotificacion(nombreEncargado) {
+//     if (Notification.permission === "granted") {
+//         const opciones = {
+//             body: '¡Es tu turno de revisar los aplicativos, VIP, Correo, Spool!',
+//             icon: 'icono.png', 
+//         };
 
-        // Reproducir sonido de notificación
-        const audio = new Audio('notification.mp3'); 
-        audio.play().catch(error => {
-            console.error("Error al reproducir el sonido:", error);
-        });
+//         const notificacion = new Notification(`⚠️ Hola, ${nombreEncargado}`, opciones);
 
-        // Actualizar estado de notificación y guardarlo en localStorage
-        ultimaNotificacion = Date.now();
-        ultimoEncargadoNotificado = nombreEncargado;
+//         // Reproducir sonido de notificación
+//         const audio = new Audio('notification.mp3'); 
+//         audio.play().catch(error => {
+//             console.error("Error al reproducir el sonido:", error);
+//         });
+
+//         // Actualizar estado de notificación y guardarlo en localStorage
+//         ultimaNotificacion = Date.now();
+//         ultimoEncargadoNotificado = nombreEncargado;
         
-        localStorage.setItem('ultimaNotificacion', ultimaNotificacion.toString());
-        localStorage.setItem('ultimoEncargadoNotificado', ultimoEncargadoNotificado);
+//         localStorage.setItem('ultimaNotificacion', ultimaNotificacion.toString());
+//         localStorage.setItem('ultimoEncargadoNotificado', ultimoEncargadoNotificado);
         
-        console.log(`Notificación enviada a ${nombreEncargado} a las ${new Date().toLocaleTimeString()}`);
-    }
-}
+//         console.log(`Notificación enviada a ${nombreEncargado} a las ${new Date().toLocaleTimeString()}`);
+//     }
+// }
 
-// Función para verificar si debe notificar
-function debeNotificar(nombreEncargado) {
-    const ahora = Date.now();
+// // Función para verificar si debe notificar
+// function debeNotificar(nombreEncargado) {
+//     const ahora = Date.now();
     
-    // Si cambió el encargado, permitir notificación inmediata
-    if (nombreEncargado !== ultimoEncargadoNotificado) {
-        console.log(`Cambio de encargado detectado: ${ultimoEncargadoNotificado} -> ${nombreEncargado}`);
-        return true;
-    }
+//     // Si cambió el encargado, permitir notificación inmediata
+//     if (nombreEncargado !== ultimoEncargadoNotificado) {
+//         console.log(`Cambio de encargado detectado: ${ultimoEncargadoNotificado} -> ${nombreEncargado}`);
+//         return true;
+//     }
     
-    // Si es el mismo encargado, verificar si han pasado los segundos configurados
-    if (ahora - ultimaNotificacion >= INTERVALO_NOTIFICACION) {
-        console.log(`Han pasado ${INTERVALO_NOTIFICACION/1000} segundos desde la última notificación`);
-        return true;
-    }
+//     // Si es el mismo encargado, verificar si han pasado los segundos configurados
+//     if (ahora - ultimaNotificacion >= INTERVALO_NOTIFICACION) {
+//         console.log(`Han pasado ${INTERVALO_NOTIFICACION/1000} segundos desde la última notificación`);
+//         return true;
+//     }
     
-    return false;
-}
+//     return false;
+// }
 
-// Función principal para verificar y notificar
-async function revisarYNotificar() {
-    if (Notification.permission !== "granted") {
-        console.log("Permisos de notificación no otorgados.");
-        return;
-    }
+// // Función principal para verificar y notificar
+// async function revisarYNotificar() {
+//     if (Notification.permission !== "granted") {
+//         console.log("Permisos de notificación no otorgados.");
+//         return;
+//     }
     
-    const nombreUsuarioStorage = localStorage.getItem('nombreAsesorActual');
-    const nombreUsuarioActual = nombreUsuarioStorage ? nombreUsuarioStorage.replace(/_/g, ' ') : null;
-    const encargadoActual = await obtenerEncargadoActual();
+//     const nombreUsuarioStorage = localStorage.getItem('nombreAsesorActual');
+//     const nombreUsuarioActual = nombreUsuarioStorage ? nombreUsuarioStorage.replace(/_/g, ' ') : null;
+//     const encargadoActual = await obtenerEncargadoActual();
 
-    // Si no hay encargado actual, resetear estado
-    if (!encargadoActual) {
-        if (ultimoEncargadoNotificado !== null) {
-            console.log("No hay encargado actual, reseteando estado");
-            ultimoEncargadoNotificado = null;
-            ultimaNotificacion = 0;
+//     // Si no hay encargado actual, resetear estado
+//     if (!encargadoActual) {
+//         if (ultimoEncargadoNotificado !== null) {
+//             console.log("No hay encargado actual, reseteando estado");
+//             ultimoEncargadoNotificado = null;
+//             ultimaNotificacion = 0;
             
-            // Limpiar localStorage
-            localStorage.removeItem('ultimoEncargadoNotificado');
-            localStorage.removeItem('ultimaNotificacion');
-        }
-        return;
-    }
+//             // Limpiar localStorage
+//             localStorage.removeItem('ultimoEncargadoNotificado');
+//             localStorage.removeItem('ultimaNotificacion');
+//         }
+//         return;
+//     }
 
-    // Si el usuario actual coincide con el encargado y debe notificar
-    if (nombreUsuarioActual === encargadoActual.nombre) {
-        const divEncargado = document.getElementById('Encargado');
-        if (divEncargado) {
-            const root = document.documentElement;
-            const colorPrimario = getComputedStyle(root).getPropertyValue('--color-primario').trim();
-            divEncargado.style.backgroundColor = colorPrimario;
-            divEncargado.style.padding = '10px';
-            divEncargado.style.borderRadius = '8px';
+//     // Si el usuario actual coincide con el encargado y debe notificar
+//     if (nombreUsuarioActual === encargadoActual.nombre && timerPreference === true) {
+//         const divEncargado = document.getElementById('Encargado');
+//         if (divEncargado) {
+//             const root = document.documentElement;
+//             const colorPrimario = getComputedStyle(root).getPropertyValue('--color-primario').trim();
+//             divEncargado.style.backgroundColor = colorPrimario;
+//             divEncargado.style.padding = '10px';
+//             divEncargado.style.borderRadius = '8px';
 
-            // Calcular contraste: si el fondo es claro, usar negro; si es oscuro, usar blanco
-            function getContrastYIQ(hexcolor) {
-            hexcolor = hexcolor.replace('#', '').trim();
-            if (hexcolor.length === 3) {
-                hexcolor = hexcolor.split('').map(c => c + c).join('');
-            }
-            const r = parseInt(hexcolor.substr(0,2),16);
-            const g = parseInt(hexcolor.substr(2,2),16);
-            const b = parseInt(hexcolor.substr(4,2),16);
-            const yiq = ((r*299)+(g*587)+(b*114))/1000;
-            return yiq >= 128 ? 'black' : 'white';
-            }
+//             // Calcular contraste: si el fondo es claro, usar negro; si es oscuro, usar blanco
+//             function getContrastYIQ(hexcolor) {
+//             hexcolor = hexcolor.replace('#', '').trim();
+//             if (hexcolor.length === 3) {
+//                 hexcolor = hexcolor.split('').map(c => c + c).join('');
+//             }
+//             const r = parseInt(hexcolor.substr(0,2),16);
+//             const g = parseInt(hexcolor.substr(2,2),16);
+//             const b = parseInt(hexcolor.substr(4,2),16);
+//             const yiq = ((r*299)+(g*587)+(b*114))/1000;
+//             return yiq >= 128 ? 'black' : 'white';
+//             }
 
-            // Si es una variable CSS tipo rgb(a), convertir a hex
-            function rgbToHex(rgb) {
-            const result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
-            if (!result) return rgb;
-            return "#" + ((1 << 24) + (parseInt(result[1]) << 16) + (parseInt(result[2]) << 8) + parseInt(result[3])).toString(16).slice(1);
-            }
+//             // Si es una variable CSS tipo rgb(a), convertir a hex
+//             function rgbToHex(rgb) {
+//             const result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+//             if (!result) return rgb;
+//             return "#" + ((1 << 24) + (parseInt(result[1]) << 16) + (parseInt(result[2]) << 8) + parseInt(result[3])).toString(16).slice(1);
+//             }
 
-            let colorHex = colorPrimario;
-            if (colorHex.startsWith('rgb')) {
-            colorHex = rgbToHex(colorHex);
-            }
-            divEncargado.style.color = getContrastYIQ(colorHex);
-        }
-        if (debeNotificar(encargadoActual.nombre)) {
-            mostrarNotificacion(encargadoActual.nombre);
-        } else {
-            const tiempoRestante = Math.ceil((INTERVALO_NOTIFICACION - (Date.now() - ultimaNotificacion)) / 1000);
-            console.log(`Próxima notificación en ${tiempoRestante} segundos`);
-        }
-    }
-}
+//             let colorHex = colorPrimario;
+//             if (colorHex.startsWith('rgb')) {
+//             colorHex = rgbToHex(colorHex);
+//             }
+//             divEncargado.style.color = getContrastYIQ(colorHex);
+//         }
+//         if (debeNotificar(encargadoActual.nombre)) {
+//             mostrarNotificacion(encargadoActual.nombre);
+//         } else {
+//             const tiempoRestante = Math.ceil((INTERVALO_NOTIFICACION - (Date.now() - ultimaNotificacion)) / 1000);
+//             console.log(`Próxima notificación en ${tiempoRestante} segundos`);
+//         }
+//     }
+// }
 
-// Función para obtener el tiempo restante hasta la próxima notificación
-function tiempoHastaProximaNotificacion() {
-    if (ultimaNotificacion === 0) return 0;
-    const tiempoTranscurrido = Date.now() - ultimaNotificacion;
-    const tiempoRestante = INTERVALO_NOTIFICACION - tiempoTranscurrido;
-    return Math.max(0, Math.ceil(tiempoRestante / 1000)); // en segundos
-}
+// // Función para obtener el tiempo restante hasta la próxima notificación
+// function tiempoHastaProximaNotificacion() {
+//     if (ultimaNotificacion === 0) return 0;
+//     const tiempoTranscurrido = Date.now() - ultimaNotificacion;
+//     const tiempoRestante = INTERVALO_NOTIFICACION - tiempoTranscurrido;
+//     return Math.max(0, Math.ceil(tiempoRestante / 1000)); // en segundos
+// }
 
-// Función para limpiar estado de notificaciones (útil para debugging)
-function limpiarEstadoNotificaciones() {
-    ultimoEncargadoNotificado = null;
-    ultimaNotificacion = 0;
-    localStorage.removeItem('ultimoEncargadoNotificado');
-    localStorage.removeItem('ultimaNotificacion');
-    console.log("Estado de notificaciones limpiado");
-}
+// // Función para limpiar estado de notificaciones (útil para debugging)
+// function limpiarEstadoNotificaciones() {
+//     ultimoEncargadoNotificado = null;
+//     ultimaNotificacion = 0;
+//     localStorage.removeItem('ultimoEncargadoNotificado');
+//     localStorage.removeItem('ultimaNotificacion');
+//     console.log("Estado de notificaciones limpiado");
+// }
 
 // El resto de tu código se mantiene igual...
 function redirectTo(url) {

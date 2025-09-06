@@ -1285,7 +1285,8 @@ body.modal-open {
 #LimpiarP:hover,
 #distribucion1:hover,
 #distribucion2:hover {
-    background-color: var(--color-primario) !important;
+    background-color: var(--color-texto) !important;
+    color: var(--color-secundario) !important;
 }
 
 section {
