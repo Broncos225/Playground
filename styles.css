@@ -162,7 +162,6 @@ td {
     padding: 8px;
     text-align: left;
     width: 16.67%;
-    /* Ajustado para 6 columnas */
 }
 
 th {
@@ -1476,7 +1475,6 @@ input:checked+.slider:before {
     padding: 10px;
 }
 
-/* Cuando la pantalla tiene 600px o menos, cambiamos a una sola columna */
 @media (max-width: 600px) {
     #Gpdf {
         grid-template-columns: repeat(1, 1fr);
@@ -1686,7 +1684,6 @@ input:checked+.slider:before {
     /* Ajustar el ancho total de la tabla */
     border-collapse: collapse;
     table-layout: fixed;
-    /* Asegura que todas las columnas tengan el mismo ancho */
 }
 
 #Table1 th,

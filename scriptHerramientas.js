@@ -363,51 +363,53 @@ firebase.auth().onAuthStateChanged(function(user) {
         console.log("Nadie ha iniciado sesión.");
     }
 });
-// Reemplaza la sección del DOMContentLoaded al final del archivo scriptHerramientas.js
 document.addEventListener('DOMContentLoaded', function() {
-    // Envolver el contenido de cada módulo (excepto el título) en un div con clase 'module-content'
     const modulos = document.querySelectorAll('.Modulo');
-    
+
     modulos.forEach(modulo => {
         const titulo = modulo.querySelector('h1, h2');
         if (titulo) {
-            // Crear el contenedor para el contenido
-            const contenidoDiv = document.createElement('div');
-            contenidoDiv.className = 'module-content';
-            
-            // Mover todos los elementos después del título al contenedor
-            const elementosAMover = [];
-            let siguienteElemento = titulo.nextSibling;
-            
-            while (siguienteElemento) {
-                elementosAMover.push(siguienteElemento);
-                siguienteElemento = siguienteElemento.nextSibling;
-            }
-            
-            elementosAMover.forEach(elemento => {
-                contenidoDiv.appendChild(elemento);
-            });
-            
-            // Añadir el contenedor al módulo
-            modulo.appendChild(contenidoDiv);
-            
-            // Inicialmente colapsar todos los módulos
-            modulo.classList.add('collapsed');
-            
-            // Añadir event listener al título
-            titulo.addEventListener('click', function() {
-                // Si el módulo actual está colapsado, colapsar todos los demás primero
-                if (modulo.classList.contains('collapsed')) {
-                    // Colapsar todos los módulos
-                    modulos.forEach(otroModulo => {
-                        if (otroModulo !== modulo) {
-                            otroModulo.classList.add('collapsed');
-                        }
-                    });
+            // Asegúrate de que el contenedor de contenido exista.
+            let contenidoDiv = modulo.querySelector('.module-content');
+            if (!contenidoDiv) {
+                contenidoDiv = document.createElement('div');
+                contenidoDiv.className = 'module-content';
+                const elementosAMover = [];
+                let siguienteElemento = titulo.nextElementSibling;
+                while (siguienteElemento) {
+                    elementosAMover.push(siguienteElemento);
+                    siguienteElemento = siguienteElemento.nextElementSibling;
                 }
-                
-                // Luego alternar el estado del módulo actual
-                modulo.classList.toggle('collapsed');
+                elementosAMover.forEach(elemento => {
+                    contenidoDiv.appendChild(elemento);
+                });
+                modulo.appendChild(contenidoDiv);
+            }
+
+            // Colapsa los módulos al cargar la página.
+            modulo.classList.add('collapsed');
+
+            titulo.addEventListener('click', function() {
+                // Encuentra el contenedor de la columna más cercano.
+                const columnaPadre = modulo.closest('.columna');
+                if (columnaPadre) {
+                    // Guarda el estado actual del módulo antes de hacer cambios
+                    const estabaColapsado = modulo.classList.contains('collapsed');
+                    
+                    // Selecciona solo los módulos dentro de esa columna.
+                    const modulosEnMismaColumna = columnaPadre.querySelectorAll('.Modulo');
+
+                    // Colapsa TODOS los módulos de la misma columna (incluyendo el actual)
+                    modulosEnMismaColumna.forEach(otroModulo => {
+                        otroModulo.classList.add('collapsed');
+                    });
+
+                    // Si el módulo estaba colapsado, lo abrimos
+                    if (estabaColapsado) {
+                        modulo.classList.remove('collapsed');
+                    }
+                    // Si estaba abierto, se queda cerrado (ya se cerró en el forEach anterior)
+                }
             });
         }
     });
