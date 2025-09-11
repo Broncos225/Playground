@@ -493,21 +493,29 @@ function mostrarNotificacion(mensaje) {
     }, 2000);
 }
 
+function normalizarTexto(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 function configurarBusqueda() {
     var input = document.getElementById('busqueda');
     var clearButton = document.getElementById('LimpiarP');
     var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
 
     input.addEventListener('keyup', function () {
-        var filter = input.value.toUpperCase();
+        var busqueda = input.value;
+        var busquedaNormalizada = normalizarTexto(busqueda.trim());
         var tipoSeleccionado = document.getElementById('Tipos').value;
 
         pdfs.forEach(function (pdf) {
-            var title = pdf.getElementsByTagName('h2')[0].innerText.toUpperCase();
+            var key = pdf.getElementsByTagName('h2')[0].innerText;
+            var tituloNormalizado = normalizarTexto(key);
+            var coincidenciasEnTitulo = tituloNormalizado.includes(busquedaNormalizada);
+
             var type = pdf.getAttribute('data-type');
             var typeMatches = tipoSeleccionado === "0" || type === tipoSeleccionado;
 
-            if (title.indexOf(filter) > -1 && typeMatches) {
+            if (coincidenciasEnTitulo && typeMatches) {
                 pdf.style.display = "";
             } else {
                 pdf.style.display = "none";
