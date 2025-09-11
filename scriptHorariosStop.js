@@ -2198,18 +2198,18 @@ function mostrarPagina() {
 
         html += `
             <div class="historial-item">
-                <div class="historial-header" onclick="window.toggleCambios('${registro.id}')">
+                <div class="historial-header" style="cursor: pointer; background: var(--color-fondo);" onclick="window.toggleCambios('${registro.id}')">
                     <span><strong>Usuario:</strong> ${usuarioLimpio} | <strong>Fecha:</strong> ${fecha}</span>
                     <span class="cambios-count">${cantidadCambios} cambio${cantidadCambios !== 1 ? 's' : ''}</span>
                     <span class="toggle-icon" id="icon-${registro.id}">▼</span>
                 </div>
-                <div class="historial-cambios" id="cambios-${registro.id}" style="display: none;">
+                <div class="historial-cambios" id="cambios-${registro.id}" style="display: none; background: var(--color-fondo);">
         `;
 
         registro.cambios.forEach(cambio => {
             const dia = cambio.celda - 1;
             html += `
-                <div class="cambio-item">
+                <div class="cambio-item" style="background: var(--color-fondo); border: 1px solid var(--color-texto);">
                     <strong>Agente:</strong> ${cambio.agente} | 
                     <strong>Día:</strong> ${dia} | 
                     <strong>Mes:</strong> ${cambio.mes} | 
@@ -2354,20 +2354,22 @@ const estilosHistorial = `
 
 .paginacion button {
     padding: 8px 12px;
-    border: 1px solid #ddd;
-    background: white;
+    border: 1px solid var(--color-texto);
+    background: var(--color-fondo);
+    color: var(--color-texto);
     cursor: pointer;
     border-radius: 3px;
 }
 
 .paginacion button:hover {
-    background: #f8f9fa;
+    background: var(--color-texto);
+    color: var(--color-fondo);
 }
 
 .paginacion button.activo {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
+    background: var(--color-secundario);
+    color: var(--color-texto);
+    border-color: var(--color-texto);
 }
 
 .info-paginacion {
