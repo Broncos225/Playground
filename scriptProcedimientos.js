@@ -12,44 +12,126 @@ const firebaseConfig = {
 
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+const usuario = ["Andrés_Felipe_Yepes_Tascón", "Ocaris_David_Arango_Aguilar"];
 
 const itemsRef = firebase.database().ref('procedimientos');
-var Size = Quill.import('attributors/style/size');
+
+// Configuración de tamaños de fuente
+const Size = Quill.import('attributors/style/size');
 Size.whitelist = ['12px', '14px', '16px', '18px', '20px'];
 Quill.register(Size, true);
 
-const quill = new Quill('#descripcion-texto', {
-    theme: 'snow',
-    readOnly: true,
-    modules: {
-        toolbar: {
-            container: [
-                ['bold', 'italic', 'underline'],
-                [{ list: 'ordered' }, { list: 'bullet' }],
-                [{ align: [] }],
-                ['blockquote'],
-                ['link'],
-                ['image'],
-                ['code-block'],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
-                ['clean']
-            ],
-            handlers: {
-                'image': function () {
-                    const url = prompt('Introduce la URL de la imagen');
-                    if (url) {
-                        const range = this.quill.getSelection();
-                        this.quill.insertEmbed(range.index, 'image', url, 'user');
+// Función para verificar si quill-better-table está disponible y configurarlo
+function initializeQuillWithTables() {
+    let quillConfig = {
+        theme: 'snow',
+        readOnly: true,
+        modules: {
+            toolbar: {
+                container: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'align': [] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image'],
+                    ['clean']
+                ],
+                handlers: {
+                    image: function () {
+                        const url = prompt('Introduce la URL de la imagen');
+                        if (url) {
+                            const range = this.quill.getSelection();
+                            if (range) {
+                                this.quill.insertEmbed(range.index, 'image', url, 'user');
+                            }
+                        }
+                    },
+                    link: function () {
+                        agregarAtajo();
                     }
-                },
-                'link': function () {
-                    agregarAtajo();
                 }
             }
         }
+    };
+
+    // Verificar si quill-better-table está disponible
+    if (typeof QuillBetterTable !== 'undefined') {
+        try {
+            // Registrar el módulo de tablas
+            Quill.register('modules/better-table', quillBetterTable);
+            
+            // Agregar configuración de tablas
+            quillConfig.modules['better-table'] = {
+                operationMenu: {
+                    items: {
+                        unmergeCells: {
+                            text: 'Separar celdas'
+                        },
+                        insertColumnRight: {
+                            text: 'Insertar columna a la derecha'
+                        },
+                        insertColumnLeft: {
+                            text: 'Insertar columna a la izquierda'
+                        },
+                        insertRowUp: {
+                            text: 'Insertar fila arriba'
+                        },
+                        insertRowDown: {
+                            text: 'Insertar fila abajo'
+                        },
+                        mergeCells: {
+                            text: 'Combinar celdas'
+                        },
+                        deleteColumn: {
+                            text: 'Eliminar columna'
+                        },
+                        deleteRow: {
+                            text: 'Eliminar fila'
+                        },
+                        deleteTable: {
+                            text: 'Eliminar tabla'
+                        }
+                    }
+                }
+            };
+            
+            // Agregar botón de insertar tabla a la toolbar
+            quillConfig.modules.toolbar.container.splice(-1, 0, ['insertTable']);
+            
+            // Agregar handler para insertar tablas
+            quillConfig.modules.toolbar.handlers.insertTable = function () {
+                const tableModule = this.quill.getModule('better-table');
+                if (tableModule) {
+                    const rows = prompt('¿Cuántas filas deseas? (por defecto 3)', '3');
+                    const cols = prompt('¿Cuántas columnas deseas? (por defecto 3)', '3');
+                    
+                    const numRows = parseInt(rows) || 3;
+                    const numCols = parseInt(cols) || 3;
+                    
+                    if (numRows > 0 && numCols > 0) {
+                        tableModule.insertTable(numRows, numCols);
+                    }
+                }
+            };
+            
+            console.log('quill-better-table configurado correctamente');
+        } catch (error) {
+            console.warn('Error al configurar quill-better-table:', error);
+        }
+    } else {
+        console.warn('quill-better-table no está disponible, continuando sin soporte de tablas');
     }
-});
+
+    return new Quill('#descripcion-texto', quillConfig);
+}
+
+// Inicialización de Quill
+const quill = initializeQuillWithTables();
 
 // Variable global para almacenar todos los datos
 let todosLosDatos = {};
@@ -71,7 +153,7 @@ const setupButtons = () => {
     let currentKey = null;
     const asesorActual = localStorage.getItem("nombreAsesorActual");
 
-    if (asesorActual === "Andrés_Felipe_Yepes_Tascón") {
+    if (usuario.includes(asesorActual)) {
         itemsContainer.style.height = '400px';
         agregarItemBtn.style.display = 'inline';
         eliminarItemBtn.style.display = 'inline';
@@ -105,7 +187,11 @@ const setupButtons = () => {
     // Función para manejar clic en un item (común para búsqueda y vista normal)
     function manejarClicItem(key, itemData, itemTitle) {
         tituloTexto.textContent = key;
-        quill.root.innerHTML = itemData.descripcion || "Descripción no disponible";
+        
+        // Verificar que quill esté disponible antes de usar
+        if (quill && quill.root) {
+            quill.root.innerHTML = itemData.descripcion || "Descripción no disponible";
+        }
 
         // Limpiar el campo de búsqueda
         busqProcedimientos.value = '';
@@ -128,30 +214,40 @@ const setupButtons = () => {
 
         enlacesContainer.innerHTML = '';
 
-        for (const descripcion in itemData.enlaces) {
-            if (itemData.enlaces.hasOwnProperty(descripcion)) {
-                const url = itemData.enlaces[descripcion];
+        if (itemData.enlaces) {
+            for (const descripcion in itemData.enlaces) {
+                if (itemData.enlaces.hasOwnProperty(descripcion)) {
+                    const url = itemData.enlaces[descripcion];
 
-                const enlaceDiv = document.createElement('div');
-                enlaceDiv.classList.add('enlace-item');
-                enlaceDiv.classList.add('Modulo2');
+                    const enlaceDiv = document.createElement('div');
+                    enlaceDiv.classList.add('enlace-item');
+                    enlaceDiv.classList.add('Modulo2');
 
-                if (url) {
-                    enlaceDiv.textContent = descripcion;
-                    enlaceDiv.addEventListener('click', () => {
-                        window.open(url, '_blank');
-                    });
-                } else {
-                    enlaceDiv.textContent = "Enlace no disponible";
+                    if (url) {
+                        enlaceDiv.textContent = descripcion;
+                        enlaceDiv.addEventListener('click', () => {
+                            window.open(url, '_blank');
+                        });
+                    } else {
+                        enlaceDiv.textContent = "Enlace no disponible";
+                    }
+
+                    enlacesContainer.appendChild(enlaceDiv);
                 }
-
-                enlacesContainer.appendChild(enlaceDiv);
             }
         }
+        
         currentKey = key;
-        quill.enable(false);
-        quillToolbar.style.display = 'none';
-        editarBtn.style.display = asesorActual === "Andrés_Felipe_Yepes_Tascón" ? 'inline' : 'none';
+        
+        if (quill) {
+            quill.enable(false);
+        }
+        
+        if (quillToolbar) {
+            quillToolbar.style.display = 'none';
+        }
+        
+        editarBtn.style.display = usuario.includes(asesorActual) ? 'inline' : 'none';
         guardarBtn.style.display = 'none';
         agregarEnlaceBtn.style.display = 'none';
     }
@@ -159,7 +255,7 @@ const setupButtons = () => {
     // Función para mostrar resultados de búsqueda
     function mostrarResultados(data, busqueda) {
         itemsContainer.innerHTML = '';
-        
+
         if (!busqueda.trim()) {
             // Si no hay búsqueda, mostrar todos los items
             mostrarTodosLosItems(data);
@@ -202,7 +298,7 @@ const setupButtons = () => {
         resultados.forEach(resultado => {
             const itemDiv = document.createElement('div');
             itemDiv.classList.add('Items');
-            
+
             const itemTitle = document.createElement('h4');
             if (resultado.coincidenciasEnTitulo) {
                 itemTitle.innerHTML = resaltarTexto(resultado.key, busqueda);
@@ -232,18 +328,18 @@ const setupButtons = () => {
                 preview.style.color = '#888';
                 preview.style.marginTop = '3px';
                 preview.style.fontStyle = 'italic';
-                
+
                 const textoCompleto = resultado.descripcionTexto;
                 const busquedaNormalizadaIndex = normalizarTexto(textoCompleto).indexOf(busquedaNormalizada);
-                
+
                 if (busquedaNormalizadaIndex !== -1) {
                     const inicio = Math.max(0, busquedaNormalizadaIndex - 30);
                     const fin = Math.min(textoCompleto.length, busquedaNormalizadaIndex + busqueda.trim().length + 30);
                     let fragmento = textoCompleto.substring(inicio, fin);
-                    
+
                     if (inicio > 0) fragmento = '...' + fragmento;
                     if (fin < textoCompleto.length) fragmento = fragmento + '...';
-                    
+
                     preview.innerHTML = resaltarTexto(fragmento, busqueda);
                     infoDiv.appendChild(preview);
                 }
@@ -294,46 +390,54 @@ const setupButtons = () => {
         mostrarResultados(todosLosDatos, busquedaActual);
     });
 
-    quillToolbar.style.display = 'none';
-    quill.enable(false);
+    if (quillToolbar) {
+        quillToolbar.style.display = 'none';
+    }
+    
+    if (quill) {
+        quill.enable(false);
+    }
 
     editarBtn.addEventListener('click', () => {
-        if (asesorActual === "Andrés_Felipe_Yepes_Tascón") {
-            quillToolbar.style.display = 'block';
+        if (usuario.includes(asesorActual) && quill) {
+            if (quillToolbar) {
+                quillToolbar.style.display = 'block';
+            }
             quill.enable(true);
             editarBtn.style.display = 'none';
             guardarBtn.style.display = 'inline';
             agregarEnlaceBtn.style.display = 'inline';
-
-            // Agregar botón "Eliminar" aquí
             mostrarEnlaces(currentKey);
         }
     });
 
     guardarBtn.addEventListener('click', () => {
-        if (currentKey) {
+        if (currentKey && quill) {
             const updatedDescription = quill.root.innerHTML;
             itemsRef.child(currentKey).update({ descripcion: updatedDescription })
                 .then(() => {
                     alert("Descripción actualizada correctamente");
                     quill.enable(false);
-                    quillToolbar.style.display = 'none';
+                    if (quillToolbar) {
+                        quillToolbar.style.display = 'none';
+                    }
                     guardarBtn.style.display = 'none';
                     agregarEnlaceBtn.style.display = 'none';
-                    editarBtn.style.display = asesorActual === "Andrés_Felipe_Yepes_Tascón" ? 'inline' : 'none';
+                    editarBtn.style.display = usuario.includes(asesorActual) ? 'inline' : 'none';
 
                     // Renderizar la lista de enlaces nuevamente
                     const enlacesContainer = document.getElementById('enlaces-container');
-                    enlacesContainer.innerHTML = ''; // Limpiar contenedor de enlaces
-                    mostrarEnlaces(currentKey); // Volver a renderizar la lista de enlaces
+                    enlacesContainer.innerHTML = '';
+                    mostrarEnlaces(currentKey);
                 })
                 .catch(error => {
                     console.error("Error al actualizar la descripción:", error);
                 });
         }
     });
+    
     agregarEnlaceBtn.addEventListener('click', () => {
-        if (quill.isEnabled()) {
+        if (quill && quill.isEnabled()) {
             const descripcionEnlace = prompt("Introduce la descripción del enlace:");
             if (descripcionEnlace === null || descripcionEnlace.trim() === "") {
                 alert("No se ingresó ningún enlace.");
@@ -362,7 +466,7 @@ const setupButtons = () => {
 
     function mostrarEnlaces(key) {
         const enlacesContainer = document.getElementById('enlaces-container');
-        enlacesContainer.innerHTML = ''; // Limpiar contenedor de enlaces
+        enlacesContainer.innerHTML = '';
 
         itemsRef.child(key).child('enlaces').once('value', (snapshot) => {
             const enlaces = snapshot.val();
@@ -372,7 +476,7 @@ const setupButtons = () => {
 
                     const enlaceDiv = document.createElement('div');
                     enlaceDiv.classList.add('enlace-item');
-                    enlaceDiv.classList.add('Modulo2'); // Clases CSS adicionales
+                    enlaceDiv.classList.add('Modulo2');
 
                     // Crear un contenedor para el texto
                     const enlaceTextoDiv = document.createElement('div');
@@ -381,32 +485,31 @@ const setupButtons = () => {
 
                     // Evento para abrir el enlace
                     enlaceTextoDiv.addEventListener('click', () => {
-                        if (!quill.isEnabled()) {
+                        if (!quill || !quill.isEnabled()) {
                             window.open(url, '_blank');
                         }
                     });
 
-                    // Añadir el texto del enlace al div principal
                     enlaceDiv.appendChild(enlaceTextoDiv);
 
                     // Agregar el botón de eliminar solo si está en modo de edición
-                    if (quill.isEnabled()) {
+                    if (quill && quill.isEnabled()) {
                         const eliminarEnlaceBtn = document.createElement('button');
                         eliminarEnlaceBtn.textContent = "X";
-                        eliminarEnlaceBtn.classList.add('eliminar-enlace-btn'); // Clase CSS para el botón
+                        eliminarEnlaceBtn.classList.add('eliminar-enlace-btn');
                         eliminarEnlaceBtn.addEventListener('click', (event) => {
-                            event.stopPropagation(); // Evitar que se abra el enlace al hacer clic en eliminar
-                            eliminarEnlace(key, descripcion); // Llamar a la función para eliminar el enlace
+                            event.stopPropagation();
+                            eliminarEnlace(key, descripcion);
                         });
                         enlaceDiv.appendChild(eliminarEnlaceBtn);
                     }
 
-                    // Añadir el div completo al contenedor
                     enlacesContainer.appendChild(enlaceDiv);
                 }
             }
         });
     }
+    
     function eliminarEnlace(key, descripcion) {
         if (confirm(`¿Estás seguro de que deseas eliminar el enlace "${descripcion}"?`)) {
             const enlaceRef = itemsRef.child(key).child('enlaces').child(descripcion);
@@ -422,15 +525,12 @@ const setupButtons = () => {
     }
 
     agregarItemBtn.addEventListener('click', () => {
-        let itemNombre = '';
-        let itemExiste = true;
-
         const checkItemExists = (itemNombreTrimmed) => {
             return itemsRef.child(itemNombreTrimmed).once('value').then(snapshot => snapshot.exists());
         };
 
         const promptForItemName = () => {
-            itemNombre = prompt("Introduce el nombre del nuevo ítem:");
+            const itemNombre = prompt("Introduce el nombre del nuevo ítem:");
             if (itemNombre === null || itemNombre.trim() === "") {
                 alert("Acción cancelada.");
                 return;
@@ -459,70 +559,67 @@ const setupButtons = () => {
     });
 
     eliminarItemBtn.addEventListener('click', () => {
-        let itemNombre = '';
-        let itemExiste = true;
-
         const checkItemExists = (itemNombreTrimmed) => {
             return itemsRef.child(itemNombreTrimmed).once('value').then(snapshot => snapshot.exists());
         };
 
         const promptForItemName = () => {
-            itemNombre = prompt("Introduce el nombre del ítem que deseas eliminar:");
+            const itemNombre = prompt("Introduce el nombre del ítem que deseas eliminar:");
             if (itemNombre === null || itemNombre.trim() === "") {
                 alert("Acción cancelada.");
                 return;
             }
-            if (itemNombre && itemNombre.trim()) {
-                const itemNombreTrimmed = itemNombre.trim();
+            
+            const itemNombreTrimmed = itemNombre.trim();
 
-                checkItemExists(itemNombreTrimmed).then(exists => {
-                    if (exists) {
+            checkItemExists(itemNombreTrimmed).then(exists => {
+                if (exists) {
+                    if (confirm(`¿Estás seguro de que deseas eliminar "${itemNombreTrimmed}"?`)) {
                         itemsRef.child(itemNombreTrimmed).remove().then(() => {
                             alert("Ítem eliminado: " + itemNombreTrimmed);
                         }).catch(error => {
                             console.error("Error al eliminar el ítem:", error);
                         });
-                    } else {
-                        alert("No se encontró un ítem con ese nombre.");
-                        promptForItemName();
                     }
-                });
-            } else {
-                alert("Por favor, introduce un nombre válido para el ítem.");
-                promptForItemName();
-            }
+                } else {
+                    alert("No se encontró un ítem con ese nombre.");
+                    promptForItemName();
+                }
+            });
         };
 
         promptForItemName();
     });
 };
 
-setupButtons();
+// Esperar a que el DOM esté completamente cargado
+document.addEventListener('DOMContentLoaded', () => {
+    setupButtons();
+});
 
 function agregarAtajo() {
     const choice = prompt('¿Deseas insertar un ítem o un enlace? (Escribe "item" o "enlace")');
 
     if (choice === 'item') {
         const itemText = prompt('Introduce el texto del ítem');
-        if (itemText) {
-            const range = quill.getSelection(); // Obtener la posición seleccionada en el editor
+        if (itemText && quill) {
+            const range = quill.getSelection();
             if (range) {
-                // Insertamos el texto como un enlace que no llevará a ningún lugar (href="#")
                 const link = '#';
-                quill.insertText(range.index, itemText, { 'link': link }); // Insertar el texto con formato de enlace
+                quill.insertText(range.index, itemText, { 'link': link });
             } else {
                 alert('Selecciona un lugar en el editor para insertar el ítem.');
             }
         }
     } else if (choice === 'enlace') {
         const url = prompt('Introduce la URL del enlace');
-        if (url) {
-            const range = quill.getSelection(); // Obtener la posición seleccionada en el editor
+        if (url && quill) {
+            const range = quill.getSelection();
             if (range) {
-                const text = prompt('Introduce el texto del enlace'); // Pedir el texto que será mostrado para el enlace
+                const text = prompt('Introduce el texto del enlace');
                 if (text) {
-                    quill.insertText(range.index, text, 'user'); // Insertar el texto del enlace en la posición seleccionada
-                    quill.formatText(range.index, text.length, 'link', url); // Aplicar el formato de enlace al texto
+                    quill.insertText(range.index, text, 'user');
+                    quill.formatText(range.index, text.length, 'link', url);
                 } else {
                     alert('No se ingresó ningún texto para el enlace.');
                 }
@@ -536,20 +633,25 @@ function agregarAtajo() {
 }
 
 // Delegación de eventos para todos los enlaces dentro del editor
-document.querySelector('#descripcion-texto').addEventListener('click', function (event) {
-    const target = event.target;
-    if (target.tagName === 'A' && target.href.endsWith('#')) {
-        event.preventDefault(); // Prevenir la redirección de la página
-        const itemText = target.textContent; // Obtener el texto del enlace
-        cambiarItem(itemText); // Ejecutar la lógica de cambio de ítem
+document.addEventListener('DOMContentLoaded', () => {
+    const descripcionTexto = document.querySelector('#descripcion-texto');
+    if (descripcionTexto) {
+        descripcionTexto.addEventListener('click', function (event) {
+            const target = event.target;
+            if (target.tagName === 'A' && target.href && target.href.endsWith('#')) {
+                event.preventDefault();
+                const itemText = target.textContent;
+                cambiarItem(itemText);
+            }
+        });
     }
 });
 
 function cambiarItem(texto) {
-    var listaItems = document.getElementsByClassName('Items');
+    const listaItems = document.getElementsByClassName('Items');
     for (let i = 0; i < listaItems.length; i++) {
         if (texto === listaItems[i].textContent) {
-            listaItems[i].click(); // Simula un clic en el ítem seleccionado
+            listaItems[i].click();
             break;
         }
     }

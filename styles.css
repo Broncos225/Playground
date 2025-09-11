@@ -1317,8 +1317,8 @@ section {
     transform: translate(-50%, -40%);
     width: max-content;
     padding: 20px;
-    border: 1px solid #888;
-    background-color: #fefefe;
+    border: 1px solid var(--color-texto);
+    background-color: var(--color-fondo);
     overflow: auto;
 }
 
