@@ -6,8 +6,10 @@ class PreferenciasColores {
             primario: '#e69500',
             secundario: '#e69500',
             colorFondo: '#FFFFFF',
-            colorTexto: '#000000ff', // Nuevo color por defecto para el texto
-            fuente: 'Nunito, sans-serif' // Fuente por defecto
+            colorTexto: '#000000ff',
+            fuente: 'Nunito, sans-serif',
+            imagenFondo: null,
+            blurFondo: false
         };
         this.fuentesDisponibles = [
             { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
@@ -70,7 +72,9 @@ class PreferenciasColores {
                     secundario: preferencias.colorSecundario || this.configuracionDefecto.secundario,
                     colorFondo: preferencias.colorFondo || this.configuracionDefecto.colorFondo,
                     colorTexto: preferencias.colorTexto || this.configuracionDefecto.colorTexto,
-                    fuente: preferencias.fuente || this.configuracionDefecto.fuente
+                    fuente: preferencias.fuente || this.configuracionDefecto.fuente,
+                    imagenFondo: preferencias.imagenFondo || this.configuracionDefecto.imagenFondo,
+                    blurFondo: preferencias.blurFondo || this.configuracionDefecto.blurFondo
                 };
             } catch (error) {
                 console.error('Error al cargar preferencias:', error);
@@ -91,12 +95,107 @@ class PreferenciasColores {
         const inputColorFondo = document.getElementById('ColorFondo');
         const inputColorTexto = document.getElementById('ColorTexto');
         const selectFuente = document.getElementById('FontFamily');
+        const inputBlur = document.getElementById('blur');
 
         if (inputPrimario) inputPrimario.value = this.configuracionActual.primario;
         if (inputSecundario) inputSecundario.value = this.configuracionActual.secundario;
         if (inputColorFondo) inputColorFondo.value = this.configuracionActual.colorFondo;
         if (inputColorTexto) inputColorTexto.value = this.configuracionActual.colorTexto;
         if (selectFuente) selectFuente.value = this.configuracionActual.fuente;
+        if (inputBlur) inputBlur.checked = this.configuracionActual.blurFondo;
+
+        // Mostrar preview de imagen actual si existe
+        this.mostrarPreviewImagenActual();
+    }
+
+    // Mostrar preview de la imagen actual
+    // Mostrar preview de la imagen actual
+    mostrarPreviewImagenActual() {
+        const previewContainer = document.getElementById('previewImagenFondo');
+        if (previewContainer) {
+            previewContainer.innerHTML = '';
+
+            if (this.configuracionActual.imagenFondo) {
+                const img = document.createElement('img');
+                img.src = this.configuracionActual.imagenFondo;
+                img.style.maxWidth = '200px';
+                img.style.maxHeight = '150px';
+                img.style.objectFit = 'cover';
+                img.style.border = '2px solid var(--color-primario)';
+                img.style.borderRadius = '8px';
+                img.style.display = 'block';
+                img.style.marginTop = '5px';
+
+                previewContainer.appendChild(img);
+            }
+        }
+    }
+
+    // Eliminar imagen de fondo y guardar la preferencia
+    eliminarImagenFondo() {
+        const confirmacion = confirm('¿Está seguro que desea eliminar la imagen de fondo?');
+
+        if (!confirmacion) {
+            return;
+        }
+
+        // Limpiar la imagen de fondo de la configuración actual
+        this.configuracionActual.imagenFondo = null;
+
+        // Aplicar los cambios inmediatamente (quita la imagen del fondo)
+        this.aplicarConfiguracion();
+
+        // Actualizar el preview visual
+        this.mostrarPreviewImagenActual();
+
+        // Limpiar el input file
+        const inputImagen = document.getElementById('ImagenFondo');
+        if (inputImagen) {
+            inputImagen.value = '';
+        }
+
+        // Guardar la preferencia inmediatamente (imagen = null)
+        const nombreUsuario = this.obtenerNombreUsuario();
+        const clavePreferencias = `preferencias_${nombreUsuario}`;
+
+        // Obtener preferencias actuales
+        const preferenciasGuardadas = localStorage.getItem(clavePreferencias);
+        let preferencias = {};
+
+        if (preferenciasGuardadas) {
+            try {
+                preferencias = JSON.parse(preferenciasGuardadas);
+            } catch (error) {
+                console.error('Error al leer preferencias:', error);
+                preferencias = {};
+            }
+        }
+
+        // Actualizar solo la imagen de fondo (mantener otros ajustes)
+        preferencias.imagenFondo = null;
+        preferencias.fechaGuardado = new Date().toISOString();
+
+        try {
+            // Guardar las preferencias actualizadas
+            localStorage.setItem(clavePreferencias, JSON.stringify(preferencias));
+            this.mostrarNotificacion('Imagen de fondo eliminada correctamente', 'exito');
+        } catch (error) {
+            console.error('Error al guardar preferencias:', error);
+            this.mostrarNotificacion('Error al eliminar la imagen de fondo', 'error');
+        }
+    }
+
+    // Eliminar imagen de fondo
+    eliminarImagenFondo() {
+        this.configuracionActual.imagenFondo = null;
+        this.aplicarConfiguracion();
+        this.mostrarPreviewImagenActual();
+
+        // Limpiar el input file
+        const inputImagen = document.getElementById('ImagenFondo');
+        if (inputImagen) {
+            inputImagen.value = '';
+        }
     }
 
     // Aplicar configuración completa a la página
@@ -108,11 +207,106 @@ class PreferenciasColores {
         root.style.setProperty('--color-texto', this.configuracionActual.colorTexto);
         root.style.setProperty('--font-family', this.configuracionActual.fuente);
 
+        // Aplicar imagen de fondo
+        if (this.configuracionActual.imagenFondo) {
+            document.body.style.backgroundImage = `url(${this.configuracionActual.imagenFondo})`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+        } else {
+            document.body.style.backgroundImage = 'none';
+        }
+
+        // Aplicar efecto blur al nav y footer
+        const nav = document.querySelector('nav');
+        const footer = document.querySelector('footer');
+        const header = document.querySelector('header');
+
+        if (this.configuracionActual.blurFondo && this.configuracionActual.imagenFondo) {
+            // Aplicar blur solo si hay imagen de fondo
+            if (nav) {
+            nav.style.backdropFilter = 'blur(10px)';
+            nav.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            }
+            if (footer) {
+            footer.style.backdropFilter = 'blur(10px)';
+            footer.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            }
+            if (header) {
+            header.style.backdropFilter = 'blur(10px)';
+            header.style.backgroundColor = 'rgba(255, 255, 255, 0%)';
+            }
+        } else {
+            // Quitar blur
+            if (nav) {
+            nav.style.backdropFilter = '';
+            nav.style.backgroundColor = '';
+            }
+            if (footer) {
+            footer.style.backdropFilter = '';
+            footer.style.backgroundColor = '';
+            }
+            if (header) {
+            header.style.backdropFilter = '';
+            header.style.backgroundColor = '';
+            }
+        }
+
+
         // También actualizar el theme-color del meta tag
         const metaTheme = document.querySelector('meta[name="theme-color"]');
         if (metaTheme) {
             metaTheme.setAttribute('content', this.configuracionActual.primario);
         }
+    }
+
+    // Procesar imagen seleccionada
+    procesarImagenFondo(archivo) {
+        // Validar que sea una imagen
+        if (!archivo.type.startsWith('image/')) {
+            this.mostrarNotificacion('Por favor seleccione un archivo de imagen válido', 'error');
+            return;
+        }
+
+        // Validar tamaño (máximo 5MB)
+        const tamañoMaximo = 5 * 1024 * 1024; // 5MB en bytes
+        if (archivo.size > tamañoMaximo) {
+            this.mostrarNotificacion('La imagen es demasiado grande. Máximo 5MB permitido.', 'error');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const imagenBase64 = e.target.result;
+
+                // Crear una imagen temporal para verificar que se cargó correctamente
+                const img = new Image();
+                img.onload = () => {
+                    this.configuracionActual.imagenFondo = imagenBase64;
+                    this.aplicarConfiguracion();
+                    this.mostrarPreviewImagenActual();
+                    this.mostrarNotificacion('Imagen de fondo cargada correctamente', 'exito');
+                };
+
+                img.onerror = () => {
+                    this.mostrarNotificacion('Error al cargar la imagen', 'error');
+                };
+
+                img.src = imagenBase64;
+
+            } catch (error) {
+                console.error('Error al procesar imagen:', error);
+                this.mostrarNotificacion('Error al procesar la imagen', 'error');
+            }
+        };
+
+        reader.onerror = () => {
+            this.mostrarNotificacion('Error al leer el archivo', 'error');
+        };
+
+        reader.readAsDataURL(archivo);
     }
 
     // Guardar preferencias
@@ -122,8 +316,9 @@ class PreferenciasColores {
         const inputColorFondo = document.getElementById('ColorFondo');
         const inputColorTexto = document.getElementById('ColorTexto');
         const selectFuente = document.getElementById('FontFamily');
+        const inputBlur = document.getElementById('blur');
 
-        if (!inputPrimario || !inputSecundario || !inputColorFondo || !inputColorTexto) {
+        if (!inputPrimario || !inputSecundario || !inputColorFondo || !inputColorTexto || !inputBlur) {
             console.error('No se encontraron todos los inputs de color');
             return false;
         }
@@ -134,6 +329,8 @@ class PreferenciasColores {
             colorFondo: inputColorFondo.value,
             colorTexto: inputColorTexto.value,
             fuente: selectFuente ? selectFuente.value : this.configuracionDefecto.fuente,
+            imagenFondo: this.configuracionActual.imagenFondo,
+            blurFondo: inputBlur ? inputBlur.checked : false,
             fechaGuardado: new Date().toISOString(),
             usuario: this.nombreUsuario
         };
@@ -148,7 +345,9 @@ class PreferenciasColores {
                 secundario: nuevasPreferencias.colorSecundario,
                 colorFondo: nuevasPreferencias.colorFondo,
                 colorTexto: nuevasPreferencias.colorTexto,
-                fuente: nuevasPreferencias.fuente
+                fuente: nuevasPreferencias.fuente,
+                imagenFondo: nuevasPreferencias.imagenFondo,
+                blurFondo: nuevasPreferencias.blurFondo
             };
 
             // Aplicar la nueva configuración
@@ -159,7 +358,12 @@ class PreferenciasColores {
             return true;
         } catch (error) {
             console.error('Error al guardar preferencias:', error);
-            this.mostrarNotificacion('Error al guardar configuraciones', 'error');
+            // Verificar si el error es por límite de almacenamiento
+            if (error.name === 'QuotaExceededError') {
+                this.mostrarNotificacion('Error: No hay suficiente espacio de almacenamiento. La imagen es demasiado grande.', 'error');
+            } else {
+                this.mostrarNotificacion('Error al guardar configuraciones', 'error');
+            }
             return false;
         }
     }
@@ -175,18 +379,21 @@ class PreferenciasColores {
             const inputColorFondo = document.getElementById('ColorFondo');
             const inputColorTexto = document.getElementById('ColorTexto');
             const selectFuente = document.getElementById('FontFamily');
+            const inputImagen = document.getElementById('ImagenFondo');
 
             if (inputPrimario) inputPrimario.value = this.configuracionDefecto.primario;
             if (inputSecundario) inputSecundario.value = this.configuracionDefecto.secundario;
             if (inputColorFondo) inputColorFondo.value = this.configuracionDefecto.colorFondo;
             if (inputColorTexto) inputColorTexto.value = this.configuracionDefecto.colorTexto;
             if (selectFuente) selectFuente.value = this.configuracionDefecto.fuente;
+            if (inputImagen) inputImagen.value = '';
 
             // Actualizar configuración actual
             this.configuracionActual = { ...this.configuracionDefecto };
 
             // Aplicar configuración
             this.aplicarConfiguracion();
+            this.mostrarPreviewImagenActual();
 
             // Eliminar preferencias guardadas
             const clave = this.generarClavePreferencias();
@@ -231,6 +438,25 @@ class PreferenciasColores {
             btnRestablecer.addEventListener('click', () => this.restablecerPreferencias());
         }
 
+        // Input de imagen de fondo
+        const inputImagenFondo = document.getElementById('ImagenFondo');
+        if (inputImagenFondo) {
+            inputImagenFondo.addEventListener('change', (e) => {
+                const archivo = e.target.files[0];
+                if (archivo) {
+                    this.procesarImagenFondo(archivo);
+                }
+            });
+        }
+
+        const inputBlur = document.getElementById('blur');
+        if (inputBlur) {
+            inputBlur.addEventListener('change', () => {
+                this.configuracionActual.blurFondo = inputBlur.checked;
+                this.aplicarConfiguracion();
+            });
+        }
+
         // Previsualización en tiempo real para colores
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
@@ -257,6 +483,11 @@ class PreferenciasColores {
         const selectFuente = document.getElementById('FontFamily');
         if (selectFuente) {
             selectFuente.addEventListener('change', () => this.previsualizarCambios());
+        }
+
+        const btnEliminarImagen = document.getElementById('eliminarImagen');
+        if (btnEliminarImagen) {
+            btnEliminarImagen.addEventListener('click', () => this.eliminarImagenFondo());
         }
     }
 
@@ -298,6 +529,17 @@ class PreferenciasColores {
 
                 if (preferencias.fuente) {
                     root.style.setProperty('--font-family', preferencias.fuente);
+                }
+
+                // Aplicar imagen de fondo
+                if (preferencias.imagenFondo) {
+                    document.body.style.backgroundImage = `url(${preferencias.imagenFondo})`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundRepeat = 'no-repeat';
+                    document.body.style.backgroundAttachment = 'fixed';
+                } else {
+                    document.body.style.backgroundImage = 'none';
                 }
 
                 // Actualizar theme-color
@@ -366,6 +608,10 @@ class PreferenciasColores {
                     // Si no tiene color de texto, usar el por defecto
                     if (!preferencias.colorTexto) {
                         preferencias.colorTexto = this.configuracionDefecto.colorTexto;
+                    }
+                    // Si no tiene imagen de fondo, usar null
+                    if (!preferencias.imagenFondo) {
+                        preferencias.imagenFondo = null;
                     }
 
                     const clave = this.generarClavePreferencias();
