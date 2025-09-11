@@ -27,12 +27,12 @@ function obtenerInfoAlmuerzoTurno(turnoCompleto) {
     if (!turnoCompleto) return null;
 
     const horariosAlmuerzo = {
-        'T1': { apertura: '11:30 AM', cierre: '12:30 PM' },
-        'T2': { apertura: '12:15 PM', cierre: '1:15 PM' },
-        'T3': { apertura: '1:00 PM', cierre: '2:00 PM' },
-        'T4': { apertura: '1:45 PM', cierre: '2:45 PM' },
-        'T5': { apertura: '2:30 PM', cierre: '3:30 PM' },
-        'T6': { apertura: '3:15 PM', cierre: '4:15 PM' },
+        'T1': { apertura: '11:00 AM', cierre: '12:00 PM' },
+        'T2': { apertura: '11:45 AM', cierre: '12:45 PM' },
+        'T3': { apertura: '12:30 PM', cierre: '1:30 PM' },
+        'T4': { apertura: '1:15 PM', cierre: '2:15 PM' },
+        'T5': { apertura: '2:00 PM', cierre: '3:00 PM' },
+        'T6': { apertura: '2:45 PM', cierre: '3:45 PM' },
         'TSA': { apertura: '12:00 PM', cierre: '12:30 PM' }
     };
 

@@ -36,13 +36,9 @@ let agentes = {
     nombre: "Juan",
     cumpleaños: [20, 10]
   },
-  Karen_Riveros_Vega: {
-    nombre: "Karen",
-    cumpleaños: [0, 0]
-  },
   Diego_Alejandro_Úsuga_Yepes: {
     nombre: "Diego",
-    cumpleaños: [0, 0]
+    cumpleaños: [17, 1]
   }
 };
 

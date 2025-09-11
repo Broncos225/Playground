@@ -984,7 +984,7 @@ async function verificarEncargadosEspeciales() {
         }
 
         const encargadosEspeciales = [];
-        const usuariosEspeciales = ["Juan Manuel Cano Benítez", "Karen Riveros Vega"];
+        const usuariosEspeciales = ["Juan Manuel Cano Benítez"];
 
         for (const usuario of usuariosEspeciales) {
             try {
@@ -1001,16 +1001,6 @@ async function verificarEncargadosEspeciales() {
                             }
                         } else {
                             if (minutosActuales >= 13*60 && minutosActuales < 17*60) {
-                                encargadosEspeciales.push(usuario);
-                            }
-                        }
-                    } else if (usuario === "Karen Riveros Vega") {
-                        if (esDiaPar) {
-                            if (minutosActuales >= 13*60 && minutosActuales < 17*60) {
-                                encargadosEspeciales.push(usuario);
-                            }
-                        } else {
-                            if (minutosActuales >= 8*60 && minutosActuales < 13*60) {
                                 encargadosEspeciales.push(usuario);
                             }
                         }
