@@ -90,18 +90,76 @@ const setupButtons = () => {
         return tempDiv.textContent || tempDiv.innerText || '';
     }
 
+    // Función para normalizar texto (quitar acentos y caracteres especiales)
+    function normalizarTexto(texto) {
+        return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    }
+
     // Función para resaltar texto
     function resaltarTexto(texto, busqueda) {
         if (!busqueda.trim()) return texto;
-        const regex = new RegExp(`(${busqueda.trim()})`, 'gi');
+        const regex = new RegExp(`(${busqueda.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
         return texto.replace(regex, '<mark>$1</mark>');
+    }
+
+    // Función para manejar clic en un item (común para búsqueda y vista normal)
+    function manejarClicItem(key, itemData, itemTitle) {
+        tituloTexto.textContent = key;
+        quill.root.innerHTML = itemData.descripcion || "Descripción no disponible";
+
+        // Limpiar el campo de búsqueda
+        busqProcedimientos.value = '';
+
+        // Mostrar todos los items nuevamente después de un pequeño retraso
+        // y mantener la selección
+        setTimeout(() => {
+            mostrarResultados(todosLosDatos, '');
+            // Después de mostrar todos los items, seleccionar el correcto
+            setTimeout(() => {
+                const allTitles = document.querySelectorAll('.Items h4');
+                allTitles.forEach(title => {
+                    title.classList.remove('selected');
+                    if (title.textContent === key) {
+                        title.classList.add('selected');
+                    }
+                });
+            }, 10);
+        }, 50);
+
+        enlacesContainer.innerHTML = '';
+
+        for (const descripcion in itemData.enlaces) {
+            if (itemData.enlaces.hasOwnProperty(descripcion)) {
+                const url = itemData.enlaces[descripcion];
+
+                const enlaceDiv = document.createElement('div');
+                enlaceDiv.classList.add('enlace-item');
+                enlaceDiv.classList.add('Modulo2');
+
+                if (url) {
+                    enlaceDiv.textContent = descripcion;
+                    enlaceDiv.addEventListener('click', () => {
+                        window.open(url, '_blank');
+                    });
+                } else {
+                    enlaceDiv.textContent = "Enlace no disponible";
+                }
+
+                enlacesContainer.appendChild(enlaceDiv);
+            }
+        }
+        currentKey = key;
+        quill.enable(false);
+        quillToolbar.style.display = 'none';
+        editarBtn.style.display = asesorActual === "Andrés_Felipe_Yepes_Tascón" ? 'inline' : 'none';
+        guardarBtn.style.display = 'none';
+        agregarEnlaceBtn.style.display = 'none';
     }
 
     // Función para mostrar resultados de búsqueda
     function mostrarResultados(data, busqueda) {
         itemsContainer.innerHTML = '';
-        enlacesContainer.innerHTML = '';
-
+        
         if (!busqueda.trim()) {
             // Si no hay búsqueda, mostrar todos los items
             mostrarTodosLosItems(data);
@@ -109,17 +167,17 @@ const setupButtons = () => {
         }
 
         const resultados = [];
-        const busquedaLower = busqueda.toLowerCase().trim();
+        const busquedaNormalizada = normalizarTexto(busqueda.trim());
 
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 const itemData = data[key];
-                const tituloLower = key.toLowerCase();
+                const tituloNormalizado = normalizarTexto(key);
                 const descripcionTexto = extraerTextoPlano(itemData.descripcion || '');
-                const descripcionLower = descripcionTexto.toLowerCase();
+                const descripcionNormalizada = normalizarTexto(descripcionTexto);
 
-                const coincidenciasEnTitulo = tituloLower.includes(busquedaLower);
-                const coincidenciasEnDescripcion = descripcionLower.includes(busquedaLower);
+                const coincidenciasEnTitulo = tituloNormalizado.includes(busquedaNormalizada);
+                const coincidenciasEnDescripcion = descripcionNormalizada.includes(busquedaNormalizada);
 
                 if (coincidenciasEnTitulo || coincidenciasEnDescripcion) {
                     resultados.push({
@@ -176,11 +234,11 @@ const setupButtons = () => {
                 preview.style.fontStyle = 'italic';
                 
                 const textoCompleto = resultado.descripcionTexto;
-                const busquedaIndex = textoCompleto.toLowerCase().indexOf(busquedaLower);
+                const busquedaNormalizadaIndex = normalizarTexto(textoCompleto).indexOf(busquedaNormalizada);
                 
-                if (busquedaIndex !== -1) {
-                    const inicio = Math.max(0, busquedaIndex - 30);
-                    const fin = Math.min(textoCompleto.length, busquedaIndex + busquedaLower.length + 30);
+                if (busquedaNormalizadaIndex !== -1) {
+                    const inicio = Math.max(0, busquedaNormalizadaIndex - 30);
+                    const fin = Math.min(textoCompleto.length, busquedaNormalizadaIndex + busqueda.trim().length + 30);
                     let fragmento = textoCompleto.substring(inicio, fin);
                     
                     if (inicio > 0) fragmento = '...' + fragmento;
@@ -195,41 +253,7 @@ const setupButtons = () => {
             itemDiv.appendChild(infoDiv);
 
             itemDiv.addEventListener('click', () => {
-                const allTitles = document.querySelectorAll('.Items h4');
-                allTitles.forEach(title => title.classList.remove('selected'));
-
-                itemTitle.classList.add('selected');
-                tituloTexto.textContent = resultado.key;
-                quill.root.innerHTML = resultado.data.descripcion || "Descripción no disponible";
-
-                enlacesContainer.innerHTML = '';
-
-                for (const descripcion in resultado.data.enlaces) {
-                    if (resultado.data.enlaces.hasOwnProperty(descripcion)) {
-                        const url = resultado.data.enlaces[descripcion];
-
-                        const enlaceDiv = document.createElement('div');
-                        enlaceDiv.classList.add('enlace-item');
-                        enlaceDiv.classList.add('Modulo2');
-
-                        if (url) {
-                            enlaceDiv.textContent = descripcion;
-                            enlaceDiv.addEventListener('click', () => {
-                                window.open(url, '_blank');
-                            });
-                        } else {
-                            enlaceDiv.textContent = "Enlace no disponible";
-                        }
-
-                        enlacesContainer.appendChild(enlaceDiv);
-                    }
-                }
-                currentKey = resultado.key;
-                quill.enable(false);
-                quillToolbar.style.display = 'none';
-                editarBtn.style.display = asesorActual === "Andrés_Felipe_Yepes_Tascón" ? 'inline' : 'none';
-                guardarBtn.style.display = 'none';
-                agregarEnlaceBtn.style.display = 'none';
+                manejarClicItem(resultado.key, resultado.data, itemTitle);
             });
 
             itemsContainer.appendChild(itemDiv);
@@ -249,41 +273,7 @@ const setupButtons = () => {
                 itemDiv.appendChild(itemTitle);
 
                 itemDiv.addEventListener('click', () => {
-                    const allTitles = document.querySelectorAll('.Items h4');
-                    allTitles.forEach(title => title.classList.remove('selected'));
-
-                    itemTitle.classList.add('selected');
-                    tituloTexto.textContent = key;
-                    quill.root.innerHTML = itemData.descripcion || "Descripción no disponible";
-
-                    enlacesContainer.innerHTML = '';
-
-                    for (const descripcion in itemData.enlaces) {
-                        if (itemData.enlaces.hasOwnProperty(descripcion)) {
-                            const url = itemData.enlaces[descripcion];
-
-                            const enlaceDiv = document.createElement('div');
-                            enlaceDiv.classList.add('enlace-item');
-                            enlaceDiv.classList.add('Modulo2');
-
-                            if (url) {
-                                enlaceDiv.textContent = descripcion;
-                                enlaceDiv.addEventListener('click', () => {
-                                    window.open(url, '_blank');
-                                });
-                            } else {
-                                enlaceDiv.textContent = "Enlace no disponible";
-                            }
-
-                            enlacesContainer.appendChild(enlaceDiv);
-                        }
-                    }
-                    currentKey = key;
-                    quill.enable(false);
-                    quillToolbar.style.display = 'none';
-                    editarBtn.style.display = asesorActual === "Andrés_Felipe_Yepes_Tascón" ? 'inline' : 'none';
-                    guardarBtn.style.display = 'none';
-                    agregarEnlaceBtn.style.display = 'none';
+                    manejarClicItem(key, itemData, itemTitle);
                 });
 
                 itemsContainer.appendChild(itemDiv);
