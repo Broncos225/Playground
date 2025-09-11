@@ -218,7 +218,6 @@ button:hover {
     font-size: small;
     border-radius: 4px;
     content: attr(data-file-name);
-    /* testo por defecto */
     position: absolute;
     left: 0;
     right: 0;
@@ -545,10 +544,8 @@ button .botonReiniciar:hover {
 #TablaSol,
 #TablaSol2 {
     width: 100%;
-    /* Ajusta esto según tus necesidades */
     max-height: 400px;
     overflow: auto;
-    /* Habilita el desplazamiento tanto en x como en y */
 }
 
 #Table2 {
@@ -625,8 +622,6 @@ button .botonReiniciar:hover {
     }
 }
 
-
-/* Global styles */
 body {
     font-family: var(--font-family);
     margin: 0;
@@ -643,14 +638,12 @@ header {
     padding: 0%;
 }
 
-/* Navigation styles */
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-primario);
     padding: 10px;
-    /* Adjusted padding for consistency */
 }
 
 nav ul {
@@ -667,10 +660,8 @@ nav a {
     color: var(--color-texto);
     text-align: center;
     padding: 9px;
-    /* Reduced redundancy */
     text-decoration: none;
     font-weight: bold;
-    /* Moved from `.botonesNav` for consistency */
 }
 
 nav a:hover {
@@ -678,10 +669,8 @@ nav a:hover {
     color: var(--color-texto);
 }
 
-/* Buttons styles */
 .botonesNav {
     display: flex;
-    /* Retained from original code */
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -689,9 +678,7 @@ nav a:hover {
 
 .botonesNav li {
     display: inline;
-    /* Retained from original code */
     margin-right: 0px;
-    /* Retained from original code */
 }
 
 .titulo {
@@ -719,108 +706,74 @@ label {
     margin-bottom: 10px;
 }
 
-/* Media queries */
-
-
-
-
 @media (max-width: 968px) {
-
-
-
     nav {
         padding: 0px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* Centra los elementos en el eje transversal */
     }
 
     .titulo {
         font-size: 18px;
-        /* Aumenta el tamaño de la fuente para que el título sea más prominente */
         color: #333;
-        /* Cambia el color para que contraste con el fondo */
     }
 
     .botonesNav {
         display: flex;
         flex-direction: row;
-        /* Cambia la dirección a fila para que los botones se muestren en una línea */
         justify-content: space-around;
-        /* Distribuye el espacio alrededor de los botones de manera uniforme */
         flex-wrap: wrap;
-        /* Permite que los elementos de la lista se envuelvan en múltiples líneas si no caben en una sola línea */
         padding: 10px 0;
-        /* Añade padding para dar más espacio alrededor de los botones */
         gap: 5px;
     }
 
     nav ul.botonesNav li a {
         font-size: 14px;
-        /* Reduce el tamaño de la fuente para que los botones no sean demasiado grandes */
     }
 
     nav ul.botonesNav li a:hover {
         background-color: var(--color-secundario);
-        /* Cambia el color de fondo al pasar el ratón para que contraste con el texto */
         color: var(--color-texto);
     }
 
     nav ul.botonesNav li a {
         font-size: 14px;
         overflow: hidden;
-        /* Asegura que el texto no se desborde del contenedor */
         text-overflow: ellipsis;
-        /* Añade puntos suspensivos cuando el texto es demasiado largo */
         white-space: nowrap;
-        /* Evita que el texto se rompa en varias líneas */
     }
 
-    /* Estilos para cuando se hace scroll en una pantalla pequeña */
     .small-header-scroll {
         padding: 0px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* Centra los elementos en el eje transversal */
         background-color: var(--color-primario);
-        /* Un color de fondo oscuro puede ayudar a que el encabezado se destaque */
         color: #000;
-        /* Un color de texto claro puede ayudar a que el texto sea legible contra el fondo oscuro */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* Una sombra de caja puede ayudar a que el encabezado se destaque contra el contenido de la página */
     }
 
     .small-header-scroll .titulo {
         font-size: 16px;
-        /* Reduce el tamaño de la fuente cuando se hace scroll para que el título no sea demasiado grande */
     }
 
     .small-header-scroll .botonesNav {
         flex-direction: row;
-        /* Cambia la dirección a fila para que los botones se muestren en una línea */
         justify-content: space-around;
-        /* Distribuye el espacio alrededor de los botones de manera uniforme */
         flex-wrap: wrap;
-        /* Permite que los elementos de la lista se envuelvan en múltiples líneas si no caben en una sola línea */
         padding: 5px 0;
-        /* Reduce el padding cuando se hace scroll para maximizar el espacio de la pantalla */
     }
 
     .small-header-scroll ul.botonesNav li a {
         font-size: 12px;
-        /* Reduce el tamaño de la fuente cuando se hace scroll para que los botones no sean demasiado grandes */
     }
 
     .small-header-scroll ul.botonesNav li a {
         font-size: 12px;
         overflow: hidden;
-        /* Asegura que el texto no se desborde del contenedor */
         text-overflow: ellipsis;
-        /* Añade puntos suspensivos cuando el texto es demasiado largo */
         white-space: nowrap;
-        /* Evita que el texto se rompa en varias líneas */
     }
 }
 
@@ -862,7 +815,6 @@ label {
     .TablaDescansos {
         padding: 0px;
         padding-bottom: 0px;
-        /* Retained from original code */
     }
 
     #InformacionVaca {
@@ -938,14 +890,12 @@ label {
     table-layout: fixed;
     display: block;
     text-align: center;
-    /* Añadido para centrar el texto */
 }
 
 #TiposDias {
     width: fit-content;
     align-self: flex-end;
     text-align: center;
-    /* Añadido para centrar el texto */
 }
 
 #TablaCalculos th,
@@ -1077,7 +1027,6 @@ label {
         justify-content: center;
         gap: 10px;
         align-items: center;
-        /* Añadido para centrar verticalmente */
         width: 100%;
     }
 
@@ -1093,7 +1042,6 @@ input[type='number']::-webkit-outer-spin-button {
 
 }
 
-/* Para Chrome, Safari y Edge */
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -1170,7 +1118,6 @@ input[type='number']::-webkit-outer-spin-button {
     grid-gap: 10px;
     height: min-content;
     justify-content: start;
-    /* Alinea el conjunto de elementos a la izquierda */
 }
 
 @media (max-width: 738px) {
@@ -1192,7 +1139,6 @@ input[type='number']::-webkit-outer-spin-button {
     align-items: center;
     position: relative;
     color: var(--color-texto);
-    /* Añadir esta línea para permitir el posicionamiento absoluto del span */
 }
 
 .module-type {
@@ -1200,7 +1146,6 @@ input[type='number']::-webkit-outer-spin-button {
     top: 5px;
     left: 5px;
     font-size: 0.8em;
-    /* Tamaño de fuente más pequeño */
     color: var(--color-texto);
     background-color: var(--color-primario);
     padding: 2px 4px;
@@ -1301,7 +1246,6 @@ section {
     padding: 10px;
     height: min-content;
     min-width: 300px;
-    /* Ajusta este valor según tus necesidades */
 }
 
 #FormTiendas {
@@ -1368,18 +1312,14 @@ section {
     flex-direction: row-reverse;
     align-items: flex-start;
     position: fixed;
-    /* Posicionamiento fijo respecto a la ventana del navegador */
     top: 50%;
-    /* Centrado verticalmente */
     left: 50%;
-    /* Centrado horizontalmente */
     transform: translate(-50%, -40%);
     width: max-content;
     padding: 20px;
     border: 1px solid #888;
     background-color: #fefefe;
     overflow: auto;
-    /* Habilita el scroll si es necesario */
 }
 
 @media screen and (max-height: 327px) {
@@ -1580,34 +1520,25 @@ input:checked+.slider:before {
     bottom: 0;
     width: 100%;
     background: linear-gradient(to right, #4b6cb7, #182848);
-    /* Gradiente de fondo */
     color: #fff;
     padding: 10px 20px;
-    /* Ajuste del padding para más espacio */
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-    /* Sombra más pronunciada */
     display: flex;
     align-items: center;
     border-top-left-radius: 10px;
-    /* Esquinas redondeadas */
     border-top-right-radius: 10px;
-    /* Esquinas redondeadas */
 }
 
 #audioPlayer {
     width: 50%;
     height: 30px;
     border-radius: 15px;
-    /* Esquinas redondeadas */
     outline: none;
-    /* Remover el borde al enfocar */
     transition: transform 0.3s ease;
-    /* Transición suave al interactuar */
 }
 
 #audioPlayer:hover {
     transition: background-color 0.3s ease;
-    /* Transición suave del fondo */
 }
 
 #songSelector {
@@ -1615,35 +1546,25 @@ input:checked+.slider:before {
     height: 30px;
     margin-left: 10px;
     background-color: #182848;
-    /* Color de fondo más oscuro para contraste */
     color: #fff;
     border: 1px solid #555;
     border-radius: 15px;
-    /* Esquinas redondeadas */
     outline: none;
-    /* Remover el borde al enfocar */
     transition: background-color 0.3s ease;
-    /* Transición suave del fondo */
     font-family: var(--font-family);
 }
 
 #songSelector:hover {
     background-color: #4b6cb7;
-    /* Cambio de color al pasar el mouse */
 }
 
 #btnMostrarReproductor {
     position: fixed;
-    /* Cambia la posición a fijo */
     bottom: 50px;
-    /* Distancia desde el fondo */
     right: 20px;
-    /* Distancia desde la derecha */
     display: flex;
     align-items: center;
-    /* Alinea los elementos internos verticalmente */
     justify-content: center;
-    /* Alinea los elementos internos horizontalmente */
     border: 0;
     background-color: transparent;
 }
@@ -1681,7 +1602,6 @@ input:checked+.slider:before {
 
 #Table1 {
     width: 100%;
-    /* Ajustar el ancho total de la tabla */
     border-collapse: collapse;
     table-layout: fixed;
 }
@@ -1695,7 +1615,6 @@ input:checked+.slider:before {
 
 #Table1 th#NombreAsesor {
     width: 200px;
-    /* Ajusta el ancho según sea necesario */
 }
 
 #Table1 th.common-width,
@@ -1812,27 +1731,24 @@ input:checked+.slider:before {
 }
 
 #descripcion {
-    height: 445px;
-    /* Ajusta el tamaño fijo que desees */
+    height: 478px;
     display: flex;
     flex-direction: column;
     color: var(--color-texto);
-    background-color: var(--color-fondo);
+    background-color: var(--color-primario);
 }
 
 #descripcion-texto {
+    background-color: var(--color-fondo);
     flex: 1;
-    /* Permite que ocupe el espacio restante dentro del padre */
     overflow-y: auto;
-    /* Habilita el scroll vertical si el contenido excede el tamaño */
     box-sizing: border-box;
     max-height: 100%;
-    /* Asegura que el contenido no exceda el tamaño del contenedor */
     margin: 0;
     text-align: left;
     width: 100%;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid var(--color-texto);
+    border-bottom: 1px solid var(--color-texto);
 }
 
 @media screen and (max-width: 930px) {
@@ -1894,23 +1810,17 @@ input:checked+.slider:before {
     }
 }
 
-/* Estilos para el botón de agregar */
 .agregar-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 100px;
-    /* Ajusta el tamaño según sea necesario */
     height: 40px;
-    /* Ajusta la altura según sea necesario */
     font-size: 24px;
-    /* Tamaño del + */
     color: white;
     background-color: #007bff;
-    /* Color de fondo, puedes cambiarlo */
     border: none;
     border-radius: 5px;
-    /* Borde redondeado */
     cursor: pointer;
     margin: 10px 0;
     text-align: center;
@@ -1918,19 +1828,15 @@ input:checked+.slider:before {
 
 .agregar-btn:hover {
     background-color: #0056b3;
-    /* Color de fondo cuando se pasa el ratón sobre el botón */
 }
 
 .agregar-btn:focus {
     outline: none;
-    /* Elimina el contorno del botón cuando está enfocado */
 }
 
 .item-btn {
     font-family: var(--font-family);
-    /* Asegúrate de que el botón use la misma fuente */
     font-weight: 600;
-    /* Asegúrate de que el texto del botón sea visible */
 }
 
 
@@ -1960,17 +1866,14 @@ input:checked+.slider:before {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    /* Espaciado entre los elementos */
     align-items: center;
     justify-content: center;
     width: 100%;
-    /* Ajusta el ancho al 100% del contenedor */
 }
 
 #contenedor label {
     width: auto;
     white-space: nowrap;
-    /* Mantiene el texto en una sola línea */
 }
 
 #contenedor input {
@@ -1982,9 +1885,6 @@ input:checked+.slider:before {
     width: auto;
     padding: 5px;
 }
-
-
-/* Añadir estos estilos al archivo PlantillasEstilos.css */
 
 .favorite-star {
     position: absolute;
@@ -2063,12 +1963,9 @@ input:checked+.slider:before {
     border-bottom: none;
 }
 
-/* Excepción para tablas dentro de #Informacion */
 #Informacion table tbody tr {
     border: none !important;
 }
-
-
 
 .options-menu {
     background-color: var(--color-primario);
@@ -2076,4 +1973,21 @@ input:checked+.slider:before {
 
 .input-container {
     color: black;
+}
+
+
+input[type="text"],
+input[type="number"],
+.ql-editor {
+    font-family: var(--font-family);
+}
+
+.ql-editor {
+    border: none !important;
+}
+
+.ql-toolbar.ql-snow {
+    border: none !important;
+    font-family: var(--font-family);
+    background-color: var(--color-texto);
 }

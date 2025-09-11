@@ -51,6 +51,9 @@ const quill = new Quill('#descripcion-texto', {
     }
 });
 
+// Variable global para almacenar todos los datos
+let todosLosDatos = {};
+
 const setupButtons = () => {
     const editarBtn = document.getElementById('editar-btn');
     const guardarBtn = document.getElementById('guardar-btn');
@@ -63,6 +66,7 @@ const setupButtons = () => {
     const eliminarItemBtn = document.getElementById('eliminar-item-btn');
     const itemsContainer = document.getElementById('items-container');
     const agregarEnlaceBtn = document.getElementById('agregar-enlace-btn');
+    const busqProcedimientos = document.getElementById('busqProcedimientos');
 
     let currentKey = null;
     const asesorActual = localStorage.getItem("nombreAsesorActual");
@@ -79,12 +83,161 @@ const setupButtons = () => {
         editarBtn.style.display = 'none';
     }
 
-    itemsRef.on('value', (snapshot) => {
+    // Función para extraer texto plano del HTML
+    function extraerTextoPlano(html) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        return tempDiv.textContent || tempDiv.innerText || '';
+    }
+
+    // Función para resaltar texto
+    function resaltarTexto(texto, busqueda) {
+        if (!busqueda.trim()) return texto;
+        const regex = new RegExp(`(${busqueda.trim()})`, 'gi');
+        return texto.replace(regex, '<mark>$1</mark>');
+    }
+
+    // Función para mostrar resultados de búsqueda
+    function mostrarResultados(data, busqueda) {
         itemsContainer.innerHTML = '';
         enlacesContainer.innerHTML = '';
 
-        const data = snapshot.val();
+        if (!busqueda.trim()) {
+            // Si no hay búsqueda, mostrar todos los items
+            mostrarTodosLosItems(data);
+            return;
+        }
 
+        const resultados = [];
+        const busquedaLower = busqueda.toLowerCase().trim();
+
+        for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+                const itemData = data[key];
+                const tituloLower = key.toLowerCase();
+                const descripcionTexto = extraerTextoPlano(itemData.descripcion || '');
+                const descripcionLower = descripcionTexto.toLowerCase();
+
+                const coincidenciasEnTitulo = tituloLower.includes(busquedaLower);
+                const coincidenciasEnDescripcion = descripcionLower.includes(busquedaLower);
+
+                if (coincidenciasEnTitulo || coincidenciasEnDescripcion) {
+                    resultados.push({
+                        key: key,
+                        data: itemData,
+                        coincidenciasEnTitulo,
+                        coincidenciasEnDescripcion,
+                        descripcionTexto
+                    });
+                }
+            }
+        }
+
+        if (resultados.length === 0) {
+            const noResultsDiv = document.createElement('div');
+            noResultsDiv.innerHTML = `<p style="text-align: center; color: #666; padding: 20px;">No se encontraron resultados para "${busqueda}"</p>`;
+            itemsContainer.appendChild(noResultsDiv);
+            return;
+        }
+
+        // Mostrar resultados
+        resultados.forEach(resultado => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('Items');
+            
+            const itemTitle = document.createElement('h4');
+            if (resultado.coincidenciasEnTitulo) {
+                itemTitle.innerHTML = resaltarTexto(resultado.key, busqueda);
+            } else {
+                itemTitle.textContent = resultado.key;
+            }
+
+            const infoDiv = document.createElement('div');
+            infoDiv.style.fontSize = '12px';
+            infoDiv.style.color = '#666';
+            infoDiv.style.marginTop = '5px';
+
+            const coincidencias = [];
+            if (resultado.coincidenciasEnTitulo) {
+                coincidencias.push('título');
+            }
+            if (resultado.coincidenciasEnDescripcion) {
+                coincidencias.push('contenido');
+            }
+
+            infoDiv.innerHTML = `Encontrado en: ${coincidencias.join(', ')}`;
+
+            // Mostrar preview del contenido si hay coincidencias
+            if (resultado.coincidenciasEnDescripcion) {
+                const preview = document.createElement('div');
+                preview.style.fontSize = '11px';
+                preview.style.color = '#888';
+                preview.style.marginTop = '3px';
+                preview.style.fontStyle = 'italic';
+                
+                const textoCompleto = resultado.descripcionTexto;
+                const busquedaIndex = textoCompleto.toLowerCase().indexOf(busquedaLower);
+                
+                if (busquedaIndex !== -1) {
+                    const inicio = Math.max(0, busquedaIndex - 30);
+                    const fin = Math.min(textoCompleto.length, busquedaIndex + busquedaLower.length + 30);
+                    let fragmento = textoCompleto.substring(inicio, fin);
+                    
+                    if (inicio > 0) fragmento = '...' + fragmento;
+                    if (fin < textoCompleto.length) fragmento = fragmento + '...';
+                    
+                    preview.innerHTML = resaltarTexto(fragmento, busqueda);
+                    infoDiv.appendChild(preview);
+                }
+            }
+
+            itemDiv.appendChild(itemTitle);
+            itemDiv.appendChild(infoDiv);
+
+            itemDiv.addEventListener('click', () => {
+                const allTitles = document.querySelectorAll('.Items h4');
+                allTitles.forEach(title => title.classList.remove('selected'));
+
+                itemTitle.classList.add('selected');
+                tituloTexto.textContent = resultado.key;
+                quill.root.innerHTML = resultado.data.descripcion || "Descripción no disponible";
+
+                enlacesContainer.innerHTML = '';
+
+                for (const descripcion in resultado.data.enlaces) {
+                    if (resultado.data.enlaces.hasOwnProperty(descripcion)) {
+                        const url = resultado.data.enlaces[descripcion];
+
+                        const enlaceDiv = document.createElement('div');
+                        enlaceDiv.classList.add('enlace-item');
+                        enlaceDiv.classList.add('Modulo2');
+
+                        if (url) {
+                            enlaceDiv.textContent = descripcion;
+                            enlaceDiv.addEventListener('click', () => {
+                                window.open(url, '_blank');
+                            });
+                        } else {
+                            enlaceDiv.textContent = "Enlace no disponible";
+                        }
+
+                        enlacesContainer.appendChild(enlaceDiv);
+                    }
+                }
+                currentKey = resultado.key;
+                quill.enable(false);
+                quillToolbar.style.display = 'none';
+                editarBtn.style.display = asesorActual === "Andrés_Felipe_Yepes_Tascón" ? 'inline' : 'none';
+                guardarBtn.style.display = 'none';
+                agregarEnlaceBtn.style.display = 'none';
+            });
+
+            itemsContainer.appendChild(itemDiv);
+        });
+    }
+
+    // Función para mostrar todos los items (sin búsqueda)
+    function mostrarTodosLosItems(data) {
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 const itemData = data[key];
@@ -104,8 +257,6 @@ const setupButtons = () => {
                     quill.root.innerHTML = itemData.descripcion || "Descripción no disponible";
 
                     enlacesContainer.innerHTML = '';
-
-
 
                     for (const descripcion in itemData.enlaces) {
                         if (itemData.enlaces.hasOwnProperty(descripcion)) {
@@ -138,6 +289,19 @@ const setupButtons = () => {
                 itemsContainer.appendChild(itemDiv);
             }
         }
+    }
+
+    // Evento de búsqueda
+    busqProcedimientos.addEventListener('input', (e) => {
+        const busqueda = e.target.value;
+        mostrarResultados(todosLosDatos, busqueda);
+    });
+
+    // Listener principal para los datos de Firebase
+    itemsRef.on('value', (snapshot) => {
+        todosLosDatos = snapshot.val() || {};
+        const busquedaActual = busqProcedimientos.value;
+        mostrarResultados(todosLosDatos, busquedaActual);
     });
 
     quillToolbar.style.display = 'none';
@@ -390,8 +554,6 @@ document.querySelector('#descripcion-texto').addEventListener('click', function 
         cambiarItem(itemText); // Ejecutar la lógica de cambio de ítem
     }
 });
-
-
 
 function cambiarItem(texto) {
     var listaItems = document.getElementsByClassName('Items');
