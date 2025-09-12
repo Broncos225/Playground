@@ -15,25 +15,34 @@ document.addEventListener('DOMContentLoaded', () => {
         firebase.initializeApp(firebaseConfig);
     }
 
+    let signOutTimer = null; // Variable para almacenar el timer
+
     // Función para cerrar sesión cada 3 horas
     function scheduleSignOutEveryThreeHours() {
-        const now = new Date();
-        const currentHour = now.getHours();
-        const nextHour = Math.ceil((currentHour + 1) / 3) * 3; // próxima múltiplo de 3
-        const millisTillNextSignOut = new Date(now.getFullYear(), now.getMonth(), now.getDate(), nextHour, 0, 0, 0) - now;
+        // Limpiar el timer anterior si existe
+        if (signOutTimer) {
+            clearTimeout(signOutTimer);
+            signOutTimer = null;
+        }
 
-        setTimeout(() => {
+        // Calcular exactamente 3 horas desde ahora
+        const threeHoursInMs = 3 * 60 * 60 * 1000; // 3 horas en milisegundos
+        
+        console.log(`Programando cierre de sesión en 3 horas (${new Date(Date.now() + threeHoursInMs).toLocaleString()})`);
+        
+        signOutTimer = setTimeout(() => {
             firebase.auth().signOut().then(() => {
-                console.log('User signed out after 3 hours.');
+                console.log('Usuario desconectado automáticamente después de 3 horas.');
                 localStorage.removeItem('lastLoginDate');
+                localStorage.removeItem('nombreAsesorActual');
                 window.location.href = 'login.html';
             }).catch(error => {
-                console.error('Sign out error:', error);
+                console.error('Error al cerrar sesión:', error);
             });
 
             // Vuelve a programar para dentro de otras 3 horas
             scheduleSignOutEveryThreeHours();
-        }, millisTillNextSignOut);
+        }, threeHoursInMs);
     }
 
     firebase.auth().onAuthStateChanged(user => {
@@ -45,6 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Programar el cierre de sesión cada 3 horas
     scheduleSignOutEveryThreeHours();
+
+    window.addEventListener('beforeunload', () => {
+        if (signOutTimer) {
+            clearTimeout(signOutTimer);
+        }
+    });
 });
