@@ -22,7 +22,7 @@ let agentes = {
   },
   Yeison_Torres_Ochoa: {
     nombre: "Yeison",
-    cumpleaños: [12, 9]
+    cumpleaños: [22, 5]
   },
   Johan_Guzman_Alarcon: {
     nombre: "Johan",
