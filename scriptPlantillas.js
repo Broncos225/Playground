@@ -292,6 +292,11 @@ firebase.auth().onAuthStateChanged(function (user) {
                     });
             }
         });
+        var btnExportarTodas = document.getElementById('exportarTodas');
+
+        if (btnExportarTodas) {
+            btnExportarTodas.onclick = exportarPlantillasAExcel;
+        }
     } else {
         console.log('No user is signed in');
     }
@@ -832,10 +837,10 @@ document.body.appendChild(loadingScreen);
 //         // Actualizar estado de notificación y guardarlo en localStorage
 //         ultimaNotificacion = Date.now();
 //         ultimoEncargadoNotificado = nombreEncargado;
-        
+
 //         localStorage.setItem('ultimaNotificacion', ultimaNotificacion.toString());
 //         localStorage.setItem('ultimoEncargadoNotificado', ultimoEncargadoNotificado);
-        
+
 //         console.log(`Notificación enviada a ${nombreEncargado} a las ${new Date().toLocaleTimeString()}`);
 //     }
 // }
@@ -843,19 +848,19 @@ document.body.appendChild(loadingScreen);
 // // Función para verificar si debe notificar
 // function debeNotificar(nombreEncargado) {
 //     const ahora = Date.now();
-    
+
 //     // Si cambió el encargado, permitir notificación inmediata
 //     if (nombreEncargado !== ultimoEncargadoNotificado) {
 //         console.log(`Cambio de encargado detectado: ${ultimoEncargadoNotificado} -> ${nombreEncargado}`);
 //         return true;
 //     }
-    
+
 //     // Si es el mismo encargado, verificar si han pasado los segundos configurados
 //     if (ahora - ultimaNotificacion >= INTERVALO_NOTIFICACION) {
 //         console.log(`Han pasado ${INTERVALO_NOTIFICACION/1000} segundos desde la última notificación`);
 //         return true;
 //     }
-    
+
 //     return false;
 // }
 
@@ -865,7 +870,7 @@ document.body.appendChild(loadingScreen);
 //         console.log("Permisos de notificación no otorgados.");
 //         return;
 //     }
-    
+
 //     const nombreUsuarioStorage = localStorage.getItem('nombreAsesorActual');
 //     const nombreUsuarioActual = nombreUsuarioStorage ? nombreUsuarioStorage.replace(/_/g, ' ') : null;
 //     const encargadoActual = await obtenerEncargadoActual();
@@ -876,7 +881,7 @@ document.body.appendChild(loadingScreen);
 //             console.log("No hay encargado actual, reseteando estado");
 //             ultimoEncargadoNotificado = null;
 //             ultimaNotificacion = 0;
-            
+
 //             // Limpiar localStorage
 //             localStorage.removeItem('ultimoEncargadoNotificado');
 //             localStorage.removeItem('ultimaNotificacion');
@@ -954,13 +959,13 @@ function redirectTo(url) {
 function convertirHoraAMinutos(hora) {
     const [tiempo, periodo] = hora.split(' ');
     let [horas, minutos] = tiempo.split(':').map(Number);
-    
+
     if (periodo === 'PM' && horas !== 12) {
         horas += 12;
     } else if (periodo === 'AM' && horas === 12) {
         horas = 0;
     }
-    
+
     return horas * 60 + minutos;
 }
 
@@ -996,11 +1001,11 @@ async function verificarEncargadosEspeciales() {
 
                     if (usuario === "Juan Manuel Cano Benítez") {
                         if (esDiaPar) {
-                            if (minutosActuales >= 8*60 && minutosActuales < 13*60) {
+                            if (minutosActuales >= 8 * 60 && minutosActuales < 13 * 60) {
                                 encargadosEspeciales.push(usuario);
                             }
                         } else {
-                            if (minutosActuales >= 13*60 && minutosActuales < 17*60) {
+                            if (minutosActuales >= 13 * 60 && minutosActuales < 17 * 60) {
                                 encargadosEspeciales.push(usuario);
                             }
                         }
@@ -1022,7 +1027,7 @@ async function obtenerEncargadoActual() {
     try {
         const usuarios = [
             "Andrés Felipe Yepes Tascón",
-            "Oscar Luis Cabrera Pacheco", 
+            "Oscar Luis Cabrera Pacheco",
             "Yeison Torres Ochoa",
             "Maria Susana Ospina Vanegas",
             "Ocaris David Arango Aguilar",
@@ -1049,15 +1054,15 @@ async function obtenerEncargadoActual() {
             try {
                 const snapshot = await db.ref(`celdas/${usuario}/${diaActual}/${añoActual}/${mesActual}`).once('value');
                 const turnoData = snapshot.val();
-                
+
                 if (turnoData && turnoData.texto) {
                     const codigoTurno = turnoData.texto;
                     const horarioTurno = horariosTurnos[codigoTurno];
-                    
+
                     if (horarioTurno && horarioTurno.Apertura && horarioTurno.Cierre) {
                         const inicioMinutos = convertirHoraAMinutos(horarioTurno.Apertura);
                         const finMinutos = convertirHoraAMinutos(horarioTurno.Cierre);
-                        
+
                         usuariosConHorarios.push({
                             nombre: usuario,
                             turno: codigoTurno,
@@ -1077,7 +1082,7 @@ async function obtenerEncargadoActual() {
 
 
         const minutosActuales = obtenerMinutosActuales();
-        console.log(`Hora actual: ${Math.floor(minutosActuales/60)}:${String(minutosActuales%60).padStart(2,'0')}`);
+        console.log(`Hora actual: ${Math.floor(minutosActuales / 60)}:${String(minutosActuales % 60).padStart(2, '0')}`);
 
         for (const usuario of usuariosConHorarios) {
             if (minutosActuales >= usuario.inicioMinutos && minutosActuales < usuario.finMinutos) {
@@ -1103,22 +1108,22 @@ async function actualizarDivEncargado() {
     const encargadoActual = await obtenerEncargadoActual();
     const encargadosEspeciales = await verificarEncargadosEspeciales();
     const divEncargado = document.getElementById('Encargado');
-    
+
     if (divEncargado) {
         if (encargadoActual) {
             let contenido = `
                 <strong>Encargado Actual de VIP, Correo y Spool</strong><br>
                 ${encargadoActual.nombre}
             `;
-            
+
             if (encargadosEspeciales.length > 0) {
                 contenido += ` y ${encargadosEspeciales.join(', ')}`;
             }
-            
+
             contenido += `<br>
                 <medium>Turno ${encargadoActual.turno} (${encargadoActual.horario})</medium>
             `;
-            
+
             divEncargado.innerHTML = contenido;
         } else {
             divEncargado.innerHTML = '<em>No hay encargado en turno actualmente</em>';
@@ -1130,10 +1135,10 @@ function inicializarSistemaEncargado() {
     actualizarDivEncargado();
     setInterval(actualizarDivEncargado, 60000); // Actualiza cada minuto
     setInterval(revisarYNotificar, 5000); // Revisa cada 5 segundos para mejor precisión
-    
+
     console.log('Sistema de encargado iniciado - Se actualiza cada minuto');
-    console.log(`Sistema de notificaciones iniciado - Notifica cada ${INTERVALO_NOTIFICACION/1000} segundos`);
-    
+    console.log(`Sistema de notificaciones iniciado - Notifica cada ${INTERVALO_NOTIFICACION / 1000} segundos`);
+
     // Log del estado inicial
     if (ultimaNotificacion > 0) {
         const tiempoRestante = Math.ceil((INTERVALO_NOTIFICACION - (Date.now() - ultimaNotificacion)) / 1000);
@@ -1142,3 +1147,102 @@ function inicializarSistemaEncargado() {
 }
 
 inicializarSistemaEncargado();
+// Función auxiliar para limpiar etiquetas HTML
+function limpiarHTML(texto) {
+    if (!texto) return '';
+    // Eliminar todas las etiquetas HTML (incluyendo su contenido si es necesario)
+    return texto.replace(/<[^>]*>/g, '');
+}
+
+async function exportarPlantillasAExcel() {
+    try {
+        // Mostrar indicador de carga
+        const loadingScreen = document.getElementById("loadingScreen");
+        if (loadingScreen) {
+            loadingScreen.style.display = "flex";
+            loadingScreen.querySelector('div:last-child').textContent = 'Exportando plantillas...';
+        }
+
+        // Obtener todas las plantillas de Firebase
+        const snapshot = await db.ref('Plantillas').once('value');
+        const plantillas = snapshot.val();
+
+        if (!plantillas) {
+            mostrarNotificacion("No hay plantillas para exportar");
+            if (loadingScreen) loadingScreen.style.display = "none";
+            return;
+        }
+
+        // Preparar los datos para Excel
+        const datosExcel = [];
+
+        // Encabezados
+        datosExcel.push(['Nombre', 'Apertura', 'Cierre', 'Tipo', 'Creador']);
+
+        // Procesar cada plantilla
+        Object.keys(plantillas).forEach(nombrePlantilla => {
+            const plantilla = plantillas[nombrePlantilla];
+
+            // Determinar el tipo de plantilla
+            let tipoTexto;
+            switch (plantilla.Tipo) {
+                case '1':
+                    tipoTexto = 'Predeterminada';
+                    break;
+                case '2':
+                    tipoTexto = 'Personalizada';
+                    break;
+                default:
+                    tipoTexto = 'Desconocido';
+                    break;
+            }
+
+            datosExcel.push([
+                nombrePlantilla,
+                limpiarHTML(plantilla.Apertura || ''),  // Limpiar HTML de Apertura
+                limpiarHTML(plantilla.Cierre || ''),    // Limpiar HTML de Cierre
+                tipoTexto,
+                plantilla.Creador ? plantilla.Creador.replace(/_/g, ' ') : 'No especificado'
+            ]);
+        });
+
+        // Crear el archivo Excel
+        const ws = XLSX.utils.aoa_to_sheet(datosExcel);
+
+        // Configurar el ancho de las columnas
+        const colWidths = [
+            { wch: 30 }, // Nombre
+            { wch: 50 }, // Apertura
+            { wch: 50 }, // Cierre
+            { wch: 15 }, // Tipo
+            { wch: 25 }  // Creador
+        ];
+        ws['!cols'] = colWidths;
+
+        // Crear el libro de trabajo
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Plantillas");
+
+        // Generar el nombre del archivo con fecha y hora
+        const ahora = new Date();
+        const fecha = ahora.toISOString().split('T')[0];
+        const hora = ahora.toTimeString().split(' ')[0].replace(/:/g, '-');
+        const nombreArchivo = `Plantillas_${fecha}_${hora}.xlsx`;
+
+        // Descargar el archivo
+        XLSX.writeFile(wb, nombreArchivo);
+
+        mostrarNotificacion(`Archivo exportado: ${nombreArchivo}`);
+
+    } catch (error) {
+        console.error('Error al exportar plantillas:', error);
+        mostrarNotificacion('Error al exportar las plantillas');
+    } finally {
+        // Ocultar indicador de carga
+        const loadingScreen = document.getElementById("loadingScreen");
+        if (loadingScreen) {
+            loadingScreen.style.display = "none";
+            loadingScreen.querySelector('div:last-child').textContent = 'Cargando...';
+        }
+    }
+}

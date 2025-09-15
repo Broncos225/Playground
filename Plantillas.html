@@ -68,8 +68,13 @@
                 </div>
             </div>
 
-            <button id="openModalButton">Crear Plantilla</button>
 
+            <div style="display: flex; gap: 10px; margin-top: 10px; justify-content: center;">
+                <button id="exportarTodas">
+                    <i class="fas fa-file-excel"></i> Exportar Todas
+                </button>
+                <button id="openModalButton">Crear Plantilla</button>
+            </div>
         </div>
         <div id="createTemplateModal" class="modal">
             <div class="modal-content">
@@ -100,7 +105,8 @@
         <div style="display: flex; width: 100%; justify-content: space-between;">
             <div id="FormTiendas" style="display: flex; justify-content: center; flex-grow: 1; margin: 0px;">
                 <input type="text" autocomplete="off" id="busqueda" placeholder="Buscar..." style="height: 36px;">
-                <button style="height: 42px; background-color: var(--color-secundario); margin-right: 5px;" id="LimpiarP">Limpiar</button>
+                <button style="height: 42px; background-color: var(--color-secundario); margin-right: 5px;"
+                    id="LimpiarP">Limpiar</button>
             </div>
         </div>
         <div id="notification"
@@ -170,6 +176,7 @@
     <script src="Autorizacion.js" type="module" defer></script>
     <script src="CerrarSesion.js" type="module" defer></script>
     <script src="Almuerzo.js" type="module" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 
 </html>
