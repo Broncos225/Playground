@@ -1,120 +1,120 @@
 ﻿Tipo de servicio;Área del servicio;Categoria padre;Categoria Hijo;Sintoma / Detalle;Prioridad;SLA /ANS (Min);Recepción del caso;Pruebas de descartes;Escalamiento 1;Escalamiento 2;¿Susceptible de cierre en mesa?;Observaciones
-Incidente;Aplicaciones de negocio;CEGID;Error dispositivo fiscal;CEGID.Error dispositivo fiscal;SLA CRÍTICO;30;Mesa de ayuda;I-6109-26-Instructivo Error Dispositivo Fiscal;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Error dispositivo fiscal;CEGID.Error dispositivo fiscal;SLA CRÍTICO;30;Mesa de ayuda;I-6109-26-Instructivo Error Dispositivo Fiscal;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Incidente;Aplicaciones de negocio;CEGID;Indisponibilidad del servicio;CEGID.Indisponibilidad del servicio;SLA CRÍTICO;30;Mesa de ayuda;;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Indisponibilidad del servicio;CEGID.Indisponibilidad del servicio;SLA CRÍTICO;30;Mesa de ayuda;;"Camilo Florian 
 Santiago Montes";Proveedor;NO;
-Incidente;Aplicaciones de negocio;CEGID;Bloqueo de usuario;CEGID.Bloqueo de usuario;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Bloqueo de usuario;CEGID.Bloqueo de usuario;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Incidente;Aplicaciones de negocio;CEGID;Error configuración;CEGID.Error configuración;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Error configuración;CEGID.Error configuración;SLA CRÍTICO;30;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Incidente;Aplicaciones de negocio;CEGID;Error FOS 5;CEGID.Error FOS 5;SLA CRÍTICO;30;Mesa de ayuda;I-6109-73-Instructivo Error Cegid F0S5;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Error FOS 5;CEGID.Error FOS 5;SLA CRÍTICO;30;Mesa de ayuda;I-6109-73-Instructivo Error Cegid F0S5;"Camilo Florian 
 Santiago Montes";Proveedor;NO;
-Incidente;Aplicaciones de negocio;CEGID;Error notas entrega;CEGID.Error notas entrega;SLA CRÍTICO;30;Mesa de ayuda;I-6109-85-Instructivo Cargar Nota de Entrega;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Error notas entrega;CEGID.Error notas entrega;SLA CRÍTICO;30;Mesa de ayuda;I-6109-85-Instructivo Cargar Nota de Entrega;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Incidente;Aplicaciones de negocio;CEGID;No inicia Front;CEGID.No inicia Front;SLA CRÍTICO;30;Mesa de ayuda;I-6109-71-Instructivo Instalar CEGID;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;No inicia Front;CEGID.No inicia Front;SLA CRÍTICO;30;Mesa de ayuda;I-6109-71-Instructivo Instalar CEGID;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
 Incidente;Aplicaciones de negocio;CEGID;Error condición comercial;CEGID.Error condición comercial;SLA CRÍTICO;30;Mesa de ayuda;;Michael Aristizabal - Analista BI;Proveedor;NO;
-Incidente;Aplicaciones de negocio;CEGID;Error desconocido;CEGID.Error desconocido;SLA CRÍTICO;30;Mesa de ayuda;;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Error desconocido;CEGID.Error desconocido;SLA CRÍTICO;30;Mesa de ayuda;;"Camilo Florian 
 Santiago Montes";Proveedor;NO;
-Incidente;Aplicaciones de negocio;CEGID;Crear PLU faltante Cedi;CEGID.Crear PLU faltante Cedi;SLA CRÍTICO;30;Mesa de ayuda;I-6109-57-Instructivo Crear y Cargar Plu Cegid;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Crear PLU faltante Cedi;CEGID.Crear PLU faltante Cedi;SLA CRÍTICO;30;Mesa de ayuda;I-6109-57-Instructivo Crear y Cargar Plu Cegid;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Incidente;Aplicaciones de negocio;CEGID;Crear PlU faltante Recuperación;CEGID.Crear PlU faltante Recuperación;SLA CRÍTICO;30;Mesa de ayuda;I-6109-57-Instructivo Crear y Cargar Plu Cegid;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Crear PlU faltante Recuperación;CEGID.Crear PlU faltante Recuperación;SLA CRÍTICO;30;Mesa de ayuda;I-6109-57-Instructivo Crear y Cargar Plu Cegid;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Incidente;Aplicaciones de negocio;CEGID;Acceso a Cegid;CEGID.Acceso a Cegid;SLA CRÍTICO;30;Mesa de ayuda;I-6109-84-Instructivo  de Acceso a Cegid;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Acceso a Cegid;CEGID.Acceso a Cegid;SLA CRÍTICO;30;Mesa de ayuda;I-6109-84-Instructivo  de Acceso a Cegid;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Incidente;Aplicaciones de negocio;CEGID;No imprime Z;CEGID.No imprime Z;SLA CRÍTICO;30;Mesa de ayuda;I-6109-11-Instructivo No Imprime Z;Mesa de ayuda;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;No imprime Z;CEGID.No imprime Z;SLA CRÍTICO;30;Mesa de ayuda;I-6109-11-Instructivo No Imprime Z;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
 Incidente;Aplicaciones de negocio;CEGID;Diferencia precio - Etiqueta;CEGID.Diferencia precio - Etiqueta;SLA CRÍTICO;30;Mesa de ayuda;Este error lo revisa el equipo de aplicaciones y bases de datos ;Juan Diego Mercado - Analista de aplicaciones;Proveedor;NO;
 Incidente;Aplicaciones de negocio;CEGID;Falla al cargar crédito;CEGID.Falla al cargar crédito;SLA CRÍTICO;30;Mesa de ayuda;"Este tipo de caso es cuando el crédito o abono quedo cargado en Kaiowa pero no trae la información a Cegid:
-*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar
+*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
 *Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Juan Jaramillo - Analista de aplicaciones;Proveedor;NO;
 Incidente;Aplicaciones de negocio;CEGID;Falla al cargar abono;CEGID.Falla al cargar abono;SLA CRÍTICO;30;Mesa de ayuda;"Este tipo de caso es cuando el crédito o abono quedo cargado en Kaiowa pero no trae la información a Cegid:
-*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar
+*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
 *Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Juan Jaramillo - Analista de aplicaciones;Proveedor;NO;
-Incidente;Aplicaciones de negocio;CEGID;Error en informe diario de ventas;CEGID.Error en informe diario de ventas;SLA CRÍTICO;30;Mesa de ayuda;I-6109-68-Instructivo Error Informe Diario De Ventas;"Camilo Florian
+Incidente;Aplicaciones de negocio;CEGID;Error en informe diario de ventas;CEGID.Error en informe diario de ventas;SLA CRÍTICO;30;Mesa de ayuda;I-6109-68-Instructivo Error Informe Diario De Ventas;"Camilo Florian 
 Santiago Montes";Proveedor;NO;
-Solicitud;Aplicaciones de negocio;CEGID;Crear nuevo cargo en CEGID;CEGID.Crear nuevo cargo en CEGID;SLA ALTO;240;Mesa de ayuda;I-6109-41-Instructivo Creación de Nuevo Cargo en Cegid;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Crear nuevo cargo en CEGID;CEGID.Crear nuevo cargo en CEGID;SLA ALTO;240;Mesa de ayuda;I-6109-41-Instructivo Creación de Nuevo Cargo en Cegid;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Generar permisos de punteo con contraseña;CEGID.Generar permisos de punteo con contraseña;SLA ALTO;240;Mesa de ayuda;I-6109-41-Instructivo Creación de Nuevo Cargo en Cegid;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Generar permisos de punteo con contraseña;CEGID.Generar permisos de punteo con contraseña;SLA ALTO;240;Mesa de ayuda;I-6109-41-Instructivo Creación de Nuevo Cargo en Cegid;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Devolución de prendas en préstamo;CEGID.Devolución de prendas en préstamo;SLA ALTO;240;Mesa de ayuda;I-6109-48-Instructivo Devolución de Prendas en Préstamo;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Devolución de prendas en préstamo;CEGID.Devolución de prendas en préstamo;SLA ALTO;240;Mesa de ayuda;I-6109-48-Instructivo Devolución de Prendas en Préstamo;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Reporte de clientes con crédito - Mes de cumpleaños;CEGID.Reporte de clientes con crédito - Mes de cumpleaños;SLA ALTO;240;Mesa de ayuda;I-6109-49-Instructivo Reporte Clientes Crédito Mes de Cumpleaños;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Reporte de clientes con crédito - Mes de cumpleaños;CEGID.Reporte de clientes con crédito - Mes de cumpleaños;SLA ALTO;240;Mesa de ayuda;I-6109-49-Instructivo Reporte Clientes Crédito Mes de Cumpleaños;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Modificar información de tienda en factura;CEGID.Modificar información de tienda en factura;SLA ALTO;240;Mesa de ayuda;I-6109-51-Instructivo Modificar Información de Tienda en Factura;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Modificar información de tienda en factura;CEGID.Modificar información de tienda en factura;SLA ALTO;240;Mesa de ayuda;I-6109-51-Instructivo Modificar Información de Tienda en Factura;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Agregar flete a factura;CEGID.Agregar flete a factura;SLA ALTO;240;Mesa de ayuda;I-6109-52-Instructivo Agregar Flete a la Factura;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Agregar flete a factura;CEGID.Agregar flete a factura;SLA ALTO;240;Mesa de ayuda;I-6109-52-Instructivo Agregar Flete a la Factura;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Devolución de crédito empleado;CEGID.Devolución de crédito empleado;SLA ALTO;240;Mesa de ayuda;I-6109-66-Instructivo Devolución de Crédito Empleado;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Devolución de crédito empleado;CEGID.Devolución de crédito empleado;SLA ALTO;240;Mesa de ayuda;I-6109-66-Instructivo Devolución de Crédito Empleado;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Carga de PLU en NumRot;CEGID.Carga de PLU en NumRot;SLA ALTO;240;Mesa de ayuda;I-6109-67-Instructivo Carga de PLU en NumRot;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Carga de PLU en NumRot;CEGID.Carga de PLU en NumRot;SLA ALTO;240;Mesa de ayuda;I-6109-67-Instructivo Carga de PLU en NumRot;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Retiro de personal en tienda;CEGID.Retiro de personal en tienda;SLA ALTO;240;Mesa de ayuda;I-6109-69-Instructivo Retiro de Personal de Tiendas;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Retiro de personal en tienda;CEGID.Retiro de personal en tienda;SLA ALTO;240;Mesa de ayuda;I-6109-69-Instructivo Retiro de Personal de Tiendas;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Imprimir políticas de privacidad;CEGID.Imprimir políticas de privacidad;SLA ALTO;240;Mesa de ayuda;I-6109-77-Instructivo Imprimir Políticas de Privacidad;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Imprimir políticas de privacidad;CEGID.Imprimir políticas de privacidad;SLA ALTO;240;Mesa de ayuda;I-6109-77-Instructivo Imprimir Políticas de Privacidad;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Permisos de Conceptos y Medios de Pago;CEGID.Permisos de Conceptos y Medios de Pago;SLA ALTO;240;Mesa de ayuda;I-6109-78-Instructivo Permisos de Conceptos y Medios de Pago;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Permisos de Conceptos y Medios de Pago;CEGID.Permisos de Conceptos y Medios de Pago;SLA ALTO;240;Mesa de ayuda;I-6109-78-Instructivo Permisos de Conceptos y Medios de Pago;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Instalar TAXBOX;CEGID.Instalar TAXBOX;SLA ALTO;240;Mesa de ayuda;I-6109-53-Instructivo Instalar Taxbox;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Instalar TAXBOX;CEGID.Instalar TAXBOX;SLA ALTO;240;Mesa de ayuda;I-6109-53-Instructivo Instalar Taxbox;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Instalar CEGID;CEGID.Instalar CEGID;SLA ALTO;240;Mesa de ayuda;I-6109-71-Instructivo Instalar CEGID;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Instalar CEGID;CEGID.Instalar CEGID;SLA ALTO;240;Mesa de ayuda;I-6109-71-Instructivo Instalar CEGID;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Asesoría / Acompañamiento;CEGID.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Asesoría / Acompañamiento;CEGID.Asesoría / Acompañamiento;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Modificar concepto de factura;CEGID.Modificar concepto de factura;SLA ALTO;240;Mesa de ayuda;I-6109-24-Instructivo Modificar Concepto de Factura;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Modificar concepto de factura;CEGID.Modificar concepto de factura;SLA ALTO;240;Mesa de ayuda;I-6109-24-Instructivo Modificar Concepto de Factura;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Eliminar nota crédito;CEGID.Eliminar nota crédito;SLA ALTO;240;Mesa de ayuda;I-6109-25-Instructivo Eliminar Nota Crédito;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar nota crédito;CEGID.Eliminar nota crédito;SLA ALTO;240;Mesa de ayuda;I-6109-25-Instructivo Eliminar Nota Crédito;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Reimpresión de albarán;CEGID.Reimpresión de albarán;SLA ALTO;240;Mesa de ayuda;I-6109-23-Instructivo Reimprimir Albaran;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Reimpresión de albarán;CEGID.Reimpresión de albarán;SLA ALTO;240;Mesa de ayuda;I-6109-23-Instructivo Reimprimir Albaran;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Eliminar asesor;CEGID.Eliminar asesor;SLA ALTO;240;Mesa de ayuda;I-6109-21-Instructivo Eliminar Asesor;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar asesor;CEGID.Eliminar asesor;SLA ALTO;240;Mesa de ayuda;I-6109-21-Instructivo Eliminar Asesor;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Cambiar cédula cliente ;CEGID.Cambiar cédula cliente ;SLA ALTO;240;Mesa de ayuda;Se debe realizar la devolución de ticket e indicar a la asesora que debe de facturar con la cédula correcta del cliente;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Cambiar cédula cliente ;CEGID.Cambiar cédula cliente ;SLA ALTO;240;Mesa de ayuda;Se debe realizar la devolución de ticket e indicar a la asesora que debe de facturar con la cédula correcta del cliente;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
 Solicitud;Aplicaciones de negocio;CEGID;Precios en cero;CEGID.Precios en cero;SLA ALTO;240;Mesa de ayuda;Tranferir a silvia Benitez;Juan Diego Mercado - Analista de aplicaciones;Proveedor;NO;
-Solicitud;Aplicaciones de negocio;CEGID;Generar presupuesto del mes;CEGID.Generar presupuesto del mes;SLA ALTO;240;Mesa de ayuda;I-6109-20-Instructivo Abrir Presupuesto del Mes;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Generar presupuesto del mes;CEGID.Generar presupuesto del mes;SLA ALTO;240;Mesa de ayuda;I-6109-20-Instructivo Abrir Presupuesto del Mes;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Cambio de cargo;CEGID.Cambio de cargo;SLA ALTO;240;Mesa de ayuda;I-6109-13-Instructivo Cambio de Cargo en Cegid;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Cambio de cargo;CEGID.Cambio de cargo;SLA ALTO;240;Mesa de ayuda;I-6109-13-Instructivo Cambio de Cargo en Cegid;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Modificación de medio de pago;CEGID.Modificación de medio de pago;SLA ALTO;240;Mesa de ayuda;Este tipo de casos solo APLICA cuando se realiza el cambio medio de pago de efectivo a crédito se hace una devolución de ticket (VER I-6109-17-Instructivo Devolución de Ticket), para los demás escenario se le debe indicar a la asesora de la tienda que debe reportar su petición al correo electrónico de contabilidad@stop.com.co;contabilidad@stop.com.co;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Modificación de medio de pago;CEGID.Modificación de medio de pago;SLA ALTO;240;Mesa de ayuda;Este tipo de casos solo APLICA cuando se realiza el cambio medio de pago de efectivo a crédito se hace una devolución de ticket (VER I-6109-17-Instructivo Devolución de Ticket), para los demás escenario se le debe indicar a la asesora de la tienda que debe reportar su petición al correo electrónico de contabilidad@stop.com.co;contabilidad@stop.com.co;"Camilo Florian 
 Santiago Montes";NO;
-Solicitud;Aplicaciones de negocio;CEGID;Creación de huella;CEGID.Creación de huella;SLA ALTO;240;Mesa de ayuda;I-6109-15-Instructivo Creación de Huella;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Creación de huella;CEGID.Creación de huella;SLA ALTO;240;Mesa de ayuda;I-6109-15-Instructivo Creación de Huella;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Reimpresión de Z;CEGID.Reimpresión de Z;SLA ALTO;240;Mesa de ayuda;I-6109-12-Instructivo Reimpresión de Z;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Reimpresión de Z;CEGID.Reimpresión de Z;SLA ALTO;240;Mesa de ayuda;I-6109-12-Instructivo Reimpresión de Z;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Eliminar reserva cliente ;CEGID.Eliminar reserva cliente ;SLA ALTO;240;Mesa de ayuda;I-6109-10-Instructivo Eliminar Reserva Cliente;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar reserva cliente ;CEGID.Eliminar reserva cliente ;SLA ALTO;240;Mesa de ayuda;I-6109-10-Instructivo Eliminar Reserva Cliente;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Cargar notas de entrega ;CEGID.Cargar notas de entrega ;SLA ALTO;240;Mesa de ayuda;I-6109-85-Instructivo Cargar Nota de Entrega;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Cargar notas de entrega ;CEGID.Cargar notas de entrega ;SLA ALTO;240;Mesa de ayuda;I-6109-85-Instructivo Cargar Nota de Entrega;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Eliminar documento transferencia ;CEGID.Eliminar documento transferencia ;SLA ALTO;240;Mesa de ayuda;I-6109-14-Instructivo Eliminar Docuemento de Transferencia;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar documento transferencia ;CEGID.Eliminar documento transferencia ;SLA ALTO;240;Mesa de ayuda;I-6109-14-Instructivo Eliminar Docuemento de Transferencia;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Eliminar documento de recepción;CEGID.Eliminar documento de recepción;SLA ALTO;240;Mesa de ayuda;I-6109-18-Instructivo Eliminar Documento de Recepción;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Eliminar documento de recepción;CEGID.Eliminar documento de recepción;SLA ALTO;240;Mesa de ayuda;I-6109-18-Instructivo Eliminar Documento de Recepción;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Cambio Concepto Caja Menor;CEGID.Cambio Concepto Caja Menor;SLA ALTO;240;Mesa de ayuda;I-6109-19-Instructivo Cambio Concepto Caja Menor;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Cambio Concepto Caja Menor;CEGID.Cambio Concepto Caja Menor;SLA ALTO;240;Mesa de ayuda;I-6109-19-Instructivo Cambio Concepto Caja Menor;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Actualizar cliente;CEGID.Actualizar cliente;SLA ALTO;240;Mesa de ayuda;I-6109-09-Instructivo Actualizar Cliente;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Actualizar cliente;CEGID.Actualizar cliente;SLA ALTO;240;Mesa de ayuda;I-6109-09-Instructivo Actualizar Cliente;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Entrada extraordinaria;CEGID.Entrada extraordinaria;SLA ALTO;240;Mesa de ayuda;I-6109-016-Instructivo Entrada Extraordinarias;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Entrada extraordinaria;CEGID.Entrada extraordinaria;SLA ALTO;240;Mesa de ayuda;I-6109-016-Instructivo Entrada Extraordinarias;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Modificar vendedor;CEGID.Modificar vendedor;SLA ALTO;240;Mesa de ayuda;I-6109-07-Instructivo Modificar Vendedor;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Modificar vendedor;CEGID.Modificar vendedor;SLA ALTO;240;Mesa de ayuda;I-6109-07-Instructivo Modificar Vendedor;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Forzar punteo;CEGID.Forzar punteo;SLA ALTO;240;Mesa de ayuda;I-6109-08-Instructivo Forzar Punteo;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Forzar punteo;CEGID.Forzar punteo;SLA ALTO;240;Mesa de ayuda;I-6109-08-Instructivo Forzar Punteo;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Devolución de ticket;CEGID.Devolución de ticket;SLA ALTO;240;Mesa de ayuda;I-6109-17-Instructivo Devolución de Ticket;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Devolución de ticket;CEGID.Devolución de ticket;SLA ALTO;240;Mesa de ayuda;I-6109-17-Instructivo Devolución de Ticket;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Crear usuario;CEGID.Crear usuario;SLA ALTO;240;Mesa de ayuda;I-6109-03-Instructivo Crear Usuario en CEGID;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Crear usuario;CEGID.Crear usuario;SLA ALTO;240;Mesa de ayuda;I-6109-03-Instructivo Crear Usuario en CEGID;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Traslado de personal;CEGID.Traslado de personal;SLA ALTO;240;Mesa de ayuda;I-6109-04-Instructivo Traslado de Personal de Tienda;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Traslado de personal;CEGID.Traslado de personal;SLA ALTO;240;Mesa de ayuda;I-6109-04-Instructivo Traslado de Personal de Tienda;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Aplicar descuento en agotamiento;CEGID.Aplicar descuento en agotamiento;SLA ALTO;240;Mesa de ayuda;I-6109-05-Instructivo Aplicar Descuento en Agotamiento;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Aplicar descuento en agotamiento;CEGID.Aplicar descuento en agotamiento;SLA ALTO;240;Mesa de ayuda;I-6109-05-Instructivo Aplicar Descuento en Agotamiento;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Cambio de cliente generico a real;CEGID.Cambio de cliente generico a real;SLA ALTO;240;Mesa de ayuda;I-6109-06-Instructivo Cambio de Cliente Generico a Real;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Cambio de cliente generico a real;CEGID.Cambio de cliente generico a real;SLA ALTO;240;Mesa de ayuda;I-6109-06-Instructivo Cambio de Cliente Generico a Real;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Cambiar tienda a control de inventario ;CEGID.Cambiar tienda a control de inventario ;SLA ALTO;240;Mesa de ayuda;I-6109-22-Instructivo Cambiar Tienda a Control de Inventario;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Cambiar tienda a control de inventario ;CEGID.Cambiar tienda a control de inventario ;SLA ALTO;240;Mesa de ayuda;I-6109-22-Instructivo Cambiar Tienda a Control de Inventario;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Restablecer contraseña;CEGID.Restablecer contraseña;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Restablecer contraseña;CEGID.Restablecer contraseña;SLA ALTO;240;Mesa de ayuda;;Mesa de ayuda;"Camilo Florian 
 Santiago Montes";SI;
-Solicitud;Aplicaciones de negocio;CEGID;Diferencia en cierre de caja;CEGID.Diferencia en cierre de caja;SLA ALTO;240;Mesa de ayuda;Reportar a su analista contable o enviar correo con el reporte a contabilidad@stop.com.co;contabilidad@stop.com.co;"Camilo Florian
+Solicitud;Aplicaciones de negocio;CEGID;Diferencia en cierre de caja;CEGID.Diferencia en cierre de caja;SLA ALTO;240;Mesa de ayuda;Reportar a su analista contable o enviar correo con el reporte a contabilidad@stop.com.co;contabilidad@stop.com.co;"Camilo Florian 
 Santiago Montes";NO;
 Solicitud;Aplicaciones de negocio;STOPING;Cambio de fecha ;STOPING.Cambio de fecha ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio ;Juan Esteban Gutiérrez;NO;
 Solicitud;Aplicaciones de negocio;STOPING;Cambio de Grupo contable ;STOPING.Cambio de Grupo contable ;SLA ALTO;240;Mesa de ayuda;;Soporte en sitio;Juan Esteban Gutiérrez;NO;
@@ -161,10 +161,10 @@ Incidente;Aplicaciones de negocio;Intranet;Fallas de autenticación;Intranet.Fal
 Solicitud;Aplicaciones de negocio;Intranet;Crear usuario;Intranet.Crear usuario;SLA BAJO;480;Mesa de ayuda;I-6109-30- Instructivo Crear Usuario Intranet;Mesa de ayuda;N/A;SI;
 Solicitud;Aplicaciones de negocio;Intranet;Gestión de permisos;Intranet.Gestión de permisos;SLA BAJO;480;Mesa de ayuda;I-6109-31-Intructivo Permisos Intranet;Mesa de ayuda;N/A;SI;
 Solicitud;Aplicaciones de negocio;Crédito;Modificar datos de clientes - Kaiowa;Crédito.Modificar datos de clientes - Kaiowa;SLA ALTO;240;Mesa de ayuda;Enviar correo a Lina Gaviria lgaviria@stop.com.co  o Tatiana Alzate talzate@stop.com.co;Lina Gaviria - Auxiliar de créditos;Proveedor;NO;
-Solicitud;Aplicaciones de negocio;Crédito;Anular abono - Kaiowa;Crédito.Anular abono - Kaiowa;SLA ALTO;240;Mesa de ayuda;"*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar
+Solicitud;Aplicaciones de negocio;Crédito;Anular abono - Kaiowa;Crédito.Anular abono - Kaiowa;SLA ALTO;240;Mesa de ayuda;"*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
 *Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Mesa de ayuda;PROVEEDOR;SI;
 Solicitud;Aplicaciones de negocio;Crédito;Confirmación de abonos por PSE ;Crédito.Confirmación de abonos por PSE ;SLA ALTO;240;Mesa de ayuda;;tesoreria@stop.com.co;;NO;
-Solicitud;Aplicaciones de negocio;Crédito;Anular credito - kaiowa;Crédito.Anular credito - kaiowa;SLA ALTO;240;Mesa de ayuda;"*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar
+Solicitud;Aplicaciones de negocio;Crédito;Anular credito - kaiowa;Crédito.Anular credito - kaiowa;SLA ALTO;240;Mesa de ayuda;"*Si el crédito o abono es del mismo día la asesora puede eliminar el crédito en Kaiowa y volverlo a realizar 
 *Si el crédito o abono es de días posteriores la asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co para que el agente de mesa de ayuda pueda enviarlo a  servicioalcliente@kaiowa.co solicitando la eliminación del crédito o abono, una vez Kaiowa le de respuesta al agenda de mesa de ayuda se debe realizar la devolución en Cegid, poner en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.";Mesa de ayuda;PROVEEDOR;SI;
 Solicitud;Aplicaciones de negocio;Crédito;Borrar historial crediticio;Crédito.Borrar historial crediticio;SLA ALTO;240;Mesa de ayuda;;CREDITOS;Proveedor;NO;
 Incidente;Aplicaciones de negocio;Crédito;Indisponibilidad del servicio - Kaiowa;Crédito.Indisponibilidad del servicio - Kaiowa;SLA CRÍTICO;30;Mesa de ayuda;;Juan Diego Cano- Desarrollador;Proveedor;NO;
@@ -352,7 +352,7 @@ Incidente;Aplicaciones de negocio;WMS;Caída sitio LIM;WMS.Caída sitio LIM;SLA 
 Incidente;Aplicaciones de negocio;WMS;Caída PUT;WMS.Caída PUT;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Proveedor ;NO;
 Incidente;Aplicaciones de negocio;WMS;Lentitud LIM;WMS.Lentitud LIM;SLA ALTO;60;Mesa de ayuda;;Soporte en sitio;Proveedor ;NO;
 Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Se está consultando los datos del cliente en la opción “Mas información” y no carga la página. ;SLA ALTO;60;Mesa de ayuda;"Borrar Cookies y archivos temporales del navegador.
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 a) Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -361,7 +361,7 @@ Información:
 * Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
 Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Se está consultando los datos del cliente en la opción “Cliente nuevo” y no carga la página.;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegador.
 
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -370,7 +370,7 @@ Información:
 * Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
 Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Se  consulta un cliente y el resultado de la búsqueda trae los datos de otro;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegador.
 
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -379,7 +379,7 @@ Información:
 * Cédula del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
 Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;Al crear un cliente muestra el mensaje “Error al enviar datos”;SLA ALTO;60;Mesa de ayuda;"a) Borrar Cookies y archivos temporales del navegador.
 
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -403,7 +403,7 @@ Si la falla persiste escala el caso al ""Escalamiento 1""";Mesa de ayuda;Juan Di
 Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;No llega el OTP de uso del cupo;SLA ALTO;60;Mesa de ayuda;"a) Si el medio de envío del OTP es correo electrónico, validar que éste no esté en correos no deseados (Remitente:  info@leancore.co)
 b) Intentar con los otros dos medios de envío del OTP.
 
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -412,9 +412,9 @@ Información:
 * Cédula del cliente crédito
 * Email o celular del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
 Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;No llega el OTP de actualización de datos del cliente;SLA ALTO;60;Mesa de ayuda;"a) Si el medio de envío del OTP es correo electrónico, validar que éste no esté en correos no deseados (Remitente:  info@leancore.co)
-b) Intentar con los otros dos medios de envío del OTP.
+b) Intentar con los otros dos medios de envío del OTP. 
 
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -423,9 +423,9 @@ Información:
 * Cédula del cliente crédito
 * Email o celular del cliente crédito";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 4 Horas
 Incidente;Aplicaciones de negocio;Appweb Leancore;Error en aplicación;No llega el OTP de creación del cliente;SLA ALTO;60;Mesa de ayuda;"a) Si el medio de envío del OTP es correo electrónico, validar que éste no esté en correos no deseados (Remitente:  info@leancore.co)
-b) Intentar con los otros dos medios de envío del OTP.
+b) Intentar con los otros dos medios de envío del OTP. 
 
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -439,7 +439,7 @@ c) Editar la información del cliente y editar la fotografía.
 d) Aceptar los permisos de la cámara para el navegador
 e) Tomar la fotografía
 
-Si la falla persiste reportar el caso a la mesa de ayuda de Leancore:
+Si la falla persiste reportar el caso a la mesa de ayuda de Leancore: 
 Enviar correo a:
 soporte@leancore.co y support@leancore.zendesk.com
 Información:
@@ -475,7 +475,7 @@ Información:
 * Código del crédito
 * Código del abono
 b) Una vez eliminado, el agente de la mesa de ayuda se debe realizar la devolución en Cegid.
-b) El agente de la mesa de ayuda se pone en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono.
+b) El agente de la mesa de ayuda se pone en contacto con la asesora de tienda para que ella pueda realizar de nuevo el proceso ya sea de crédito o abono. 
 I-6109-96-Instructivo como anular crédito en el dashboard de Leancore.pdf
 
 Si la anulación genera error, se escala el caso a la Mesa de Ayuda de Leancore:
@@ -486,7 +486,7 @@ Información:
 * Cédula del cliente
 * Código del crédito
 * Código del abono";Mesa de ayuda;Mesa de ayuda Leancore;SI;SLA Lenacore: 24 Horas
-Solicitud;Aplicaciones de negocio;Crédito;Expedición paz y salvo crédito  - Leancore;Crédito.Expedición paz y salvo crédito  - Leancore;SLA ALTO;240;Mesa de ayuda;"a) La asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co
+Solicitud;Aplicaciones de negocio;Crédito;Expedición paz y salvo crédito  - Leancore;Crédito.Expedición paz y salvo crédito  - Leancore;SLA ALTO;240;Mesa de ayuda;"a) La asesora de tienda debe enviar el correo a centrodeservicios@stop.com.co 
 Información:
 * Cédula del cliente
 * Código del crédito
