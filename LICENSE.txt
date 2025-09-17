@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 Andrés Felipe Yepes Tascón
+Copyright (c) 2025 Andrés Felipe Yepes Tascón
 
 Por la presente se concede permiso, sin cargo, a cualquier persona que obtenga una copia de este software y los archivos de documentación asociados (el "Software"), para utilizar el Software sin restricción, incluyendo sin limitación los derechos a usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del Software, y a permitir a las personas a quienes se les proporcione el Software que lo hagan, sujeto a las siguientes condiciones:
 
