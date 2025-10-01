@@ -13,6 +13,72 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+const originalRef = db.ref.bind(db);
+db.ref = function (path) {
+    const ref = originalRef(path);
+
+    const originalOnce = ref.once.bind(ref);
+    ref.once = function (eventType) {
+        window.fbMonitor.logRead(path);
+        return originalOnce(eventType);
+    };
+
+    const originalOn = ref.on.bind(ref);
+    ref.on = function (eventType, callback) {
+        window.fbMonitor.logRead(path + ' (listener)');
+        return originalOn(eventType, callback);
+    };
+
+    const originalSet = ref.set.bind(ref);
+    ref.set = function (value) {
+        window.fbMonitor.logWrite(path);
+        return originalSet(value);
+    };
+
+    const originalUpdate = ref.update.bind(ref);
+    ref.update = function (value) {
+        window.fbMonitor.logWrite(path);
+        return originalUpdate(value);
+    };
+
+    const originalRemove = ref.remove.bind(ref);
+    ref.remove = function () {
+        window.fbMonitor.logDelete(path);
+        return originalRemove();
+    };
+
+    return ref;
+};
+
+// ===== CACHÉ GLOBAL =====
+const cacheColoresTurnos = new Map();
+let cacheInicializado = false;
+
+// Precargar TODOS los colores de turnos de una sola vez
+async function precargarColoresTurnos() {
+    if (cacheInicializado) return cacheColoresTurnos;
+
+    try {
+        const snapshot = await firebase.database().ref('Turnos').once('value');
+
+        const data = snapshot.val();
+        if (data) {
+            Object.entries(data).forEach(([turno, valores]) => {
+                cacheColoresTurnos.set(turno, {
+                    colorFondo: valores.ColorF ? `#${valores.ColorF}` : '#ffffff',
+                    colorTexto: valores.ColorT ? `#${valores.ColorT}` : '#000000'
+                });
+            });
+        }
+        cacheInicializado = true;
+        console.log(`✅ Caché de colores inicializado: ${cacheColoresTurnos.size} turnos`);
+        return cacheColoresTurnos;
+    } catch (error) {
+        console.error("❌ Error al precargar colores:", error);
+        return cacheColoresTurnos;
+    }
+}
+
 window.onload = function () {
     ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
@@ -23,13 +89,16 @@ window.onload = function () {
     colorCelda();
 };
 
-function colorCelda() {
+async function colorCelda() {
+    // Asegurarse de que el caché esté cargado ANTES de procesar celdas
+    await precargarColoresTurnos();
+    
     const celdas = document.querySelectorAll('table td:not(#Descansos td)');
     celdas.forEach(celda => {
         celda.addEventListener('input', () => {
             actualizarColorCelda(celda);
         });
-        actualizarColorCelda(celda);
+        actualizarColorCelda(celda); // Ahora usa el caché
     });
 }
 
@@ -37,38 +106,31 @@ function colorCelda() {
 function actualizarColorCelda(celda) {
     const texto = celda.textContent.trim();
 
-    // Verificar si la celda tiene la clase "DiasSemana"
+    // Verificar si la celda tiene la clase "DiaSemana"
     if (celda.classList.contains('DiaSemana')) {
-        return; // No hacer nada si la celda tiene la clase "DiasSemana"
+        return;
     }
 
-    // Referencia a la base de datos de Firebase
-    const dbRef = firebase.database().ref('Turnos/' + texto);
+    // Si el texto está vacío, aplicar colores por defecto
+    if (!texto) {
+        celda.style.backgroundColor = '#ffffff';
+        celda.style.color = '#000000';
+        return;
+    }
 
-    // Obtener los colores de fondo y texto desde Firebase
-    dbRef.once('value').then((snapshot) => {
-        const data = snapshot.val();
-
-        if (data) {
-            // Asegurarse de que los colores tengan el "#" al inicio
-            const colorFondo = data.ColorF ? `#${data.ColorF}` : '#ffffff'; // Color de fondo por defecto si no existe
-            const colorTexto = data.ColorT ? `#${data.ColorT}` : '#000000'; // Color de texto por defecto si no existe
-
-            // Aplicar los colores a la celda
-            celda.style.backgroundColor = colorFondo;
-            celda.style.color = colorTexto;
-        } else {
-            // Si no hay datos en Firebase, aplicar colores por defecto
-            celda.style.backgroundColor = '#ffffff'; // Blanco
-            celda.style.color = '#000000'; // Negro
-        }
-    }).catch((error) => {
-        console.error("Error al obtener datos de Firebase:", error);
-        // En caso de error, aplicar colores por defecto
-        celda.style.backgroundColor = '#ffffff'; // Blanco
-        celda.style.color = '#000000'; // Negro
-    });
+    // Buscar en el caché (SIN consultar Firebase)
+    if (cacheColoresTurnos.has(texto)) {
+        const colores = cacheColoresTurnos.get(texto);
+        celda.style.backgroundColor = colores.colorFondo;
+        celda.style.color = colores.colorTexto;
+    } else {
+        // Si no existe en el caché, usar colores por defecto
+        // (esto significa que el turno no existe en Firebase)
+        celda.style.backgroundColor = '#ffffff';
+        celda.style.color = '#000000';
+    }
 }
+
 
 
 document.getElementById('form').addEventListener('submit', function (event) {
@@ -209,7 +271,7 @@ async function guardarCeldas() {
                 });
             }
         }
-        
+
         // Ejecutar las promesas de guardado
         const promesasGuardado = [];
 
@@ -248,33 +310,35 @@ async function guardarCeldas() {
 
 
 // Función para cargar datos y contar horas simultáneamente
-function cargarDatos() {
+async function cargarDatos() {
     const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1;
     const añoSeleccionado = document.getElementById('Año').value;
     const celdas = document.querySelectorAll('#Table td');
-
+    
     // Mostrar indicador de carga
     const cargandoDiv = document.createElement('div');
     cargandoDiv.id = 'cargando';
     cargandoDiv.textContent = 'Cargando datos...';
-    cargandoDiv.style.position = 'fixed';
-    cargandoDiv.style.top = '50%';
-    cargandoDiv.style.left = '50%';
-    cargandoDiv.style.transform = 'translate(-50%, -50%)';
-    cargandoDiv.style.padding = '10px 20px';
-    cargandoDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
-    cargandoDiv.style.color = 'white';
-    cargandoDiv.style.borderRadius = '5px';
-    cargandoDiv.style.zIndex = '9999';
+    cargandoDiv.style.cssText = `
+        position: fixed; top: 50%; left: 50%; 
+        transform: translate(-50%, -50%); 
+        padding: 10px 20px; 
+        background-color: rgba(0,0,0,0.7); 
+        color: white; 
+        border-radius: 5px; 
+        z-index: 9999;
+    `;
     document.body.appendChild(cargandoDiv);
-
-    // Crear promesas para todas las operaciones de carga
+    
+    // Array de promesas
     const promesas = [];
-
-    // Cache para guardar valores de cantidades y evitar consultas repetidas
+    
+    // 1. PRECARGAR COLORES (1 consulta)
+    const precargaColores = precargarColoresTurnos();
+    promesas.push(precargaColores);
+    
+    // 2. PRECARGAR CANTIDADES (1 consulta) - YA LO TIENES
     const cantidadesCache = {};
-
-    // Comenzar a precargar las cantidades de turnos en paralelo con la carga de celdas
     const precargaTurnos = firebase.database().ref('Turnos').once('value')
         .then(snapshot => {
             const turnos = snapshot.val();
@@ -288,50 +352,54 @@ function cargarDatos() {
             return cantidadesCache;
         })
         .catch(error => {
-            console.error("Error al precargar cantidades de turnos:", error);
+            console.error("Error al precargar cantidades:", error);
             return {};
         });
-
-    // Añadir la precarga a las promesas
+    
     promesas.push(precargaTurnos);
-
-    // Cargar datos de celdas
+    
+    // 3. CARGAR DATOS DE CELDAS (N consultas, una por celda)
     celdas.forEach((celda) => {
         const idCelda = celda.cellIndex + 1;
         const nombreFila = celda.parentNode.cells[0].textContent.trim();
-
-        const promesa = db.ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value')
+        
+        const promesa = firebase.database().ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado)
+            .once('value')
             .then(snapshot => {
                 const data = snapshot.val();
                 if (data) {
                     celda.textContent = data.texto;
+                    // Ahora usa el caché (sin consulta adicional)
                     actualizarColorCelda(celda);
                 }
             })
             .catch(error => {
                 console.error("Error al cargar datos:", error);
             });
-
+        
         promesas.push(promesa);
     });
-
-    // Cuando todas las promesas se completen, calcular las horas usando el cache
-    Promise.all(promesas)
-        .then(() => {
-            // Calcular contadores usando el cache
-            const contadores = calcularHorasConCache(cantidadesCache);
-            contDescansos();
+    
+    // Esperar a que todo termine
+    try {
+        await Promise.all(promesas);
+        
+        // Calcular horas usando el cache
+        calcularHorasConCache(cantidadesCache);
+        contDescansos();
+        
+        document.body.removeChild(cargandoDiv);
+    } catch (error) {
+        console.error("Error en la carga de datos:", error);
+        if (document.body.contains(cargandoDiv)) {
             document.body.removeChild(cargandoDiv);
-        })
-        .catch(error => {
-            console.error("Error en la carga de datos:", error);
-            document.body.removeChild(cargandoDiv);
-        });
+        }
+    }
 }
 
 // Función para calcular horas usando el cache de cantidades
 function calcularHorasConCache(cantidadesCache) {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0};
+    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
     var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
     // Recorremos cada letra y cada día
@@ -863,11 +931,11 @@ function Festivos() {
         celda.style.color = "var(--color-texto)";
         if (festivos[mes].includes(i)) {
             if (dia == "Dia" + i) {
-            celda.style.backgroundColor = "orange";
-            celda.style.color = "red";
+                celda.style.backgroundColor = "orange";
+                celda.style.color = "red";
             } else {
-            celda.style.backgroundColor = "red";
-            celda.style.color = "var(--color-texto)";
+                celda.style.backgroundColor = "red";
+                celda.style.color = "var(--color-texto)";
             }
         } else if (dia == "Dia" + i && mes == mesActual) {
             celda.style.backgroundColor = "#0051e6";
@@ -1305,25 +1373,6 @@ function getDayFromDate(date) {
     return date.getDate().toString();
 }
 
-async function consultarTurnosFirebase(nombreFila, fecha, añoSeleccionado, mesSeleccionado) {
-    try {
-        let dia = getDayFromDate(fecha);
-        dia++; // Incrementamos el día para ajustarse al formato de Firebase (día 1 -> 2, etc.)
-
-        const promesa = db.ref('celdas/' + nombreFila + '/' + dia + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
-        const snapshot = await promesa;
-
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            return data; // Retorna los turnos encontrados
-        } else {
-            return null; // No hay turnos para esta fecha
-        }
-    } catch (error) {
-        console.error(`Error al consultar Firebase para ${nombreFila} en día ${dia}:`, error);
-        return null;
-    }
-}
 
 // Función optimizada para consultar todos los turnos de un empleado de una vez
 async function consultarTurnosEmpleadoCompleto(nombreFila, añoSeleccionado, mesSeleccionado) {

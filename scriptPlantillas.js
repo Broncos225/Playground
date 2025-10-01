@@ -1,5 +1,3 @@
-// Copyright (c) 2024 Andrés Felipe Yepes Tascón
-// Licensed under the MIT License. See LICENSE file for details.
 const firebaseConfig = {
     apiKey: "AIzaSyAw5z5-aKicJ78N1UahQ-Lu_u7WP6MNVRE",
     authDomain: "playgroundbdstop.firebaseapp.com",
@@ -12,297 +10,369 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+db.goOffline();
+db.goOnline();
 
-// Add this code snippet inside the `firebase.auth().onAuthStateChanged` block
+const originalRef = db.ref.bind(db);
+db.ref = function (path) {
+    const ref = originalRef(path);
+
+    const originalOnce = ref.once.bind(ref);
+    ref.once = function (eventType) {
+        window.fbMonitor.logRead(path);
+        return originalOnce(eventType);
+    };
+
+    const originalOn = ref.on.bind(ref);
+    ref.on = function (eventType, callback) {
+        window.fbMonitor.logRead(path + ' (listener)');
+        return originalOn(eventType, callback);
+    };
+
+    const originalSet = ref.set.bind(ref);
+    ref.set = function (value) {
+        window.fbMonitor.logWrite(path);
+        return originalSet(value);
+    };
+
+    const originalUpdate = ref.update.bind(ref);
+    ref.update = function (value) {
+        window.fbMonitor.logWrite(path);
+        return originalUpdate(value);
+    };
+
+    const originalRemove = ref.remove.bind(ref);
+    ref.remove = function () {
+        window.fbMonitor.logDelete(path);
+        return originalRemove();
+    };
+
+    return ref;
+};
+
 var timerSwitch = document.getElementById('timerSwitch');
-
-// Cargar la preferencia del temporizador desde el localStorage al cargar la página
 var timerPreference = localStorage.getItem('timerActive');
 if (timerPreference === 'true') {
     timerSwitch.checked = true;
 }
 
-// Guardar la preferencia del temporizador en el localStorage cada vez que cambia
 timerSwitch.addEventListener('change', function () {
     localStorage.setItem('timerActive', this.checked);
 });
 
+let plantillasCache = JSON.parse(localStorage.getItem('plantillasCache')) || null;
+let favoritosCache = JSON.parse(localStorage.getItem('favoritosCache')) || null;
+let lastUpdate = localStorage.getItem('plantillasLastUpdate') || 0;
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        // Mostrar la pantalla de carga antes de iniciar la consulta
         var loadingScreen = document.getElementById("loadingScreen");
         loadingScreen.style.display = "flex";
-
-        // Obtener el nombre del asesor actual desde el localStorage
         var asesorActual = localStorage.getItem('nombreAsesorActual');
 
-        // Primero, cargar los favoritos del usuario actual usando la ruta correcta
-        db.ref('Preferencias/' + asesorActual + '/Favoritos').once('value').then(function (favSnapshot) {
-            var favoritos = favSnapshot.val() || {};
+        const now = Date.now();
+        const cacheValid = plantillasCache && favoritosCache && (now - lastUpdate < 300000);
 
-            // Luego, cargar todas las plantillas
-            return db.ref('Plantillas').once('value').then(function (snapshot) {
-                var modulosPlantillas = document.getElementById("ModulosPlantillas");
-                var favoritosPlantillas = document.getElementById("FavoritosPlantillas");
-
-                // Limpiar la lista de módulos antes de agregar nuevos
-                modulosPlantillas.innerHTML = '';
-                favoritosPlantillas.innerHTML = '';
-
-                var plantillas = []; // Array para almacenar las plantillas
-                var plantillasFavoritas = []; // Array para almacenar las plantillas favoritas
-
-                snapshot.forEach(function (childSnapshot) {
-                    var fileName = childSnapshot.key;
-                    var moduleData = childSnapshot.val();
-                    var moduleType = moduleData.Tipo;
-                    var creador = moduleData.Creador;
-
-                    // Convertir el tipo numérico a texto
-                    var typeText;
-                    switch (moduleType) {
-                        case '1':
-                            typeText = 'Predeterminada';
-                            break;
-                        case '2':
-                            typeText = 'Solo personalizada';
-                            break;
-                        default:
-                            typeText = 'Desconocido';
-                            break;
-                    }
-
-                    // CAMBIO: Ya no filtramos plantillas personalizadas - se muestran todas
-                    var newDiv = document.createElement("div");
-                    newDiv.className = "Modulo2";
-                    newDiv.setAttribute("data-type", moduleType);
-                    newDiv.setAttribute("data-name", fileName);
-                    newDiv.setAttribute("data-creator", creador || ''); // Añadir creador como atributo
-
-                    newDiv.onclick = function (e) {
-                        // Solo mostrar el modal si no se hizo clic en botones de control
-                        if (!e.target.classList.contains('favorite-star') &&
-                            !e.target.classList.contains('options-menu') &&
-                            !e.target.classList.contains('options-dropdown') &&
-                            !e.target.classList.contains('option-item')) {
-                            showModal(fileName);
-                        }
-                    };
-
-                    var typeSpan = document.createElement("span");
-                    typeSpan.className = "module-type";
-                    typeSpan.textContent = typeText;
-
-                    // Crear la estrella para favoritos
-                    var starSpan = document.createElement("span");
-                    starSpan.className = "favorite-star";
-                    starSpan.innerHTML = favoritos[fileName] ? "★" : "☆";
-                    starSpan.setAttribute("data-name", fileName);
-                    starSpan.onclick = function (event) {
-                        event.stopPropagation();
-                        toggleFavorite(fileName, asesorActual, this);
-                    };
-
-                    // CAMBIO: Solo agregar botón de opciones si el usuario actual es el creador
-                    if (moduleType === '2' && creador === asesorActual) {
-                        // Crear el botón de opciones
-                        var optionsContainer = document.createElement("div");
-                        optionsContainer.className = "options-container";
-
-                        var optionsButton = document.createElement("span");
-                        optionsButton.className = "options-menu";
-                        optionsButton.innerHTML = "⋮";
-                        optionsButton.title = "Opciones";
-
-                        // Crear el menú desplegable
-                        var dropdown = document.createElement("div");
-                        dropdown.className = "options-dropdown";
-                        dropdown.style.display = "none";
-
-                        var editOption = document.createElement("div");
-                        editOption.className = "option-item";
-                        editOption.innerHTML = "✏️ Editar";
-                        editOption.onclick = function (event) {
-                            event.stopPropagation();
-                            hideAllDropdowns();
-                            editTemplate(fileName, moduleData);
-                        };
-
-                        var deleteOption = document.createElement("div");
-                        deleteOption.className = "option-item";
-                        deleteOption.innerHTML = "❌ Eliminar";
-                        deleteOption.onclick = function (event) {
-                            event.stopPropagation();
-                            hideAllDropdowns();
-
-                            var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
-                            if (confirmacion) {
-                                db.ref('Plantillas/' + fileName).remove()
-                                    .then(function () {
-                                        if (favoritos[fileName]) {
-                                            db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
-                                        }
-                                        mostrarNotificacion("Plantilla eliminada exitosamente");
-                                        location.reload();
-                                    })
-                                    .catch(function (error) {
-                                        console.error("Error al eliminar la plantilla: ", error);
-                                        mostrarNotificacion("Error al eliminar la plantilla");
-                                    });
-                            }
-                        };
-
-                        dropdown.appendChild(editOption);
-                        dropdown.appendChild(deleteOption);
-
-                        optionsButton.onclick = function (event) {
-                            event.stopPropagation();
-                            // Ocultar todos los otros dropdowns
-                            hideAllDropdowns();
-                            // Mostrar/ocultar este dropdown
-                            var isVisible = dropdown.style.display === "block";
-                            dropdown.style.display = isVisible ? "none" : "block";
-                        };
-
-                        optionsContainer.appendChild(optionsButton);
-                        optionsContainer.appendChild(dropdown);
-                        newDiv.appendChild(optionsContainer);
-                    }
-
-                    // Mostrar el creador para plantillas personalizadas de otros usuarios
-                    if (moduleType === '2' && creador !== asesorActual && creador) {
-                        var creatorSpan = document.createElement("span");
-                        creatorSpan.className = "module-creator";
-                        creatorSpan.textContent = "Por: " + creador.replace(/_/g, ' ');
-                        newDiv.appendChild(creatorSpan);
-                    }
-
-                    var newH2 = document.createElement("h2");
-                    newH2.textContent = fileName;
-
-                    newDiv.appendChild(starSpan);
-                    newDiv.appendChild(typeSpan);
-                    newDiv.appendChild(newH2);
-
-                    // Clonar el div para favoritos si es necesario
-                    if (favoritos[fileName]) {
-                        var favDiv = newDiv.cloneNode(true);
-                        // Actualizar los manejadores de eventos en el clon
-                        setupDivEventHandlers(favDiv, fileName, asesorActual, moduleType, creador, moduleData);
-                        plantillasFavoritas.push(favDiv);
-                    }
-
-                    plantillas.push(newDiv);
-                });
-
-                // Si no hay favoritos, mostrar mensaje
-                if (plantillasFavoritas.length === 0) {
-                    var noFavMessage = document.createElement("p");
-                    noFavMessage.textContent = "No tienes plantillas favoritas. Marca una plantilla con ★ para añadirla aquí.";
-                    noFavMessage.className = "no-favorites-message";
-                    favoritosPlantillas.appendChild(noFavMessage);
-                } else {
-                    favoritosPlantillas.append(...plantillasFavoritas);
-                }
-
-                modulosPlantillas.append(...plantillas);
-
-                configurarBusqueda();
-                configurarFiltro();
-
-                loadingScreen.style.display = "none";
-            });
-        }).catch(function (error) {
-            console.log("Error al cargar favoritos o plantillas: ", error);
+        if (cacheValid) {
+            renderizarPlantillas(plantillasCache, favoritosCache, asesorActual);
             loadingScreen.style.display = "none";
-        });
 
-        // Configuración del modal de crear plantilla
-        var modal = document.getElementById("createTemplateModal");
-        var btn = document.getElementById("openModalButton");
-
-        btn.onclick = function () {
-            // Limpiar el formulario
-            document.getElementById('crearPlantillaForm').reset();
-            document.getElementById('crearPlantillaForm').removeAttribute('data-editing');
-            document.querySelector('#createTemplateModal h2').textContent = 'Crear Nueva Plantilla';
-            document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Crear Plantilla';
-            modal.style.display = "block";
+            verificarCambiosEnSegundoPlano(asesorActual);
+        } else {
+            cargarPlantillasCompleto(asesorActual, loadingScreen);
         }
 
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+        configurarModalCreacion(asesorActual);
 
-        // Configurar el formulario para crear/editar plantillas
-        var form = document.getElementById('crearPlantillaForm');
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            var nombrePlantilla = document.getElementById('nombrePlantilla').value;
-            var apertura = document.getElementById('apertura').value;
-            var cierre = document.getElementById('cierre').value;
-            var creador = localStorage.getItem('nombreAsesorActual') || 'Desconocido';
-            var isEditing = form.hasAttribute('data-editing');
-            var originalName = form.getAttribute('data-original-name');
-
-            var plantillaData = {
-                Tipo: '2',
-                Apertura: apertura,
-                Cierre: cierre,
-                Creador: creador
-            };
-
-            if (isEditing && originalName && originalName !== nombrePlantilla) {
-                // Si cambió el nombre, eliminar la plantilla anterior y crear una nueva
-                db.ref('Plantillas/' + originalName).remove()
-                    .then(function () {
-                        return db.ref('Plantillas/' + nombrePlantilla).set(plantillaData);
-                    })
-                    .then(function () {
-                        mostrarNotificacion('Plantilla actualizada exitosamente.');
-                        form.reset();
-                        form.removeAttribute('data-editing');
-                        form.removeAttribute('data-original-name');
-                        modal.style.display = "none";
-                        location.reload();
-                    })
-                    .catch(function (error) {
-                        console.error("Error al actualizar la plantilla: ", error);
-                        mostrarNotificacion("Error al actualizar la plantilla");
-                    });
-            } else {
-                // Crear nueva plantilla o actualizar existente sin cambio de nombre
-                var targetName = isEditing ? originalName : nombrePlantilla;
-                db.ref('Plantillas/' + targetName).set(plantillaData)
-                    .then(function () {
-                        var mensaje = isEditing ? 'Plantilla actualizada exitosamente.' : 'Plantilla creada exitosamente.';
-                        mostrarNotificacion(mensaje);
-                        form.reset();
-                        form.removeAttribute('data-editing');
-                        form.removeAttribute('data-original-name');
-                        modal.style.display = "none";
-                        location.reload();
-                    })
-                    .catch(function (error) {
-                        console.error("Error al guardar la plantilla: ", error);
-                        mostrarNotificacion("Error al guardar la plantilla");
-                    });
-            }
-        });
         var btnExportarTodas = document.getElementById('exportarTodas');
-
         if (btnExportarTodas) {
             btnExportarTodas.onclick = exportarPlantillasAExcel;
         }
-    } else {
-        console.log('No user is signed in');
     }
 });
 
-// Función para ocultar todos los dropdowns
+function verificarCambiosEnSegundoPlano(asesorActual) {
+    db.ref('Plantillas').on('value', function (snapshot) {
+        const nuevasPlantillas = snapshot.val() || {};
+        if (JSON.stringify(nuevasPlantillas) !== JSON.stringify(plantillasCache)) {
+            plantillasCache = nuevasPlantillas;
+            localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+            localStorage.setItem('plantillasLastUpdate', Date.now().toString());
+
+            db.ref('Preferencias/' + asesorActual + '/Favoritos').once('value').then(function (favSnapshot) {
+                favoritosCache = favSnapshot.val() || {};
+                localStorage.setItem('favoritosCache', JSON.stringify(favoritosCache));
+                renderizarPlantillas(plantillasCache, favoritosCache, asesorActual);
+            });
+        }
+    });
+
+    db.ref('Preferencias/' + asesorActual + '/Favoritos').on('value', function (snapshot) {
+        const nuevosFavoritos = snapshot.val() || {};
+        if (JSON.stringify(nuevosFavoritos) !== JSON.stringify(favoritosCache)) {
+            favoritosCache = nuevosFavoritos;
+            localStorage.setItem('favoritosCache', JSON.stringify(favoritosCache));
+            renderizarPlantillas(plantillasCache, favoritosCache, asesorActual);
+        }
+    });
+}
+
+function cargarPlantillasCompleto(asesorActual, loadingScreen) {
+    db.ref('Preferencias/' + asesorActual + '/Favoritos').once('value').then(function (favSnapshot) {
+        favoritosCache = favSnapshot.val() || {};
+        localStorage.setItem('favoritosCache', JSON.stringify(favoritosCache));
+
+        return db.ref('Plantillas').once('value').then(function (snapshot) {
+            plantillasCache = snapshot.val() || {};
+            localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+            localStorage.setItem('plantillasLastUpdate', Date.now().toString());
+
+            renderizarPlantillas(plantillasCache, favoritosCache, asesorActual);
+            loadingScreen.style.display = "none";
+
+            verificarCambiosEnSegundoPlano(asesorActual);
+        });
+    }).catch(function (error) {
+        console.log("Error al cargar favoritos o plantillas: ", error);
+        loadingScreen.style.display = "none";
+    });
+}
+
+function renderizarPlantillas(plantillas, favoritos, asesorActual) {
+    var modulosPlantillas = document.getElementById("ModulosPlantillas");
+    var favoritosPlantillas = document.getElementById("FavoritosPlantillas");
+
+    modulosPlantillas.innerHTML = '';
+    favoritosPlantillas.innerHTML = '';
+
+    var plantillasArray = [];
+    var plantillasFavoritas = [];
+
+    Object.keys(plantillas).forEach(function (fileName) {
+        var moduleData = plantillas[fileName];
+        var moduleType = moduleData.Tipo;
+        var creador = moduleData.Creador;
+
+        var typeText;
+        switch (moduleType) {
+            case '1':
+                typeText = 'Predeterminada';
+                break;
+            case '2':
+                typeText = 'Solo personalizada';
+                break;
+            default:
+                typeText = 'Desconocido';
+                break;
+        }
+
+        var newDiv = document.createElement("div");
+        newDiv.className = "Modulo2";
+        newDiv.setAttribute("data-type", moduleType);
+        newDiv.setAttribute("data-name", fileName);
+        newDiv.setAttribute("data-creator", creador || '');
+
+        newDiv.onclick = function (e) {
+            if (!e.target.classList.contains('favorite-star') &&
+                !e.target.classList.contains('options-menu') &&
+                !e.target.classList.contains('options-dropdown') &&
+                !e.target.classList.contains('option-item')) {
+                showModal(fileName);
+            }
+        };
+
+        var typeSpan = document.createElement("span");
+        typeSpan.className = "module-type";
+        typeSpan.textContent = typeText;
+
+        var starSpan = document.createElement("span");
+        starSpan.className = "favorite-star";
+        starSpan.innerHTML = favoritos[fileName] ? "★" : "☆";
+        starSpan.setAttribute("data-name", fileName);
+        starSpan.onclick = function (event) {
+            event.stopPropagation();
+            toggleFavorite(fileName, asesorActual, this);
+        };
+
+        if (moduleType === '2' && creador === asesorActual) {
+            var optionsContainer = document.createElement("div");
+            optionsContainer.className = "options-container";
+
+            var optionsButton = document.createElement("span");
+            optionsButton.className = "options-menu";
+            optionsButton.innerHTML = "⋮";
+            optionsButton.title = "Opciones";
+
+            var dropdown = document.createElement("div");
+            dropdown.className = "options-dropdown";
+            dropdown.style.display = "none";
+
+            var editOption = document.createElement("div");
+            editOption.className = "option-item";
+            editOption.innerHTML = "✏️ Editar";
+            editOption.onclick = function (event) {
+                event.stopPropagation();
+                hideAllDropdowns();
+                editTemplate(fileName, moduleData);
+            };
+
+            var deleteOption = document.createElement("div");
+            deleteOption.className = "option-item";
+            deleteOption.innerHTML = "❌ Eliminar";
+            deleteOption.onclick = function (event) {
+                event.stopPropagation();
+                hideAllDropdowns();
+
+                var confirmacion = confirm("¿Estás seguro de que quieres eliminar esta plantilla?");
+                if (confirmacion) {
+                    db.ref('Plantillas/' + fileName).remove()
+                        .then(function () {
+                            if (favoritos[fileName]) {
+                                db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
+                            }
+                            delete plantillasCache[fileName];
+                            localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+                            mostrarNotificacion("Plantilla eliminada exitosamente");
+                            location.reload();
+                        })
+                        .catch(function (error) {
+                            console.error("Error al eliminar la plantilla: ", error);
+                            mostrarNotificacion("Error al eliminar la plantilla");
+                        });
+                }
+            };
+
+            dropdown.appendChild(editOption);
+            dropdown.appendChild(deleteOption);
+
+            optionsButton.onclick = function (event) {
+                event.stopPropagation();
+                hideAllDropdowns();
+                var isVisible = dropdown.style.display === "block";
+                dropdown.style.display = isVisible ? "none" : "block";
+            };
+
+            optionsContainer.appendChild(optionsButton);
+            optionsContainer.appendChild(dropdown);
+            newDiv.appendChild(optionsContainer);
+        }
+
+        if (moduleType === '2' && creador !== asesorActual && creador) {
+            var creatorSpan = document.createElement("span");
+            creatorSpan.className = "module-creator";
+            creatorSpan.textContent = "Por: " + creador.replace(/_/g, ' ');
+            newDiv.appendChild(creatorSpan);
+        }
+
+        var newH2 = document.createElement("h2");
+        newH2.textContent = fileName;
+
+        newDiv.appendChild(starSpan);
+        newDiv.appendChild(typeSpan);
+        newDiv.appendChild(newH2);
+
+        if (favoritos[fileName]) {
+            var favDiv = newDiv.cloneNode(true);
+            setupDivEventHandlers(favDiv, fileName, asesorActual, moduleType, creador, moduleData);
+            plantillasFavoritas.push(favDiv);
+        }
+
+        plantillasArray.push(newDiv);
+    });
+
+    if (plantillasFavoritas.length === 0) {
+        var noFavMessage = document.createElement("p");
+        noFavMessage.textContent = "No tienes plantillas favoritas. Marca una plantilla con ★ para añadirla aquí.";
+        noFavMessage.className = "no-favorites-message";
+        favoritosPlantillas.appendChild(noFavMessage);
+    } else {
+        favoritosPlantillas.append(...plantillasFavoritas);
+    }
+
+    modulosPlantillas.append(...plantillasArray);
+
+    configurarBusqueda();
+    configurarFiltro();
+}
+
+function configurarModalCreacion(asesorActual) {
+    var modal = document.getElementById("createTemplateModal");
+    var btn = document.getElementById("openModalButton");
+
+    btn.onclick = function () {
+        document.getElementById('crearPlantillaForm').reset();
+        document.getElementById('crearPlantillaForm').removeAttribute('data-editing');
+        document.querySelector('#createTemplateModal h2').textContent = 'Crear Nueva Plantilla';
+        document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Crear Plantilla';
+        modal.style.display = "block";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    var form = document.getElementById('crearPlantillaForm');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        var nombrePlantilla = document.getElementById('nombrePlantilla').value;
+        var apertura = document.getElementById('apertura').value;
+        var cierre = document.getElementById('cierre').value;
+        var creador = localStorage.getItem('nombreAsesorActual') || 'Desconocido';
+        var isEditing = form.hasAttribute('data-editing');
+        var originalName = form.getAttribute('data-original-name');
+
+        var plantillaData = {
+            Tipo: '2',
+            Apertura: apertura,
+            Cierre: cierre,
+            Creador: creador
+        };
+
+        if (isEditing && originalName && originalName !== nombrePlantilla) {
+            db.ref('Plantillas/' + originalName).remove()
+                .then(function () {
+                    return db.ref('Plantillas/' + nombrePlantilla).set(plantillaData);
+                })
+                .then(function () {
+                    delete plantillasCache[originalName];
+                    plantillasCache[nombrePlantilla] = plantillaData;
+                    localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+                    mostrarNotificacion('Plantilla actualizada exitosamente.');
+                    form.reset();
+                    form.removeAttribute('data-editing');
+                    form.removeAttribute('data-original-name');
+                    modal.style.display = "none";
+                    location.reload();
+                })
+                .catch(function (error) {
+                    console.error("Error al actualizar la plantilla: ", error);
+                    mostrarNotificacion("Error al actualizar la plantilla");
+                });
+        } else {
+            var targetName = isEditing ? originalName : nombrePlantilla;
+            db.ref('Plantillas/' + targetName).set(plantillaData)
+                .then(function () {
+                    plantillasCache[targetName] = plantillaData;
+                    localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+                    var mensaje = isEditing ? 'Plantilla actualizada exitosamente.' : 'Plantilla creada exitosamente.';
+                    mostrarNotificacion(mensaje);
+                    form.reset();
+                    form.removeAttribute('data-editing');
+                    form.removeAttribute('data-original-name');
+                    modal.style.display = "none";
+                    location.reload();
+                })
+                .catch(function (error) {
+                    console.error("Error al guardar la plantilla: ", error);
+                    mostrarNotificacion("Error al guardar la plantilla");
+                });
+        }
+    });
+}
+
 function hideAllDropdowns() {
     var dropdowns = document.querySelectorAll('.options-dropdown');
     dropdowns.forEach(function (dropdown) {
@@ -310,14 +380,12 @@ function hideAllDropdowns() {
     });
 }
 
-// Cerrar dropdowns al hacer clic fuera
 document.addEventListener('click', function (event) {
     if (!event.target.closest('.options-container')) {
         hideAllDropdowns();
     }
 });
 
-// Función para configurar manejadores de eventos en divs clonados
 function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador, moduleData) {
     div.onclick = function (e) {
         if (!e.target.classList.contains('favorite-star') &&
@@ -365,6 +433,8 @@ function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador,
                     db.ref('Plantillas/' + fileName).remove()
                         .then(function () {
                             db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
+                            delete plantillasCache[fileName];
+                            localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
                             mostrarNotificacion("Plantilla eliminada exitosamente");
                             location.reload();
                         })
@@ -378,37 +448,34 @@ function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador,
     }
 }
 
-// Nueva función para editar plantillas
 function editTemplate(fileName, moduleData) {
     var modal = document.getElementById("createTemplateModal");
     var form = document.getElementById('crearPlantillaForm');
 
-    // Llenar el formulario con los datos existentes
     document.getElementById('nombrePlantilla').value = fileName;
     document.getElementById('apertura').value = moduleData.Apertura || '';
     document.getElementById('cierre').value = moduleData.Cierre || '';
 
-    // Marcar el formulario como modo edición
     form.setAttribute('data-editing', 'true');
     form.setAttribute('data-original-name', fileName);
 
-    // Cambiar el texto del modal y botón
     document.querySelector('#createTemplateModal h2').textContent = 'Editar Plantilla';
     document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Actualizar Plantilla';
 
     modal.style.display = "block";
 }
 
-// Función para alternar el estado de favorito
 function toggleFavorite(fileName, asesorActual, starElement) {
     var isFavorite = starElement.innerHTML === "★";
     var favSection = document.getElementById("FavoritosPlantillas");
     var favoritosRef = db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName);
 
     if (isFavorite) {
-        // ELIMINAR DE FAVORITOS
         favoritosRef.remove()
             .then(function () {
+                delete favoritosCache[fileName];
+                localStorage.setItem('favoritosCache', JSON.stringify(favoritosCache));
+
                 var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
                 allStars.forEach(function (star) {
                     star.innerHTML = "☆";
@@ -439,9 +506,11 @@ function toggleFavorite(fileName, asesorActual, starElement) {
                 mostrarNotificacion("Error al quitar de favoritos");
             });
     } else {
-        // AÑADIR A FAVORITOS
         favoritosRef.set(true)
             .then(function () {
+                favoritosCache[fileName] = true;
+                localStorage.setItem('favoritosCache', JSON.stringify(favoritosCache));
+
                 var allStars = document.querySelectorAll('.favorite-star[data-name="' + fileName + '"]');
                 allStars.forEach(function (star) {
                     star.innerHTML = "★";
@@ -457,18 +526,10 @@ function toggleFavorite(fileName, asesorActual, starElement) {
                     var originalItem = document.querySelector('.Modulo2[data-name="' + fileName + '"]');
                     if (originalItem) {
                         var favItem = originalItem.cloneNode(true);
-
-                        // Obtener datos del módulo original
                         var moduleType = originalItem.getAttribute('data-type');
                         var creador = originalItem.getAttribute('data-creator');
-                        var asesorActual = localStorage.getItem('nombreAsesorActual');
-
-                        // Configurar manejadores de eventos
-                        db.ref('Plantillas/' + fileName).once('value').then(function (snapshot) {
-                            var moduleData = snapshot.val();
-                            setupDivEventHandlers(favItem, fileName, asesorActual, moduleType, creador, moduleData);
-                        });
-
+                        var moduleData = plantillasCache[fileName];
+                        setupDivEventHandlers(favItem, fileName, asesorActual, moduleType, creador, moduleData);
                         favSection.appendChild(favItem);
                     }
                 }
@@ -487,12 +548,10 @@ function toggleFavorite(fileName, asesorActual, starElement) {
     }
 }
 
-// Función para mostrar notificaciones
 function mostrarNotificacion(mensaje) {
     var notification = document.getElementById('notification');
     notification.textContent = mensaje;
     notification.style.opacity = '1';
-
     setTimeout(function () {
         notification.style.opacity = '0';
     }, 2000);
@@ -590,8 +649,8 @@ function showModal(fileName) {
     <hr>
     `;
 
-    db.ref('Plantillas/' + fileName + '/Apertura').once('value').then(function (snapshot) {
-        var textoA = snapshot.val();
+    if (plantillasCache && plantillasCache[fileName]) {
+        var textoA = plantillasCache[fileName].Apertura;
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Apertura</h2>
@@ -599,10 +658,8 @@ function showModal(fileName) {
         </div>
         <div id="textoA"><p>${saludo}<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
-    });
 
-    db.ref('Plantillas/' + fileName + '/Cierre').once('value').then(function (snapshot) {
-        var textoC = snapshot.val();
+        var textoC = plantillasCache[fileName].Cierre;
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Cierre</h2>
@@ -610,7 +667,7 @@ function showModal(fileName) {
         </div>
         <div id="textoC"><p>${saludo}</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
-    });
+    }
 
     document.body.classList.add('modal-open');
     if (window.innerWidth <= 968) {
@@ -621,10 +678,7 @@ function showModal(fileName) {
     modal.style.display = "block";
 }
 
-
-// This is the main function that copies the text and sets the timer.
 async function copiarTexto(id) {
-    // Construir texto plano desde el HTML
     let text = document.getElementById(id).innerHTML;
     text = text
         .replace(/<br>/g, "\r\n")
@@ -636,7 +690,6 @@ async function copiarTexto(id) {
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(text);
         } else {
-            // Fallback para entornos no seguros
             const ta = document.createElement('textarea');
             ta.style.fontFamily = "Nunito, sans-serif";
             ta.value = text;
@@ -646,7 +699,6 @@ async function copiarTexto(id) {
             document.execCommand("copy");
             document.body.removeChild(ta);
         }
-        // Notificación de copiado
         const notification = document.getElementById('notification2');
         notification.textContent = '¡Texto Copiado!';
         notification.style.opacity = '1';
@@ -655,11 +707,9 @@ async function copiarTexto(id) {
         return;
     }
 
-    // Temporizador de borrado si el switch está activo
     const timerSwitch = document.getElementById('timerSwitch');
     if (timerSwitch && timerSwitch.checked) {
         setTimeout(() => {
-            // Si la pestaña no tiene foco, espera a que vuelva y entonces borra
             if (document.hasFocus()) {
                 clearClipboard();
             } else {
@@ -668,7 +718,6 @@ async function copiarTexto(id) {
         }, 15000);
     }
 }
-
 
 function closeModal() {
     var modals = document.querySelectorAll('.modal');
@@ -690,7 +739,6 @@ window.addEventListener('click', function (event) {
     });
 });
 
-// Agregar los estilos CSS al documento
 var style = document.createElement('style');
 style.innerHTML = `
     #loadingScreen {
@@ -790,7 +838,6 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-// Agregar el elemento de pantalla de carga al HTML
 var loadingScreen = document.createElement("div");
 loadingScreen.id = "loadingScreen";
 loadingScreen.innerHTML = `
@@ -799,159 +846,6 @@ loadingScreen.innerHTML = `
 `;
 document.body.appendChild(loadingScreen);
 
-// let ultimoEncargadoNotificado = localStorage.getItem('ultimoEncargadoNotificado');
-// let ultimaNotificacion = parseInt(localStorage.getItem('ultimaNotificacion')) || 0;
-// const INTERVALO_NOTIFICACION = 1800 * 1000; // 30 minutos
-
-// // Función para solicitar permisos de notificación
-// function solicitarPermisosNotificacion() {
-//     if (!("Notification" in window)) {
-//         console.log("Este navegador no soporta notificaciones de escritorio.");
-//         return;
-//     }
-
-//     if (Notification.permission !== "granted") {
-//         Notification.requestPermission();
-//     }
-// }
-
-// // Llama a la función al cargar la página para pedir el permiso
-// solicitarPermisosNotificacion();
-
-// // Función para mostrar la notificación con sonido
-// function mostrarNotificacion(nombreEncargado) {
-//     if (Notification.permission === "granted") {
-//         const opciones = {
-//             body: '¡Es tu turno de revisar los aplicativos, VIP, Correo, Spool!',
-//             icon: 'icono.png', 
-//         };
-
-//         const notificacion = new Notification(`⚠️ Hola, ${nombreEncargado}`, opciones);
-
-//         // Reproducir sonido de notificación
-//         const audio = new Audio('notification.mp3'); 
-//         audio.play().catch(error => {
-//             console.error("Error al reproducir el sonido:", error);
-//         });
-
-//         // Actualizar estado de notificación y guardarlo en localStorage
-//         ultimaNotificacion = Date.now();
-//         ultimoEncargadoNotificado = nombreEncargado;
-
-//         localStorage.setItem('ultimaNotificacion', ultimaNotificacion.toString());
-//         localStorage.setItem('ultimoEncargadoNotificado', ultimoEncargadoNotificado);
-
-//         console.log(`Notificación enviada a ${nombreEncargado} a las ${new Date().toLocaleTimeString()}`);
-//     }
-// }
-
-// // Función para verificar si debe notificar
-// function debeNotificar(nombreEncargado) {
-//     const ahora = Date.now();
-
-//     // Si cambió el encargado, permitir notificación inmediata
-//     if (nombreEncargado !== ultimoEncargadoNotificado) {
-//         console.log(`Cambio de encargado detectado: ${ultimoEncargadoNotificado} -> ${nombreEncargado}`);
-//         return true;
-//     }
-
-//     // Si es el mismo encargado, verificar si han pasado los segundos configurados
-//     if (ahora - ultimaNotificacion >= INTERVALO_NOTIFICACION) {
-//         console.log(`Han pasado ${INTERVALO_NOTIFICACION/1000} segundos desde la última notificación`);
-//         return true;
-//     }
-
-//     return false;
-// }
-
-// // Función principal para verificar y notificar
-// async function revisarYNotificar() {
-//     if (Notification.permission !== "granted") {
-//         console.log("Permisos de notificación no otorgados.");
-//         return;
-//     }
-
-//     const nombreUsuarioStorage = localStorage.getItem('nombreAsesorActual');
-//     const nombreUsuarioActual = nombreUsuarioStorage ? nombreUsuarioStorage.replace(/_/g, ' ') : null;
-//     const encargadoActual = await obtenerEncargadoActual();
-
-//     // Si no hay encargado actual, resetear estado
-//     if (!encargadoActual) {
-//         if (ultimoEncargadoNotificado !== null) {
-//             console.log("No hay encargado actual, reseteando estado");
-//             ultimoEncargadoNotificado = null;
-//             ultimaNotificacion = 0;
-
-//             // Limpiar localStorage
-//             localStorage.removeItem('ultimoEncargadoNotificado');
-//             localStorage.removeItem('ultimaNotificacion');
-//         }
-//         return;
-//     }
-
-//     // Si el usuario actual coincide con el encargado y debe notificar
-//     if (nombreUsuarioActual === encargadoActual.nombre && timerPreference === true) {
-//         const divEncargado = document.getElementById('Encargado');
-//         if (divEncargado) {
-//             const root = document.documentElement;
-//             const colorPrimario = getComputedStyle(root).getPropertyValue('--color-primario').trim();
-//             divEncargado.style.backgroundColor = colorPrimario;
-//             divEncargado.style.padding = '10px';
-//             divEncargado.style.borderRadius = '8px';
-
-//             // Calcular contraste: si el fondo es claro, usar negro; si es oscuro, usar blanco
-//             function getContrastYIQ(hexcolor) {
-//             hexcolor = hexcolor.replace('#', '').trim();
-//             if (hexcolor.length === 3) {
-//                 hexcolor = hexcolor.split('').map(c => c + c).join('');
-//             }
-//             const r = parseInt(hexcolor.substr(0,2),16);
-//             const g = parseInt(hexcolor.substr(2,2),16);
-//             const b = parseInt(hexcolor.substr(4,2),16);
-//             const yiq = ((r*299)+(g*587)+(b*114))/1000;
-//             return yiq >= 128 ? 'black' : 'white';
-//             }
-
-//             // Si es una variable CSS tipo rgb(a), convertir a hex
-//             function rgbToHex(rgb) {
-//             const result = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
-//             if (!result) return rgb;
-//             return "#" + ((1 << 24) + (parseInt(result[1]) << 16) + (parseInt(result[2]) << 8) + parseInt(result[3])).toString(16).slice(1);
-//             }
-
-//             let colorHex = colorPrimario;
-//             if (colorHex.startsWith('rgb')) {
-//             colorHex = rgbToHex(colorHex);
-//             }
-//             divEncargado.style.color = getContrastYIQ(colorHex);
-//         }
-//         if (debeNotificar(encargadoActual.nombre)) {
-//             mostrarNotificacion(encargadoActual.nombre);
-//         } else {
-//             const tiempoRestante = Math.ceil((INTERVALO_NOTIFICACION - (Date.now() - ultimaNotificacion)) / 1000);
-//             console.log(`Próxima notificación en ${tiempoRestante} segundos`);
-//         }
-//     }
-// }
-
-// // Función para obtener el tiempo restante hasta la próxima notificación
-// function tiempoHastaProximaNotificacion() {
-//     if (ultimaNotificacion === 0) return 0;
-//     const tiempoTranscurrido = Date.now() - ultimaNotificacion;
-//     const tiempoRestante = INTERVALO_NOTIFICACION - tiempoTranscurrido;
-//     return Math.max(0, Math.ceil(tiempoRestante / 1000)); // en segundos
-// }
-
-// // Función para limpiar estado de notificaciones (útil para debugging)
-// function limpiarEstadoNotificaciones() {
-//     ultimoEncargadoNotificado = null;
-//     ultimaNotificacion = 0;
-//     localStorage.removeItem('ultimoEncargadoNotificado');
-//     localStorage.removeItem('ultimaNotificacion');
-//     console.log("Estado de notificaciones limpiado");
-// }
-
-// El resto de tu código se mantiene igual...
 function redirectTo(url) {
     window.location.href = url;
 }
@@ -982,7 +876,6 @@ async function verificarEncargadosEspeciales() {
         const diaActual = hoy.getDate();
         const minutosActuales = obtenerMinutosActuales();
 
-        // No mostrar encargados especiales sábados (6) y domingos (0)
         const diaSemana = hoy.getDay();
         if (diaSemana === 0 || diaSemana === 6) {
             return [];
@@ -1079,8 +972,6 @@ async function obtenerEncargadoActual() {
 
         usuariosConHorarios.sort((a, b) => a.inicioMinutos - b.inicioMinutos);
 
-
-
         const minutosActuales = obtenerMinutosActuales();
         console.log(`Hora actual: ${Math.floor(minutosActuales / 60)}:${String(minutosActuales % 60).padStart(2, '0')}`);
 
@@ -1133,57 +1024,39 @@ async function actualizarDivEncargado() {
 
 function inicializarSistemaEncargado() {
     actualizarDivEncargado();
-    setInterval(actualizarDivEncargado, 60000); // Actualiza cada minuto
-    setInterval(revisarYNotificar, 5000); // Revisa cada 5 segundos para mejor precisión
-
+    setInterval(actualizarDivEncargado, 60000);
     console.log('Sistema de encargado iniciado - Se actualiza cada minuto');
-    console.log(`Sistema de notificaciones iniciado - Notifica cada ${INTERVALO_NOTIFICACION / 1000} segundos`);
-
-    // Log del estado inicial
-    if (ultimaNotificacion > 0) {
-        const tiempoRestante = Math.ceil((INTERVALO_NOTIFICACION - (Date.now() - ultimaNotificacion)) / 1000);
-        console.log(`Estado recuperado - Último notificado: ${ultimoEncargadoNotificado}, próxima notificación en ${tiempoRestante} segundos`);
-    }
 }
 
 inicializarSistemaEncargado();
-// Función auxiliar para limpiar etiquetas HTML
+
 function limpiarHTML(texto) {
     if (!texto) return '';
-    // Eliminar todas las etiquetas HTML (incluyendo su contenido si es necesario)
     return texto.replace(/<[^>]*>/g, '');
 }
 
 async function exportarPlantillasAExcel() {
     try {
-        // Mostrar indicador de carga
         const loadingScreen = document.getElementById("loadingScreen");
         if (loadingScreen) {
             loadingScreen.style.display = "flex";
             loadingScreen.querySelector('div:last-child').textContent = 'Exportando plantillas...';
         }
 
-        // Obtener todas las plantillas de Firebase
-        const snapshot = await db.ref('Plantillas').once('value');
-        const plantillas = snapshot.val();
+        const plantillas = plantillasCache || {};
 
-        if (!plantillas) {
+        if (!plantillas || Object.keys(plantillas).length === 0) {
             mostrarNotificacion("No hay plantillas para exportar");
             if (loadingScreen) loadingScreen.style.display = "none";
             return;
         }
 
-        // Preparar los datos para Excel
         const datosExcel = [];
-
-        // Encabezados
         datosExcel.push(['Nombre', 'Apertura', 'Cierre', 'Tipo', 'Creador']);
 
-        // Procesar cada plantilla
         Object.keys(plantillas).forEach(nombrePlantilla => {
             const plantilla = plantillas[nombrePlantilla];
 
-            // Determinar el tipo de plantilla
             let tipoTexto;
             switch (plantilla.Tipo) {
                 case '1':
@@ -1199,37 +1072,32 @@ async function exportarPlantillasAExcel() {
 
             datosExcel.push([
                 nombrePlantilla,
-                limpiarHTML(plantilla.Apertura || ''),  // Limpiar HTML de Apertura
-                limpiarHTML(plantilla.Cierre || ''),    // Limpiar HTML de Cierre
+                limpiarHTML(plantilla.Apertura || ''),
+                limpiarHTML(plantilla.Cierre || ''),
                 tipoTexto,
                 plantilla.Creador ? plantilla.Creador.replace(/_/g, ' ') : 'No especificado'
             ]);
         });
 
-        // Crear el archivo Excel
         const ws = XLSX.utils.aoa_to_sheet(datosExcel);
 
-        // Configurar el ancho de las columnas
         const colWidths = [
-            { wch: 30 }, // Nombre
-            { wch: 50 }, // Apertura
-            { wch: 50 }, // Cierre
-            { wch: 15 }, // Tipo
-            { wch: 25 }  // Creador
+            { wch: 30 },
+            { wch: 50 },
+            { wch: 50 },
+            { wch: 15 },
+            { wch: 25 }
         ];
         ws['!cols'] = colWidths;
 
-        // Crear el libro de trabajo
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Plantillas");
 
-        // Generar el nombre del archivo con fecha y hora
         const ahora = new Date();
         const fecha = ahora.toISOString().split('T')[0];
         const hora = ahora.toTimeString().split(' ')[0].replace(/:/g, '-');
         const nombreArchivo = `Plantillas_${fecha}_${hora}.xlsx`;
 
-        // Descargar el archivo
         XLSX.writeFile(wb, nombreArchivo);
 
         mostrarNotificacion(`Archivo exportado: ${nombreArchivo}`);
@@ -1238,7 +1106,6 @@ async function exportarPlantillasAExcel() {
         console.error('Error al exportar plantillas:', error);
         mostrarNotificacion('Error al exportar las plantillas');
     } finally {
-        // Ocultar indicador de carga
         const loadingScreen = document.getElementById("loadingScreen");
         if (loadingScreen) {
             loadingScreen.style.display = "none";
