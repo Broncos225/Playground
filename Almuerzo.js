@@ -17,6 +17,39 @@ try {
 
 const db = firebase.database();
 
+const cache = {
+    celdas: null,
+    turnos: {},
+    timestamp: null,
+    fechaConsulta: null
+};
+
+const CACHE_DURACION = 5 * 60 * 1000;
+
+function obtenerFechaActual() {
+    const ahora = new Date();
+    return `${ahora.getFullYear()}-${ahora.getMonth() + 1}-${ahora.getDate()}`;
+}
+
+async function verificarYActualizarCache() {
+    const fechaActual = obtenerFechaActual();
+    const ahora = Date.now();
+    
+    if (cache.celdas && 
+        cache.fechaConsulta === fechaActual && 
+        cache.timestamp && 
+        (ahora - cache.timestamp) < CACHE_DURACION) {
+        return false;
+    }
+
+    const snapshot = await db.ref('celdas').once('value');
+    cache.celdas = snapshot.val();
+    cache.timestamp = ahora;
+    cache.fechaConsulta = fechaActual;
+    
+    return true;
+}
+
 function extraerTurnoBase(turnoCompleto) {
     if (!turnoCompleto) return null;
     const match = turnoCompleto.match(/T[1-6]/);
@@ -51,13 +84,14 @@ function obtenerInfoAlmuerzoTurno(turnoCompleto) {
 
 async function obtenerTurnosTrabajadoresDelDia() {
     try {
+        await verificarYActualizarCache();
+        
         const ahora = new Date();
         const añoSeleccionado = ahora.getFullYear();
         const mesSeleccionado = ahora.getMonth() + 1;
         const diaActual = ahora.getDate() + 1;
 
-        const snapshot = await db.ref('celdas').once('value');
-        const celdasData = snapshot.val();
+        const celdasData = cache.celdas;
 
         if (!celdasData) return [];
 
@@ -152,16 +186,22 @@ function parseHora12h(hora12h) {
 async function obtenerInfoTurnoCompleto(turnoBase) {
     if (!turnoBase) return null;
 
+    if (cache.turnos[turnoBase]) {
+        return cache.turnos[turnoBase];
+    }
+
     try {
         const snapshot = await db.ref(`Turnos/${turnoBase}`).once('value');
         const turnoInfo = snapshot.val();
 
         if (turnoInfo && turnoInfo.Apertura && turnoInfo.Cierre) {
-            return {
+            const resultado = {
                 apertura: turnoInfo.Apertura,
                 cierre: turnoInfo.Cierre,
                 cantidad: turnoInfo.Cantidad || null
             };
+            cache.turnos[turnoBase] = resultado;
+            return resultado;
         }
 
         return null;
@@ -173,11 +213,13 @@ async function obtenerInfoTurnoCompleto(turnoBase) {
 
 async function obtenerTurnoDiaSiguiente() {
     try {
-        var nombreAsesorActual = localStorage.getItem("nombreAsesorActual");
+        var nombreAsesorActual = window.nombreAsesorActual || localStorage.getItem("nombreAsesorActual");
         if (!nombreAsesorActual) {
             throw new Error("No se encontró el nombre del asesor actual");
         }
         nombreAsesorActual = nombreAsesorActual.replace(/_/g, " ");
+
+        await verificarYActualizarCache();
 
         const mañana = new Date();
         mañana.setDate(mañana.getDate() + 2);
@@ -186,11 +228,7 @@ async function obtenerTurnoDiaSiguiente() {
         const mesSeleccionado = mañana.getMonth() + 1;
         const diaSiguiente = mañana.getDate();
 
-
-        // Obtener el turno asignado del día siguiente
-        const promesa = db.ref('celdas/' + nombreAsesorActual + '/' + diaSiguiente + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
-        const snapshot = await promesa;
-        const turnoData = snapshot.val();
+        const turnoData = cache.celdas?.[nombreAsesorActual]?.[diaSiguiente]?.[añoSeleccionado]?.[mesSeleccionado];
 
         const turnoCompleto = turnoData ? turnoData.texto : null;
         const turnoBase = extraerTurnoBase(turnoCompleto);
@@ -199,24 +237,18 @@ async function obtenerTurnoDiaSiguiente() {
         let descripcion = null;
 
         if (turnoCompleto) {
-            // Primero intentar con el turno completo (ej: T4N, T1M, etc.)
             let infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoCompleto);
 
-            // Si no encuentra el turno completo, intentar con el turno base (T1, T2, etc.)
             if (!infoTurnoCompleto && turnoBase) {
                 infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoBase);
             }
 
             if (infoTurnoCompleto && infoTurnoCompleto.apertura && infoTurnoCompleto.cierre) {
-                // Verificar si el turno empieza a las 12:00 AM
                 if (infoTurnoCompleto.apertura === "12:00 AM") {
-                    // Si empieza a las 12:00 AM, mostrar solo la descripción del turno
-                    // Intentar obtener descripción desde la base de datos
                     try {
                         const descSnapshot = await db.ref(`Turnos/${turnoCompleto}/Descripcion`).once('value');
                         descripcion = descSnapshot.val();
 
-                        // Si no hay descripción para el turno completo, intentar con el turno base
                         if (!descripcion && turnoBase) {
                             const descSnapshotBase = await db.ref(`Turnos/${turnoBase}/Descripcion`).once('value');
                             descripcion = descSnapshotBase.val();
@@ -225,7 +257,6 @@ async function obtenerTurnoDiaSiguiente() {
                         if (descripcion) {
                             rango = descripcion;
                         } else {
-                            // Si no hay descripción específica, usar el turno completo
                             rango = turnoCompleto;
                         }
                     } catch (error) {
@@ -233,12 +264,10 @@ async function obtenerTurnoDiaSiguiente() {
                         rango = turnoCompleto;
                     }
                 } else {
-                    // Para otros horarios, mostrar el rango normal
                     rango = `${infoTurnoCompleto.apertura} - ${infoTurnoCompleto.cierre}`;
                 }
             }
         } else if (turnoCompleto) {
-            // Para turnos especiales como 'D', 'DV', 'TSN', etc.
             const estadosEspeciales = {
                 'D': 'Descanso',
                 'DV': 'Descanso/Vacaciones',
@@ -252,7 +281,7 @@ async function obtenerTurnoDiaSiguiente() {
         return {
             turnoCompleto: turnoCompleto,
             turnoBase: turnoBase,
-            turnoConsultado: turnoCompleto, // Agregamos el turno que realmente se consultó
+            turnoConsultado: turnoCompleto,
             rango: rango,
             fecha: diaSiguiente + '/' + mesSeleccionado + '/' + añoSeleccionado
         };
@@ -270,28 +299,26 @@ async function obtenerTurnoDiaSiguiente() {
 
 async function obtenerTurnoAlmuerzoAsesor() {
     try {
-        var nombreAsesorActual = localStorage.getItem("nombreAsesorActual");
+        var nombreAsesorActual = window.nombreAsesorActual || localStorage.getItem("nombreAsesorActual");
         if (!nombreAsesorActual) {
             throw new Error("No se encontró el nombre del asesor actual");
         }
         nombreAsesorActual = nombreAsesorActual.replace(/_/g, " ");
+
+        await verificarYActualizarCache();
 
         const ahora = new Date();
         const añoSeleccionado = ahora.getFullYear();
         const mesSeleccionado = ahora.getMonth() + 1;
         const diaActual = ahora.getDate() + 1;
 
-
         const trabajadoresDelDia = await obtenerTurnosTrabajadoresDelDia();
         const distribucionAlmuerzos = calcularTurnosAlmuerzoInteligente(trabajadoresDelDia);
 
-        const promesa = db.ref('celdas/' + nombreAsesorActual + '/' + diaActual + '/' + añoSeleccionado + '/' + mesSeleccionado).once('value');
-        const snapshot = await promesa;
-        const turnoAsignadoData = snapshot.val();
+        const turnoAsignadoData = cache.celdas?.[nombreAsesorActual]?.[diaActual]?.[añoSeleccionado]?.[mesSeleccionado];
 
         const turnoCompleto = turnoAsignadoData ? turnoAsignadoData.texto : null;
         const turnoBase = extraerTurnoBase(turnoCompleto);
-
 
         if (!turnoCompleto) {
             return {
@@ -320,7 +347,6 @@ async function obtenerTurnoAlmuerzoAsesor() {
             'DV': 'Descanso/Vacaciones',
             'TSN': 'Trabajo Sin turno'
         };
-
 
         if (!infoAlmuerzo) {
             const estadoEspecial = estadosEspeciales[turnoCompleto];
@@ -375,7 +401,6 @@ function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
 
     const inicioMinutos = aperturaObj.horas * 60 + aperturaObj.minutos;
     const finMinutos = cierreObj.horas * 60 + cierreObj.minutos;
-
 
     let tiempoFaltante = null;
 

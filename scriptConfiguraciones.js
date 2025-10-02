@@ -1,4 +1,3 @@
-// Configuraciones.js - Sistema de preferencias de colores y fuentes
 class PreferenciasColores {
     constructor() {
         this.nombreUsuario = this.obtenerNombreUsuario();
@@ -9,7 +8,7 @@ class PreferenciasColores {
             colorTexto: '#000000ff',
             fuente: 'Nunito, sans-serif',
             imagenFondo: null,
-            blurFondo: false
+            blurFondo: 0
         };
         this.fuentesDisponibles = [
             { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
@@ -27,17 +26,14 @@ class PreferenciasColores {
         this.init();
     }
 
-    // Obtener el nombre del usuario actual
     obtenerNombreUsuario() {
         return localStorage.getItem("nombreAsesorActual") || "usuario_anonimo";
     }
 
-    // Generar clave única para las preferencias del usuario
     generarClavePreferencias() {
         return `preferencias_${this.nombreUsuario}`;
     }
 
-    // Inicializar el sistema
     init() {
         this.cargarPreferencias();
         this.configurarSelectFuente();
@@ -45,11 +41,9 @@ class PreferenciasColores {
         this.aplicarConfiguracion();
     }
 
-    // Configurar el select de fuentes si existe
     configurarSelectFuente() {
         const selectFuente = document.getElementById('FontFamily');
         if (selectFuente && selectFuente.options.length === 0) {
-            // Solo llenar si está vacío
             this.fuentesDisponibles.forEach(fuente => {
                 const option = document.createElement('option');
                 option.value = fuente.valor;
@@ -59,7 +53,6 @@ class PreferenciasColores {
         }
     }
 
-    // Cargar preferencias guardadas
     cargarPreferencias() {
         const clave = this.generarClavePreferencias();
         const preferenciasGuardadas = localStorage.getItem(clave);
@@ -74,7 +67,7 @@ class PreferenciasColores {
                     colorTexto: preferencias.colorTexto || this.configuracionDefecto.colorTexto,
                     fuente: preferencias.fuente || this.configuracionDefecto.fuente,
                     imagenFondo: preferencias.imagenFondo || this.configuracionDefecto.imagenFondo,
-                    blurFondo: preferencias.blurFondo || this.configuracionDefecto.blurFondo
+                    blurFondo: preferencias.blurFondo !== undefined ? preferencias.blurFondo : this.configuracionDefecto.blurFondo
                 };
             } catch (error) {
                 console.error('Error al cargar preferencias:', error);
@@ -84,11 +77,9 @@ class PreferenciasColores {
             this.configuracionActual = { ...this.configuracionDefecto };
         }
 
-        // Actualizar los inputs de color y fuente
         this.actualizarInputsConfiguracion();
     }
 
-    // Actualizar los valores de los inputs de configuración
     actualizarInputsConfiguracion() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
@@ -96,20 +87,19 @@ class PreferenciasColores {
         const inputColorTexto = document.getElementById('ColorTexto');
         const selectFuente = document.getElementById('FontFamily');
         const inputBlur = document.getElementById('blur');
+        const blurValue = document.getElementById('blurValue');
 
         if (inputPrimario) inputPrimario.value = this.configuracionActual.primario;
         if (inputSecundario) inputSecundario.value = this.configuracionActual.secundario;
         if (inputColorFondo) inputColorFondo.value = this.configuracionActual.colorFondo;
         if (inputColorTexto) inputColorTexto.value = this.configuracionActual.colorTexto;
         if (selectFuente) selectFuente.value = this.configuracionActual.fuente;
-        if (inputBlur) inputBlur.checked = this.configuracionActual.blurFondo;
+        if (inputBlur) inputBlur.value = this.configuracionActual.blurFondo;
+        if (blurValue) blurValue.textContent = `${this.configuracionActual.blurFondo}%`;
 
-        // Mostrar preview de imagen actual si existe
         this.mostrarPreviewImagenActual();
     }
 
-    // Mostrar preview de la imagen actual
-    // Mostrar preview de la imagen actual
     mostrarPreviewImagenActual() {
         const previewContainer = document.getElementById('previewImagenFondo');
         if (previewContainer) {
@@ -131,7 +121,6 @@ class PreferenciasColores {
         }
     }
 
-    // Eliminar imagen de fondo y guardar la preferencia
     eliminarImagenFondo() {
         const confirmacion = confirm('¿Está seguro que desea eliminar la imagen de fondo?');
 
@@ -139,26 +128,20 @@ class PreferenciasColores {
             return;
         }
 
-        // Limpiar la imagen de fondo de la configuración actual
         this.configuracionActual.imagenFondo = null;
 
-        // Aplicar los cambios inmediatamente (quita la imagen del fondo)
         this.aplicarConfiguracion();
 
-        // Actualizar el preview visual
         this.mostrarPreviewImagenActual();
 
-        // Limpiar el input file
         const inputImagen = document.getElementById('ImagenFondo');
         if (inputImagen) {
             inputImagen.value = '';
         }
 
-        // Guardar la preferencia inmediatamente (imagen = null)
         const nombreUsuario = this.obtenerNombreUsuario();
         const clavePreferencias = `preferencias_${nombreUsuario}`;
 
-        // Obtener preferencias actuales
         const preferenciasGuardadas = localStorage.getItem(clavePreferencias);
         let preferencias = {};
 
@@ -171,12 +154,10 @@ class PreferenciasColores {
             }
         }
 
-        // Actualizar solo la imagen de fondo (mantener otros ajustes)
         preferencias.imagenFondo = null;
         preferencias.fechaGuardado = new Date().toISOString();
 
         try {
-            // Guardar las preferencias actualizadas
             localStorage.setItem(clavePreferencias, JSON.stringify(preferencias));
             this.mostrarNotificacion('Imagen de fondo eliminada correctamente', 'exito');
         } catch (error) {
@@ -185,20 +166,6 @@ class PreferenciasColores {
         }
     }
 
-    // Eliminar imagen de fondo
-    eliminarImagenFondo() {
-        this.configuracionActual.imagenFondo = null;
-        this.aplicarConfiguracion();
-        this.mostrarPreviewImagenActual();
-
-        // Limpiar el input file
-        const inputImagen = document.getElementById('ImagenFondo');
-        if (inputImagen) {
-            inputImagen.value = '';
-        }
-    }
-
-    // Aplicar configuración completa a la página
     aplicarConfiguracion() {
         const root = document.documentElement;
         root.style.setProperty('--color-primario', this.configuracionActual.primario);
@@ -207,7 +174,6 @@ class PreferenciasColores {
         root.style.setProperty('--color-texto', this.configuracionActual.colorTexto);
         root.style.setProperty('--font-family', this.configuracionActual.fuente);
 
-        // Aplicar imagen de fondo
         if (this.configuracionActual.imagenFondo) {
             document.body.style.backgroundImage = `url(${this.configuracionActual.imagenFondo})`;
             document.body.style.backgroundSize = 'cover';
@@ -218,59 +184,54 @@ class PreferenciasColores {
             document.body.style.backgroundImage = 'none';
         }
 
-        // Aplicar efecto blur al nav y footer
         const nav = document.querySelector('nav');
         const footer = document.querySelector('footer');
         const header = document.querySelector('header');
 
-        if (this.configuracionActual.blurFondo && this.configuracionActual.imagenFondo) {
-            // Aplicar blur solo si hay imagen de fondo
+        if (this.configuracionActual.imagenFondo) {
+            const blurPixels = this.configuracionActual.blurFondo / 10;
+            const opacity = this.configuracionActual.blurFondo / 100;
+            
             if (nav) {
-            nav.style.backdropFilter = 'blur(10px)';
-            nav.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                nav.style.backdropFilter = `blur(${blurPixels}px)`;
+                nav.style.backgroundColor = `rgba(255, 255, 255, ${opacity * 0.2})`;
             }
             if (footer) {
-            footer.style.backdropFilter = 'blur(10px)';
-            footer.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                footer.style.backdropFilter = `blur(${blurPixels}px)`;
+                footer.style.backgroundColor = `rgba(255, 255, 255, ${opacity * 0.2})`;
             }
             if (header) {
-            header.style.backdropFilter = 'blur(10px)';
-            header.style.backgroundColor = 'rgba(255, 255, 255, 0%)';
+                header.style.backdropFilter = `blur(${blurPixels}px)`;
+                header.style.backgroundColor = `rgba(255, 255, 255, 0)`;
             }
         } else {
-            // Quitar blur
             if (nav) {
-            nav.style.backdropFilter = '';
-            nav.style.backgroundColor = '';
+                nav.style.backdropFilter = '';
+                nav.style.backgroundColor = '';
             }
             if (footer) {
-            footer.style.backdropFilter = '';
-            footer.style.backgroundColor = '';
+                footer.style.backdropFilter = '';
+                footer.style.backgroundColor = '';
             }
             if (header) {
-            header.style.backdropFilter = '';
-            header.style.backgroundColor = '';
+                header.style.backdropFilter = '';
+                header.style.backgroundColor = '';
             }
         }
 
-
-        // También actualizar el theme-color del meta tag
         const metaTheme = document.querySelector('meta[name="theme-color"]');
         if (metaTheme) {
             metaTheme.setAttribute('content', this.configuracionActual.primario);
         }
     }
 
-    // Procesar imagen seleccionada
     procesarImagenFondo(archivo) {
-        // Validar que sea una imagen
         if (!archivo.type.startsWith('image/')) {
             this.mostrarNotificacion('Por favor seleccione un archivo de imagen válido', 'error');
             return;
         }
 
-        // Validar tamaño (máximo 5MB)
-        const tamañoMaximo = 5 * 1024 * 1024; // 5MB en bytes
+        const tamañoMaximo = 5 * 1024 * 1024;
         if (archivo.size > tamañoMaximo) {
             this.mostrarNotificacion('La imagen es demasiado grande. Máximo 5MB permitido.', 'error');
             return;
@@ -281,12 +242,18 @@ class PreferenciasColores {
             try {
                 const imagenBase64 = e.target.result;
 
-                // Crear una imagen temporal para verificar que se cargó correctamente
                 const img = new Image();
                 img.onload = () => {
                     this.configuracionActual.imagenFondo = imagenBase64;
                     this.aplicarConfiguracion();
                     this.mostrarPreviewImagenActual();
+                    
+                    const blurValue = document.getElementById('blurValue');
+                    const inputBlur = document.getElementById('blur');
+                    if (blurValue && inputBlur) {
+                        blurValue.textContent = `${inputBlur.value}%`;
+                    }
+                    
                     this.mostrarNotificacion('Imagen de fondo cargada correctamente', 'exito');
                 };
 
@@ -309,7 +276,6 @@ class PreferenciasColores {
         reader.readAsDataURL(archivo);
     }
 
-    // Guardar preferencias
     guardarPreferencias() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
@@ -330,7 +296,7 @@ class PreferenciasColores {
             colorTexto: inputColorTexto.value,
             fuente: selectFuente ? selectFuente.value : this.configuracionDefecto.fuente,
             imagenFondo: this.configuracionActual.imagenFondo,
-            blurFondo: inputBlur ? inputBlur.checked : false,
+            blurFondo: inputBlur ? parseInt(inputBlur.value) : 0,
             fechaGuardado: new Date().toISOString(),
             usuario: this.nombreUsuario
         };
@@ -339,7 +305,6 @@ class PreferenciasColores {
             const clave = this.generarClavePreferencias();
             localStorage.setItem(clave, JSON.stringify(nuevasPreferencias));
 
-            // Actualizar configuración actual
             this.configuracionActual = {
                 primario: nuevasPreferencias.colorPrimario,
                 secundario: nuevasPreferencias.colorSecundario,
@@ -350,15 +315,12 @@ class PreferenciasColores {
                 blurFondo: nuevasPreferencias.blurFondo
             };
 
-            // Aplicar la nueva configuración
             this.aplicarConfiguracion();
 
-            // Mostrar notificación de éxito
             this.mostrarNotificacion('Configuraciones guardadas correctamente', 'exito');
             return true;
         } catch (error) {
             console.error('Error al guardar preferencias:', error);
-            // Verificar si el error es por límite de almacenamiento
             if (error.name === 'QuotaExceededError') {
                 this.mostrarNotificacion('Error: No hay suficiente espacio de almacenamiento. La imagen es demasiado grande.', 'error');
             } else {
@@ -368,18 +330,18 @@ class PreferenciasColores {
         }
     }
 
-    // Restablecer a configuración por defecto
     restablecerPreferencias() {
         const confirmacion = confirm('¿Está seguro que desea restablecer la configuración a los valores por defecto?');
 
         if (confirmacion) {
-            // Actualizar inputs
             const inputPrimario = document.getElementById('ColorPrimario');
             const inputSecundario = document.getElementById('ColorSecundario');
             const inputColorFondo = document.getElementById('ColorFondo');
             const inputColorTexto = document.getElementById('ColorTexto');
             const selectFuente = document.getElementById('FontFamily');
             const inputImagen = document.getElementById('ImagenFondo');
+            const inputBlur = document.getElementById('blur');
+            const blurValue = document.getElementById('blurValue');
 
             if (inputPrimario) inputPrimario.value = this.configuracionDefecto.primario;
             if (inputSecundario) inputSecundario.value = this.configuracionDefecto.secundario;
@@ -387,15 +349,14 @@ class PreferenciasColores {
             if (inputColorTexto) inputColorTexto.value = this.configuracionDefecto.colorTexto;
             if (selectFuente) selectFuente.value = this.configuracionDefecto.fuente;
             if (inputImagen) inputImagen.value = '';
+            if (inputBlur) inputBlur.value = this.configuracionDefecto.blurFondo;
+            if (blurValue) blurValue.textContent = `${this.configuracionDefecto.blurFondo}%`;
 
-            // Actualizar configuración actual
             this.configuracionActual = { ...this.configuracionDefecto };
 
-            // Aplicar configuración
             this.aplicarConfiguracion();
             this.mostrarPreviewImagenActual();
 
-            // Eliminar preferencias guardadas
             const clave = this.generarClavePreferencias();
             localStorage.removeItem(clave);
 
@@ -403,7 +364,6 @@ class PreferenciasColores {
         }
     }
 
-    // Previsualizar cambios en tiempo real
     previsualizarCambios() {
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
@@ -424,21 +384,17 @@ class PreferenciasColores {
         }
     }
 
-    // Configurar eventos
     configurarEventos() {
-        // Botón guardar
         const btnGuardar = document.getElementById('btnGuardarConfiguraciones');
         if (btnGuardar) {
             btnGuardar.addEventListener('click', () => this.guardarPreferencias());
         }
 
-        // Botón restablecer
         const btnRestablecer = document.getElementById('btnRestablecerConfiguraciones');
         if (btnRestablecer) {
             btnRestablecer.addEventListener('click', () => this.restablecerPreferencias());
         }
 
-        // Input de imagen de fondo
         const inputImagenFondo = document.getElementById('ImagenFondo');
         if (inputImagenFondo) {
             inputImagenFondo.addEventListener('change', (e) => {
@@ -450,14 +406,15 @@ class PreferenciasColores {
         }
 
         const inputBlur = document.getElementById('blur');
+        const blurValue = document.getElementById('blurValue');
         if (inputBlur) {
-            inputBlur.addEventListener('change', () => {
-                this.configuracionActual.blurFondo = inputBlur.checked;
+            inputBlur.addEventListener('input', () => {
+                this.configuracionActual.blurFondo = parseInt(inputBlur.value);
+                if (blurValue) blurValue.textContent = `${inputBlur.value}%`;
                 this.aplicarConfiguracion();
             });
         }
 
-        // Previsualización en tiempo real para colores
         const inputPrimario = document.getElementById('ColorPrimario');
         const inputSecundario = document.getElementById('ColorSecundario');
         const inputColorFondo = document.getElementById('ColorFondo');
@@ -479,7 +436,6 @@ class PreferenciasColores {
             inputColorTexto.addEventListener('input', () => this.previsualizarCambios());
         }
 
-        // Previsualización en tiempo real para fuente
         const selectFuente = document.getElementById('FontFamily');
         if (selectFuente) {
             selectFuente.addEventListener('change', () => this.previsualizarCambios());
@@ -491,7 +447,6 @@ class PreferenciasColores {
         }
     }
 
-    // Mostrar notificación
     mostrarNotificacion(mensaje, tipo = 'info') {
         if (typeof mostrarNotificacion === 'function') {
             mostrarNotificacion(mensaje, tipo);
@@ -500,7 +455,6 @@ class PreferenciasColores {
         }
     }
 
-    // Método estático para aplicar preferencias en otras páginas
     static aplicarPreferenciasGlobales() {
         const nombreUsuario = localStorage.getItem("nombreAsesorActual") || "usuario_anonimo";
         const clave = `preferencias_${nombreUsuario}`;
@@ -531,7 +485,6 @@ class PreferenciasColores {
                     root.style.setProperty('--font-family', preferencias.fuente);
                 }
 
-                // Aplicar imagen de fondo
                 if (preferencias.imagenFondo) {
                     document.body.style.backgroundImage = `url(${preferencias.imagenFondo})`;
                     document.body.style.backgroundSize = 'cover';
@@ -542,7 +495,29 @@ class PreferenciasColores {
                     document.body.style.backgroundImage = 'none';
                 }
 
-                // Actualizar theme-color
+                const blurValue = preferencias.blurFondo !== undefined ? preferencias.blurFondo : 0;
+                const nav = document.querySelector('nav');
+                const footer = document.querySelector('footer');
+                const header = document.querySelector('header');
+
+                if (preferencias.imagenFondo) {
+                    const blurPixels = blurValue / 10;
+                    const opacity = blurValue / 100;
+                    
+                    if (nav) {
+                        nav.style.backdropFilter = `blur(${blurPixels}px)`;
+                        nav.style.backgroundColor = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                    }
+                    if (footer) {
+                        footer.style.backdropFilter = `blur(${blurPixels}px)`;
+                        footer.style.backgroundColor = `rgba(255, 255, 255, ${opacity * 0.2})`;
+                    }
+                    if (header) {
+                        header.style.backdropFilter = `blur(${blurPixels}px)`;
+                        header.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+                    }
+                }
+
                 const metaTheme = document.querySelector('meta[name="theme-color"]');
                 if (metaTheme && preferencias.colorPrimario) {
                     metaTheme.setAttribute('content', preferencias.colorPrimario);
@@ -553,7 +528,6 @@ class PreferenciasColores {
         }
     }
 
-    // Método para obtener las fuentes disponibles (útil para otras páginas)
     static obtenerFuentesDisponibles() {
         return [
             { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
@@ -570,7 +544,6 @@ class PreferenciasColores {
         ];
     }
 
-    // Método para exportar preferencias
     exportarPreferencias() {
         const clave = this.generarClavePreferencias();
         const preferencias = localStorage.getItem(clave);
@@ -592,32 +565,29 @@ class PreferenciasColores {
         }
     }
 
-    // Método para importar preferencias
     importarPreferencias(archivo) {
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
                 const preferencias = JSON.parse(e.target.result);
 
-                // Validar estructura básica
                 if (preferencias.colorPrimario && preferencias.colorSecundario && preferencias.colorFondo) {
-                    // Si no tiene fuente, usar la por defecto
                     if (!preferencias.fuente) {
                         preferencias.fuente = this.configuracionDefecto.fuente;
                     }
-                    // Si no tiene color de texto, usar el por defecto
                     if (!preferencias.colorTexto) {
                         preferencias.colorTexto = this.configuracionDefecto.colorTexto;
                     }
-                    // Si no tiene imagen de fondo, usar null
                     if (!preferencias.imagenFondo) {
                         preferencias.imagenFondo = null;
+                    }
+                    if (preferencias.blurFondo === undefined) {
+                        preferencias.blurFondo = this.configuracionDefecto.blurFondo;
                     }
 
                     const clave = this.generarClavePreferencias();
                     localStorage.setItem(clave, JSON.stringify(preferencias));
 
-                    // Recargar preferencias
                     this.cargarPreferencias();
                     this.aplicarConfiguracion();
 
@@ -633,12 +603,10 @@ class PreferenciasColores {
         reader.readAsText(archivo);
     }
 
-    // Método para obtener la configuración actual
     obtenerConfiguracionActual() {
         return { ...this.configuracionActual };
     }
 
-    // Método para actualizar una configuración específica
     actualizarConfiguracion(tipo, valor) {
         if (this.configuracionActual.hasOwnProperty(tipo)) {
             this.configuracionActual[tipo] = valor;
@@ -649,16 +617,12 @@ class PreferenciasColores {
     }
 }
 
-// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function () {
-    // Solo inicializar en la página de configuraciones
     if (document.getElementById('ColorPrimario') && document.getElementById('ColorSecundario') && document.getElementById('ColorFondo') && document.getElementById('ColorTexto')) {
         window.preferenciasColores = new PreferenciasColores();
     } else {
-        // En otras páginas, solo aplicar las preferencias
         PreferenciasColores.aplicarPreferenciasGlobales();
     }
 });
 
-// Aplicar preferencias cuando se carga la página (para cualquier página)
 PreferenciasColores.aplicarPreferenciasGlobales();

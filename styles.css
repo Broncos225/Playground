@@ -1991,3 +1991,7 @@ input[type="number"],
     font-family: var(--font-family);
     background-color: var(--color-texto);
 }
+
+#monitorPanel {
+    transition: transform 0.3s ease;
+}

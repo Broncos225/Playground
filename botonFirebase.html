@@ -1,27 +1,27 @@
 <div id="firebaseMonitorUI" style="position: fixed; bottom: 10px; left: 10px; z-index: 99999;">
     <button id="toggleMonitor"
-        style="background: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3); font-size: 20px;">
+        style="background: var(--color-secundario); color: white; border: none; border-radius: 50%; cursor: pointer; box-shadow: none; font-size: 16px; padding: 8px; width: 40px; height: 40px;">
         <i class="fas fa-bug" style="color: var(--color-texto);"></i>
     </button>
     <div id="monitorPanel"
-        style="display: none; position: absolute; bottom: 60px; background: var(--color-primario); border: 2px solid #4CAF50; border-radius: 8px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); min-width: 250px;">
-        <h3 style="margin: 0 0 10px 0; color: #4CAF50;">Firebase Monitor</h3>
-        <div style="margin-bottom: 10px;">
+        style="display: none; position: absolute; bottom: 60px; background: var(--color-primario); border: 2px solid var(--color-secundario); border-radius: 8px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); min-width: 250px;">
+        <h3 style="margin: 0 0 10px 0; color: var(--color-secundario);">Firebase Monitor</h3>
+        <div style="margin-bottom: 5px; font-size: 14px;">
             <div>📖 Lecturas: <strong id="monitorReads">0</strong></div>
             <div>✍️ Escrituras: <strong id="monitorWrites">0</strong></div>
             <div>🗑️ Eliminaciones: <strong id="monitorDeletes">0</strong></div>
             <div>📈 Total: <strong id="monitorTotal">0</strong></div>
         </div>
         <button onclick="fbMonitor.showConsoleReport()"
-            style="width: 100%; margin-bottom: 5px; padding: 8px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            style="width: 100%; margin-bottom: 5px; padding: 6px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">
             Ver Reporte Console
         </button>
         <button onclick="fbMonitor.exportToExcel()"
-            style="width: 100%; margin-bottom: 5px; padding: 8px; background: #FF9800; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            style="width: 100%; margin-bottom: 5px; padding: 6px; background: #FF9800; color: white; border: none; border-radius: 4px; cursor: pointer;">
             Exportar Excel
         </button>
         <button onclick="fbMonitor.reset(); updateMonitorUI();"
-            style="width: 100%; padding: 8px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            style="width: 100%; padding: 6px; background: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">
             Reiniciar
         </button>
     </div>

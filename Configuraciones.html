@@ -9,9 +9,6 @@
     <meta name="theme-color" content="#333" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-
-
     <title>Configuraciones</title>
 </head>
 
@@ -69,7 +66,8 @@
                         imagen</button>
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <h3>Blur fondo</h3>
-                        <input type="checkbox" id="blur">
+                        <input type="range" id="blur" min="0" max="100" value="0" step="1">
+                        <span id="blurValue">0%</span>
                     </div>
                 </div>
             </div>

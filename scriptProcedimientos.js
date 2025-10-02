@@ -12,6 +12,45 @@ const firebaseConfig = {
 
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+
+
+const originalRef = db.ref.bind(db);
+db.ref = function (path) {
+    const ref = originalRef(path);
+
+    const originalOnce = ref.once.bind(ref);
+    ref.once = function (eventType) {
+        window.fbMonitor.logRead(path);
+        return originalOnce(eventType);
+    };
+
+    const originalOn = ref.on.bind(ref);
+    ref.on = function (eventType, callback) {
+        window.fbMonitor.logRead(path + ' (listener)');
+        return originalOn(eventType, callback);
+    };
+
+    const originalSet = ref.set.bind(ref);
+    ref.set = function (value) {
+        window.fbMonitor.logWrite(path);
+        return originalSet(value);
+    };
+
+    const originalUpdate = ref.update.bind(ref);
+    ref.update = function (value) {
+        window.fbMonitor.logWrite(path);
+        return originalUpdate(value);
+    };
+
+    const originalRemove = ref.remove.bind(ref);
+    ref.remove = function () {
+        window.fbMonitor.logDelete(path);
+        return originalRemove();
+    };
+
+    return ref;
+};
+
 const usuario = ["Andrés_Felipe_Yepes_Tascón", "Ocaris_David_Arango_Aguilar"];
 
 const itemsRef = firebase.database().ref('procedimientos');
@@ -64,7 +103,7 @@ function initializeQuillWithTables() {
         try {
             // Registrar el módulo de tablas
             Quill.register('modules/better-table', quillBetterTable);
-            
+
             // Agregar configuración de tablas
             quillConfig.modules['better-table'] = {
                 operationMenu: {
@@ -99,26 +138,26 @@ function initializeQuillWithTables() {
                     }
                 }
             };
-            
+
             // Agregar botón de insertar tabla a la toolbar
             quillConfig.modules.toolbar.container.splice(-1, 0, ['insertTable']);
-            
+
             // Agregar handler para insertar tablas
             quillConfig.modules.toolbar.handlers.insertTable = function () {
                 const tableModule = this.quill.getModule('better-table');
                 if (tableModule) {
                     const rows = prompt('¿Cuántas filas deseas? (por defecto 3)', '3');
                     const cols = prompt('¿Cuántas columnas deseas? (por defecto 3)', '3');
-                    
+
                     const numRows = parseInt(rows) || 3;
                     const numCols = parseInt(cols) || 3;
-                    
+
                     if (numRows > 0 && numCols > 0) {
                         tableModule.insertTable(numRows, numCols);
                     }
                 }
             };
-            
+
             console.log('quill-better-table configurado correctamente');
         } catch (error) {
             console.warn('Error al configurar quill-better-table:', error);
@@ -187,7 +226,7 @@ const setupButtons = () => {
     // Función para manejar clic en un item (común para búsqueda y vista normal)
     function manejarClicItem(key, itemData, itemTitle) {
         tituloTexto.textContent = key;
-        
+
         // Verificar que quill esté disponible antes de usar
         if (quill && quill.root) {
             quill.root.innerHTML = itemData.descripcion || "Descripción no disponible";
@@ -236,17 +275,17 @@ const setupButtons = () => {
                 }
             }
         }
-        
+
         currentKey = key;
-        
+
         if (quill) {
             quill.enable(false);
         }
-        
+
         if (quillToolbar) {
             quillToolbar.style.display = 'none';
         }
-        
+
         editarBtn.style.display = usuario.includes(asesorActual) ? 'inline' : 'none';
         guardarBtn.style.display = 'none';
         agregarEnlaceBtn.style.display = 'none';
@@ -393,7 +432,7 @@ const setupButtons = () => {
     if (quillToolbar) {
         quillToolbar.style.display = 'none';
     }
-    
+
     if (quill) {
         quill.enable(false);
     }
@@ -435,7 +474,7 @@ const setupButtons = () => {
                 });
         }
     });
-    
+
     agregarEnlaceBtn.addEventListener('click', () => {
         if (quill && quill.isEnabled()) {
             const descripcionEnlace = prompt("Introduce la descripción del enlace:");
@@ -509,7 +548,7 @@ const setupButtons = () => {
             }
         });
     }
-    
+
     function eliminarEnlace(key, descripcion) {
         if (confirm(`¿Estás seguro de que deseas eliminar el enlace "${descripcion}"?`)) {
             const enlaceRef = itemsRef.child(key).child('enlaces').child(descripcion);
@@ -569,7 +608,7 @@ const setupButtons = () => {
                 alert("Acción cancelada.");
                 return;
             }
-            
+
             const itemNombreTrimmed = itemNombre.trim();
 
             checkItemExists(itemNombreTrimmed).then(exists => {
