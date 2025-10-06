@@ -352,7 +352,7 @@ button .botonReiniciar:hover {
     display: flex;
     justify-content: center;
     font-family: var(--font-family);
-    font-size: 12px;
+    font-size: 16px;
     flex-direction: column;
     align-items: flex-start;
 }
@@ -1994,4 +1994,26 @@ input[type="number"],
 
 #monitorPanel {
     transition: transform 0.3s ease;
+}
+
+.reorder-controls button {
+    background-color: var(--color-primario);
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.reorder-controls button:hover {
+    background-color: var(--color-texto);
+    color: var(--color-primario);
+}
+
+#btnToggleEditMode,
+#btnToggleEditMode + button {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.3s;
 }

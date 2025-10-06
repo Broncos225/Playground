@@ -414,3 +414,289 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Sistema de reordenamiento de módulos con modal y drag & drop
+// Agregar al final de scriptHerramientas.js
+
+class ModuleOrderManager {
+    constructor() {
+        this.storageKey = 'moduleOrder';
+        this.defaultOrder = {
+            columna1: ['M1', 'M2', 'M3', 'M4'],
+            columna2: ['M5', 'M6', 'M7', 'M8']
+        };
+        this.currentOrder = this.loadOrder();
+        this.moduleNames = {
+            'M1': 'Contactos de las tiendas',
+            'M2': 'Matriz de escalamiento',
+            'M3': 'Descuentos',
+            'M4': 'Conversor de Minuta',
+            'M5': 'Enlaces',
+            'M6': 'Instructivos',
+            'M7': 'Extensiones Administrativas',
+            'M8': 'Enlaces de los asesores'
+        };
+        
+        // Aplicar orden guardado al cargar
+        this.applyOrder();
+        this.createModal();
+    }
+
+    loadOrder() {
+        try {
+            const saved = localStorage.getItem(this.storageKey);
+            if (saved) {
+                return JSON.parse(saved);
+            }
+        } catch (error) {
+            console.error('Error al cargar el orden:', error);
+        }
+        return JSON.parse(JSON.stringify(this.defaultOrder));
+    }
+
+    saveOrder() {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(this.currentOrder));
+            console.log('Orden guardado exitosamente');
+        } catch (error) {
+            console.error('Error al guardar el orden:', error);
+        }
+    }
+
+    applyOrder() {
+        const columnas = document.querySelectorAll('.columna');
+        
+        ['columna1', 'columna2'].forEach((columnaKey, index) => {
+            const columna = columnas[index];
+            const order = this.currentOrder[columnaKey];
+            
+            order.forEach(moduleId => {
+                const module = document.getElementById(moduleId);
+                if (module) {
+                    columna.appendChild(module);
+                }
+            });
+        });
+    }
+
+    resetOrder() {
+        this.currentOrder = JSON.parse(JSON.stringify(this.defaultOrder));
+        this.applyOrder();
+        this.saveOrder();
+        this.updateModalLists();
+    }
+
+    createModal() {
+        const modalHTML = `
+            <div id="modalReorder" class="modal" style="display: none;">
+                <div class="modal-content" style="width: 80%; max-width: 900px; background-color: var(--color-fondo);">
+                    <span class="close" id="closeModalReorder">&times;</span>
+                    <h2 style="text-align: center; margin-bottom: 20px;">Organizar Módulos</h2>
+                    <div style="display: flex; gap: 20px; justify-content: center; align-items: stretch;">
+                        <div style="flex: 1;">
+                            <h3 style="text-align: center; background-color: var(--color-primario); color: white; padding: 10px; border-radius: 5px;">Columna Izquierda</h3>
+                            <ul id="listColumna1" class="sortable-list"></ul>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="text-align: center; background-color: var(--color-primario); color: white; padding: 10px; border-radius: 5px;">Columna Derecha</h3>
+                            <ul id="listColumna2" class="sortable-list"></ul>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                        <button id="btnSaveOrder" style="padding: 10px 20px; background-color: var(--color-primario); color: white; font-weight: bold;">Guardar</button>
+                        <button id="btnResetOrder" style="padding: 10px 20px;">Restaurar Original</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        this.setupModalEvents();
+        this.updateModalLists();
+    }
+
+    setupModalEvents() {
+        const modal = document.getElementById('modalReorder');
+        const closeBtn = document.getElementById('closeModalReorder');
+        const btnSave = document.getElementById('btnSaveOrder');
+        const btnReset = document.getElementById('btnResetOrder');
+
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        };
+
+        window.onclick = (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+        };
+
+        btnSave.onclick = () => {
+            this.applyOrder();
+            this.saveOrder();
+            modal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        };
+
+        btnReset.onclick = () => {
+            if (confirm('¿Estás seguro de que quieres restaurar el orden original?')) {
+                this.resetOrder();
+            }
+        };
+
+        // Setup drag and drop
+        this.setupDragAndDrop('listColumna1');
+        this.setupDragAndDrop('listColumna2');
+    }
+
+    setupDragAndDrop(listId) {
+        const list = document.getElementById(listId);
+        
+        list.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = this.getDragAfterElement(list, e.clientY);
+            const dragging = document.querySelector('.dragging');
+            if (afterElement == null) {
+                list.appendChild(dragging);
+            } else {
+                list.insertBefore(dragging, afterElement);
+            }
+        });
+
+        list.addEventListener('drop', (e) => {
+            e.preventDefault();
+            this.updateOrderFromLists();
+        });
+    }
+
+    getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('li:not(.dragging)')];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    updateModalLists() {
+        const list1 = document.getElementById('listColumna1');
+        const list2 = document.getElementById('listColumna2');
+
+        list1.innerHTML = '';
+        list2.innerHTML = '';
+
+        this.currentOrder.columna1.forEach(moduleId => {
+            const li = this.createListItem(moduleId);
+            list1.appendChild(li);
+        });
+
+        this.currentOrder.columna2.forEach(moduleId => {
+            const li = this.createListItem(moduleId);
+            list2.appendChild(li);
+        });
+    }
+
+    createListItem(moduleId) {
+        const li = document.createElement('li');
+        li.draggable = true;
+        li.dataset.moduleId = moduleId;
+        li.textContent = this.moduleNames[moduleId];
+        li.style.cssText = `
+            padding: 12px;
+            margin: 5px 0;
+            background-color: var(--color-secundario);
+            border: 1px solid #000;
+            border-radius: 5px;
+            cursor: move;
+            user-select: none;
+            list-style: none;
+        `;
+
+        li.addEventListener('dragstart', () => {
+            li.classList.add('dragging');
+            li.style.opacity = '0.5';
+        });
+
+        li.addEventListener('dragend', () => {
+            li.classList.remove('dragging');
+            li.style.opacity = '1';
+        });
+
+        return li;
+    }
+
+    updateOrderFromLists() {
+        const list1 = document.getElementById('listColumna1');
+        const list2 = document.getElementById('listColumna2');
+
+        this.currentOrder.columna1 = Array.from(list1.children).map(li => li.dataset.moduleId);
+        this.currentOrder.columna2 = Array.from(list2.children).map(li => li.dataset.moduleId);
+    }
+
+    openModal() {
+        const modal = document.getElementById('modalReorder');
+        modal.style.display = 'block';
+        document.body.classList.add('modal-open');
+        this.updateModalLists();
+    }
+
+    createControlInterface() {
+        const controlDiv = document.createElement('div');
+        controlDiv.style.cssText = `
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: flex-end;
+        `;
+
+        const btnReorder = document.createElement('button');
+        btnReorder.textContent = 'Reordenar Módulos';
+        btnReorder.style.cssText = 'padding: 10px 20px; font-weight: bold; border-radius: 5px; border: 1px solid #000; cursor: pointer;';
+        btnReorder.onclick = () => this.openModal();
+
+        controlDiv.appendChild(btnReorder);
+
+        const titulo = document.getElementById('Titulo');
+        if (titulo && titulo.parentNode) {
+            titulo.parentNode.insertBefore(controlDiv, titulo.nextSibling);
+        }
+    }
+}
+
+// Agregar estilos para el modal y las listas
+const styles = document.createElement('style');
+styles.textContent = `
+    .sortable-list {
+        min-height: 300px;
+        padding: 10px;
+        background-color: var(--color-primario);
+        border: 2px dashed #ccc;
+        border-radius: 5px;
+        margin: 0;
+    }
+
+    .sortable-list li:hover {
+        background-color: #e0e0e0;
+    }
+
+    .dragging {
+        opacity: 0.5;
+    }
+`;
+document.head.appendChild(styles);
+
+// Inicializar el sistema cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    const orderManager = new ModuleOrderManager();
+    orderManager.createControlInterface();
+    
+    window.orderManager = orderManager;
+});
