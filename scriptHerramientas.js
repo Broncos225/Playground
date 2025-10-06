@@ -357,13 +357,13 @@ function nombreUsuario() {
     }
 }
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        nombreUsuario(); 
+        nombreUsuario();
         console.log("Nadie ha iniciado sesión.");
     }
 });
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const modulos = document.querySelectorAll('.Modulo');
 
     modulos.forEach(modulo => {
@@ -389,13 +389,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // Colapsa los módulos al cargar la página.
             modulo.classList.add('collapsed');
 
-            titulo.addEventListener('click', function() {
+            titulo.addEventListener('click', function () {
                 // Encuentra el contenedor de la columna más cercano.
                 const columnaPadre = modulo.closest('.columna');
                 if (columnaPadre) {
                     // Guarda el estado actual del módulo antes de hacer cambios
                     const estabaColapsado = modulo.classList.contains('collapsed');
-                    
+
                     // Selecciona solo los módulos dentro de esa columna.
                     const modulosEnMismaColumna = columnaPadre.querySelectorAll('.Modulo');
 
@@ -436,7 +436,7 @@ class ModuleOrderManager {
             'M7': 'Extensiones Administrativas',
             'M8': 'Enlaces de los asesores'
         };
-        
+
         // Aplicar orden guardado al cargar
         this.applyOrder();
         this.createModal();
@@ -465,11 +465,11 @@ class ModuleOrderManager {
 
     applyOrder() {
         const columnas = document.querySelectorAll('.columna');
-        
+
         ['columna1', 'columna2'].forEach((columnaKey, index) => {
             const columna = columnas[index];
             const order = this.currentOrder[columnaKey];
-            
+
             order.forEach(moduleId => {
                 const module = document.getElementById(moduleId);
                 if (module) {
@@ -553,7 +553,7 @@ class ModuleOrderManager {
 
     setupDragAndDrop(listId) {
         const list = document.getElementById(listId);
-        
+
         list.addEventListener('dragover', (e) => {
             e.preventDefault();
             const afterElement = this.getDragAfterElement(list, e.clientY);
@@ -694,9 +694,9 @@ styles.textContent = `
 document.head.appendChild(styles);
 
 // Inicializar el sistema cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const orderManager = new ModuleOrderManager();
     orderManager.createControlInterface();
-    
+
     window.orderManager = orderManager;
 });
