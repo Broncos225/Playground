@@ -79,43 +79,205 @@ function configurarBusqueda() {
 
 
 // Selecciona los campos de entrada y el elemento de resultado
-let valorInput = document.querySelector('input[placeholder="Valor"]');
-let porcentajeInput = document.querySelector('input[placeholder="Porcentaje"]');
-let resultadoLabel = document.querySelector('#Resultado1');
-let resultadoLabel11 = document.querySelector('#Resultado11');
+let valorOriginalInput = document.querySelector('#inputValorOriginal');
+let porcentajeInput = document.querySelector('#inputPorcentaje');
+let valorDescontadoInput = document.querySelector('#inputValorDescontado');
+let totalPagarInput = document.querySelector('#inputTotalPagar');
 let limpiarButton = document.getElementById('Limpiar');
 
+let camposActivos = [];
+let calculando = false;
+
 function formatearNumero(num) {
+    if (!num && num !== 0) return '';
     let partes = num.toString().split(".");
     partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     return partes.join(",");
 }
 
-function calcularPorcentaje() {
-    let valor = parseFloat(valorInput.value.replace(/\./g, ''));
-    let porcentaje = parseFloat(porcentajeInput.value);
-    if (!isNaN(valor) && !isNaN(porcentaje)) {
-        let resultado = valor * (porcentaje / 100);
-        resultado = Math.round(resultado * 100) / 100;
-        let resultadoFormateado = formatearNumero(resultado);
-        resultadoLabel.innerHTML = `El valor descontado es: <strong>${resultadoFormateado}</strong> pesos.`;
-        let total = valor - resultado;
-        let totalFormateado = formatearNumero(total);
-        resultadoLabel11.innerHTML = `El total a pagar es: <strong>${totalFormateado}</strong> pesos.`;
+function limpiarFormato(str) {
+    if (!str) return 0;
+    return parseFloat(str.replace(/\./g, '').replace(',', '.')) || 0;
+}
+
+function actualizarCampo(input, valor) {
+    input.value = formatearNumero(Math.round(valor * 100) / 100);
+}
+
+function limpiarCamposCalculados() {
+    let todos = [valorOriginalInput, porcentajeInput, valorDescontadoInput, totalPagarInput];
+    todos.forEach(campo => {
+        if (!camposActivos.includes(campo)) {
+            campo.value = '';
+        }
+    });
+}
+
+function bloquearCampos() {
+    let todos = [valorOriginalInput, porcentajeInput, valorDescontadoInput, totalPagarInput];
+    
+    // Solo bloquear si ya hay 2 campos activos
+    if (camposActivos.length === 2) {
+        todos.forEach(campo => {
+            if (!camposActivos.includes(campo)) {
+                campo.style.backgroundColor = '#f0f0f0';
+                campo.style.cursor = 'not-allowed';
+                campo.readOnly = true;
+            } else {
+                campo.style.backgroundColor = '';
+                campo.style.cursor = '';
+                campo.readOnly = false;
+            }
+        });
     } else {
-        resultadoLabel.textContent = '';
-        resultadoLabel11.textContent = '';
+        // Si hay menos de 2 campos, desbloquear todos
+        todos.forEach(campo => {
+            campo.style.backgroundColor = '';
+            campo.style.cursor = '';
+            campo.readOnly = false;
+        });
     }
 }
 
-valorInput.addEventListener('input', calcularPorcentaje);
-porcentajeInput.addEventListener('input', calcularPorcentaje);
+function desbloquearTodos() {
+    let todos = [valorOriginalInput, porcentajeInput, valorDescontadoInput, totalPagarInput];
+    todos.forEach(campo => {
+        campo.style.backgroundColor = '';
+        campo.style.cursor = '';
+        campo.readOnly = false;
+    });
+    camposActivos = [];
+}
 
-limpiarButton.addEventListener('click', function () {
-    valorInput.value = '';
-    porcentajeInput.value = 0;
-    resultadoLabel.textContent = '';
-    resultadoLabel11.textContent = '';
+function calcularDesdeValores() {
+    if (camposActivos.length !== 2) return;
+    
+    let vo = limpiarFormato(valorOriginalInput.value);
+    let pc = parseFloat(porcentajeInput.value) || 0;
+    let vd = limpiarFormato(valorDescontadoInput.value);
+    let tp = limpiarFormato(totalPagarInput.value);
+
+    // Caso 1: Valor Original + Porcentaje
+    if (camposActivos.includes(valorOriginalInput) && camposActivos.includes(porcentajeInput)) {
+        if (vo > 0 && pc > 0) {
+            let valorDescontado = vo * (pc / 100);
+            let totalPagar = vo - valorDescontado;
+            actualizarCampo(valorDescontadoInput, valorDescontado);
+            actualizarCampo(totalPagarInput, totalPagar);
+        }
+        return;
+    }
+
+    // Caso 2: Valor Original + Valor Descontado
+    if (camposActivos.includes(valorOriginalInput) && camposActivos.includes(valorDescontadoInput)) {
+        if (vo > 0 && vd > 0) {
+            let totalPagar = vo - vd;
+            let porcentaje = (vd / vo) * 100;
+            actualizarCampo(totalPagarInput, totalPagar);
+            porcentajeInput.value = Math.round(porcentaje * 100) / 100;
+        }
+        return;
+    }
+
+    // Caso 3: Valor Original + Total a Pagar
+    if (camposActivos.includes(valorOriginalInput) && camposActivos.includes(totalPagarInput)) {
+        if (vo > 0 && tp > 0) {
+            let valorDescontado = vo - tp;
+            let porcentaje = (valorDescontado / vo) * 100;
+            actualizarCampo(valorDescontadoInput, valorDescontado);
+            porcentajeInput.value = Math.round(porcentaje * 100) / 100;
+        }
+        return;
+    }
+
+    // Caso 4: Porcentaje + Valor Descontado
+    if (camposActivos.includes(porcentajeInput) && camposActivos.includes(valorDescontadoInput)) {
+        if (pc > 0 && vd > 0) {
+            let valorOriginal = vd / (pc / 100);
+            let totalPagar = valorOriginal - vd;
+            actualizarCampo(valorOriginalInput, valorOriginal);
+            actualizarCampo(totalPagarInput, totalPagar);
+        }
+        return;
+    }
+
+    // Caso 5: Porcentaje + Total a Pagar
+    if (camposActivos.includes(porcentajeInput) && camposActivos.includes(totalPagarInput)) {
+        if (pc > 0 && pc < 100 && tp > 0) {
+            let valorOriginal = tp / (1 - pc / 100);
+            let valorDescontado = valorOriginal - tp;
+            actualizarCampo(valorOriginalInput, valorOriginal);
+            actualizarCampo(valorDescontadoInput, valorDescontado);
+        }
+        return;
+    }
+
+    // Caso 6: Valor Descontado + Total a Pagar
+    if (camposActivos.includes(valorDescontadoInput) && camposActivos.includes(totalPagarInput)) {
+        if (vd > 0 && tp > 0) {
+            let valorOriginal = vd + tp;
+            let porcentaje = (vd / valorOriginal) * 100;
+            actualizarCampo(valorOriginalInput, valorOriginal);
+            porcentajeInput.value = Math.round(porcentaje * 100) / 100;
+        }
+        return;
+    }
+}
+
+function manejarInput(input) {
+    if (calculando) return;
+    calculando = true;
+
+    // Verificar si el campo está vacío
+    let estaVacio = input.value.trim() === '';
+    
+    // Si el campo está vacío, quitarlo de la lista de activos
+    if (estaVacio) {
+        camposActivos = camposActivos.filter(c => c !== input);
+        // Limpiar los campos calculados cuando se borra un campo activo
+        limpiarCamposCalculados();
+    } else {
+        // Si tiene valor y no está en la lista, agregarlo
+        if (!camposActivos.includes(input)) {
+            camposActivos.push(input);
+            
+            // Si ya hay 2 campos activos, mantener solo los 2 más recientes
+            if (camposActivos.length > 2) {
+                camposActivos.shift();
+                // Limpiar campos calculados al cambiar de combinación
+                limpiarCamposCalculados();
+            }
+        }
+    }
+    
+    bloquearCampos();
+    calcularDesdeValores();
+    
+    calculando = false;
+}
+
+valorOriginalInput.addEventListener('input', function() {
+    manejarInput(this);
+});
+
+porcentajeInput.addEventListener('input', function() {
+    manejarInput(this);
+});
+
+valorDescontadoInput.addEventListener('input', function() {
+    manejarInput(this);
+});
+
+totalPagarInput.addEventListener('input', function() {
+    manejarInput(this);
+});
+
+limpiarButton.addEventListener('click', function() {
+    valorOriginalInput.value = '';
+    porcentajeInput.value = '';
+    valorDescontadoInput.value = '';
+    totalPagarInput.value = '';
+    desbloquearTodos();
 });
 
 // Modulo 2: Contactos de Tiendas
@@ -167,7 +329,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         datos.forEach(d => {
             let fila = tabla.insertRow(-1);
-            let orden = ['CeCo', 'Tienda', 'Celular', 'Zona', 'LiderDeZona', 'Correo']; // Orden especificado para las celdas
+            let orden = ['CeCo', 'Tienda', 'Celular', 'Zona', 'LiderDeZona', 'Correo'];
             orden.forEach(key => {
                 let celda = fila.insertCell(-1);
                 celda.textContent = d[key];
@@ -179,16 +341,68 @@ document.addEventListener("DOMContentLoaded", function () {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
+    // Crear el selector de columnas
+    const columnMap = {
+        'Todas': null,
+        'CeCo': 'CeCo',
+        'Tienda': 'Tienda',
+        'Celular': 'Celular',
+        'Zona': 'Zona',
+        'Líder de zona': 'LiderDeZona',
+        'Correo': 'Correo'
+    };
+
+    // Insertar el select antes del botón Limpiar
+    const formTiendas = document.querySelector('#M1 #FormTiendas');
+    const limpiarBtn = document.getElementById('Limpiar2');
+    
+    const selectColumna = document.createElement('select');
+    selectColumna.id = 'selectColumnaContactos';
+    selectColumna.style.cssText = 'padding: 5px;';
+    
+    Object.keys(columnMap).forEach(columnName => {
+        const option = document.createElement('option');
+        option.value = columnMap[columnName] || '';
+        option.textContent = columnName;
+        selectColumna.appendChild(option);
+    });
+
+    formTiendas.insertBefore(selectColumna, limpiarBtn);
+
+    // Modificar el evento de búsqueda
     document.getElementById('busqueda').addEventListener('input', function () {
         const consulta = normalizar(this.value.toLowerCase());
-        const datosFiltrados = datosTabla.filter(item =>
-            Object.values(item).some(val => val && normalizar(val.toLowerCase()).includes(consulta))
-        );
+        const columnaSeleccionada = document.getElementById('selectColumnaContactos').value;
+        
+        const datosFiltrados = datosTabla.filter(item => {
+            if (!consulta) return true;
+            
+            // Si se seleccionó "Todas", buscar en todas las columnas
+            if (!columnaSeleccionada) {
+                return Object.values(item).some(val => 
+                    val && normalizar(val.toLowerCase()).includes(consulta)
+                );
+            }
+            
+            // Buscar solo en la columna seleccionada
+            const valor = item[columnaSeleccionada];
+            return valor && normalizar(valor.toLowerCase()).includes(consulta);
+        });
+        
         actualizarTabla(datosFiltrados);
+    });
+
+    // También actualizar cuando cambie la selección de columna
+    document.getElementById('selectColumnaContactos').addEventListener('change', function () {
+        const inputBusqueda = document.getElementById('busqueda');
+        if (inputBusqueda.value) {
+            inputBusqueda.dispatchEvent(new Event('input'));
+        }
     });
 
     document.getElementById('Limpiar2').addEventListener('click', function () {
         document.getElementById('busqueda').value = '';
+        document.getElementById('selectColumnaContactos').selectedIndex = 0;
         document.getElementById('Contactos').scrollLeft = 0;
         document.getElementById('Contactos').scrollTop = 0;
         actualizarTabla(datosTabla);
@@ -196,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     cargarDatos();
 });
+
 let datosTablaMatriz = [];
 
 document.addEventListener("DOMContentLoaded", function () {

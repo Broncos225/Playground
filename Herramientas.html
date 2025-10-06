@@ -311,32 +311,33 @@
 
         <div class="Modulo" id="M3">
           <h2>Descuentos</h2>
-          <div id="Celda" class="celda" style="
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              gap: 10px;
-              padding: 10px;
-            ">
-            <div class="input-container">
-              <p style="margin: 0%; font-weight: bold">Valor</p>
-              <input type="number" placeholder="Valor" min="0" style="height: 36px" />
+          <div class="module-content">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 10px;">
+              <div class="input-container">
+                <p style="margin: 0; font-weight: bold;">Valor Original</p>
+                <input type="text" id="inputValorOriginal" placeholder="0" style="height: 36px; width: 100%;" />
+              </div>
+
+              <div class="input-container">
+                <p style="margin: 0; font-weight: bold;">Porcentaje (%)</p>
+                <input type="number" id="inputPorcentaje" placeholder="0" min="0" max="100" step="0.01"
+                  style="height: 36px; width: 100%;" />
+              </div>
+
+              <div class="input-container">
+                <p style="margin: 0; font-weight: bold;">Valor Descontado</p>
+                <input type="text" id="inputValorDescontado" placeholder="0" style="height: 36px; width: 100%;" />
+              </div>
+
+              <div class="input-container">
+                <p style="margin: 0; font-weight: bold;">Total a Pagar</p>
+                <input type="text" id="inputTotalPagar" placeholder="0" style="height: 36px; width: 100%;" />
+              </div>
             </div>
-            <div class="input-container">
-              <p style="margin: 0%; font-weight: bold">Porcentaje</p>
-              <input type="number" placeholder="Porcentaje" value="0" min="0" max="100"
-                style="height: 36px; width: 70px" />
+
+            <div style="text-align: center; margin-top: 10px;">
+              <button id="Limpiar" style="margin-bottom: 15px;">Limpiar</button>
             </div>
-          </div>
-          <div style="
-              flex-direction: column;
-              display: flex;
-              align-items: center;
-              gap: 10px;
-            ">
-            <label id="Resultado1" style="width: auto"></label>
-            <label id="Resultado11" style="width: auto"></label>
-            <button id="Limpiar" style="margin-bottom: 25px">Limpiar</button>
           </div>
         </div>
 
