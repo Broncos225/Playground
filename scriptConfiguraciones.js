@@ -191,7 +191,7 @@ class PreferenciasColores {
         if (this.configuracionActual.imagenFondo) {
             const blurPixels = this.configuracionActual.blurFondo / 10;
             const opacity = this.configuracionActual.blurFondo / 100;
-            
+
             if (nav) {
                 nav.style.backdropFilter = `blur(${blurPixels}px)`;
                 nav.style.backgroundColor = `rgba(255, 255, 255, ${opacity * 0.2})`;
@@ -247,13 +247,13 @@ class PreferenciasColores {
                     this.configuracionActual.imagenFondo = imagenBase64;
                     this.aplicarConfiguracion();
                     this.mostrarPreviewImagenActual();
-                    
+
                     const blurValue = document.getElementById('blurValue');
                     const inputBlur = document.getElementById('blur');
                     if (blurValue && inputBlur) {
                         blurValue.textContent = `${inputBlur.value}%`;
                     }
-                    
+
                     this.mostrarNotificacion('Imagen de fondo cargada correctamente', 'exito');
                 };
 
@@ -503,7 +503,7 @@ class PreferenciasColores {
                 if (preferencias.imagenFondo) {
                     const blurPixels = blurValue / 10;
                     const opacity = blurValue / 100;
-                    
+
                     if (nav) {
                         nav.style.backdropFilter = `blur(${blurPixels}px)`;
                         nav.style.backgroundColor = `rgba(255, 255, 255, ${opacity * 0.2})`;
@@ -626,3 +626,76 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 PreferenciasColores.aplicarPreferenciasGlobales();
+let temas = [];
+
+// Cargar temas desde JSON
+async function cargarTemas() {
+    try {
+        const respuesta = await fetch('temas.json'); // Ruta al archivo
+        if (!respuesta.ok) throw new Error('No se pudo cargar temas.json');
+        temas = await respuesta.json();
+        crearBotonesTemas();
+    } catch (error) {
+        console.error('Error al cargar los temas:', error);
+    }
+}
+
+// Función para crear los botones de tema
+function crearBotonesTemas() {
+    const container = document.getElementById('temasButtons');
+    if (!container) {
+        console.error('No se encontró el contenedor temasButtons');
+        return;
+    }
+
+    container.innerHTML = '';
+
+    temas.forEach((tema) => {
+        const temaContainer = document.createElement('div');
+        temaContainer.className = 'tema-container';
+
+        const nombreSpan = document.createElement('span');
+        nombreSpan.className = 'tema-nombre';
+        nombreSpan.textContent = tema.nombre;
+
+        const boton = document.createElement('button');
+        boton.className = 'tema-boton';
+        boton.style.background = `conic-gradient(
+            from 0deg,
+            ${tema.primario} 0deg 90deg,
+            ${tema.secundario} 90deg 180deg,
+            ${tema.fondo} 180deg 270deg,
+            ${tema.texto} 270deg 360deg
+        )`;
+        boton.title = tema.nombre;
+
+        boton.addEventListener('click', () => aplicarTema(tema));
+
+        temaContainer.appendChild(nombreSpan);
+        temaContainer.appendChild(boton);
+        container.appendChild(temaContainer);
+    });
+
+    console.log(`Se crearon ${temas.length} botones de tema`);
+}
+
+// Función para aplicar un tema
+function aplicarTema(tema) {
+    const ids = ['ColorPrimario', 'ColorSecundario', 'ColorFondo', 'ColorTexto'];
+    const valores = [tema.primario, tema.secundario, tema.fondo, tema.texto];
+
+    ids.forEach((id, i) => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.value = valores[i];
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    });
+}
+
+// Inicializar al cargar la página
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', cargarTemas);
+} else {
+    cargarTemas();
+}

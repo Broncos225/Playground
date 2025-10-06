@@ -1,0 +1,108 @@
+[
+    {
+        "nombre": "Océano",
+        "primario": "#222831",
+        "secundario": "#00ADB5",
+        "fondo": "#393E46",
+        "texto": "#EEEEEE"
+    },
+    {
+        "nombre": "Ámbar",
+        "primario": "#e69500",
+        "secundario": "#ff8c00",
+        "fondo": "#f0f0f0",
+        "texto": "#000000"
+    },
+    {
+        "nombre": "Cielo",
+        "primario": "#3498db",
+        "secundario": "#2980b9",
+        "fondo": "#ecf0f1",
+        "texto": "#2c3e50"
+    },
+    {
+        "nombre": "Coral",
+        "primario": "#e74c3c",
+        "secundario": "#c0392b",
+        "fondo": "#ffeaa7",
+        "texto": "#34495e"
+    },
+    {
+        "nombre": "Bosque",
+        "primario": "#BCE9A4",
+        "secundario": "#020F0D",
+        "fondo": "#114328",
+        "texto": "#0C2613"
+    },
+    {
+        "nombre": "Medianoche",
+        "primario": "#9b59b6",
+        "secundario": "#8e44ad",
+        "fondo": "#1a1a2e",
+        "texto": "#eaeaea"
+    },
+    {
+        "nombre": "Lavanda",
+        "primario": "#a29bfe",
+        "secundario": "#6c5ce7",
+        "fondo": "#f8f9fa",
+        "texto": "#2d3436"
+    },
+    {
+        "nombre": "Carbón",
+        "primario": "#95a5a6",
+        "secundario": "#7f8c8d",
+        "fondo": "#2c3e50",
+        "texto": "#ecf0f1"
+    },
+    {
+        "nombre": "Menta",
+        "primario": "#1abc9c",
+        "secundario": "#16a085",
+        "fondo": "#f4fffe",
+        "texto": "#0a3d3b"
+    },
+    {
+        "nombre": "Espresso",
+        "primario": "#d4a574",
+        "secundario": "#8b6f47",
+        "fondo": "#1a1410",
+        "texto": "#f5f5dc"
+    },
+    {
+        "nombre": "Rosa",
+        "primario": "#ff6b9d",
+        "secundario": "#c44569",
+        "fondo": "#fff5f7",
+        "texto": "#4a1a2c"
+    },
+    {
+        "nombre": "Neón",
+        "primario": "#00ff88",
+        "secundario": "#00d9ff",
+        "fondo": "#0a0e27",
+        "texto": "#939393"
+    },
+    {
+        "nombre": "Durazno",
+        "primario": "#ff9a76",
+        "secundario": "#ff6b81",
+        "fondo": "#fffbf5",
+        "texto": "#333333"
+    },
+    {
+        "nombre": "Índigo",
+        "primario": "#4834df",
+        "secundario": "#6c5ce7",
+        "fondo": "#1e1e30",
+        "texto": "#f5f5f5"
+    },
+    {
+        "nombre": "Limón",
+        "primario": "#ffd700",
+        "secundario": "#ffa500",
+        "fondo": "#fffef7",
+        "texto": "#2c2c2c"
+    }
+    
+]

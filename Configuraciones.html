@@ -11,6 +11,71 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <title>Configuraciones</title>
 </head>
+<style>
+    .temas-container {
+        margin: 20px 0;
+    }
+
+    .tema-container {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        margin: 5px;
+    }
+
+    .tema-nombre {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--color-texto);
+    }
+
+    .tema-boton {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #333;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .tema-boton:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .tema-boton:active {
+        transform: scale(1.05);
+    }
+
+    .config-inputs {
+        margin: 20px 0;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .input-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .input-group label {
+        min-width: 150px;
+    }
+
+    .input-group input[type="color"] {
+        width: 60px;
+        height: 35px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
 
 <body>
     <header>
@@ -41,6 +106,11 @@
         <h1 id="Titulo">Configuraciones</h1>
         <div class="Configuraciones">
             <div class="Configuracion">
+                <h2>Temas de Color</h2>
+
+                <div class="temas-container">
+                    <div id="temasButtons"></div>
+                </div>
                 <h2>Colores</h2>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <h3>Color primario</h3>
