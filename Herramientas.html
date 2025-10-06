@@ -11,6 +11,22 @@
 
   <link rel="icon" href="Icono.ico" />
 
+  <div id="firebaseMonitorContainer"></div>
+
+  <script>
+    if (localStorage.getItem("nombreAsesorActual") === "Andrés_Felipe_Yepes_Tascón") {
+      fetch("botonFirebase.html")
+        .then(r => r.text())
+        .then(html => {
+          document.getElementById("firebaseMonitorContainer").innerHTML = html;
+          const script = document.createElement("script");
+          script.src = "botonFirebase.js"; // aquí va la lógica del botón
+          document.body.appendChild(script);
+        });
+    }
+  </script>
+
+
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <title>Herramientas</title>
   <style>
@@ -647,6 +663,8 @@
   <script src="scriptConfiguraciones.js" type="module" defer></script>
   <script src="PreferenciasGlobales.js" type="module" defer></script>
   <script src="scriptMusica.js"></script>
+  <script src="FirebaseMonitor.js"></script>
+  <script src="FirebaseWrapper.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

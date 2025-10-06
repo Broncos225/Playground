@@ -415,10 +415,6 @@ function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
 }
 
 async function mostrarHorarioAlmuerzo() {
-    if (contadorSimpleInterval) {
-        clearInterval(contadorSimpleInterval);
-        contadorSimpleInterval = null;
-    }
     const elemento = document.getElementById('HoraAlmuerzos');
 
     if (elemento) {
@@ -428,83 +424,7 @@ async function mostrarHorarioAlmuerzo() {
     }
 
     try {
-        const [turnoAsesor, turnoDiaSiguiente] = await Promise.all([
-            obtenerTurnoAlmuerzoAsesor(),
-            obtenerTurnoDiaSiguiente()
-        ]);
-
-        let mensaje = '';
-        let className = '';
-        let icon = '';
-        let turnText = '';
-        let rangeText = '';
-
-        if (turnoAsesor.turnoAlmuerzoAsignado) {
-            turnText = `<span class="bold-turn">${turnoAsesor.turnoAlmuerzoAsignado}</span>`;
-            rangeText = `${turnoAsesor.rango}`;
-        }
-
-        let turnoCompletoInfo = '';
-        if (turnoAsesor.turnoCompleto && turnoAsesor.turnoCompleto !== turnoAsesor.turnoBase) {
-            turnoCompletoInfo = ` - Turno: ${turnoAsesor.turnoCompleto}`;
-        } else if (turnoAsesor.turnoBase) {
-            turnoCompletoInfo = `  - Turno: ${turnoAsesor.turnoBase}`;
-        }
-
-        let tiempoFaltanteInfo = '';
-        if (turnoAsesor.tiempoFaltante) {
-            tiempoFaltanteInfo = ` - <span style="color: #007bff; font-weight: bold;">Faltan ${turnoAsesor.tiempoFaltante}</span>`;
-        }
-
-        switch (turnoAsesor.estado) {
-            case 'activo':
-                icon = '🍽️';
-                mensaje = `${icon} <span style="font-weight: bold;">ALMUERZO AHORA</span> - ${rangeText}${turnoCompletoInfo}`;
-                className = 'active';
-                break;
-            case 'proximo':
-                icon = '⏰';
-                mensaje = `${icon} Próximo almuerzo: ${rangeText}${turnoCompletoInfo}<span id="contador-tiempo" data-hora-objetivo="${turnoAsesor.infoAlmuerzo ? turnoAsesor.infoAlmuerzo.apertura : ''}"></span>`;
-                className = 'proximo';
-
-                if (turnoAsesor.infoAlmuerzo) {
-                    setTimeout(() => {
-                        if (contadorSimpleInterval) {
-                            clearInterval(contadorSimpleInterval);
-                        }
-                        actualizarContadorTexto();
-                        contadorSimpleInterval = setInterval(actualizarContadorTexto, 1000);
-                    }, 100);
-                }
-                break;
-            case 'finalizado':
-                icon = '✅';
-                mensaje = `${icon} Almuerzo ${turnText} finalizado - ${rangeText}${turnoCompletoInfo}`;
-                className = 'finalizado';
-                break;
-            case 'no_almuerza':
-                icon = '📋';
-                mensaje = `${icon} Hoy: <span style="font-weight: bold;">${turnoAsesor.rango}</span>`;
-                if (turnoAsesor.turnoCompleto) {
-                    mensaje += ` (${turnoAsesor.turnoCompleto})`;
-                }
-                className = 'no-almuerza';
-                break;
-            case 'sin_asignar':
-                icon = '❌';
-                mensaje = `${icon} Sin turno asignado para hoy`;
-                className = 'sin-asignar';
-                break;
-            case 'error':
-                icon = '⚠️';
-                mensaje = `${icon} Error al cargar información`;
-                className = 'error';
-                break;
-            default:
-                icon = '❓';
-                mensaje = `${icon} Estado desconocido`;
-                className = '';
-        }
+        const turnoDiaSiguiente = await obtenerTurnoDiaSiguiente();
 
         let mensajeDiaSiguiente = '';
         if (turnoDiaSiguiente.turnoCompleto) {
@@ -514,7 +434,8 @@ async function mostrarHorarioAlmuerzo() {
             }
             mensajeDiaSiguiente = `
                 <div class="tomorrow-turn-info assigned">
-                    <strong>📅 Mañana:</strong> <span class="turn-value">${turnoDiaSiguiente.turnoCompleto}</span>${rangoMañana}
+                    <strong>📅 Mañana:</strong> 
+                    <span class="turn-value">${turnoDiaSiguiente.turnoCompleto}</span>${rangoMañana}
                 </div>
             `;
         } else {
@@ -526,26 +447,23 @@ async function mostrarHorarioAlmuerzo() {
         }
 
         if (elemento) {
-            elemento.innerHTML = `
-                <div class="lunch-info-container ${className}">
-                    ${mensaje}
-                </div>
-                ${mensajeDiaSiguiente}
-            `;
+            elemento.innerHTML = mensajeDiaSiguiente;
         }
 
-        return turnoAsesor;
+        return turnoDiaSiguiente;
 
     } catch (error) {
-        console.error("Error al mostrar horario:", error);
+        console.error("Error al mostrar horario del día siguiente:", error);
         if (elemento) {
             elemento.innerHTML = `
-                <h2 style="margin: 0px;">Almuerzo hoy:</h2>
-                <p style="color: #dc3545; margin: 5px 0; font-size: 16px;">⚠️ Error al cargar información</p>
+                <p style="color: #dc3545; margin: 5px 0; font-size: 16px;">
+                    ⚠️ Error al cargar información
+                </p>
             `;
         }
     }
 }
+
 
 function iniciarActualizacionAutomatica() {
     mostrarHorarioAlmuerzo();
