@@ -128,16 +128,30 @@
                     <h3>Color texto</h3>
                     <input type="color" id="ColorTexto">
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3>Imagen fondo</h3>
-                    <input type="file" id="ImagenFondo" accept="image/*">
-                    <button type="button" id="eliminarImagen"
-                        style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Eliminar
-                        imagen</button>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <h3>Blur fondo</h3>
-                        <input type="range" id="blur" min="0" max="100" value="0" step="1">
-                        <span id="blurValue">0%</span>
+                <div>
+                    <label style="word-wrap: nowrap; width: 100%; text-align: left;">
+                        <input type="checkbox" id="activarColorTextoFondoPrimario">
+                        Usar color de texto diferente para fondo primario
+                    </label>
+                </div>
+                <div id="contenedorColorTextoFondoPrimario" style="display: none;">
+                    <h3 for="ColorTextoFondoPrimario">Color de texto en fondo primario:</h3>
+                    <input type="color" id="ColorTextoFondoPrimario">
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; flex-direction: column;">
+                    <div>
+                        <h3>Imagen fondo</h3>
+                        <input type="file" id="ImagenFondo" accept="image/*">
+                    </div>
+                    <div>
+                        <button type="button" id="eliminarImagen"
+                            style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Eliminar
+                            imagen</button>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <h3>Blur fondo</h3>
+                            <input type="range" id="blur" min="0" max="100" value="0" step="1">
+                            <span id="blurValue">0%</span>
+                        </div>
                     </div>
                 </div>
             </div>

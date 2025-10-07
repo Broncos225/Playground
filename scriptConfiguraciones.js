@@ -6,9 +6,11 @@ class PreferenciasColores {
             secundario: '#e69500',
             colorFondo: '#FFFFFF',
             colorTexto: '#000000ff',
+            colorTextoFondoPrimario: null,
             fuente: 'Nunito, sans-serif',
             imagenFondo: null,
-            blurFondo: 0
+            blurFondo: 0,
+            usarColorTextoFondoPrimario: false
         };
         this.fuentesDisponibles = [
             { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
@@ -65,6 +67,8 @@ class PreferenciasColores {
                     secundario: preferencias.colorSecundario || this.configuracionDefecto.secundario,
                     colorFondo: preferencias.colorFondo || this.configuracionDefecto.colorFondo,
                     colorTexto: preferencias.colorTexto || this.configuracionDefecto.colorTexto,
+                    colorTextoFondoPrimario: preferencias.colorTextoFondoPrimario || this.configuracionDefecto.colorTextoFondoPrimario,
+                    usarColorTextoFondoPrimario: preferencias.usarColorTextoFondoPrimario || false,
                     fuente: preferencias.fuente || this.configuracionDefecto.fuente,
                     imagenFondo: preferencias.imagenFondo || this.configuracionDefecto.imagenFondo,
                     blurFondo: preferencias.blurFondo !== undefined ? preferencias.blurFondo : this.configuracionDefecto.blurFondo
@@ -88,11 +92,31 @@ class PreferenciasColores {
         const selectFuente = document.getElementById('FontFamily');
         const inputBlur = document.getElementById('blur');
         const blurValue = document.getElementById('blurValue');
+        const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
+        const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
+        const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
+
 
         if (inputPrimario) inputPrimario.value = this.configuracionActual.primario;
         if (inputSecundario) inputSecundario.value = this.configuracionActual.secundario;
         if (inputColorFondo) inputColorFondo.value = this.configuracionActual.colorFondo;
         if (inputColorTexto) inputColorTexto.value = this.configuracionActual.colorTexto;
+        if (checkboxColorTextoFondoPrimario) {
+            checkboxColorTextoFondoPrimario.checked = this.configuracionActual.usarColorTextoFondoPrimario;
+        }
+        if (inputColorTextoFondoPrimario) {
+            // Si no hay color guardado, usa el color de texto actual como valor inicial
+            const valorInicial = this.configuracionActual.colorTextoFondoPrimario || this.configuracionActual.colorTexto;
+            inputColorTextoFondoPrimario.value = valorInicial;
+        }
+        if (contenedorColorTextoFondoPrimario) {
+            contenedorColorTextoFondoPrimario.style.display =
+                this.configuracionActual.usarColorTextoFondoPrimario ? 'flex' : 'none';
+            contenedorColorTextoFondoPrimario.style.alignItems =
+                this.configuracionActual.usarColorTextoFondoPrimario ? 'center' : 'flex-start';
+            contenedorColorTextoFondoPrimario.style.gap =
+                this.configuracionActual.usarColorTextoFondoPrimario ? '10px' : '0px';
+        }
         if (selectFuente) selectFuente.value = this.configuracionActual.fuente;
         if (inputBlur) inputBlur.value = this.configuracionActual.blurFondo;
         if (blurValue) blurValue.textContent = `${this.configuracionActual.blurFondo}%`;
@@ -172,6 +196,11 @@ class PreferenciasColores {
         root.style.setProperty('--color-secundario', this.configuracionActual.secundario);
         root.style.setProperty('--color-fondo', this.configuracionActual.colorFondo);
         root.style.setProperty('--color-texto', this.configuracionActual.colorTexto);
+        if (this.configuracionActual.usarColorTextoFondoPrimario && this.configuracionActual.colorTextoFondoPrimario) {
+            root.style.setProperty('--color-texto-fondo-primario', this.configuracionActual.colorTextoFondoPrimario);
+        } else {
+            root.style.setProperty('--color-texto-fondo-primario', this.configuracionActual.colorTexto);
+        }
         root.style.setProperty('--font-family', this.configuracionActual.fuente);
 
         if (this.configuracionActual.imagenFondo) {
@@ -283,6 +312,8 @@ class PreferenciasColores {
         const inputColorTexto = document.getElementById('ColorTexto');
         const selectFuente = document.getElementById('FontFamily');
         const inputBlur = document.getElementById('blur');
+        const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
+        const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
 
         if (!inputPrimario || !inputSecundario || !inputColorFondo || !inputColorTexto || !inputBlur) {
             console.error('No se encontraron todos los inputs de color');
@@ -294,6 +325,8 @@ class PreferenciasColores {
             colorSecundario: inputSecundario.value,
             colorFondo: inputColorFondo.value,
             colorTexto: inputColorTexto.value,
+            colorTextoFondoPrimario: inputColorTextoFondoPrimario ? inputColorTextoFondoPrimario.value : null,
+            usarColorTextoFondoPrimario: checkboxColorTextoFondoPrimario ? checkboxColorTextoFondoPrimario.checked : false,
             fuente: selectFuente ? selectFuente.value : this.configuracionDefecto.fuente,
             imagenFondo: this.configuracionActual.imagenFondo,
             blurFondo: inputBlur ? parseInt(inputBlur.value) : 0,
@@ -310,6 +343,8 @@ class PreferenciasColores {
                 secundario: nuevasPreferencias.colorSecundario,
                 colorFondo: nuevasPreferencias.colorFondo,
                 colorTexto: nuevasPreferencias.colorTexto,
+                colorTextoFondoPrimario: nuevasPreferencias.colorTextoFondoPrimario,
+                usarColorTextoFondoPrimario: nuevasPreferencias.usarColorTextoFondoPrimario,
                 fuente: nuevasPreferencias.fuente,
                 imagenFondo: nuevasPreferencias.imagenFondo,
                 blurFondo: nuevasPreferencias.blurFondo
@@ -342,6 +377,9 @@ class PreferenciasColores {
             const inputImagen = document.getElementById('ImagenFondo');
             const inputBlur = document.getElementById('blur');
             const blurValue = document.getElementById('blurValue');
+            const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
+            const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
+            const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
 
             if (inputPrimario) inputPrimario.value = this.configuracionDefecto.primario;
             if (inputSecundario) inputSecundario.value = this.configuracionDefecto.secundario;
@@ -351,6 +389,9 @@ class PreferenciasColores {
             if (inputImagen) inputImagen.value = '';
             if (inputBlur) inputBlur.value = this.configuracionDefecto.blurFondo;
             if (blurValue) blurValue.textContent = `${this.configuracionDefecto.blurFondo}%`;
+            if (checkboxColorTextoFondoPrimario) checkboxColorTextoFondoPrimario.checked = this.configuracionDefecto.usarColorTextoFondoPrimario;
+            if (inputColorTextoFondoPrimario) inputColorTextoFondoPrimario.value = this.configuracionDefecto.colorTexto;
+            if (contenedorColorTextoFondoPrimario) contenedorColorTextoFondoPrimario.style.display = 'none';
 
             this.configuracionActual = { ...this.configuracionDefecto };
 
@@ -377,6 +418,15 @@ class PreferenciasColores {
             root.style.setProperty('--color-secundario', inputSecundario.value);
             root.style.setProperty('--color-fondo', inputColorFondo.value);
             root.style.setProperty('--color-texto', inputColorTexto.value);
+
+            const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
+            const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
+
+            if (checkboxColorTextoFondoPrimario && checkboxColorTextoFondoPrimario.checked && inputColorTextoFondoPrimario) {
+                root.style.setProperty('--color-texto-fondo-primario', inputColorTextoFondoPrimario.value);
+            } else {
+                root.style.setProperty('--color-texto-fondo-primario', inputColorTexto.value);
+            }
 
             if (selectFuente) {
                 root.style.setProperty('--font-family', selectFuente.value);
@@ -441,6 +491,40 @@ class PreferenciasColores {
             selectFuente.addEventListener('change', () => this.previsualizarCambios());
         }
 
+        const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
+        const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
+        const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
+
+        if (checkboxColorTextoFondoPrimario && contenedorColorTextoFondoPrimario) {
+            checkboxColorTextoFondoPrimario.addEventListener('change', () => {
+                contenedorColorTextoFondoPrimario.style.display =
+                    checkboxColorTextoFondoPrimario.checked ? 'flex' : 'none';
+                contenedorColorTextoFondoPrimario.style.alignItems =
+                    checkboxColorTextoFondoPrimario.checked ? 'center' : 'flex-start';
+                contenedorColorTextoFondoPrimario.style.gap =
+                    checkboxColorTextoFondoPrimario.checked ? '10px' : '0px';
+                this.configuracionActual.usarColorTextoFondoPrimario = checkboxColorTextoFondoPrimario.checked;
+
+                if (checkboxColorTextoFondoPrimario.checked && !this.configuracionActual.colorTextoFondoPrimario) {
+                    const inputColorTexto = document.getElementById('ColorTexto');
+                    const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
+                    if (inputColorTexto && inputColorTextoFondoPrimario) {
+                        this.configuracionActual.colorTextoFondoPrimario = inputColorTexto.value;
+                        inputColorTextoFondoPrimario.value = inputColorTexto.value;
+                    }
+                }
+
+                this.previsualizarCambios();
+            });
+        }
+
+        if (inputColorTextoFondoPrimario) {
+            inputColorTextoFondoPrimario.addEventListener('input', () => {
+                this.configuracionActual.colorTextoFondoPrimario = inputColorTextoFondoPrimario.value;
+                this.previsualizarCambios(); // Cambia esto para que use previsualizarCambios
+            });
+        }
+
         const btnEliminarImagen = document.getElementById('eliminarImagen');
         if (btnEliminarImagen) {
             btnEliminarImagen.addEventListener('click', () => this.eliminarImagenFondo());
@@ -479,6 +563,12 @@ class PreferenciasColores {
 
                 if (preferencias.colorTexto) {
                     root.style.setProperty('--color-texto', preferencias.colorTexto);
+                }
+
+                if (preferencias.usarColorTextoFondoPrimario && preferencias.colorTextoFondoPrimario) {
+                    root.style.setProperty('--color-texto-fondo-primario', preferencias.colorTextoFondoPrimario);
+                } else if (preferencias.colorTexto) {
+                    root.style.setProperty('--color-texto-fondo-primario', preferencias.colorTexto);
                 }
 
                 if (preferencias.fuente) {

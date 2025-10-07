@@ -37,7 +37,7 @@ nav ul li {
 
 nav a {
     text-decoration: none;
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     font-weight: bold;
 }
 
@@ -62,7 +62,7 @@ footer {
     justify-content: center;
     align-items: center;
     background-color: var(--color-primario);
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     text-align: center;
     font-weight: bold;
     width: 100%;
@@ -283,7 +283,7 @@ button .botonReiniciar:hover {
     font-weight: bold;
     font-size: 15px;
     background-color: var(--color-primario);
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     border-color: #f2f2f2;
 }
 
@@ -318,8 +318,8 @@ button .botonReiniciar:hover {
     font-weight: bold;
     font-size: 15px;
     background-color: var(--color-primario);
-    color: var(--color-texto);
-    border-color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
+    border-color: var(--color-texto-fondo-primario);
     text-align: center;
 }
 
@@ -657,7 +657,7 @@ nav li {
 }
 
 nav a {
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     text-align: center;
     padding: 9px;
     text-decoration: none;
@@ -984,7 +984,7 @@ label {
 }
 
 .Modulo {
-    border: 1px solid var(--color-texto);
+    border: 1px solid var(--color-texto-fondo-primario);
     color: var(--color-primario);
     border-radius: 10px;
     flex: 1 1 auto;
@@ -1146,7 +1146,7 @@ input[type='number']::-webkit-outer-spin-button {
     top: 5px;
     left: 5px;
     font-size: 0.8em;
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     background-color: var(--color-primario);
     padding: 2px 4px;
     border-radius: 10px;
@@ -1159,7 +1159,7 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .Modulo2:hover {
-    background-color: var(--color-texto);
+    background-color: var(--color-texto-fondo-primario);
     color: var(--color-primario);
     cursor: pointer;
 }
@@ -1698,7 +1698,7 @@ input:checked+.slider:before {
 .Items h4,
 .AgregarItems {
     background: var(--color-primario);
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     border-radius: 5px;
     margin: 2.5px;
     padding: 5px;
@@ -1713,7 +1713,7 @@ input:checked+.slider:before {
 
 
 .Items h4.selected {
-    background-color: var(--color-texto);
+    background-color: var(--color-texto-fondo-primario);
     color: var(--color-primario);
 }
 
@@ -1734,7 +1734,7 @@ input:checked+.slider:before {
     height: 478px;
     display: flex;
     flex-direction: column;
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     background-color: var(--color-primario);
 }
 
@@ -1910,7 +1910,7 @@ input:checked+.slider:before {
 
 #notification2 {
     background-color: var(--color-primario);
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
 }
 
 
@@ -2004,7 +2004,7 @@ input[type="number"],
 }
 
 .reorder-controls button:hover {
-    background-color: var(--color-texto);
+    background-color: var(--color-texto-fondo-primario);
     color: var(--color-primario);
 }
 
