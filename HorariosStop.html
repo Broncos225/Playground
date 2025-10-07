@@ -10,7 +10,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 
     <title>Horarios Stop Jeans</title>
 </head>
@@ -108,31 +110,40 @@
                 </div>
             </div>
             <div>
-                <button id="menuButton" style="height: fit-content;">Opciones</button>
+                <button id="menuButton" style="height: fit-content;">
+                    <i class="fa-solid fa-bars"></i> Opciones
+                </button>
             </div>
         </div>
         <div id="BotonesHerramientas"
             style="display: flex; justify-content: center; flex-direction: row; gap: 13px; align-items: flex-end; flex-wrap: wrap;">
+
             <form id="form">
                 <input type="password" id="pass" placeholder="Contraseña">
-                <button id="btnGuardar">Guardar</button>
+                <button id="btnGuardar"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
             </form>
+
             <div class="vertical-bar"></div>
+
             <div>
-                <button id="btnExportar">Exportar</button>
-                <button id="btnImportar">Importar</button>
-                <button id="btnPincelTurnos">Pincel de turnos</button>
-                <button id="btnLimpiar">Limpiar</button>
+                <button id="btnExportar"><i class="fa-solid fa-file-export"></i> Exportar</button>
+                <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar</button>
+                <button id="btnPincelTurnos"><i class="fa-solid fa-paintbrush"></i> Pincel de turnos</button>
+                <button id="btnLimpiar"><i class="fa-solid fa-broom"></i> Limpiar</button>
             </div>
+
             <div class="vertical-bar"></div>
+
             <div>
-                <button id="btnExportarTexto">Exportar a texto</button>
-                <button id="consultaSemana">Consultar semanas</button>
-                <button id="btnHistorial">Historial</button>
+                <button id="btnExportarTexto"><i class="fa-solid fa-file-lines"></i> Exportar a texto</button>
+                <button id="consultaSemana"><i class="fa-solid fa-calendar-week"></i> Consultar semanas</button>
+                <button id="btnHistorial"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
             </div>
 
         </div>
+
         <div id="ListaTurnos"></div>
+
         <div class="Contenedor" class="custom-select">
 
             <div class="table-container" id="Tabla">

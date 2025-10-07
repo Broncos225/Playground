@@ -928,7 +928,7 @@ function Festivos() {
     for (let i = 1; i <= 31; i++) {
         var celda = document.getElementById("Dia" + i);
         celda.style.backgroundColor = colorPrimario;
-        celda.style.color = "var(--color-texto)";
+        celda.style.color = "var(--color-texto-fondo-primario)";
         if (festivos[mes].includes(i)) {
             if (dia == "Dia" + i) {
                 celda.style.backgroundColor = "orange";

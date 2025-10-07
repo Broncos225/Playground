@@ -81,7 +81,8 @@
         "primario": "#00ff88",
         "secundario": "#00d9ff",
         "fondo": "#0a0e27",
-        "texto": "#939393"
+        "texto": "#C9C9C9",
+        "textoFondoPrimario": "#000000"
     },
     {
         "nombre": "Durazno",
@@ -103,6 +104,44 @@
         "secundario": "#ffa500",
         "fondo": "#fffef7",
         "texto": "#2c2c2c"
+    },
+    {
+        "nombre": "Gris Oscuro",
+        "primario": "#b3b3b3",
+        "secundario": "#808080",
+        "fondo": "#1c1c1c",
+        "texto": "#f0f0f0",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Atardecer",
+        "primario": "#f39c12",
+        "secundario": "#e67e22",
+        "fondo": "#2c3e50",
+        "texto": "#ecf0f1",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Esmeralda",
+        "primario": "#2ecc71",
+        "secundario": "#27ae60",
+        "fondo": "#f9fcfb",
+        "texto": "#145a32"
+    },
+    {
+        "nombre": "Rubí",
+        "primario": "#900c3f",
+        "secundario": "#581845",
+        "fondo": "#f8e0e5",
+        "texto": "#3a001e",
+        "textoFondoPrimario": "#f8f8f8"
+    },
+    {
+        "nombre": "Arena",
+        "primario": "#e0b48c",
+        "secundario": "#c19a6b",
+        "fondo": "#fdf8ef",
+        "texto": "#5a4534",
+        "textoFondoPrimario": "#333333"
     }
-    
 ]

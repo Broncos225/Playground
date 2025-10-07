@@ -9,39 +9,100 @@
     <meta name="theme-color" content="#333" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <title>Configuraciones</title>
 </head>
 <style>
-    .temas-container {
-        margin: 20px 0;
+    /* Dashboard Container */
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Config Cards */
+    .config-card {
+        background: var(--color-fondo);
+        border-radius: 12px;
+        box-shadow: 0 2px 4px var(--color-texto);
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .config-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px var(--color-texto);
+    }
+
+    .config-card.full-width {
+        grid-column: 1 / -1;
+    }
+
+    /* Card Header */
+    .card-header {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        color: var(--color-texto-fondo-primario);
+        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .card-header i {
+        font-size: 20px;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    /* Card Body */
+    .card-body {
+        padding: 20px;
+    }
+
+    /* Temas Grid */
+    .temas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: 15px;
     }
 
     .tema-container {
-        display: inline-flex;
+        display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 5px;
-        margin: 5px;
+        gap: 8px;
     }
 
     .tema-nombre {
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 500;
         color: var(--color-texto);
+        text-align: center;
+        line-height: 1.2;
     }
 
     .tema-boton {
-        width: 40px;
-        height: 40px;
-        border: 2px solid #333;
+        width: 50px;
+        height: 50px;
+        border: 3px solid var(--color-primario);
         border-radius: 50%;
         cursor: pointer;
         padding: 0;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: all 0.3s ease;
     }
 
     .tema-boton:hover {
-        transform: scale(1.1);
+        transform: scale(1.15);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
@@ -49,31 +110,306 @@
         transform: scale(1.05);
     }
 
-    .config-inputs {
-        margin: 20px 0;
-        padding: 20px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Color Grid */
+    .color-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 15px;
+        margin-bottom: 15px;
     }
 
+    /* Input Groups */
     .input-group {
         display: flex;
-        align-items: center;
+        justify-content: space-between;
         gap: 10px;
-        margin: 10px 0;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 8px;
     }
 
     .input-group label {
-        min-width: 150px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: left;
+        color: var(--color-texto);
     }
 
     .input-group input[type="color"] {
         width: 60px;
-        height: 35px;
-        border: none;
-        border-radius: 4px;
+        height: 40px;
+        border: 2px solid var(--color-primario);
+        border-radius: 8px;
         cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .input-group input[type="color"]:hover {
+        transform: scale(1.05);
+    }
+
+    .input-group select {
+        flex: 1;
+        width: max-content;
+        padding: 8px 12px;
+        border: 2px solid var(--color-primario);
+        border-radius: 8px;
+        font-family: var(--font-family);
+        font-size: 14px;
+        cursor: pointer;
+        background: white;
+    }
+
+    /* Checkbox Container */
+    .checkbox-container {
+        margin: 15px 0;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+
+    .checkbox-label:hover {
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .checkbox-label input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .checkbox-label span {
+        font-size: 14px;
+        color: var(--color-texto);
+    }
+
+    /* File Input */
+    .file-input-container {
+        margin-bottom: 15px;
+    }
+
+    .file-input-label {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: var(--color-primario);
+        color: var(--color-texto-fondo-primario);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .file-input-label:hover {
+        background: var(--color-secundario);
+        transform: translateY(-2px);
+    }
+
+    #ImagenFondo {
+        display: none;
+    }
+
+    /* Preview Container */
+    .preview-container {
+        min-height: 50px;
+        margin: 15px 0;
+    }
+
+    /* Slider Container */
+    .slider-container {
+        margin-top: 15px;
+    }
+
+    .slider-container label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--color-texto);
+    }
+
+    .slider-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .slider-wrapper input[type="range"] {
+        flex: 1;
+        height: 6px;
+        border-radius: 3px;
+        background: linear-gradient(to right, var(--color-primario) 0%, var(--color-secundario) 100%);
+        outline: none;
+        cursor: pointer;
+    }
+
+    .slider-wrapper input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--color-primario);
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .slider-value {
+        min-width: 45px;
+        text-align: center;
+        font-weight: 600;
+        color: var(--color-primario);
+    }
+
+    /* Import/Export Grid */
+    .import-export-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+    }
+
+    .import-export-section h3 {
+        font-size: 15px;
+        margin-bottom: 12px;
+        color: var(--color-texto);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Buttons */
+    .btn-secondary {
+        flex: 1;
+        min-width: 140px;
+        padding: 10px 16px;
+        background: var(--color-primario);
+        color: var(--color-texto-fondo-primario);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+        background: var(--color-secundario);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary.file-label {
+        cursor: pointer;
+    }
+
+    .btn-delete {
+        width: 100%;
+        padding: 10px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
+        margin-bottom: 15px;
+    }
+
+    .btn-delete:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .btn-reset,
+    .btn-save {
+        flex: 1;
+        padding: 14px 24px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s;
+    }
+
+    .btn-reset {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-reset:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+        color: var(--color-texto-fondo-primario);
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            grid-template-columns: 1fr;
+            padding: 10px;
+        }
+
+        .color-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .import-export-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
     }
 </style>
 
@@ -104,70 +440,152 @@
     </div>
     <section style="margin-top: 0px;">
         <h1 id="Titulo">Configuraciones</h1>
-        <div class="Configuraciones">
-            <div class="Configuracion">
-                <h2>Temas de Color</h2>
 
-                <div class="temas-container">
-                    <div id="temasButtons"></div>
+        <div class="dashboard-container">
+            <!-- Tarjeta de Temas Predefinidos -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fas fa-palette"></i>
+                    <h2>Temas Predefinidos</h2>
                 </div>
-                <h2>Colores</h2>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3>Color primario</h3>
-                    <input type="color" id="ColorPrimario">
+                <div class="card-body">
+                    <div id="temasButtons" class="temas-grid"></div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3>Color secundario</h3>
-                    <input type="color" id="ColorSecundario">
+            </div>
+
+            <!-- Tarjeta de Colores -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fas fa-droplet"></i>
+                    <h2>Personalizar Colores</h2>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3>Color fondo</h3>
-                    <input type="color" id="ColorFondo">
+                <div class="card-body">
+                    <div class="color-grid">
+                        <div class="input-group">
+                            <label for="ColorPrimario">Color primario</label>
+                            <input type="color" id="ColorPrimario">
+                        </div>
+                        <div class="input-group">
+                            <label for="ColorSecundario">Color secundario</label>
+                            <input type="color" id="ColorSecundario">
+                        </div>
+                        <div class="input-group">
+                            <label for="ColorFondo">Color fondo</label>
+                            <input type="color" id="ColorFondo">
+                        </div>
+                        <div class="input-group">
+                            <label for="ColorTexto">Color texto</label>
+                            <input type="color" id="ColorTexto">
+                        </div>
+                    </div>
+
+                    <div class="checkbox-container">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="activarColorTextoFondoPrimario">
+                            <span style="text-wrap:nowrap;">Usar color de texto diferente para fondo primario</span>
+                        </label>
+                    </div>
+
+                    <div id="contenedorColorTextoFondoPrimario" class="input-group" style="display: none;">
+                        <label style="text-wrap: nowrap;" for="ColorTextoFondoPrimario">Color texto en fondo
+                            primario</label>
+                        <input type="color" id="ColorTextoFondoPrimario">
+                    </div>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <h3>Color texto</h3>
-                    <input type="color" id="ColorTexto">
+            </div>
+
+            <!-- Tarjeta de Fuente -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fas fa-font"></i>
+                    <h2>Tipografía</h2>
                 </div>
-                <div>
-                    <label style="word-wrap: nowrap; width: 100%; text-align: left;">
-                        <input type="checkbox" id="activarColorTextoFondoPrimario">
-                        Usar color de texto diferente para fondo primario
-                    </label>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="FontFamily">Seleccionar fuente</label>
+                        <select id="FontFamily"></select>
+                    </div>
                 </div>
-                <div id="contenedorColorTextoFondoPrimario" style="display: none;">
-                    <h3 for="ColorTextoFondoPrimario">Color de texto en fondo primario:</h3>
-                    <input type="color" id="ColorTextoFondoPrimario">
+            </div>
+
+            <!-- Tarjeta de Imagen de Fondo -->
+            <div class="config-card">
+                <div class="card-header">
+                    <i class="fas fa-image"></i>
+                    <h2>Imagen de Fondo</h2>
                 </div>
-                <div style="display: flex; align-items: flex-start; gap: 10px; flex-direction: column;">
-                    <div>
-                        <h3>Imagen fondo</h3>
+                <div class="card-body">
+                    <div class="file-input-container">
+                        <label for="ImagenFondo" class="file-input-label">
+                            <i class="fas fa-upload"></i> Seleccionar imagen
+                        </label>
                         <input type="file" id="ImagenFondo" accept="image/*">
                     </div>
-                    <div>
-                        <button type="button" id="eliminarImagen"
-                            style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Eliminar
-                            imagen</button>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <h3>Blur fondo</h3>
+
+                    <div id="previewImagenFondo" class="preview-container"></div>
+
+                    <button type="button" id="eliminarImagen" class="btn-delete">
+                        <i class="fas fa-trash"></i> Eliminar imagen
+                    </button>
+
+                    <div class="slider-container">
+                        <label for="blur">Desenfoque del fondo</label>
+                        <div class="slider-wrapper">
                             <input type="range" id="blur" min="0" max="100" value="0" step="1">
-                            <span id="blurValue">0%</span>
+                            <span id="blurValue" class="slider-value">0%</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="Configuracion"></div>
-            <h2>Fuente</h2>
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <h3>Seleccionar fuente</h3>
-                <select id="FontFamily">
-                </select>
+
+            <!-- Tarjeta de Importar/Exportar -->
+            <div class="config-card full-width">
+                <div class="card-header">
+                    <i class="fas fa-share-nodes"></i>
+                    <h2>Compartir e Importar</h2>
+                </div>
+                <div class="card-body">
+                    <div class="import-export-grid">
+                        <div class="import-export-section">
+                            <h3><i class="fas fa-palette"></i> Compartir Tema (solo colores)</h3>
+                            <div class="button-group">
+                                <button id="btnCopiarTema" class="btn-secondary">
+                                    <i class="fas fa-copy"></i> Copiar Código
+                                </button>
+                                <button id="btnImportarTema" class="btn-secondary">
+                                    <i class="fas fa-paste"></i> Pegar Código
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="import-export-section">
+                            <h3><i class="fas fa-file-export"></i> Configuración Completa (con imagen)</h3>
+                            <div class="button-group">
+                                <button id="btnExportarCompleto" class="btn-secondary">
+                                    <i class="fas fa-download"></i> Descargar
+                                </button>
+                                <label for="inputImportarCompleto" class="btn-secondary file-label">
+                                    <i class="fas fa-upload"></i> Cargar
+                                </label>
+                                <input type="file" id="inputImportarCompleto" accept=".json" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Botones de Acción Principal -->
+        <div class="action-buttons">
+            <button id="btnRestablecerConfiguraciones" class="">
+                <i class="fas fa-rotate-left"></i> Restablecer
+            </button>
+            <button id="btnGuardarConfiguraciones" class="">
+                <i class="fas fa-save"></i> Guardar Configuración
+            </button>
         </div>
-        <div>
-            <button id="btnRestablecerConfiguraciones">Restablecer</button>
-            <button id="btnGuardarConfiguraciones">Guardar</button>
-        </div>
+
+        <!-- Modal (sin cambios) -->
         <div id="myModal2" class="modal">
             <div class="modal-content2">
                 <span id="close2" style="position: absolute; right: 1; top: 0;">&times;</span>

@@ -709,16 +709,16 @@ class ModuleOrderManager {
                     <h2 style="text-align: center; margin-bottom: 20px;">Organizar Módulos</h2>
                     <div style="display: flex; gap: 20px; justify-content: center; align-items: stretch;">
                         <div style="flex: 1;">
-                            <h3 style="text-align: center; background-color: var(--color-primario); color: white; padding: 10px; border-radius: 5px;">Columna Izquierda</h3>
+                            <h3 style="text-align: center; background-color: var(--color-primario); color: var(--color-texto-fondo-primario); padding: 10px; border-radius: 5px;">Columna Izquierda</h3>
                             <ul id="listColumna1" class="sortable-list"></ul>
                         </div>
                         <div style="flex: 1;">
-                            <h3 style="text-align: center; background-color: var(--color-primario); color: white; padding: 10px; border-radius: 5px;">Columna Derecha</h3>
+                            <h3 style="text-align: center; background-color: var(--color-primario); color: var(--color-texto-fondo-primario); padding: 10px; border-radius: 5px;">Columna Derecha</h3>
                             <ul id="listColumna2" class="sortable-list"></ul>
                         </div>
                     </div>
                     <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-                        <button id="btnSaveOrder" style="padding: 10px 20px; background-color: var(--color-primario); color: white; font-weight: bold;">Guardar</button>
+                        <button id="btnSaveOrder" style="padding: 10px 20px; background-color: var(--color-primario); color: var(--color-texto-fondo-primario); font-weight: bold;">Guardar</button>
                         <button id="btnResetOrder" style="padding: 10px 20px;">Restaurar Original</button>
                     </div>
                 </div>
@@ -833,6 +833,7 @@ class ModuleOrderManager {
             cursor: move;
             user-select: none;
             list-style: none;
+            color: var(--color-texto-fondo-primario);
         `;
 
         li.addEventListener('dragstart', () => {

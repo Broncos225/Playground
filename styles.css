@@ -183,14 +183,14 @@ button {
     border: none;
     border-radius: 4px;
     background-color: var(--color-secundario);
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     cursor: pointer;
     border: solid 2px #000000;
     font-family: var(--font-family);
 }
 
 button:hover {
-    background-color: var(--color-texto);
+    background-color: var(--color-texto-fondo-primario);
     color: var(--color-secundario);
 }
 
@@ -666,7 +666,7 @@ nav a {
 
 nav a:hover {
     background-color: var(--color-secundario);
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
 }
 
 .botonesNav {
@@ -734,7 +734,7 @@ label {
 
     nav ul.botonesNav li a:hover {
         background-color: var(--color-secundario);
-        color: var(--color-texto);
+        color: var(--color-texto-fondo-primario);
     }
 
     nav ul.botonesNav li a {
@@ -968,7 +968,7 @@ label {
 #titulos,
 #Dias,
 #Descansos th {
-    border-bottom: 1px solid var(--color-texto);
+    border-bottom: 1px solid var(--color-texto-fondo-primario);
 }
 
 .GModulos {
@@ -984,7 +984,7 @@ label {
 }
 
 .Modulo {
-    border: 1px solid var(--color-texto-fondo-primario);
+    border: 1px solid var(--color-texto);
     color: var(--color-primario);
     border-radius: 10px;
     flex: 1 1 auto;
@@ -1138,7 +1138,7 @@ input[type='number']::-webkit-outer-spin-button {
     justify-content: center;
     align-items: center;
     position: relative;
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
 }
 
 .module-type {
@@ -1638,7 +1638,7 @@ input:checked+.slider:before {
     bottom: 5px;
     left: 5px;
     font-size: 0.8em;
-    color: var(--color-texto);
+    color: var(--color-texto-fondo-primario);
     padding: 2px 4px;
     border-radius: 3px;
 }
@@ -1740,6 +1740,7 @@ input:checked+.slider:before {
 
 #descripcion-texto {
     background-color: var(--color-fondo);
+    color: var(--color-texto);
     flex: 1;
     overflow-y: auto;
     box-sizing: border-box;

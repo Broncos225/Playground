@@ -13,17 +13,21 @@ class PreferenciasColores {
             usarColorTextoFondoPrimario: false
         };
         this.fuentesDisponibles = [
-            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
+            // Google Fonts (Requieren ser importadas en tu CSS/HTML, como ya haces con Open Sans y Nunito)
+            { nombre: 'Nunito', valor: "'Nunito', sans-serif" },
+            { nombre: 'Open Sans', valor: "'Open Sans', sans-serif" },
+
+            // Fuentes Web Seguras (Siempre instaladas en la mayoría de los sistemas operativos)
             { nombre: 'Arial', valor: 'Arial, sans-serif' },
-            { nombre: 'Helvetica', valor: 'Helvetica, Arial, sans-serif' },
-            { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
-            { nombre: 'Georgia', valor: 'Georgia, serif' },
             { nombre: 'Verdana', valor: 'Verdana, Geneva, sans-serif' },
+            { nombre: 'Georgia', valor: 'Georgia, serif' },
+            { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
+            { nombre: 'Tahoma', valor: 'Tahoma, Geneva, sans-serif' },
             { nombre: 'Trebuchet MS', valor: '"Trebuchet MS", Helvetica, sans-serif' },
-            { nombre: 'Comic Sans MS', valor: '"Comic Sans MS", cursive' },
-            { nombre: 'Impact', valor: 'Impact, Charcoal, sans-serif' },
+
+            // Fuentes Monospace (Para código o diseño tabular)
             { nombre: 'Courier New', valor: '"Courier New", Courier, monospace' },
-            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' }
+            { nombre: 'Consolas', valor: 'Consolas, "Courier New", monospace' }
         ];
         this.init();
     }
@@ -113,7 +117,7 @@ class PreferenciasColores {
             contenedorColorTextoFondoPrimario.style.display =
                 this.configuracionActual.usarColorTextoFondoPrimario ? 'flex' : 'none';
             contenedorColorTextoFondoPrimario.style.alignItems =
-                this.configuracionActual.usarColorTextoFondoPrimario ? 'center' : 'flex-start';
+                this.configuracionActual.usarColorTextoFondoPrimario ? 'flex-start' : 'flex-start';
             contenedorColorTextoFondoPrimario.style.gap =
                 this.configuracionActual.usarColorTextoFondoPrimario ? '10px' : '0px';
         }
@@ -500,7 +504,7 @@ class PreferenciasColores {
                 contenedorColorTextoFondoPrimario.style.display =
                     checkboxColorTextoFondoPrimario.checked ? 'flex' : 'none';
                 contenedorColorTextoFondoPrimario.style.alignItems =
-                    checkboxColorTextoFondoPrimario.checked ? 'center' : 'flex-start';
+                    checkboxColorTextoFondoPrimario.checked ? 'flex-start' : 'flex-start';
                 contenedorColorTextoFondoPrimario.style.gap =
                     checkboxColorTextoFondoPrimario.checked ? '10px' : '0px';
                 this.configuracionActual.usarColorTextoFondoPrimario = checkboxColorTextoFondoPrimario.checked;
@@ -528,6 +532,35 @@ class PreferenciasColores {
         const btnEliminarImagen = document.getElementById('eliminarImagen');
         if (btnEliminarImagen) {
             btnEliminarImagen.addEventListener('click', () => this.eliminarImagenFondo());
+        }
+
+        // Copiar tema al portapapeles
+        const btnCopiarTema = document.getElementById('btnCopiarTema');
+        if (btnCopiarTema) {
+            btnCopiarTema.addEventListener('click', () => this.copiarTemaAlPortapapeles());
+        }
+
+        // Importar tema desde portapapeles
+        const btnImportarTema = document.getElementById('btnImportarTema');
+        if (btnImportarTema) {
+            btnImportarTema.addEventListener('click', () => this.importarTemaDesdePortapapeles());
+        }
+
+        // Exportar configuración completa
+        const btnExportarCompleto = document.getElementById('btnExportarCompleto');
+        if (btnExportarCompleto) {
+            btnExportarCompleto.addEventListener('click', () => this.exportarConfiguracionCompleta());
+        }
+
+        // Importar configuración completa
+        const inputImportarCompleto = document.getElementById('inputImportarCompleto');
+        if (inputImportarCompleto) {
+            inputImportarCompleto.addEventListener('change', (e) => {
+                const archivo = e.target.files[0];
+                if (archivo) {
+                    this.importarConfiguracionCompleta(archivo);
+                }
+            });
         }
     }
 
@@ -620,21 +653,101 @@ class PreferenciasColores {
 
     static obtenerFuentesDisponibles() {
         return [
-            { nombre: 'Nunito', valor: "'Nunito', Arial, sans-serif" },
+            // Google Fonts (Requieren ser importadas en tu CSS/HTML, como ya haces con Open Sans y Nunito)
+            { nombre: 'Nunito', valor: "'Nunito', sans-serif" },
+            { nombre: 'Open Sans', valor: "'Open Sans', sans-serif" },
+
+            // Fuentes Web Seguras (Siempre instaladas en la mayoría de los sistemas operativos)
             { nombre: 'Arial', valor: 'Arial, sans-serif' },
-            { nombre: 'Helvetica', valor: 'Helvetica, Arial, sans-serif' },
-            { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
-            { nombre: 'Georgia', valor: 'Georgia, serif' },
             { nombre: 'Verdana', valor: 'Verdana, Geneva, sans-serif' },
+            { nombre: 'Georgia', valor: 'Georgia, serif' },
+            { nombre: 'Times New Roman', valor: '"Times New Roman", Times, serif' },
+            { nombre: 'Tahoma', valor: 'Tahoma, Geneva, sans-serif' },
             { nombre: 'Trebuchet MS', valor: '"Trebuchet MS", Helvetica, sans-serif' },
-            { nombre: 'Comic Sans MS', valor: '"Comic Sans MS", cursive' },
-            { nombre: 'Impact', valor: 'Impact, Charcoal, sans-serif' },
+
+            // Fuentes Monospace (Para código o diseño tabular)
             { nombre: 'Courier New', valor: '"Courier New", Courier, monospace' },
-            { nombre: 'Lucida Console', valor: '"Lucida Console", Monaco, monospace' }
+            { nombre: 'Consolas', valor: 'Consolas, "Courier New", monospace' }
         ];
     }
 
-    exportarPreferencias() {
+    copiarTemaAlPortapapeles() {
+        const temaCompacto = {
+            p: this.configuracionActual.primario,
+            s: this.configuracionActual.secundario,
+            f: this.configuracionActual.colorFondo,
+            t: this.configuracionActual.colorTexto,
+            tp: this.configuracionActual.colorTextoFondoPrimario,
+            utp: this.configuracionActual.usarColorTextoFondoPrimario,
+            fn: this.configuracionActual.fuente,
+            b: this.configuracionActual.blurFondo
+        };
+
+        const jsonString = JSON.stringify(temaCompacto);
+        const base64 = btoa(unescape(encodeURIComponent(jsonString)));
+        const codigoTema = `THEME:${base64}`;
+
+        navigator.clipboard.writeText(codigoTema).then(() => {
+            this.mostrarNotificacion('Código de tema copiado al portapapeles', 'exito');
+        }).catch(err => {
+            console.error('Error al copiar:', err);
+            this.mostrarNotificacion('Error al copiar el código', 'error');
+        });
+    }
+
+    importarTemaDesdePortapapeles() {
+        const codigo = prompt('Pega el código del tema (THEME:...)');
+
+        if (!codigo) return;
+
+        if (!codigo.startsWith('THEME:')) {
+            this.mostrarNotificacion('Código de tema inválido', 'error');
+            return;
+        }
+
+        try {
+            const base64 = codigo.replace('THEME:', '');
+            const jsonString = decodeURIComponent(escape(atob(base64)));
+            const tema = JSON.parse(jsonString);
+
+            // Aplicar al formulario
+            const inputPrimario = document.getElementById('ColorPrimario');
+            const inputSecundario = document.getElementById('ColorSecundario');
+            const inputColorFondo = document.getElementById('ColorFondo');
+            const inputColorTexto = document.getElementById('ColorTexto');
+            const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
+            const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
+            const selectFuente = document.getElementById('FontFamily');
+            const inputBlur = document.getElementById('blur');
+            const blurValue = document.getElementById('blurValue');
+
+            if (inputPrimario) inputPrimario.value = tema.p;
+            if (inputSecundario) inputSecundario.value = tema.s;
+            if (inputColorFondo) inputColorFondo.value = tema.f;
+            if (inputColorTexto) inputColorTexto.value = tema.t;
+            if (inputColorTextoFondoPrimario && tema.tp) inputColorTextoFondoPrimario.value = tema.tp;
+            if (checkboxColorTextoFondoPrimario) checkboxColorTextoFondoPrimario.checked = tema.utp || false;
+            if (selectFuente && tema.fn) selectFuente.value = tema.fn;
+            if (inputBlur && tema.b !== undefined) inputBlur.value = tema.b;
+            if (blurValue && tema.b !== undefined) blurValue.textContent = `${tema.b}%`;
+
+            // Actualizar vista del contenedor
+            const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
+            if (contenedorColorTextoFondoPrimario) {
+                contenedorColorTextoFondoPrimario.style.display = tema.utp ? 'flex' : 'none';
+            }
+
+            // Previsualizar los cambios
+            this.previsualizarCambios();
+
+            this.mostrarNotificacion('Tema importado correctamente. Guarda para aplicar permanentemente.', 'exito');
+        } catch (error) {
+            console.error('Error al importar tema:', error);
+            this.mostrarNotificacion('Error al importar el código del tema', 'error');
+        }
+    }
+
+    exportarConfiguracionCompleta() {
         const clave = this.generarClavePreferencias();
         const preferencias = localStorage.getItem(clave);
 
@@ -643,51 +756,39 @@ class PreferenciasColores {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `preferencias_${this.nombreUsuario}.json`;
+            a.download = `tema_completo_${this.nombreUsuario}_${new Date().getTime()}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
-            this.mostrarNotificacion('Preferencias exportadas correctamente', 'exito');
+            this.mostrarNotificacion('Configuración completa exportada (incluye imagen)', 'exito');
         } else {
-            this.mostrarNotificacion('No hay preferencias para exportar', 'warning');
+            this.mostrarNotificacion('No hay configuración para exportar', 'warning');
         }
     }
 
-    importarPreferencias(archivo) {
+    importarConfiguracionCompleta(archivo) {
         const reader = new FileReader();
         reader.onload = (e) => {
             try {
                 const preferencias = JSON.parse(e.target.result);
 
+                // Validar que tenga los campos mínimos
                 if (preferencias.colorPrimario && preferencias.colorSecundario && preferencias.colorFondo) {
-                    if (!preferencias.fuente) {
-                        preferencias.fuente = this.configuracionDefecto.fuente;
-                    }
-                    if (!preferencias.colorTexto) {
-                        preferencias.colorTexto = this.configuracionDefecto.colorTexto;
-                    }
-                    if (!preferencias.imagenFondo) {
-                        preferencias.imagenFondo = null;
-                    }
-                    if (preferencias.blurFondo === undefined) {
-                        preferencias.blurFondo = this.configuracionDefecto.blurFondo;
-                    }
-
                     const clave = this.generarClavePreferencias();
                     localStorage.setItem(clave, JSON.stringify(preferencias));
 
                     this.cargarPreferencias();
                     this.aplicarConfiguracion();
 
-                    this.mostrarNotificacion('Preferencias importadas correctamente', 'exito');
+                    this.mostrarNotificacion('Configuración completa importada (incluye imagen)', 'exito');
                 } else {
-                    throw new Error('Archivo de preferencias inválido');
+                    throw new Error('Archivo de configuración inválido');
                 }
             } catch (error) {
-                console.error('Error al importar preferencias:', error);
-                this.mostrarNotificacion('Error al importar preferencias', 'error');
+                console.error('Error al importar configuración completa:', error);
+                this.mostrarNotificacion('Error al importar la configuración', 'error');
             }
         };
         reader.readAsText(archivo);
@@ -734,7 +835,6 @@ async function cargarTemas() {
 function crearBotonesTemas() {
     const container = document.getElementById('temasButtons');
     if (!container) {
-        console.error('No se encontró el contenedor temasButtons');
         return;
     }
 
@@ -750,13 +850,28 @@ function crearBotonesTemas() {
 
         const boton = document.createElement('button');
         boton.className = 'tema-boton';
-        boton.style.background = `conic-gradient(
-            from 0deg,
-            ${tema.primario} 0deg 90deg,
-            ${tema.secundario} 90deg 180deg,
-            ${tema.fondo} 180deg 270deg,
-            ${tema.texto} 270deg 360deg
-        )`;
+
+        // Si tiene color de texto fondo primario, dividir el cuarto del texto en 2
+        if (tema.textoFondoPrimario) {
+            boton.style.background = `conic-gradient(
+                from 0deg,
+                ${tema.primario} 0deg 90deg,
+                ${tema.secundario} 90deg 180deg,
+                ${tema.fondo} 180deg 270deg,
+                ${tema.texto} 270deg 315deg,
+                ${tema.textoFondoPrimario} 315deg 360deg
+            )`;
+        } else {
+            // Si NO tiene, dividir en 4 partes iguales (original)
+            boton.style.background = `conic-gradient(
+                from 0deg,
+                ${tema.primario} 0deg 90deg,
+                ${tema.secundario} 90deg 180deg,
+                ${tema.fondo} 180deg 270deg,
+                ${tema.texto} 270deg 360deg
+            )`;
+        }
+
         boton.title = tema.nombre;
 
         boton.addEventListener('click', () => aplicarTema(tema));
@@ -769,7 +884,6 @@ function crearBotonesTemas() {
     console.log(`Se crearon ${temas.length} botones de tema`);
 }
 
-// Función para aplicar un tema
 function aplicarTema(tema) {
     const ids = ['ColorPrimario', 'ColorSecundario', 'ColorFondo', 'ColorTexto'];
     const valores = [tema.primario, tema.secundario, tema.fondo, tema.texto];
@@ -781,6 +895,38 @@ function aplicarTema(tema) {
             input.dispatchEvent(new Event('input', { bubbles: true }));
         }
     });
+
+    // Manejar el color de texto para fondo primario
+    const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
+    const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
+    const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
+
+    if (tema.textoFondoPrimario) {
+        // Si el tema tiene color de texto para fondo primario
+        if (checkboxColorTextoFondoPrimario) {
+            checkboxColorTextoFondoPrimario.checked = true;
+        }
+        if (inputColorTextoFondoPrimario) {
+            inputColorTextoFondoPrimario.value = tema.textoFondoPrimario;
+            inputColorTextoFondoPrimario.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (contenedorColorTextoFondoPrimario) {
+            contenedorColorTextoFondoPrimario.style.display = 'flex';
+        }
+    } else {
+        // Si el tema NO tiene color de texto para fondo primario
+        if (checkboxColorTextoFondoPrimario) {
+            checkboxColorTextoFondoPrimario.checked = false;
+        }
+        if (contenedorColorTextoFondoPrimario) {
+            contenedorColorTextoFondoPrimario.style.display = 'none';
+        }
+    }
+
+    // Disparar el evento change del checkbox para que actualice correctamente
+    if (checkboxColorTextoFondoPrimario) {
+        checkboxColorTextoFondoPrimario.dispatchEvent(new Event('change', { bubbles: true }));
+    }
 }
 
 // Inicializar al cargar la página
