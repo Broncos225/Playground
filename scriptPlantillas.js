@@ -50,6 +50,17 @@ db.ref = function (path) {
     return ref;
 };
 
+const COLORES_DISPONIBLES = {
+    'azul': '#3b82f6',
+    'verde': '#10b981',
+    'rojo': '#ef4444',
+    'morado': '#a855f7',
+    'amarillo': '#f59e0b',
+    'rosa': '#ec4899',
+    'cyan': '#06b6d4',
+    'naranja': '#f97316'
+};
+
 var timerSwitch = document.getElementById('timerSwitch');
 var timerPreference = localStorage.getItem('timerActive');
 if (timerPreference === 'true') {
@@ -62,6 +73,7 @@ timerSwitch.addEventListener('change', function () {
 
 let plantillasCache = JSON.parse(localStorage.getItem('plantillasCache')) || null;
 let favoritosCache = JSON.parse(localStorage.getItem('favoritosCache')) || null;
+let coloresCache = JSON.parse(localStorage.getItem('coloresPlantillas')) || {};
 let lastUpdate = localStorage.getItem('plantillasLastUpdate') || 0;
 
 firebase.auth().onAuthStateChanged(function (user) {
@@ -174,6 +186,7 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
 
         newDiv.onclick = function (e) {
             if (!e.target.classList.contains('favorite-star') &&
+                !e.target.classList.contains('color-picker-btn') &&
                 !e.target.classList.contains('options-menu') &&
                 !e.target.classList.contains('options-dropdown') &&
                 !e.target.classList.contains('option-item')) {
@@ -184,6 +197,10 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
         var typeSpan = document.createElement("span");
         typeSpan.className = "module-type";
         typeSpan.textContent = typeText;
+        
+        if (coloresCache[fileName]) {
+            typeSpan.style.backgroundColor = coloresCache[fileName];
+        }
 
         var starSpan = document.createElement("span");
         starSpan.className = "favorite-star";
@@ -192,6 +209,15 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
         starSpan.onclick = function (event) {
             event.stopPropagation();
             toggleFavorite(fileName, asesorActual, this);
+        };
+
+        var colorButton = document.createElement("span");
+        colorButton.className = "color-picker-btn";
+        colorButton.innerHTML = "🎨";
+        colorButton.title = "Cambiar color";
+        colorButton.onclick = function (event) {
+            event.stopPropagation();
+            mostrarSelectorColor(fileName, typeSpan);
         };
 
         if (moduleType === '2' && creador === asesorActual) {
@@ -231,7 +257,9 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
                                 db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
                             }
                             delete plantillasCache[fileName];
+                            delete coloresCache[fileName];
                             localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+                            localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
                             mostrarNotificacion("Plantilla eliminada exitosamente");
                             location.reload();
                         })
@@ -267,6 +295,7 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
         var newH2 = document.createElement("h2");
         newH2.textContent = fileName;
 
+        newDiv.appendChild(colorButton);
         newDiv.appendChild(starSpan);
         newDiv.appendChild(typeSpan);
         newDiv.appendChild(newH2);
@@ -299,6 +328,16 @@ function configurarModalCreacion(asesorActual) {
     var modal = document.getElementById("createTemplateModal");
     var btn = document.getElementById("openModalButton");
 
+    var colorSelector = document.getElementById('colorPlantilla');
+    if (colorSelector && colorSelector.options.length === 0) {
+        Object.keys(COLORES_DISPONIBLES).forEach(function(nombreColor) {
+            var option = document.createElement('option');
+            option.value = COLORES_DISPONIBLES[nombreColor];
+            option.textContent = nombreColor.charAt(0).toUpperCase() + nombreColor.slice(1);
+            colorSelector.appendChild(option);
+        });
+    }
+
     btn.onclick = function () {
         document.getElementById('crearPlantillaForm').reset();
         document.getElementById('crearPlantillaForm').removeAttribute('data-editing');
@@ -321,6 +360,7 @@ function configurarModalCreacion(asesorActual) {
         var apertura = document.getElementById('apertura').value;
         var cierre = document.getElementById('cierre').value;
         var creador = localStorage.getItem('nombreAsesorActual') || 'Desconocido';
+        var colorPlantilla = document.getElementById('colorPlantilla').value;
         var isEditing = form.hasAttribute('data-editing');
         var originalName = form.getAttribute('data-original-name');
 
@@ -338,8 +378,13 @@ function configurarModalCreacion(asesorActual) {
                 })
                 .then(function () {
                     delete plantillasCache[originalName];
+                    delete coloresCache[originalName];
                     plantillasCache[nombrePlantilla] = plantillaData;
+                    if (colorPlantilla) {
+                        coloresCache[nombrePlantilla] = colorPlantilla;
+                    }
                     localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+                    localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
                     mostrarNotificacion('Plantilla actualizada exitosamente.');
                     form.reset();
                     form.removeAttribute('data-editing');
@@ -356,7 +401,11 @@ function configurarModalCreacion(asesorActual) {
             db.ref('Plantillas/' + targetName).set(plantillaData)
                 .then(function () {
                     plantillasCache[targetName] = plantillaData;
+                    if (colorPlantilla) {
+                        coloresCache[targetName] = colorPlantilla;
+                    }
                     localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+                    localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
                     var mensaje = isEditing ? 'Plantilla actualizada exitosamente.' : 'Plantilla creada exitosamente.';
                     mostrarNotificacion(mensaje);
                     form.reset();
@@ -389,12 +438,22 @@ document.addEventListener('click', function (event) {
 function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador, moduleData) {
     div.onclick = function (e) {
         if (!e.target.classList.contains('favorite-star') &&
+            !e.target.classList.contains('color-picker-btn') &&
             !e.target.classList.contains('options-menu') &&
             !e.target.classList.contains('options-dropdown') &&
             !e.target.classList.contains('option-item')) {
             showModal(fileName);
         }
     };
+
+    var colorBtn = div.querySelector('.color-picker-btn');
+    if (colorBtn) {
+        colorBtn.onclick = function (event) {
+            event.stopPropagation();
+            var typeSpan = div.querySelector('.module-type');
+            mostrarSelectorColor(fileName, typeSpan);
+        };
+    }
 
     var favStar = div.querySelector('.favorite-star');
     if (favStar) {
@@ -434,7 +493,9 @@ function setupDivEventHandlers(div, fileName, asesorActual, moduleType, creador,
                         .then(function () {
                             db.ref('Preferencias/' + asesorActual + '/Favoritos/' + fileName).remove();
                             delete plantillasCache[fileName];
+                            delete coloresCache[fileName];
                             localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
+                            localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
                             mostrarNotificacion("Plantilla eliminada exitosamente");
                             location.reload();
                         })
@@ -455,6 +516,11 @@ function editTemplate(fileName, moduleData) {
     document.getElementById('nombrePlantilla').value = fileName;
     document.getElementById('apertura').value = moduleData.Apertura || '';
     document.getElementById('cierre').value = moduleData.Cierre || '';
+    
+    var colorSelector = document.getElementById('colorPlantilla');
+    if (coloresCache[fileName]) {
+        colorSelector.value = coloresCache[fileName];
+    }
 
     form.setAttribute('data-editing', 'true');
     form.setAttribute('data-original-name', fileName);
@@ -555,6 +621,77 @@ function mostrarNotificacion(mensaje) {
     setTimeout(function () {
         notification.style.opacity = '0';
     }, 2000);
+}
+
+function mostrarSelectorColor(fileName, typeSpanOriginal) {
+    var existingPicker = document.getElementById('colorPickerModal');
+    if (existingPicker) {
+        existingPicker.remove();
+    }
+
+    var modal = document.createElement('div');
+    modal.id = 'colorPickerModal';
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000;';
+
+    var content = document.createElement('div');
+    content.style.cssText = 'background: white; padding: 20px; border-radius: 10px; max-width: 300px;';
+
+    var title = document.createElement('h3');
+    title.textContent = 'Seleccionar Color';
+    title.style.marginTop = '0';
+    content.appendChild(title);
+
+    var colorsContainer = document.createElement('div');
+    colorsContainer.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;';
+
+    Object.keys(COLORES_DISPONIBLES).forEach(function(nombreColor) {
+        var colorBtn = document.createElement('button');
+        colorBtn.style.cssText = 'width: 50px; height: 50px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer; background: ' + COLORES_DISPONIBLES[nombreColor] + ';';
+        colorBtn.title = nombreColor.charAt(0).toUpperCase() + nombreColor.slice(1);
+        
+        colorBtn.onclick = function() {
+            coloresCache[fileName] = COLORES_DISPONIBLES[nombreColor];
+            localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
+            
+            var allTypeSpans = document.querySelectorAll('.Modulo2[data-name="' + fileName + '"] .module-type');
+            allTypeSpans.forEach(function(span) {
+                span.style.backgroundColor = COLORES_DISPONIBLES[nombreColor];
+            });
+            
+            modal.remove();
+            mostrarNotificacion('Color actualizado');
+        };
+        
+        colorsContainer.appendChild(colorBtn);
+    });
+
+    var resetBtn = document.createElement('button');
+    resetBtn.textContent = 'Restablecer color';
+    resetBtn.style.cssText = 'width: 100%; padding: 10px; margin-top: 10px; cursor: pointer;';
+    resetBtn.onclick = function() {
+        delete coloresCache[fileName];
+        localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
+        
+        var allTypeSpans = document.querySelectorAll('.Modulo2[data-name="' + fileName + '"] .module-type');
+        allTypeSpans.forEach(function(span) {
+            span.style.backgroundColor = '';
+        });
+        
+        modal.remove();
+        mostrarNotificacion('Color restablecido');
+    };
+
+    content.appendChild(colorsContainer);
+    content.appendChild(resetBtn);
+    modal.appendChild(content);
+
+    modal.onclick = function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    };
+
+    document.body.appendChild(modal);
 }
 
 function normalizarTexto(texto) {
@@ -738,7 +875,6 @@ window.addEventListener('click', function (event) {
         }
     });
 });
-
 var style = document.createElement('style');
 style.innerHTML = `
     #loadingScreen {

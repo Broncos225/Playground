@@ -233,6 +233,7 @@
 
     .slider-container label {
         display: block;
+        text-wrap: nowrap;
         font-size: 14px;
         font-weight: 500;
         margin-bottom: 8px;
@@ -314,6 +315,7 @@
 
     .btn-secondary:hover {
         background: var(--color-secundario);
+        color: var(--color-texto-fondo-primario);
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
@@ -502,7 +504,7 @@
                 </div>
                 <div class="card-body">
                     <div class="input-group">
-                        <label for="FontFamily">Seleccionar fuente</label>
+                        <label for="FontFamily" style="text-wrap: nowrap;">Seleccionar fuente</label>
                         <select id="FontFamily"></select>
                     </div>
                 </div>

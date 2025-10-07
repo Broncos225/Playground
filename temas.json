@@ -1,10 +1,116 @@
 [
     {
+        "nombre": "Seda",
+        "primario": "#e1c78f",
+        "secundario": "#d4af37",
+        "fondo": "#0f0f0f",
+        "texto": "#ffffff",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Espresso",
+        "primario": "#d4a574",
+        "secundario": "#8b6f47",
+        "fondo": "#1a1410",
+        "texto": "#f5f5dc"
+    },
+    {
+        "nombre": "Medianoche",
+        "primario": "#9b59b6",
+        "secundario": "#8e44ad",
+        "fondo": "#1a1a2e",
+        "texto": "#eaeaea"
+    },
+    {
+        "nombre": "Gris Oscuro",
+        "primario": "#b3b3b3",
+        "secundario": "#808080",
+        "fondo": "#1c1c1c",
+        "texto": "#f0f0f0",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Índigo",
+        "primario": "#4834df",
+        "secundario": "#6c5ce7",
+        "fondo": "#1e1e30",
+        "texto": "#f5f5f5"
+    },
+    {
+        "nombre": "Amapola",
+        "primario": "#ff5733",
+        "secundario": "#c70039",
+        "fondo": "#2d2d2d",
+        "texto": "#f0f0f0",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Marte",
+        "primario": "#c0392b",
+        "secundario": "#8b0000",
+        "fondo": "#3c1b1b",
+        "texto": "#f0e8e8",
+        "textoFondoPrimario": "#ffffff"
+    },
+    {
+        "nombre": "Neón",
+        "primario": "#00ff88",
+        "secundario": "#00d9ff",
+        "fondo": "#0a0e27",
+        "texto": "#C9C9C9",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Galaxia",
+        "primario": "#00a8ff",
+        "secundario": "#007fff",
+        "fondo": "#130f40",
+        "texto": "#e6e8fa",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Bosque",
+        "primario": "#BCE9A4",
+        "secundario": "#020F0D",
+        "fondo": "#114328",
+        "texto": "#0C2613"
+    },
+    {
+        "nombre": "Carbón",
+        "primario": "#95a5a6",
+        "secundario": "#7f8c8d",
+        "fondo": "#2c3e50",
+        "texto": "#ecf0f1"
+    },
+    {
+        "nombre": "Atardecer",
+        "primario": "#f39c12",
+        "secundario": "#e67e22",
+        "fondo": "#2c3e50",
+        "texto": "#ecf0f1",
+        "textoFondoPrimario": "#000000"
+    },
+    {
+        "nombre": "Girasol",
+        "primario": "#ffc312",
+        "secundario": "#f79f1f",
+        "fondo": "#3c3c3c",
+        "texto": "#f5f6fa",
+        "textoFondoPrimario": "#000000"
+    },
+    {
         "nombre": "Océano",
         "primario": "#222831",
         "secundario": "#00ADB5",
         "fondo": "#393E46",
         "texto": "#EEEEEE"
+    },
+    {
+        "nombre": "Militar",
+        "primario": "#708090",
+        "secundario": "#535e6c",
+        "fondo": "#f0f2f5",
+        "texto": "#1c2833"
     },
     {
         "nombre": "Ámbar",
@@ -21,39 +127,12 @@
         "texto": "#2c3e50"
     },
     {
-        "nombre": "Coral",
-        "primario": "#e74c3c",
-        "secundario": "#c0392b",
-        "fondo": "#ffeaa7",
-        "texto": "#34495e"
-    },
-    {
-        "nombre": "Bosque",
-        "primario": "#BCE9A4",
-        "secundario": "#020F0D",
-        "fondo": "#114328",
-        "texto": "#0C2613"
-    },
-    {
-        "nombre": "Medianoche",
-        "primario": "#9b59b6",
-        "secundario": "#8e44ad",
-        "fondo": "#1a1a2e",
-        "texto": "#eaeaea"
-    },
-    {
-        "nombre": "Lavanda",
-        "primario": "#a29bfe",
-        "secundario": "#6c5ce7",
-        "fondo": "#f8f9fa",
-        "texto": "#2d3436"
-    },
-    {
-        "nombre": "Carbón",
-        "primario": "#95a5a6",
-        "secundario": "#7f8c8d",
-        "fondo": "#2c3e50",
-        "texto": "#ecf0f1"
+        "nombre": "Glaciar",
+        "primario": "#6dd5ed",
+        "secundario": "#2193b0",
+        "fondo": "#f7f7f7",
+        "texto": "#1c313a",
+        "textoFondoPrimario": "#000000"
     },
     {
         "nombre": "Menta",
@@ -63,63 +142,11 @@
         "texto": "#0a3d3b"
     },
     {
-        "nombre": "Espresso",
+        "nombre": "Café",
         "primario": "#d4a574",
-        "secundario": "#8b6f47",
-        "fondo": "#1a1410",
-        "texto": "#f5f5dc"
-    },
-    {
-        "nombre": "Rosa",
-        "primario": "#ff6b9d",
-        "secundario": "#c44569",
-        "fondo": "#fff5f7",
-        "texto": "#4a1a2c"
-    },
-    {
-        "nombre": "Neón",
-        "primario": "#00ff88",
-        "secundario": "#00d9ff",
-        "fondo": "#0a0e27",
-        "texto": "#C9C9C9",
-        "textoFondoPrimario": "#000000"
-    },
-    {
-        "nombre": "Durazno",
-        "primario": "#ff9a76",
-        "secundario": "#ff6b81",
-        "fondo": "#fffbf5",
-        "texto": "#333333"
-    },
-    {
-        "nombre": "Índigo",
-        "primario": "#4834df",
-        "secundario": "#6c5ce7",
-        "fondo": "#1e1e30",
-        "texto": "#f5f5f5"
-    },
-    {
-        "nombre": "Limón",
-        "primario": "#ffd700",
-        "secundario": "#ffa500",
-        "fondo": "#fffef7",
-        "texto": "#2c2c2c"
-    },
-    {
-        "nombre": "Gris Oscuro",
-        "primario": "#b3b3b3",
-        "secundario": "#808080",
-        "fondo": "#1c1c1c",
-        "texto": "#f0f0f0",
-        "textoFondoPrimario": "#000000"
-    },
-    {
-        "nombre": "Atardecer",
-        "primario": "#f39c12",
-        "secundario": "#e67e22",
-        "fondo": "#2c3e50",
-        "texto": "#ecf0f1",
-        "textoFondoPrimario": "#000000"
+        "secundario": "#8b9db8",
+        "fondo": "#f5e6d3",
+        "texto": "#2d3f4f"
     },
     {
         "nombre": "Esmeralda",
@@ -127,6 +154,13 @@
         "secundario": "#27ae60",
         "fondo": "#f9fcfb",
         "texto": "#145a32"
+    },
+    {
+        "nombre": "Lavanda",
+        "primario": "#a29bfe",
+        "secundario": "#6c5ce7",
+        "fondo": "#f8f9fa",
+        "texto": "#2d3436"
     },
     {
         "nombre": "Rubí",
@@ -137,11 +171,55 @@
         "textoFondoPrimario": "#f8f8f8"
     },
     {
+        "nombre": "Durazno",
+        "primario": "#ff9a76",
+        "secundario": "#ff6b81",
+        "fondo": "#fffbf5",
+        "texto": "#333333"
+    },
+    {
+        "nombre": "Limón",
+        "primario": "#ffd700",
+        "secundario": "#ffa500",
+        "fondo": "#fffef7",
+        "texto": "#2c2c2c"
+    },
+    {
         "nombre": "Arena",
         "primario": "#e0b48c",
         "secundario": "#c19a6b",
         "fondo": "#fdf8ef",
         "texto": "#5a4534",
         "textoFondoPrimario": "#333333"
+    },
+    {
+        "nombre": "Aura",
+        "primario": "#575fcf",
+        "secundario": "#30336b",
+        "fondo": "#e4e7ee",
+        "texto": "#334571",
+        "textoFondoPrimario": "#ffffff"
+    },
+    {
+        "nombre": "Coral",
+        "primario": "#e74c3c",
+        "secundario": "#c0392b",
+        "fondo": "#ffeaa7",
+        "texto": "#34495e"
+    },
+    {
+        "nombre": "Cereza",
+        "primario": "#d63031",
+        "secundario": "#b71540",
+        "fondo": "#fae8e8",
+        "texto": "#330000",
+        "textoFondoPrimario": "#ffffff"
+    },
+    {
+        "nombre": "Rosa",
+        "primario": "#ff6b9d",
+        "secundario": "#c44569",
+        "fondo": "#fff5f7",
+        "texto": "#4a1a2c"
     }
 ]
