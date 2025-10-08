@@ -213,7 +213,7 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
 
         var colorButton = document.createElement("span");
         colorButton.className = "color-picker-btn";
-        colorButton.innerHTML = "🎨";
+        colorButton.innerHTML = "🔘";
         colorButton.title = "Cambiar color";
         colorButton.onclick = function (event) {
             event.stopPropagation();
