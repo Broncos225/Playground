@@ -293,7 +293,6 @@ button .botonReiniciar:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .Informaciones {
@@ -1287,7 +1286,8 @@ section {
 
     .Turnos,
     .Almuerzos {
-        width: 60%;
+        width: 90%;
+        align-items: flex-start;
     }
 
 
