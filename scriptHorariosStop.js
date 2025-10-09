@@ -397,113 +397,59 @@ async function cargarDatos() {
     }
 }
 
-// Función para calcular horas usando el cache de cantidades
-function calcularHorasConCache(cantidadesCache) {
-    var contadores = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0 };
-    var letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
-    // Recorremos cada letra y cada día
-    for (const letra of letras) {
-        for (let i = 1; i < 32; i++) {
+function calcularHorasConCache(cantidadesCache, outputOffset = 11) {
+    const letras = ['A','B','C','D','E','F','G','H'];
+    const contadores = Object.fromEntries(letras.map(l => [l, 0]));
+
+    for (let i = 1; i < 32; i++) {
+        for (const letra of letras) {
             const celda = document.getElementById(letra + i);
+            if (!celda) continue;
 
-            // Verificamos que la celda exista
-            if (!celda) {
-                continue;
-            }
+            const turno = (celda.textContent || '').trim().toUpperCase();
+            if (!turno) continue;
 
-            const turno = celda.textContent;
+            const cantidad = Number(cantidadesCache[turno]);
+            if (!Number.isFinite(cantidad)) continue;
 
-            // Si el contenido de la celda no está vacío, consultamos el cache
-            if (turno && turno.trim() !== '') {
-                const cantidad = cantidadesCache[turno];
-
-                // Si existe un valor en el cache, lo sumamos al contador
-                if (cantidad !== undefined && !isNaN(cantidad)) {
-                    contadores[letra] += cantidad;
-                }
-            }
+            contadores[letra] += cantidad;
         }
     }
 
-    // Actualizamos las celdas con los totales
-    letras.forEach(function (letra, index) {
-        const celda = document.getElementById((index + 11).toString());
-        if (celda) {
-            celda.textContent = contadores[letra];
-        }
+    letras.forEach((letra, idx) => {
+        const out = document.getElementById(String(outputOffset + idx));
+        if (out) out.textContent = contadores[letra];
     });
 
     return contadores;
 }
 
-function iniciarConteoHoras() {
-    console.log("Iniciando conteo...");
-    contHoras()
-}
-
 
 function contDescansos() {
-    var contA = 0, contB = 0, contC = 0, contD = 0, contE = 0, contF = 0, contG = 0;
+    const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const contadores = {};
 
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('A' + i);
-        if (celda.textContent == 'D') {
-            contA += 1;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('B' + i);
-        if (celda.textContent == 'D') {
-            contB += 1;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('C' + i);
-        if (celda.textContent == 'D') {
-            contC += 1;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('D' + i);
-        if (celda.textContent == 'D') {
-            contD += 1;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('E' + i);
-        if (celda.textContent == 'D') {
-            contE += 1;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('F' + i);
-        if (celda.textContent == 'D') {
-            contF += 1;
-        }
-    }
-    for (var i = 1; i < 32; i++) {
-        var celda = document.getElementById('G' + i);
-        if (celda.textContent == 'D') {
-            contG += 1;
-        }
+    // Inicializar contadores
+    letras.forEach(letra => contadores[letra] = 0);
+
+    // Contar descansos
+    for (let i = 1; i < 32; i++) {
+        letras.forEach(letra => {
+            const celda = document.getElementById(letra + i);
+            if (celda && celda.textContent === 'D') {
+                contadores[letra]++;
+            }
+        });
     }
 
-    var celdaA = document.getElementById("1");
-    celdaA.textContent = contA;
-    var celdaB = document.getElementById("2");
-    celdaB.textContent = contB;
-    var celdaC = document.getElementById("3");
-    celdaC.textContent = contC;
-    var celdaD = document.getElementById("4");
-    celdaD.textContent = contD;
-    var celdaE = document.getElementById("5");
-    celdaE.textContent = contE;
-    var celdaF = document.getElementById("6");
-    celdaF.textContent = contF;
-    var celdaG = document.getElementById("7");
-    celdaG.textContent = contG;
+    // Asignar valores a las celdas 1–8
+    letras.forEach((letra, idx) => {
+        const celda = document.getElementById((idx + 1).toString());
+        if (celda) celda.textContent = contadores[letra];
+    });
 }
+
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
@@ -593,6 +539,10 @@ let agentes = {
     },
     Yeison_Torres_Ochoa: {
         nombre: "Yeison Torres Ochoa",
+        contraseña: ""
+    },
+    Santiago_Ramirez_Guzman: {
+        nombre: "Santiago Ramirez Guzman",
         contraseña: ""
     },
     Ocaris_David_Arango_Aguilar: {

@@ -39,6 +39,10 @@ let agentes = {
   Diego_Alejandro_Úsuga_Yepes: {
     nombre: "Diego",
     cumpleaños: [17, 1]
+  },
+  Santiago_Ramirez_Guzman: {
+    nombre: "Santiago",
+    cumpleaños: [0, 0]
   }
 };
 
