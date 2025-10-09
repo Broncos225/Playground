@@ -29,3 +29,12 @@ form textarea {
     margin-bottom: 15px;
 
 }
+
+.color-picker-btn {
+    position: absolute;
+    top: 30px;
+    left: 5px;
+    font-size: 15px;
+    color: var(--color-primario);
+    cursor: pointer;
+}
