@@ -38,3 +38,18 @@ form textarea {
     color: var(--color-primario);
     cursor: pointer;
 }
+
+@media (max-width: 300px) {
+    .GModulos2 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    #Encargado,
+    nav {
+        display: none !important;
+    }
+
+    section {
+        margin-top: 0px !important;
+    }
+}

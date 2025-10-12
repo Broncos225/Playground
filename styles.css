@@ -784,7 +784,7 @@ label {
 
 @media only screen and (max-width: 615px) {
     section:not(.no-margin-top) {
-        margin-top: 180px !important;
+        margin-top: 180px;
     }
 }
 
