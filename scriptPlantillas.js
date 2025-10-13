@@ -854,7 +854,7 @@ async function copiarTexto(id) {
             }
         }, 15000);
     }
-    if (window.innerWidth <= 300) {
+    if (window.innerWidth <= 300 && id === 'textoC') {
         if (typeof window.closeModal === 'function') window.closeModal();
         else console.error('closeModal no está definida');
     }
