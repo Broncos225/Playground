@@ -52,4 +52,17 @@ form textarea {
     section {
         margin-top: 0px !important;
     }
+
+    #exportarTodas,
+    #openModalButton {
+        display: none;
+    }
+
+    #tempo {
+        display: none !important;
+    }
+
+    #TiposDiv {
+        display: none !important;
+    }
 }

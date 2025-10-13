@@ -66,7 +66,7 @@
                     style="display: flex; flex-direction: row; align-items: center; gap: 10px; justify-content: center; padding: 0px;">
                     <p style="margin: 0px;" id="Encargado"></p>
                 </div>
-                <div style="display: flex; align-items: center; gap: 10px; flex-direction: row;">
+                <div id="tempo" style="display: flex; align-items: center; gap: 10px; flex-direction: row;">
                     <label style="width: 150px;">Activar temporizador</label>
                     <label class="switch" style="margin-left: 10px;">
                         <input type="checkbox" id="timerSwitch">
@@ -77,8 +77,9 @@
             <div>
                 <h1 id="Titulo">Plantillas</h1>
 
-                <div style="display: flex; flex-direction: column; margin-bottom: 10px;">
-                    <label for="Tipos" style="display: flex; width: auto; justify-content: center;">Tipos de plantillas:</label>
+                <div id="TiposDiv" style="display: flex; flex-direction: column; margin-bottom: 10px;">
+                    <label for="Tipos" style="display: flex; width: auto; justify-content: center;">Tipos de
+                        plantillas:</label>
                     <select id="Tipos" class="custom-select">
                         <option value="0">Todas las plantillas</option>
                         <option value="1">Predeterminadas</option>
@@ -91,10 +92,15 @@
 
             <div style="display: flex; gap: 10px; margin-top: 10px; justify-content: center;">
                 <button id="exportarTodas">
-                    <i class="fas fa-file-excel"></i> Exportar Todas
+                    <i class="fas fa-file-excel"></i>
+                    <span class="btn-text">Exportar Todas</span>
                 </button>
-                <button id="openModalButton">Crear Plantilla</button>
+                <button id="openModalButton">
+                    <i class="fas fa-plus-circle"></i>
+                    <span class="btn-text">Crear Plantilla</span>
+                </button>
             </div>
+
         </div>
         <div id="createTemplateModal" class="modal">
             <div class="modal-content">
