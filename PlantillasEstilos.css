@@ -65,4 +65,10 @@ form textarea {
     #TiposDiv {
         display: none !important;
     }
+
+    .modal-content {
+        margin: 0 !important;
+        width: 92% !important;
+        padding: 10px !important;
+    }
 }
