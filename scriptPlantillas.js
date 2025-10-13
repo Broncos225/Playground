@@ -197,7 +197,7 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
         var typeSpan = document.createElement("span");
         typeSpan.className = "module-type";
         typeSpan.textContent = typeText;
-        
+
         if (coloresCache[fileName]) {
             typeSpan.style.backgroundColor = coloresCache[fileName];
         }
@@ -330,7 +330,7 @@ function configurarModalCreacion(asesorActual) {
 
     var colorSelector = document.getElementById('colorPlantilla');
     if (colorSelector && colorSelector.options.length === 0) {
-        Object.keys(COLORES_DISPONIBLES).forEach(function(nombreColor) {
+        Object.keys(COLORES_DISPONIBLES).forEach(function (nombreColor) {
             var option = document.createElement('option');
             option.value = COLORES_DISPONIBLES[nombreColor];
             option.textContent = nombreColor.charAt(0).toUpperCase() + nombreColor.slice(1);
@@ -516,7 +516,7 @@ function editTemplate(fileName, moduleData) {
     document.getElementById('nombrePlantilla').value = fileName;
     document.getElementById('apertura').value = moduleData.Apertura || '';
     document.getElementById('cierre').value = moduleData.Cierre || '';
-    
+
     var colorSelector = document.getElementById('colorPlantilla');
     if (coloresCache[fileName]) {
         colorSelector.value = coloresCache[fileName];
@@ -644,39 +644,39 @@ function mostrarSelectorColor(fileName, typeSpanOriginal) {
     var colorsContainer = document.createElement('div');
     colorsContainer.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0;';
 
-    Object.keys(COLORES_DISPONIBLES).forEach(function(nombreColor) {
+    Object.keys(COLORES_DISPONIBLES).forEach(function (nombreColor) {
         var colorBtn = document.createElement('button');
         colorBtn.style.cssText = 'width: 50px; height: 50px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer; background: ' + COLORES_DISPONIBLES[nombreColor] + ';';
         colorBtn.title = nombreColor.charAt(0).toUpperCase() + nombreColor.slice(1);
-        
-        colorBtn.onclick = function() {
+
+        colorBtn.onclick = function () {
             coloresCache[fileName] = COLORES_DISPONIBLES[nombreColor];
             localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
-            
+
             var allTypeSpans = document.querySelectorAll('.Modulo2[data-name="' + fileName + '"] .module-type');
-            allTypeSpans.forEach(function(span) {
+            allTypeSpans.forEach(function (span) {
                 span.style.backgroundColor = COLORES_DISPONIBLES[nombreColor];
             });
-            
+
             modal.remove();
             mostrarNotificacion('Color actualizado');
         };
-        
+
         colorsContainer.appendChild(colorBtn);
     });
 
     var resetBtn = document.createElement('button');
     resetBtn.textContent = 'Restablecer color';
     resetBtn.style.cssText = 'width: 100%; padding: 10px; margin-top: 10px; cursor: pointer;';
-    resetBtn.onclick = function() {
+    resetBtn.onclick = function () {
         delete coloresCache[fileName];
         localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
-        
+
         var allTypeSpans = document.querySelectorAll('.Modulo2[data-name="' + fileName + '"] .module-type');
-        allTypeSpans.forEach(function(span) {
+        allTypeSpans.forEach(function (span) {
             span.style.backgroundColor = '';
         });
-        
+
         modal.remove();
         mostrarNotificacion('Color restablecido');
     };
@@ -685,7 +685,7 @@ function mostrarSelectorColor(fileName, typeSpanOriginal) {
     content.appendChild(resetBtn);
     modal.appendChild(content);
 
-    modal.onclick = function(e) {
+    modal.onclick = function (e) {
         if (e.target === modal) {
             modal.remove();
         }
@@ -800,7 +800,7 @@ function showModal(fileName) {
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Cierre</h2>
-            <button onclick="copiarTexto('textoC')" style="height: 40px;">Copiar texto</button>
+            <button id="TextoCierre" onclick="copiarTexto('textoC')" style="height: 40px;">Copiar texto</button>
         </div>
         <div id="textoC"><p>${saludo}</p><p>${textoC}</p><p>Saludos.</p></div>
         `;
@@ -853,6 +853,10 @@ async function copiarTexto(id) {
                 window.addEventListener('focus', clearClipboard, { once: true });
             }
         }, 15000);
+    }
+    if (window.innerWidth <= 300) {
+        if (typeof window.closeModal === 'function') window.closeModal();
+        else console.error('closeModal no está definida');
     }
 }
 
