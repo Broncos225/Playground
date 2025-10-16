@@ -39,7 +39,7 @@ form textarea {
     cursor: pointer;
 }
 
-@media (max-width: 300px) {
+@media (max-width: 370px) {
     .GModulos2 {
         grid-template-columns: repeat(1, 1fr);
     }
