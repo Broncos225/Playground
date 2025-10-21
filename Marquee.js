@@ -25,7 +25,7 @@ let agentes = {
     cumpleaños: [22, 5]
   },
   Johan_Guzman_Alarcon: {
-    nombre: "Johan",
+    nombre: "Salchichón",
     cumpleaños: [21, 10]
   },
   Maria_Susana_Ospina_Vanegas: {
