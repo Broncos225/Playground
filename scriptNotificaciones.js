@@ -94,8 +94,22 @@ async function inicializarNotificaciones() {
         console.log('🔔 Permiso actual:', permission);
 
         // Escuchar mensajes en primer plano
+        // Después de la línea donde se inicializa messaging
         onMessage(messaging, (payload) => {
-            console.log('📬 Mensaje recibido:', payload);
+            console.log('📬 Mensaje en PRIMER plano recibido:', payload);
+
+            // Forzar mostrar notificación manualmente
+            if (Notification.permission === 'granted') {
+                new Notification(
+                    payload.notification?.title || 'Notificación',
+                    {
+                        body: payload.notification?.body || '',
+                        icon: '/Icono.png',
+                        badge: '/Icono.png'
+                    }
+                );
+            }
+
             mostrarNotificacionLocal(payload);
         });
 
@@ -282,12 +296,12 @@ async function guardarConfiguracion() {
 
 async function cargarConfiguracionGuardada() {
     console.log('📂 Cargando configuración guardada...');
-    
+
     try {
         const referencia = dbRef(db, `Preferencias/${asesorActual}/Notificaciones`);
         const snapshot = await get(referencia);
         const config = snapshot.val();
-        
+
         const permission = Notification.permission; // Obtener el permiso del navegador
 
         if (config && config.activo) {
@@ -300,20 +314,20 @@ async function cargarConfiguracionGuardada() {
             document.getElementById('horaNotificacion').value = config.horaNotificacion || '07:00';
             actualizarEstadoPermisos('granted'); // Muestra como ACTIVO
         } else if (permission === 'denied') {
-             // CASO C: Navegador Bloqueó el permiso
+            // CASO C: Navegador Bloqueó el permiso
             console.log('🚫 Permiso de navegador denegado');
             actualizarEstadoPermisos('denied'); // Muestra como BLOQUEADO
         } else {
             // CASO B: Configuración NO ACTIVA en Firebase (pero el permiso puede ser 'granted' o 'default')
             console.log('ℹ️ No hay configuración guardada en Firebase. Estado por defecto.');
             // Restablece fcmToken y fuerza el estado a 'default' (Activar Notificaciones).
-            fcmToken = null; 
+            fcmToken = null;
             actualizarEstadoPermisos('default'); // Muestra como DESACTIVADO / Por activar
         }
     } catch (error) {
         console.error('❌ Error cargando configuración:', error);
         // En caso de error de red o Firebase, también forzar estado por defecto.
-        actualizarEstadoPermisos('default'); 
+        actualizarEstadoPermisos('default');
     }
 }
 
