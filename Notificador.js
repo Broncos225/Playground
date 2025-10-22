@@ -1,253 +1,182 @@
-// // Copyright (c) 2024 Andrés Felipe Yepes Tascón
-// // Licensed under the MIT License. See LICENSE file for details.
-// let agentesN = {
-//     Anderson_Cano_Londoño: {
-//         nombre: "Anderson Cano Londoño",
-//         usuario: "anderson.cano",
-//         letra: "A",
-//         contraseña: ""
-//     },
-//     Yesica_Johana_Cano_Quintero: {
-//         nombre: "Yesica Johana Cano Quintero",
-//         usuario: "yesica.cano",
-//         letra: "D",
-//         contraseña: ""
-//     },
-//     Andrés_Felipe_Vidal_Medina: {
-//         nombre: "Andrés Felipe Vidal Medina",
-//         usuario: "andres.vidal",
-//         letra: "E",
-//         contraseña: ""
-//     },
-//     Andrés_Felipe_Yepes_Tascón: {
-//         nombre: "Andrés Felipe Yepes Tascón",
-//         usuario: "andres.yepes",
-//         letra: "F",
-//         contraseña: ""
-//     },
-//     Yeison_Torres_Ochoa: {
-//         nombre: "Yeison Torres Ochoa",
-//         usuario: "yeison.torres",
-//         letra: "G",
-//         contraseña: ""
-//     },
+// ============================================
+// CONFIGURACIÓN DE ONESIGNAL (SIN INIT)
+// ============================================
+window.OneSignalDeferred = window.OneSignalDeferred || [];
 
-// };
+// Solo configurar sin inicializar
+OneSignalDeferred.push(function(OneSignal) {
+  console.log("OneSignal SDK cargado");
+  
+  // Sincronizar estado después de que cargue
+  setTimeout(async () => {
+    await sincronizarEstadoNotificaciones();
+  }, 2000);
+});
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     enableNotifications();
-//     setInterval(checkForDateChange, 60000); // Comprueba cada minuto si la fecha ha cambiado
-// });
+// ============================================
+// CONFIGURACIÓN DE LA API
+// ============================================
+const ONESIGNAL_APP_ID = "01d9f2ea-c74b-49d9-ac00-4af599270c3f";
+const ONESIGNAL_REST_API_KEY = "os_v2_app_ahm7f2whjne5tlaajl2zsjymh55hzmgechtelu54m5aypydqans3rsuo7my7iybafmfga7edzse2kveg5742aqohoh3c2ajxmolzviq";
 
-// function Notificador() {
-//     var agenteSeleccionado = localStorage.getItem('nombreAsesorActual');
+// ============================================
+// FUNCIÓN PARA ENVIAR NOTIFICACIONES VÍA API
+// ============================================
+async function enviarNotificacionAPI(titulo, mensaje, playerIds = null, url = null) {
+    try {
+        const notificationData = {
+            app_id: ONESIGNAL_APP_ID,
+            headings: { "en": titulo, "es": titulo },
+            contents: { "en": mensaje, "es": mensaje },
+        };
 
-//     if (!(agenteSeleccionado in agentesN)) {
-//         alert("El agente seleccionado no es válido");
-//         var notificationSwitch = document.getElementById('notificationSwitch');
-//         if (notificationSwitch) {
-//             notificationSwitch.checked = false;
-//         }
-//         return;
-//     }
+        if (playerIds && playerIds.length > 0) {
+            notificationData.include_player_ids = playerIds;
+        } else {
+            notificationData.included_segments = ["All"];
+        }
 
-//     var Letra = agentesN[agenteSeleccionado].letra;
-//     var fecha = new Date();
-//     var dia = fecha.getDate();
-//     var mes = fecha.getMonth();
-//     var año = fecha.getFullYear();
-//     var celdaId = Letra + dia;
+        if (url) {
+            notificationData.url = url;
+        }
 
-//     var tabla = document.getElementById("Table");
-//     var celda = tabla ? tabla.querySelector(`#${celdaId}`) : null;
+        const response = await fetch("https://onesignal.com/api/v1/notifications", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Basic ${ONESIGNAL_REST_API_KEY}`
+            },
+            body: JSON.stringify(notificationData)
+        });
 
-//     if (!celda) {
-//         alert(`No se pudo encontrar la celda con ID: ${celdaId} para el agente seleccionado`);
-//         return;
-//     }
+        const result = await response.json();
 
-//     var Marcaciones = {
-//         "T1": ["07:00", "12:00", "13:00", "15:30"],
-//         "T1U": ["07:00", "12:00", "13:00", "16:30"],
-
-//         "T2": ["09:00", "12:30", "13:30", "17:30"],
-//         "T2N": ["09:00", "12:30", "13:30", "18:00"],
-
-//         "T3": ["10:00", "13:00", "14:00", "18:30"],
-//         "T3N": ["09:30", "13:00", "14:00", "18:30"],
-
-//         "T4": ["10:30", "14:30", "15:30", "19:00"],
-//         "T4N": ["10:00", "14:30", "15:30", "19:00"],
-
-//         "T5": ["11:30", "15:30", "16:30", "20:00"],
-//         "T5N": ["11:00", "15:30", "16:30", "20:00"],
-
-//         "T6": ["13:00", "16:30", "17:30", "21:30"],
-//         "T6N": ["12:30", "16:30", "17:30", "21:30"],
-//         "T6U": ["15:00", "00:00", "00:00", "21:30"],
-
-//         "TSA": ["08:00", "12:00", "12:30", "16:00"],
-//     };
-
-//     var descripciones = ["entrada del turno", "salida al almuerzo", "entrada del almuerzo", "salida del turno"];
-//     var horarios = Marcaciones[celda.textContent.trim()];
-
-//     if (!("Notification" in window)) {
-//         alert("Este navegador no soporta notificaciones de escritorio");
-//         return;
-//     } else if (Notification.permission !== "granted") {
-//         Notification.requestPermission().then(function (permission) {
-//             if (permission === "granted") {
-//                 localStorage.setItem('notificacionesActivas', JSON.stringify({ horarios, descripciones, celdaContent: celda.textContent.trim(), fecha: { dia, mes, año } }));
-//                 mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
-//                 programarNotificaciones(horarios, descripciones, celda.textContent.trim());
-//             }
-//         });
-//     } else {
-//         localStorage.setItem('notificacionesActivas', JSON.stringify({ horarios, descripciones, celdaContent: celda.textContent.trim(), fecha: { dia, mes, año } }));
-//         mostrarNotificacion("Has activado las notificaciones de las marcaciones de Softcontrol");
-//         programarNotificaciones(horarios, descripciones, celda.textContent.trim());
-//     }
-// }
-
-// function programarNotificaciones(horarios, descripciones, celdaContent) {
-//     var now = new Date();
-//     horarios.forEach((horario, index) => {
-//         var [hours, minutes] = horario.split(':');
-//         var time = new Date();
-//         time.setHours(hours, minutes, 0, 0);
-
-//         if (time > now) {
-//             var timeout = time - now;
-//             setTimeout(() => {
-//                 mostrarNotificacion(`Es hora de marcar la ${descripciones[index]} del: ${celdaContent} a las ${convertirHora12(time)}`);
-//                 abrirSoftcontrol();
-//             }, timeout);
-//         }
-//     });
-// }
-
-// function mostrarNotificacion(mensaje) {
-//     var notification = new Notification("Recordatorio de Marcación Softcontrol", {
-//         body: mensaje,
-//     });
-
-//     cargarSonidoNotificacion();
-// }
-
-// function abrirSoftcontrol() {
-//     window.open("https://biometricos.arus.com.co/Autogestion/Home");
-// }
-
-// function cargarSonidoNotificacion() {
-//     var audio = document.getElementById('notificationSound');
-//     if (audio) {
-//         audio.play();
-//     } else {
-//         console.error("El elemento audio no se ha encontrado");
-//     }
-// }
-
-// function convertirHora12(date) {
-//     var hours = date.getHours();
-//     var minutes = date.getMinutes();
-//     var ampm = hours >= 12 ? 'PM' : 'AM';
-//     hours = hours % 12;
-//     hours = hours ? hours : 12;
-//     minutes = minutes < 10 ? '0' + minutes : minutes;
-//     var strTime = hours + ':' + minutes + ' ' + ampm;
-//     return strTime;
-// }
-
-// function enableNotifications() {
-//     var notificacionesActivas = localStorage.getItem('notificacionesActivas');
-//     if (notificacionesActivas) {
-//         var { horarios, descripciones, celdaContent, fecha } = JSON.parse(notificacionesActivas);
-//         programarNotificaciones(horarios, descripciones, celdaContent);
-//     }
-// }
-
-// function disableNotifications() {
-//     localStorage.removeItem('notificacionesActivas');
-// }
-
-// function areNotificationsActive() {
-//     return localStorage.getItem('notificacionesActivas') !== null;
-// }
-
-// var notificationSwitch = document.getElementById('notificationSwitch');
-// if (notificationSwitch) {
-//     notificationSwitch.addEventListener('change', function () {
-//         if (this.checked) {
-//             if (localStorage.getItem('nombreAsesorActual')) {
-//                 Notificador();
-//             } else {
-//                 this.checked = false;
-//                 alert('Por favor, selecciona un asesor antes de activar las notificaciones.');
-//             }
-//         } else {
-//             disableNotifications();
-//         }
-//     });
-// }
-
-// if (notificationSwitch) {
-//     notificationSwitch.checked = areNotificationsActive();
-// }
-
-// function checkForDateChange() {
-//     var notificacionesActivas = localStorage.getItem('notificacionesActivas');
-//     if (notificacionesActivas) {
-//         var { fecha } = JSON.parse(notificacionesActivas);
-//         var now = new Date();
-//         if (fecha.dia !== now.getDate() || fecha.mes !== now.getMonth() || fecha.año !== now.getFullYear()) {
-//             Notificador();
-//         }
-//     }
-// }
-
-function CuentaAsesor() {
-    var nombre = localStorage.getItem('nombreAsesorActual');
-    var asesor = document.getElementById("AsesorActual");
-    var span = document.createElement("span");
-
-    if (nombre) {
-        nombre = nombre.replace(/_/g, ' ');
-        asesor.textContent = "Bienvenido/a ";
-        span.textContent = nombre;
-    } else {
-        asesor.textContent = "Bienvenido/a ";
-        span.textContent = "Nadie";
+        if (result.id) {
+            console.log("Notificación enviada exitosamente:", result);
+            return result;
+        } else {
+            console.error("Error en la respuesta:", result);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error al enviar notificación:", error);
+        return null;
     }
-
-    span.style.fontWeight = "lighter";
-    asesor.appendChild(span);
 }
 
-function seleccionarNombre(nombre) {
-    localStorage.setItem('nombreAsesorActual', nombre);
-    cerrarModal2();
-    CuentaAsesor();
+// ============================================
+// FUNCIONES DE SINCRONIZACIÓN CON FIREBASE
+// ============================================
+async function sincronizarEstadoNotificaciones() {
+    try {
+        const asesorActual = localStorage.getItem('nombreAsesorActual');
+        if (!asesorActual) {
+            console.log("No hay asesor logueado");
+            return;
+        }
+
+        OneSignalDeferred.push(async function (OneSignal) {
+            const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+            const playerId = await OneSignal.User.PushSubscription.id;
+
+            if (typeof firebase !== 'undefined' && firebase.database) {
+                const db = firebase.database();
+                await db.ref('Preferencias/' + asesorActual + '/Notificaciones/').set({
+                    suscrito: isSubscribed,
+                    playerId: playerId || null,
+                    fechaActualizacion: new Date().toISOString(),
+                    navegador: navigator.userAgent
+                });
+                console.log("Estado de notificaciones guardado en Firebase");
+            }
+        });
+    } catch (error) {
+        console.error("Error al sincronizar estado:", error);
+    }
 }
 
-function cerrarModal2() {
-    var modal2 = document.getElementById("myModal2");
-    var body = document.getElementsByTagName("body")[0];
-    modal2.style.display = "none";
-    body.style.overflow = "auto";
+async function solicitarPermisosNotificacion() {
+    try {
+        OneSignalDeferred.push(async function (OneSignal) {
+            await OneSignal.Slidedown.promptPush();
+
+            setTimeout(async () => {
+                await sincronizarEstadoNotificaciones();
+                if (typeof actualizarUINotificaciones === 'function') {
+                    actualizarUINotificaciones();
+                }
+            }, 2000);
+        });
+    } catch (error) {
+        console.error("Error al solicitar permisos:", error);
+    }
 }
 
-var modal2 = document.getElementById("myModal2");
-var btnusuario = document.getElementById("usuario");
-var body = document.getElementsByTagName("body")[0];
+async function cargarEstadoNotificaciones() {
+    try {
+        const asesorActual = localStorage.getItem('nombreAsesorActual');
+        if (!asesorActual) {
+            return null;
+        }
 
-btnusuario.onclick = function () {
-    modal2.style.display = "block";
-    body.style.overflow = "hidden";
+        if (typeof firebase !== 'undefined' && firebase.database) {
+            const db = firebase.database();
+            const snapshot = await db.ref('Preferencias/' + asesorActual + '/Notificaciones/').once('value');
+            return snapshot.val();
+        }
+        return null;
+    } catch (error) {
+        console.error("Error al cargar estado desde Firebase:", error);
+        return null;
+    }
 }
 
-var span = document.getElementById("close2");
-span.onclick = function () {
-    modal2.style.display = "none";
-    body.style.overflow = "auto";
+async function enviarNotificacionAsesor(nombreAsesor, titulo, mensaje, url = null) {
+    try {
+        if (typeof firebase !== 'undefined' && firebase.database) {
+            const db = firebase.database();
+            const snapshot = await db.ref('Preferencias/' + nombreAsesor + '/Notificaciones/').once('value');
+            const notifData = snapshot.val();
+
+            if (notifData && notifData.suscrito && notifData.playerId) {
+                await enviarNotificacionAPI(titulo, mensaje, [notifData.playerId], url);
+                console.log("Notificación enviada a:", nombreAsesor);
+                return true;
+            } else {
+                console.log("Usuario no suscrito o sin Player ID");
+                return false;
+            }
+        }
+    } catch (error) {
+        console.error("Error al enviar notificación a asesor:", error);
+        return false;
+    }
+}
+
+async function enviarNotificacionTodosAsesores(titulo, mensaje, url = null) {
+    try {
+        if (typeof firebase !== 'undefined' && firebase.database) {
+            const db = firebase.database();
+            const snapshot = await db.ref('Preferencias/').once('value');
+            const preferencias = snapshot.val();
+
+            const playerIds = [];
+
+            for (const asesor in preferencias) {
+                if (preferencias[asesor].Notificaciones?.suscrito &&
+                    preferencias[asesor].Notificaciones?.playerId) {
+                    playerIds.push(preferencias[asesor].Notificaciones.playerId);
+                }
+            }
+
+            if (playerIds.length > 0) {
+                await enviarNotificacionAPI(titulo, mensaje, playerIds, url);
+                console.log(`Notificación enviada a ${playerIds.length} asesores`);
+                return true;
+            }
+        }
+    } catch (error) {
+        console.error("Error al enviar notificaciones:", error);
+        return false;
+    }
 }
