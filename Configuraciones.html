@@ -13,18 +13,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function (OneSignal) {
-            await OneSignal.init({
-                appId: "01d9f2ea-c74b-49d9-ac00-4af599270c3f",
-                serviceWorkerPath: '/Playground/OneSignalSDKWorker.js',
-                serviceWorkerUpdaterPath: '/Playground/OneSignalSDK.sw.js',
-                allowLocalhostAsSecureOrigin: true
-            });
-        });
-    </script>
     <title>Configuraciones</title>
 </head>
 <style>
@@ -560,22 +548,58 @@
                     <h2>Notificaciones Push</h2>
                 </div>
                 <div class="card-body">
-                    <div class="checkbox-container">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="activarNotificaciones">
-                            <span>Activar notificaciones push</span>
-                        </label>
+                    <!-- Estado de permisos -->
+                    <div id="estadoPermisos" class="alert-info"
+                        style="padding: 10px; border-radius: 8px; margin-bottom: 15px; background: rgba(52, 152, 219, 0.1); color: var(--color-texto); font-size: 13px;">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="mensajePermiso">Verifica el estado de las notificaciones</span>
                     </div>
 
-                    <div id="estadoNotificaciones"
-                        style="margin-top: 15px; padding: 12px; background: rgba(0, 0, 0, 0.02); border-radius: 8px; font-size: 14px;">
-                        <p id="textoEstadoNotificaciones">Verificando estado...</p>
-                    </div>
-
-                    <button id="btnSolicitarNotificaciones" class="btn-secondary"
-                        style="margin-top: 15px; width: 100%; display: none;">
-                        <i class="fas fa-bell"></i> Solicitar Permisos
+                    <!-- Botón activar/desactivar -->
+                    <button type="button" id="btnActivarNotificaciones" class="btn-secondary"
+                        style="width: 100%; margin-bottom: 20px;">
+                        <i class="fas fa-bell-slash"></i> Activar Notificaciones
                     </button>
+
+                    <!-- Opciones de notificación -->
+                    <div id="opcionesNotificaciones" style="display: none; opacity: 0; transition: opacity 0.3s;">
+                        <h3
+                            style="font-size: 15px; margin-bottom: 15px; color: var(--color-texto); display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-sliders"></i> Configurar Alertas
+                        </h3>
+
+                        <!-- Notificar turno mañana -->
+                        <div class="checkbox-container">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="notificarTurnoManana">
+                                <span>Notificar turno del día siguiente</span>
+                            </label>
+                        </div>
+
+                        <!-- Notificar almuerzo -->
+                        <div class="checkbox-container">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="notificarAlmuerzo">
+                                <span>Notificar si tengo almuerzo asignado</span>
+                            </label>
+                        </div>
+
+                        <!-- Hora de notificación -->
+                        <div class="input-group" style="margin-top: 15px;">
+                            <label for="horaNotificacion" style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-clock"></i> Hora de notificación
+                            </label>
+                            <input type="time" id="horaNotificacion" value="07:00"
+                                style="padding: 8px 12px; border: 2px solid var(--color-primario); border-radius: 8px; font-family: var(--font-family); font-size: 14px;">
+                        </div>
+
+                        <!-- Información adicional -->
+                        <div
+                            style="margin-top: 15px; padding: 10px; background: rgba(46, 204, 113, 0.1); border-radius: 8px; font-size: 12px; color: var(--color-texto);">
+                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+                            <strong>Activo:</strong> Recibirás notificaciones según tu configuración.
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -642,6 +666,7 @@
     <footer>
         <p>© 2024 Andrés Felipe Yepes Tascón</p>
     </footer>
+    <script src="scriptNotificaciones.js" type="module" defer></script>
     <script src="Notificador.js"></script>
     <script src="scriptConfiguraciones.js" type="module" defer></script>
     <script src="PreferenciasGlobales.js" type="module" defer></script>
