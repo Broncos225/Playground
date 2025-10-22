@@ -4,5 +4,5 @@
 [functions]
   node_bundler = "esbuild"
 
-[[functions."enviar-notificaciones"]]
-  schedule = "0 */1 * * *"  # Cada hora (ajusta según necesites)
+[functions.enviar-notificaciones] 
+  schedule = "0 */1 * * *"
