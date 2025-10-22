@@ -1,19 +1,4 @@
 // ============================================
-// CONFIGURACIÓN DE ONESIGNAL (SIN INIT)
-// ============================================
-window.OneSignalDeferred = window.OneSignalDeferred || [];
-
-// Solo configurar sin inicializar
-OneSignalDeferred.push(function(OneSignal) {
-  console.log("OneSignal SDK cargado");
-  
-  // Sincronizar estado después de que cargue
-  setTimeout(async () => {
-    await sincronizarEstadoNotificaciones();
-  }, 2000);
-});
-
-// ============================================
 // CONFIGURACIÓN DE LA API
 // ============================================
 const ONESIGNAL_APP_ID = "01d9f2ea-c74b-49d9-ac00-4af599270c3f";
