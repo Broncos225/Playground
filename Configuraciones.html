@@ -19,10 +19,9 @@
         OneSignalDeferred.push(async function (OneSignal) {
             await OneSignal.init({
                 appId: "01d9f2ea-c74b-49d9-ac00-4af599270c3f",
-                serviceWorkerPath: 'OneSignalSDKWorker.js',
-                serviceWorkerUpdaterPath: 'OneSignalSDK.sw.js',
-                allowLocalhostAsSecureOrigin: true,
-                path: '/Playground/'  // Especifica el path base
+                serviceWorkerPath: '/Playground/OneSignalSDKWorker.js',
+                serviceWorkerUpdaterPath: '/Playground/OneSignalSDK.sw.js',
+                allowLocalhostAsSecureOrigin: true
             });
         });
     </script>
