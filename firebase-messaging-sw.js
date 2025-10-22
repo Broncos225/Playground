@@ -37,8 +37,11 @@ messaging.onBackgroundMessage((payload) => {
         icon: '/Icono.png',
         badge: '/Icono.png',
         tag: 'notificacion-turno-' + Date.now(),
-        requireInteraction: false,
-        vibrate: [200, 100, 200]
+        requireInteraction: true,  // ⬅️ CAMBIO: Hace que permanezca hasta que hagas clic
+        vibrate: [200, 100, 200, 100, 200],
+        silent: false,
+        timestamp: Date.now(),
+        renotify: true  // ⬅️ CAMBIO: Notifica incluso si hay una similar
     };
 
     console.log('🔔 [onBackgroundMessage] Intentando mostrar:', notificationTitle, notificationOptions);
