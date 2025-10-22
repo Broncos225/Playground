@@ -23,102 +23,103 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 console.log('✅ Messaging inicializado en SW');
 
-// MÉTODO 1: onBackgroundMessage (Firebase moderno)
+// ============================================
+// MÉTODO ÚNICO: onBackgroundMessage
+// ============================================
+// Este es el método oficial de Firebase para manejar notificaciones en background
 messaging.onBackgroundMessage((payload) => {
     console.log('🔵 [onBackgroundMessage] Mensaje recibido:', payload);
     console.log('🔵 [onBackgroundMessage] Notification:', payload.notification);
     console.log('🔵 [onBackgroundMessage] Data:', payload.data);
 
-    const notificationTitle = payload.notification?.title || payload.data?.title || 'Sin título';
-    const notificationBody = payload.notification?.body || payload.data?.body || 'Sin contenido';
-    
+    // Extraer título y cuerpo
+    const notificationTitle = payload.notification?.title || payload.data?.title || 'Notificación';
+    const notificationBody = payload.notification?.body || payload.data?.body || 'Mensaje recibido';
+
     const notificationOptions = {
         body: notificationBody,
         icon: '/Icono.png',
         badge: '/Icono.png',
         tag: 'notificacion-turno-' + Date.now(),
-        requireInteraction: true,  // ⬅️ CAMBIO: Hace que permanezca hasta que hagas clic
-        vibrate: [200, 100, 200, 100, 200],
+        requireInteraction: true,
+        vibrate: [300, 100, 300],
         silent: false,
-        timestamp: Date.now(),
-        renotify: true  // ⬅️ CAMBIO: Notifica incluso si hay una similar
+        // Datos adicionales que puedes usar en el click
+        data: {
+            url: payload.data?.url || '/',
+            clickAction: payload.data?.click_action || '/',
+            ...payload.data
+        }
     };
 
     console.log('🔔 [onBackgroundMessage] Intentando mostrar:', notificationTitle, notificationOptions);
-    
+
     return self.registration.showNotification(notificationTitle, notificationOptions)
         .then(() => {
             console.log('✅ [onBackgroundMessage] Notificación mostrada correctamente');
         })
         .catch((error) => {
             console.error('❌ [onBackgroundMessage] Error al mostrar:', error);
+            console.error('❌ [onBackgroundMessage] Error stack:', error.stack);
         });
 });
 
-// MÉTODO 2: Push Event (Firebase clásico - BACKUP)
-self.addEventListener('push', (event) => {
-    console.log('🟣 [push event] Push recibido:', event);
-    
-    if (event.data) {
-        try {
-            const payload = event.data.json();
-            console.log('🟣 [push event] Payload parseado:', payload);
-            
-            const notificationTitle = payload.notification?.title || 'Notificación';
-            const notificationOptions = {
-                body: payload.notification?.body || '',
-                icon: '/Icono.png',
-                badge: '/Icono.png',
-                tag: 'push-' + Date.now()
-            };
+// ============================================
+// MANEJO DE CLICKS EN NOTIFICACIONES
+// ============================================
+self.addEventListener('notificationclick', function(event) {
+    console.log('🖱️ [CLICK] Notificación clickeada:', event.notification.tag);
+    console.log('🖱️ [CLICK] Datos:', event.notification.data);
 
-            console.log('🔔 [push event] Mostrando notificación');
-            
-            event.waitUntil(
-                self.registration.showNotification(notificationTitle, notificationOptions)
-                    .then(() => console.log('✅ [push event] Notificación mostrada'))
-                    .catch(err => console.error('❌ [push event] Error:', err))
-            );
-        } catch (error) {
-            console.error('❌ [push event] Error parseando:', error);
-        }
-    } else {
-        console.log('⚠️ [push event] No hay data en el evento');
-    }
-});
-
-// Manejar click en la notificación
-self.addEventListener('notificationclick', (event) => {
-    console.log('🖱️ Click en notificación:', event.notification.tag);
-    
     event.notification.close();
-    
+
+    // Obtener URL de destino (si se envió en el payload)
+    const urlToOpen = event.notification.data?.url || '/';
+
     event.waitUntil(
-        clients.matchAll({ type: 'window', includeUncontrolled: true })
-            .then((clientList) => {
-                for (let client of clientList) {
-                    if (client.url.includes(self.location.origin) && 'focus' in client) {
-                        console.log('🔍 Enfocando ventana existente');
-                        return client.focus();
-                    }
+        clients.matchAll({ 
+            type: 'window', 
+            includeUncontrolled: true 
+        })
+        .then(function(clientList) {
+            // Buscar si ya hay una ventana abierta
+            for (let i = 0; i < clientList.length; i++) {
+                const client = clientList[i];
+                if (client.url.indexOf(self.location.origin) >= 0 && 'focus' in client) {
+                    console.log('🔍 Enfocando ventana existente');
+                    return client.focus();
                 }
-                if (clients.openWindow) {
-                    console.log('🆕 Abriendo nueva ventana');
-                    return clients.openWindow('/');
-                }
-            })
+            }
+            // Si no hay ventana abierta, abrir una nueva
+            if (clients.openWindow) {
+                console.log('🆕 Abriendo nueva ventana:', urlToOpen);
+                return clients.openWindow(urlToOpen);
+            }
+        })
     );
 });
 
-// Log cuando el SW se activa
-self.addEventListener('activate', (event) => {
-    console.log('🟢 Service Worker activado');
+// ============================================
+// MANEJO DE SKIP_WAITING
+// ============================================
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        console.log('⚡ SKIP_WAITING recibido, activando Service Worker...');
+        self.skipWaiting();
+    }
 });
 
-// Log cuando el SW se instala
-self.addEventListener('install', (event) => {
-    console.log('📥 Service Worker instalado');
-    self.skipWaiting(); // Activar inmediatamente
+// ============================================
+// CICLO DE VIDA DEL SERVICE WORKER
+// ============================================
+self.addEventListener('install', function(event) {
+    console.log('🔥 Service Worker instalado');
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', function(event) {
+    console.log('🟢 Service Worker activado');
+    event.waitUntil(clients.claim());
 });
 
 console.log('✅ Service Worker configurado completamente');
