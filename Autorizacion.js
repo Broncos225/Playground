@@ -17,22 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let signOutTimer = null; // Variable para almacenar el timer
 
-    // Función para cerrar sesión cada 3 horas
-    function scheduleSignOutEveryThreeHours() {
+    // Función para cerrar sesión cada 8 horas
+    function scheduleSignOutEveryEightHours() {
         // Limpiar el timer anterior si existe
         if (signOutTimer) {
             clearTimeout(signOutTimer);
             signOutTimer = null;
         }
 
-        // Calcular exactamente 3 horas desde ahora
-        const threeHoursInMs = 3 * 60 * 60 * 1000; // 3 horas en milisegundos
-        
-        console.log(`Programando cierre de sesión en 3 horas (${new Date(Date.now() + threeHoursInMs).toLocaleString()})`);
-        
+        // Calcular exactamente 8 horas desde ahora
+        const eightHoursInMs = 8 * 60 * 60 * 1000; // 8 horas en milisegundos
+
+        console.log(`Programando cierre de sesión en 8 horas (${new Date(Date.now() + eightHoursInMs).toLocaleString()})`);
+
         signOutTimer = setTimeout(() => {
             firebase.auth().signOut().then(() => {
-                console.log('Usuario desconectado automáticamente después de 3 horas.');
+                console.log('Usuario desconectado automáticamente después de 8 horas.');
                 localStorage.removeItem('lastLoginDate');
                 localStorage.removeItem('nombreAsesorActual');
                 window.location.href = 'login.html';
@@ -40,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error al cerrar sesión:', error);
             });
 
-            // Vuelve a programar para dentro de otras 3 horas
-            scheduleSignOutEveryThreeHours();
-        }, threeHoursInMs);
+            // Vuelve a programar para dentro de otras 8 horas
+            scheduleSignOutEveryEightHours();
+        }, eightHoursInMs);
     }
 
     firebase.auth().onAuthStateChanged(user => {
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    scheduleSignOutEveryThreeHours();
+    scheduleSignOutEveryEightHours();
 
     window.addEventListener('beforeunload', () => {
         if (signOutTimer) {
