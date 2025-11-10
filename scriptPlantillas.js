@@ -324,9 +324,23 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
     configurarFiltro();
 }
 
+// Modifica la función configurarModalCreacion para incluir la validación en tiempo real
 function configurarModalCreacion(asesorActual) {
     var modal = document.getElementById("createTemplateModal");
     var btn = document.getElementById("openModalButton");
+    var nombreInput = document.getElementById('nombrePlantilla');
+
+    // Crear elemento para mostrar mensajes de validación
+    var validationMessage = document.createElement('div');
+    validationMessage.id = 'validationMessage';
+    validationMessage.style.cssText = 'margin-top: 5px; font-size: 12px; min-height: 18px;';
+
+    // Insertar el mensaje de validación después del input de nombre
+    if (!document.getElementById('validationMessage')) {
+        nombreInput.parentNode.insertBefore(validationMessage, nombreInput.nextSibling);
+    } else {
+        validationMessage = document.getElementById('validationMessage');
+    }
 
     var colorSelector = document.getElementById('colorPlantilla');
     if (colorSelector && colorSelector.options.length === 0) {
@@ -338,11 +352,53 @@ function configurarModalCreacion(asesorActual) {
         });
     }
 
+    // Validación en tiempo real del nombre
+    let timeoutId;
+    nombreInput.addEventListener('input', function () {
+        clearTimeout(timeoutId);
+
+        var nombre = this.value;
+        var form = document.getElementById('crearPlantillaForm');
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var isEditing = form.hasAttribute('data-editing');
+        var originalName = form.getAttribute('data-original-name');
+
+        // Validar caracteres
+        var validacion = validarNombrePlantilla(nombre);
+
+        if (!validacion.valido) {
+            validationMessage.textContent = '❌ ' + validacion.mensaje;
+            validationMessage.style.color = '#ef4444';
+            nombreInput.style.borderColor = '#ef4444';
+            submitBtn.disabled = true;
+            return;
+        }
+
+        // Verificar duplicados con debounce
+        timeoutId = setTimeout(async function () {
+            var existe = await verificarNombreExistente(nombre, isEditing ? originalName : null);
+
+            if (existe) {
+                validationMessage.textContent = '❌ Ya existe una plantilla con este nombre';
+                validationMessage.style.color = '#ef4444';
+                nombreInput.style.borderColor = '#ef4444';
+                submitBtn.disabled = true;
+            } else {
+                validationMessage.textContent = '✅ Nombre válido';
+                validationMessage.style.color = '#10b981';
+                nombreInput.style.borderColor = '#10b981';
+                submitBtn.disabled = false;
+            }
+        }, 500);
+    });
+
     btn.onclick = function () {
         document.getElementById('crearPlantillaForm').reset();
         document.getElementById('crearPlantillaForm').removeAttribute('data-editing');
         document.querySelector('#createTemplateModal h2').textContent = 'Crear Nueva Plantilla';
         document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Crear Plantilla';
+        validationMessage.textContent = '';
+        nombreInput.style.borderColor = '';
         modal.style.display = "block";
     }
 
@@ -353,16 +409,29 @@ function configurarModalCreacion(asesorActual) {
     }
 
     var form = document.getElementById('crearPlantillaForm');
-    form.addEventListener('submit', function (event) {
+    form.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        var nombrePlantilla = document.getElementById('nombrePlantilla').value;
+        var nombrePlantilla = document.getElementById('nombrePlantilla').value.trim();
         var apertura = document.getElementById('apertura').value;
         var cierre = document.getElementById('cierre').value;
         var creador = localStorage.getItem('nombreAsesorActual') || 'Desconocido';
         var colorPlantilla = document.getElementById('colorPlantilla').value;
         var isEditing = form.hasAttribute('data-editing');
         var originalName = form.getAttribute('data-original-name');
+
+        // Validación final antes de guardar
+        var validacion = validarNombrePlantilla(nombrePlantilla);
+        if (!validacion.valido) {
+            mostrarNotificacion(validacion.mensaje);
+            return;
+        }
+
+        var existe = await verificarNombreExistente(nombrePlantilla, isEditing ? originalName : null);
+        if (existe) {
+            mostrarNotificacion('Ya existe una plantilla con este nombre');
+            return;
+        }
 
         var plantillaData = {
             Tipo: '2',
@@ -389,6 +458,8 @@ function configurarModalCreacion(asesorActual) {
                     form.reset();
                     form.removeAttribute('data-editing');
                     form.removeAttribute('data-original-name');
+                    validationMessage.textContent = '';
+                    nombreInput.style.borderColor = '';
                     modal.style.display = "none";
                     location.reload();
                 })
@@ -411,6 +482,8 @@ function configurarModalCreacion(asesorActual) {
                     form.reset();
                     form.removeAttribute('data-editing');
                     form.removeAttribute('data-original-name');
+                    validationMessage.textContent = '';
+                    nombreInput.style.borderColor = '';
                     modal.style.display = "none";
                     location.reload();
                 })
@@ -698,10 +771,26 @@ function normalizarTexto(texto) {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
+// Modifica la función configurarBusqueda para incluir búsqueda en contenido
 function configurarBusqueda() {
     var input = document.getElementById('busqueda');
     var clearButton = document.getElementById('LimpiarP');
     var pdfs = Array.from(document.getElementsByClassName('Modulo2'));
+
+    // Función para extraer texto plano del HTML
+    function extraerTextoPlano(html) {
+        if (!html) return '';
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        return tempDiv.textContent || tempDiv.innerText || '';
+    }
+
+    // Función para resaltar texto en los resultados
+    function resaltarTexto(texto, busqueda) {
+        if (!busqueda.trim()) return texto;
+        const regex = new RegExp(`(${busqueda.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return texto.replace(regex, '<mark>$1</mark>');
+    }
 
     input.addEventListener('keyup', function () {
         var busqueda = input.value;
@@ -709,15 +798,39 @@ function configurarBusqueda() {
         var tipoSeleccionado = document.getElementById('Tipos').value;
 
         pdfs.forEach(function (pdf) {
+            var fileName = pdf.getAttribute('data-name');
             var key = pdf.getElementsByTagName('h2')[0].innerText;
             var tituloNormalizado = normalizarTexto(key);
+
+            // Obtener contenido de la plantilla
+            var plantilla = plantillasCache[fileName];
+            var contenidoApertura = extraerTextoPlano(plantilla?.Apertura || '');
+            var contenidoCierre = extraerTextoPlano(plantilla?.Cierre || '');
+            var contenidoCompleto = contenidoApertura + ' ' + contenidoCierre;
+            var contenidoNormalizado = normalizarTexto(contenidoCompleto);
+
             var coincidenciasEnTitulo = tituloNormalizado.includes(busquedaNormalizada);
+            var coincidenciasEnContenido = contenidoNormalizado.includes(busquedaNormalizada);
 
             var type = pdf.getAttribute('data-type');
             var typeMatches = tipoSeleccionado === "0" || type === tipoSeleccionado;
 
-            if (coincidenciasEnTitulo && typeMatches) {
+            // Remover indicador previo si existe
+            var indicadorPrevio = pdf.querySelector('.search-indicator');
+            if (indicadorPrevio) {
+                indicadorPrevio.remove();
+            }
+
+            if ((coincidenciasEnTitulo || coincidenciasEnContenido) && typeMatches) {
                 pdf.style.display = "";
+
+                // Si hay búsqueda y hay coincidencias en contenido, agregar indicador
+                if (busquedaNormalizada && coincidenciasEnContenido && !coincidenciasEnTitulo) {
+                    var indicador = document.createElement('div');
+                    indicador.className = 'search-indicator';
+                    indicador.innerHTML = '<small style="color: #666; font-size: 11px;">📄 Encontrado en contenido</small>';
+                    pdf.appendChild(indicador);
+                }
             } else {
                 pdf.style.display = "none";
             }
@@ -730,6 +843,11 @@ function configurarBusqueda() {
         input.value = '';
         pdfs.forEach(function (pdf) {
             pdf.style.display = "";
+            // Remover indicadores de búsqueda
+            var indicador = pdf.querySelector('.search-indicator');
+            if (indicador) {
+                indicador.remove();
+            }
         });
         verificarResultados();
     });
@@ -977,7 +1095,28 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
+// Agregar al final del archivo, dentro del bloque de estilos existente
+var styleSearchIndicator = document.createElement('style');
+styleSearchIndicator.innerHTML = `
+    .search-indicator {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        padding: 2px 6px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 3px;
+        font-size: 10px;
+        z-index: 5;
+    }
 
+    .Modulo2 mark {
+        background-color: #fef08a;
+        padding: 2px 4px;
+        border-radius: 2px;
+        font-weight: 500;
+    }
+`;
+document.head.appendChild(styleSearchIndicator);
 var loadingScreen = document.createElement("div");
 loadingScreen.id = "loadingScreen";
 loadingScreen.innerHTML = `
@@ -1252,5 +1391,44 @@ async function exportarPlantillasAExcel() {
             loadingScreen.style.display = "none";
             loadingScreen.querySelector('div:last-child').textContent = 'Cargando...';
         }
+    }
+}
+
+// Añade esta función para validar el nombre de la plantilla
+function validarNombrePlantilla(nombre) {
+    // Caracteres no permitidos por Firebase
+    const caracteresInvalidos = /[.#$[\]]/;
+
+    if (!nombre || nombre.trim() === '') {
+        return { valido: false, mensaje: 'El nombre no puede estar vacío' };
+    }
+
+    if (caracteresInvalidos.test(nombre)) {
+        return { valido: false, mensaje: 'No se permiten los caracteres: . # $ [ ]' };
+    }
+
+    return { valido: true, mensaje: '' };
+}
+
+
+// Añade esta función para verificar si el nombre ya existe
+async function verificarNombreExistente(nombre, nombreOriginal = null) {
+    // Si estamos editando y el nombre no cambió, no hay duplicado
+    if (nombreOriginal && nombre === nombreOriginal) {
+        return false;
+    }
+
+    // Verifica en el cache primero
+    if (plantillasCache && plantillasCache[nombre]) {
+        return true;
+    }
+
+    // Verifica en la base de datos
+    try {
+        const snapshot = await db.ref('Plantillas/' + nombre).once('value');
+        return snapshot.exists();
+    } catch (error) {
+        console.error('Error verificando nombre existente:', error);
+        return false;
     }
 }
