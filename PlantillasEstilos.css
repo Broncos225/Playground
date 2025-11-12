@@ -68,7 +68,7 @@ form textarea {
 
     .modal-content {
         margin: 0 !important;
-        width: 92% !important;
+        width: auto !important;
         padding: 10px !important;
     }
 }

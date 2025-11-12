@@ -31,6 +31,16 @@
                 document.body.appendChild(script);
             });
     }
+    if (localStorage.getItem("nombreAsesorActual") === "Andrés_Felipe_Yepes_Tascón" || localStorage.getItem("nombreAsesorActual") === "Ocaris David Arango Aguilar") {
+        fetch("botonIA.html")
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById("nuevoModalContainer").innerHTML = html;
+                const script = document.createElement("script");
+                script.src = "botonIA.js"; // aquí va la lógica del botón
+                document.body.appendChild(script);
+            });
+    }
 </script>
 
 
@@ -184,7 +194,7 @@
         </div>
         <button id="btnMostrarReproductor"
             style="display: flex; align-self: end; justify-self: end; border: 0;"></button>
-
+        <div id="nuevoModalContainer"></div>
     </section>
     <footer>
         <p>© 2024 Andrés Felipe Yepes Tascón</p>
