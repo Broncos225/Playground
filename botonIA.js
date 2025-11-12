@@ -183,7 +183,7 @@ ${textoOriginal}`
 }
 
 // Función para copiar el texto mejorado
-function copiarTexto() {
+function copiarTextoIA() {
     const textoMejorado = document.getElementById('textoMejorado').value;
 
     if (!textoMejorado) {
