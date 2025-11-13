@@ -103,7 +103,7 @@ ${textoOriginal}`
         console.log('📝 Prompt length:', prompts[tipo].length);
         console.log('📝 Prompt:', prompts[tipo].substring(0, 200) + '...');
         
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
