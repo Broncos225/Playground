@@ -74,63 +74,63 @@ REGLAS ESTRICTAS:
 - Mantener la información técnica clara pero no complicada
 - Escribir en español (algunos términos técnicos pueden quedar en inglés)`;
 
-    // Definir los prompts según el tipo
+// Definir los prompts según el tipo
     const prompts = {
         'mejorar': `${contextoBase}
 
-Mejora ÚNICAMENTE la redacción del siguiente texto manteniendo exactamente el mismo contenido y mensaje. No cambies el tono ni el estilo, solo hazlo más claro:
+Mejora únicamente la redacción del siguiente texto manteniendo exactamente el mismo contenido y mensaje. No cambies el tono ni el estilo, solo hazlo más claro. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'formal': `${contextoBase}
 
-Reescribe este texto haciéndolo MÁS FORMAL. Mantén el mismo contenido pero usa un lenguaje más corporativo y profesional:
+Reescribe este texto haciéndolo más formal. Mantén el mismo contenido pero usa un lenguaje más corporativo y profesional. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'claro': `${contextoBase}
 
-Reescribe este texto haciéndolo MÁS CLARO Y SIMPLE. Usa palabras más sencillas y frases más cortas, manteniendo el mismo mensaje:
+Reescribe este texto haciéndolo más claro y simple. Usa palabras más sencillas y frases más cortas, manteniendo el mismo mensaje. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'conciso': `${contextoBase}
 
-Reduce este texto haciéndolo MÁS BREVE Y DIRECTO. Elimina palabras innecesarias pero conserva toda la información importante:
+Reduce este texto haciéndolo más breve y directo. Elimina palabras innecesarias pero conserva toda la información importante. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'profesional': `${contextoBase}
 
-Reescribe este texto con un tono MÁS PROFESIONAL Y PULIDO. Mantén el contenido pero mejora la presentación:
+Reescribe este texto con un tono más profesional y pulido. Mantén el contenido pero mejora la presentación. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'pedir_info': `${contextoBase}
 
-Reescribe este texto para SOLICITAR INFORMACIÓN ADICIONAL de manera clara. Mantén el contexto del problema pero enfócate en pedir los datos que faltan:
+Reescribe este texto para solicitar información adicional de manera clara. Mantén el contexto del problema pero enfócate en pedir los datos que faltan. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'seguimiento': `${contextoBase}
 
-Reescribe este texto como un MENSAJE DE SEGUIMIENTO. Informa sobre el progreso o estado actual del caso:
+Reescribe este texto como un mensaje de seguimiento. Informa sobre el progreso o estado actual del caso. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'cerrar': `${contextoBase}
 
-Reescribe este texto como un CIERRE DE TICKET. Confirma que el problema fue resuelto y explica brevemente la solución:
+Reescribe este texto como un cierre de ticket. Confirma que el problema fue resuelto y explica brevemente la solución. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
         'escalamiento': `${contextoBase}
 
-Reescribe este texto para INFORMAR UN ESCALAMIENTO. Explica que el caso se derivará a otra área y qué pueden esperar:
+Reescribe este texto para informar un escalamiento. Explica que el caso se derivará a otra área y qué pueden esperar. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`,
 
-        'corregir': `Corrige ÚNICAMENTE los errores de ortografía, gramática y puntuación del siguiente texto. NO cambies palabras, NO cambies el tono, NO reorganices frases. Solo corrige errores:
+        'corregir': `Corrige únicamente los errores de ortografía, gramática y puntuación del siguiente texto. No cambies palabras, no cambies el tono, no reorganices frases. Solo corrige errores. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`
     };
