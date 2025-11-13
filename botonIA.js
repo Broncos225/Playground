@@ -78,61 +78,59 @@ REGLAS ESTRICTAS:
     const prompts = {
         'mejorar': `${contextoBase}
 
-Mejora el siguiente texto de soporte técnico manteniendo su significado pero haciéndolo más efectivo, empático y profesional:
+Mejora ÚNICAMENTE la redacción del siguiente texto manteniendo exactamente el mismo contenido y mensaje. No cambies el tono ni el estilo, solo hazlo más claro:
 
 ${textoOriginal}`,
 
         'formal': `${contextoBase}
 
-Reescribe este texto de soporte técnico de manera más formal y profesional, pero manteniendo la empatía:
+Reescribe este texto haciéndolo MÁS FORMAL. Mantén el mismo contenido pero usa un lenguaje más corporativo y profesional:
 
 ${textoOriginal}`,
 
         'claro': `${contextoBase}
 
-Reescribe este texto de soporte técnico de manera más clara y fácil de entender para las asesoras de tienda:
+Reescribe este texto haciéndolo MÁS CLARO Y SIMPLE. Usa palabras más sencillas y frases más cortas, manteniendo el mismo mensaje:
 
 ${textoOriginal}`,
 
         'conciso': `${contextoBase}
 
-Reescribe este texto de soporte técnico de manera más concisa y directa sin perder información importante:
+Reduce este texto haciéndolo MÁS BREVE Y DIRECTO. Elimina palabras innecesarias pero conserva toda la información importante:
 
 ${textoOriginal}`,
 
         'profesional': `${contextoBase}
 
-Reescribe este texto de soporte técnico con un tono más profesional pero manteniendo la calidez y empatía:
+Reescribe este texto con un tono MÁS PROFESIONAL Y PULIDO. Mantén el contenido pero mejora la presentación:
 
 ${textoOriginal}`,
 
         'pedir_info': `${contextoBase}
 
-Convierte este texto en una solicitud clara y amable de información adicional necesaria para resolver el caso:
+Reescribe este texto para SOLICITAR INFORMACIÓN ADICIONAL de manera clara. Mantén el contexto del problema pero enfócate en pedir los datos que faltan:
 
 ${textoOriginal}`,
 
         'seguimiento': `${contextoBase}
 
-Convierte este texto en un mensaje de seguimiento que actualice el estado del caso de manera clara y tranquilizadora:
+Reescribe este texto como un MENSAJE DE SEGUIMIENTO. Informa sobre el progreso o estado actual del caso:
 
 ${textoOriginal}`,
 
         'cerrar': `${contextoBase}
 
-Convierte este texto en un cierre de ticket que confirme que el problema está resuelto. Solo informa la resolución, NO preguntes si necesitan algo más:
+Reescribe este texto como un CIERRE DE TICKET. Confirma que el problema fue resuelto y explica brevemente la solución:
 
 ${textoOriginal}`,
 
         'escalamiento': `${contextoBase}
 
-Convierte este texto en un mensaje que informe que el caso será derivado a otra área, explicando qué pasará a continuación de forma clara:
+Reescribe este texto para INFORMAR UN ESCALAMIENTO. Explica que el caso se derivará a otra área y qué pueden esperar:
 
 ${textoOriginal}`,
 
-        'corregir': `${contextoBase}
-
-Corrige únicamente los errores ortográficos y gramaticales de este texto de soporte técnico, manteniendo el tono y estructura:
+        'corregir': `Corrige ÚNICAMENTE los errores de ortografía, gramática y puntuación del siguiente texto. NO cambies palabras, NO cambies el tono, NO reorganices frases. Solo corrige errores:
 
 ${textoOriginal}`
     };
