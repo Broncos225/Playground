@@ -27,18 +27,6 @@ function cerrarModalIA() {
     document.getElementById('ModalIA').style.display = 'none';
 }
 
-// Función para obtener el saludo según la hora
-function obtenerSaludo() {
-    const hora = new Date().getHours();
-    if (hora >= 6 && hora < 12) {
-        return 'Buenos días';
-    } else if (hora >= 12 && hora < 19) {
-        return 'Buenas tardes';
-    } else {
-        return 'Buenas noches';
-    }
-}
-
 // Función para aplicar la mejora seleccionada
 function aplicarMejora() {
     const tipoSeleccionado = document.getElementById('tipoMejora').value;
@@ -60,77 +48,47 @@ async function mejorarTexto(tipo) {
     document.getElementById('loadingIA').style.display = 'block';
     document.getElementById('textoMejorado').value = '';
 
-    const saludo = obtenerSaludo();
-
-    // Contexto base para todos los prompts
-    const contextoBase = `Eres un agente de soporte técnico de mesa de ayuda. Trabajas con asesoras de tiendas de ropa que usan sistemas como CEGID (POS), LeanCore, Kaiowa, Credinet y Sumaspay.
-
-REGLAS ESTRICTAS:
-- SIEMPRE iniciar con "${saludo}"
-- SIEMPRE terminar en una nueva línea con "Saludos."
-- Usar tono empático, claro y profesional (no demasiado informal)
-- NUNCA culpar a nadie (ni otros departamentos, ni sistemas, ni personas)
-- NUNCA prometer nada, solo CONFIRMAR lo que vas a hacer
-- Mantener la información técnica clara pero no complicada
-- Escribir en español (algunos términos técnicos pueden quedar en inglés)`;
-
-// Definir los prompts según el tipo
+    // Definir los prompts según el tipo
     const prompts = {
-        'mejorar': `${contextoBase}
+        'mejorar': `Reescribe el siguiente texto para hacerlo más claro, formal y coherente, manteniendo su sentido técnico y operativo.
 
-Mejora únicamente la redacción del siguiente texto manteniendo exactamente el mismo contenido y mensaje. No cambies el tono ni el estilo, solo hazlo más claro. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
+INSTRUCCIONES:
+1. No alterar el significado original. Conservar exactamente el mismo sentido y secuencia lógica.
+2. Corregir errores de redacción, ortografía y gramática. Ajustar mayúsculas, tildes, puntuación y uso de conectores.
+3. Usar un tono formal, técnico y profesional.
+4. Evitar repeticiones o redundancias innecesarias.
+5. Estructurar el texto con lógica: motivo del contacto, acción realizada, resultado o estado final.
+6. No agregar información que no esté en el texto original. Solo aclarar ideas con conectores.
+7. Responder solo con texto plano, sin formato markdown, sin asteriscos ni negritas.
 
-${textoOriginal}`,
-
-        'formal': `${contextoBase}
-
-Reescribe este texto haciéndolo más formal. Mantén el mismo contenido pero usa un lenguaje más corporativo y profesional. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
-${textoOriginal}`,
-
-        'claro': `${contextoBase}
-
-Reescribe este texto haciéndolo más claro y simple. Usa palabras más sencillas y frases más cortas, manteniendo el mismo mensaje. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
-${textoOriginal}`,
-
-        'conciso': `${contextoBase}
-
-Reduce este texto haciéndolo más breve y directo. Elimina palabras innecesarias pero conserva toda la información importante. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
-${textoOriginal}`,
-
-        'profesional': `${contextoBase}
-
-Reescribe este texto con un tono más profesional y pulido. Mantén el contenido pero mejora la presentación. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
-${textoOriginal}`,
-
-        'pedir_info': `${contextoBase}
-
-Reescribe este texto para solicitar información adicional de manera clara. Mantén el contexto del problema pero enfócate en pedir los datos que faltan. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
-${textoOriginal}`,
-
-        'seguimiento': `${contextoBase}
-
-Reescribe este texto como un mensaje de seguimiento. Informa sobre el progreso o estado actual del caso. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
-${textoOriginal}`,
-
-        'cerrar': `${contextoBase}
-
-Reescribe este texto como un cierre de ticket. Confirma que el problema fue resuelto y explica brevemente la solución. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
-${textoOriginal}`,
-
-        'escalamiento': `${contextoBase}
-
-Reescribe este texto para informar un escalamiento. Explica que el caso se derivará a otra área y qué pueden esperar. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
-
+Texto a mejorar:
 ${textoOriginal}`,
 
         'corregir': `Corrige únicamente los errores de ortografía, gramática y puntuación del siguiente texto. No cambies palabras, no cambies el tono, no reorganices frases. Solo corrige errores. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
+
+${textoOriginal}`,
+
+        'conciso': `Reescribe el siguiente texto de forma más breve y directa, eliminando palabras innecesarias pero conservando toda la información técnica importante. Mantén el tono profesional. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
+
+${textoOriginal}`,
+
+        'ampliar': `Reescribe el siguiente texto agregando más detalles y contexto para que sea más completo y descriptivo. Mantén el tono profesional y técnico. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
+
+${textoOriginal}`,
+
+        'pedir_info': `Reescribe el siguiente texto como una solicitud profesional de información adicional necesaria para resolver el caso. Indica claramente qué datos específicos se necesitan. Mantén el contexto del problema. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
+
+${textoOriginal}`,
+
+        'seguimiento': `Reescribe el siguiente texto como un mensaje de seguimiento profesional que actualice el estado actual del caso. Indica qué se está haciendo o qué se hizo, y cuál es el siguiente paso si aplica. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
+
+${textoOriginal}`,
+
+        'solucion': `Reescribe el siguiente texto como una explicación clara de la solución implementada. Describe qué se hizo para resolver el problema de forma técnica pero comprensible. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
+
+${textoOriginal}`,
+
+        'escalamiento': `Reescribe el siguiente texto para informar que el caso será escalado o derivado a otra área. Explica por qué se hace el escalamiento y qué pueden esperar a continuación. Mantén un tono profesional y tranquilizador. Responde solo con texto plano, sin formato markdown, sin asteriscos ni negritas:
 
 ${textoOriginal}`
     };
