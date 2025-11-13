@@ -414,6 +414,90 @@ function verificarEstadoTurnoConTiempo(infoAlmuerzo, ahora) {
     }
 }
 
+async function obtenerTurnoDiaActual() {
+    try {
+        var nombreAsesorActual = window.nombreAsesorActual || localStorage.getItem("nombreAsesorActual");
+        if (!nombreAsesorActual) {
+            throw new Error("No se encontró el nombre del asesor actual");
+        }
+        nombreAsesorActual = nombreAsesorActual.replace(/_/g, " ");
+
+        await verificarYActualizarCache();
+
+        const hoy = new Date();
+        const añoSeleccionado = hoy.getFullYear();
+        const mesSeleccionado = hoy.getMonth() + 1;
+        const diaActual = hoy.getDate() + 1; // Mantén tu lógica de +1 si así lo requiere tu sistema
+
+        const turnoData = cache.celdas?.[nombreAsesorActual]?.[diaActual]?.[añoSeleccionado]?.[mesSeleccionado];
+
+        const turnoCompleto = turnoData ? turnoData.texto : null;
+        const turnoBase = extraerTurnoBase(turnoCompleto);
+
+        let rango = null;
+        let descripcion = null;
+
+        if (turnoCompleto) {
+            let infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoCompleto);
+
+            if (!infoTurnoCompleto && turnoBase) {
+                infoTurnoCompleto = await obtenerInfoTurnoCompleto(turnoBase);
+            }
+
+            if (infoTurnoCompleto && infoTurnoCompleto.apertura && infoTurnoCompleto.cierre) {
+                if (infoTurnoCompleto.apertura === "12:00 AM") {
+                    try {
+                        const descSnapshot = await db.ref(`Turnos/${turnoCompleto}/Descripcion`).once('value');
+                        descripcion = descSnapshot.val();
+
+                        if (!descripcion && turnoBase) {
+                            const descSnapshotBase = await db.ref(`Turnos/${turnoBase}/Descripcion`).once('value');
+                            descripcion = descSnapshotBase.val();
+                        }
+
+                        if (descripcion) {
+                            rango = descripcion;
+                        } else {
+                            rango = turnoCompleto;
+                        }
+                    } catch (error) {
+                        console.log("No se encontró descripción específica, usando turno completo");
+                        rango = turnoCompleto;
+                    }
+                } else {
+                    rango = `${infoTurnoCompleto.apertura} - ${infoTurnoCompleto.cierre}`;
+                }
+            }
+        } else if (turnoCompleto) {
+            const estadosEspeciales = {
+                'D': 'Descanso',
+                'DV': 'Descanso/Vacaciones',
+                'TSN': 'Trabajo Sin turno',
+                'TSA': 'Turno Sala'
+            };
+
+            rango = estadosEspeciales[turnoCompleto] || turnoCompleto;
+        }
+
+        return {
+            turnoCompleto: turnoCompleto,
+            turnoBase: turnoBase,
+            turnoConsultado: turnoCompleto,
+            rango: rango,
+            fecha: diaActual + '/' + mesSeleccionado + '/' + añoSeleccionado
+        };
+
+    } catch (error) {
+        console.error("Error al obtener turno del día actual:", error);
+        return {
+            turnoCompleto: null,
+            turnoBase: null,
+            rango: null,
+            fecha: 'Error'
+        };
+    }
+}
+
 async function mostrarHorarioAlmuerzo() {
     const elemento = document.getElementById('HoraAlmuerzos');
 
@@ -424,8 +508,34 @@ async function mostrarHorarioAlmuerzo() {
     }
 
     try {
+        // Obtener turno de HOY
+        const turnoDiaActual = await obtenerTurnoDiaActual();
+        
+        // Obtener turno de MAÑANA
         const turnoDiaSiguiente = await obtenerTurnoDiaSiguiente();
 
+        // Mensaje para HOY
+        let mensajeDiaActual = '';
+        if (turnoDiaActual.turnoCompleto) {
+            let rangoHoy = '';
+            if (turnoDiaActual.rango) {
+                rangoHoy = ` - ${turnoDiaActual.rango}`;
+            }
+            mensajeDiaActual = `
+                <div class="today-turn-info assigned">
+                    <strong>📍 Hoy:</strong> 
+                    <span class="turn-value">${turnoDiaActual.turnoCompleto}</span>${rangoHoy}
+                </div>
+            `;
+        } else {
+            mensajeDiaActual = `
+                <div class="today-turn-info not-assigned">
+                    <strong>📍 Hoy:</strong> Sin turno asignado
+                </div>
+            `;
+        }
+
+        // Mensaje para MAÑANA
         let mensajeDiaSiguiente = '';
         if (turnoDiaSiguiente.turnoCompleto) {
             let rangoMañana = '';
@@ -447,13 +557,13 @@ async function mostrarHorarioAlmuerzo() {
         }
 
         if (elemento) {
-            elemento.innerHTML = mensajeDiaSiguiente;
+            elemento.innerHTML = mensajeDiaActual + mensajeDiaSiguiente;
         }
 
-        return turnoDiaSiguiente;
+        return { hoy: turnoDiaActual, mañana: turnoDiaSiguiente };
 
     } catch (error) {
-        console.error("Error al mostrar horario del día siguiente:", error);
+        console.error("Error al mostrar horarios:", error);
         if (elemento) {
             elemento.innerHTML = `
                 <p style="color: #dc3545; margin: 5px 0; font-size: 16px;">
