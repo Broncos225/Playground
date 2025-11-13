@@ -14,9 +14,6 @@ window.addEventListener('click', function (event) {
     }
 });
 
-
-
-
 // Función para abrir el modal
 function abrirModalIA() {
     document.getElementById('ModalIA').style.display = 'block';
@@ -43,10 +40,6 @@ async function mejorarTexto(tipo) {
         alert('Por favor, ingresa un texto primero');
         return;
     }
-
-    // Mostrar indicador de carga
-    document.getElementById('loadingIA').style.display = 'block';
-    document.getElementById('textoMejorado').value = '';
 
     // Definir los prompts según el tipo
     const prompts = {
@@ -93,12 +86,23 @@ ${textoOriginal}`,
 ${textoOriginal}`
     };
 
+    // Validar que el tipo existe
+    if (!prompts[tipo]) {
+        alert(`Tipo de mejora no válido: ${tipo}`);
+        return;
+    }
+
+    // Mostrar indicador de carga
+    document.getElementById('loadingIA').style.display = 'block';
+    document.getElementById('textoMejorado').value = '';
+
     // Aquí debes poner tu API key
     const API_KEY = 'AIzaSyBPmsVZMLZV6D7io-1OgseeNqDia3cFmqM';
 
     try {
         console.log('📝 Prompt length:', prompts[tipo].length);
         console.log('📝 Prompt:', prompts[tipo].substring(0, 200) + '...');
+        
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent`, {
             method: 'POST',
             headers: {
