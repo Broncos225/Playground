@@ -533,8 +533,8 @@ let agentes = {
         nombre: "Andrés Felipe Yepes Tascón",
         contraseña: ""
     },
-    Oscar_Luis_Cabrera_Pacheco: {
-        nombre: "Oscar Luis Cabrera Pacheco",
+    Judy_Andrea_Buitrago_Solis: {
+        nombre: "Judy Andrea Buitrago Solis",
         contraseña: ""
     },
     Yeison_Torres_Ochoa: {

@@ -1199,7 +1199,7 @@ async function obtenerEncargadoActual() {
     try {
         const usuarios = [
             "Andrés Felipe Yepes Tascón",
-            "Oscar Luis Cabrera Pacheco",
+            "Judy Andrea Buitrago Solis",
             "Yeison Torres Ochoa",
             "Maria Susana Ospina Vanegas",
             "Ocaris David Arango Aguilar",
