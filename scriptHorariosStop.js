@@ -2487,6 +2487,7 @@ async function cargarCronologia() {
                             turno: turnoId,
                             inicio: horaInicio,
                             fin: horaFin,
+                            cantidad: turnoData.Cantidad,
                             aperturaStr: turnoData.Apertura,
                             cierreStr: turnoData.Cierre,
                             colorF: turnoData.ColorF ? `#${turnoData.ColorF}` : '#4a9eff',
@@ -2657,7 +2658,7 @@ function renderTimelineCronologia(datosPersonas) {
 
             block.style.left = `${leftPx}px`;
             block.style.width = `${widthPx}px`;
-            block.textContent = `${persona.turno}: ${persona.aperturaStr} - ${persona.cierreStr}`;
+            block.textContent = `${persona.turno}: ${persona.aperturaStr} - ${persona.cierreStr} (${persona.cantidad} horas)`;
 
             timelineArea.appendChild(block);
         }
