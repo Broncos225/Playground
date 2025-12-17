@@ -2572,7 +2572,7 @@ function renderTimelineCronologia(datosPersonas) {
     const container = document.getElementById('containerTimeline');
     container.innerHTML = '';
     container.className = 'timeline-container';
-
+    container.style.position = 'relative';
     // Header
     const header = document.createElement('div');
     header.className = 'timeline-header-row';
@@ -2666,8 +2666,55 @@ function renderTimelineCronologia(datosPersonas) {
         row.appendChild(timelineArea);
         container.appendChild(row);
     });
-}
 
+    // Agregar línea de hora actual
+    const horaActual = obtenerHoraActualDecimal();
+
+    // Solo mostrar la línea si la hora actual está dentro del rango visible
+    if (horaActual >= minHora && horaActual <= maxHora) {
+        const lineaActual = document.createElement('div');
+        lineaActual.className = 'linea-hora-actual';
+
+        const posicionPx = (horaActual - minHora) * anchoHora;
+
+        lineaActual.style.cssText = `
+            position: absolute;
+            left: ${200 + posicionPx}px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #ff4444;
+            z-index: 10;
+            pointer-events: none;
+        `;
+
+        // Agregar etiqueta con la hora
+        const etiquetaHora = document.createElement('div');
+        etiquetaHora.style.cssText = `
+            position: absolute;
+            top: -25px;
+            left: -30px;
+            background-color: #ff4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+        `;
+
+        const ahora = new Date();
+        const horaFormateada = ahora.toLocaleTimeString('es-CO', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
+        etiquetaHora.textContent = horaFormateada;
+
+        lineaActual.appendChild(etiquetaHora);
+        container.appendChild(lineaActual);
+    }
+}
 // Función para convertir hora de 24h a 12h con AM/PM
 function convertirA12Horas(hora24) {
     if (hora24 === 0) return '12:00 AM';
@@ -2771,3 +2818,11 @@ window.onload = function () {
 // Hacer funciones globales para que funcionen con onclick
 window.cambiarVista = cambiarVista;
 window.cargarCronologia = cargarCronologia;
+
+// Función para obtener la hora actual en formato decimal
+function obtenerHoraActualDecimal() {
+    const ahora = new Date();
+    const horas = ahora.getHours();
+    const minutos = ahora.getMinutes();
+    return horas + (minutos / 60);
+}
