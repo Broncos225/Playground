@@ -92,7 +92,7 @@ window.onload = function () {
 async function colorCelda() {
     // Asegurarse de que el caché esté cargado ANTES de procesar celdas
     await precargarColoresTurnos();
-    
+
     const celdas = document.querySelectorAll('table td:not(#Descansos td)');
     celdas.forEach(celda => {
         celda.addEventListener('input', () => {
@@ -297,6 +297,7 @@ async function guardarCeldas() {
 
         if (promesasGuardado.length > 0) {
             await Promise.all(promesasGuardado);
+            limpiarCacheTimeline(); // Limpiar caché del timeline
             alert("Datos guardados");
             location.reload();
         } else {
@@ -314,7 +315,7 @@ async function cargarDatos() {
     const mesSeleccionado = document.getElementById('Mes').selectedIndex + 1;
     const añoSeleccionado = document.getElementById('Año').value;
     const celdas = document.querySelectorAll('#Table td');
-    
+
     // Mostrar indicador de carga
     const cargandoDiv = document.createElement('div');
     cargandoDiv.id = 'cargando';
@@ -329,14 +330,14 @@ async function cargarDatos() {
         z-index: 9999;
     `;
     document.body.appendChild(cargandoDiv);
-    
+
     // Array de promesas
     const promesas = [];
-    
+
     // 1. PRECARGAR COLORES (1 consulta)
     const precargaColores = precargarColoresTurnos();
     promesas.push(precargaColores);
-    
+
     // 2. PRECARGAR CANTIDADES (1 consulta) - YA LO TIENES
     const cantidadesCache = {};
     const precargaTurnos = firebase.database().ref('Turnos').once('value')
@@ -355,14 +356,14 @@ async function cargarDatos() {
             console.error("Error al precargar cantidades:", error);
             return {};
         });
-    
+
     promesas.push(precargaTurnos);
-    
+
     // 3. CARGAR DATOS DE CELDAS (N consultas, una por celda)
     celdas.forEach((celda) => {
         const idCelda = celda.cellIndex + 1;
         const nombreFila = celda.parentNode.cells[0].textContent.trim();
-        
+
         const promesa = firebase.database().ref('celdas/' + nombreFila + '/' + idCelda + '/' + añoSeleccionado + '/' + mesSeleccionado)
             .once('value')
             .then(snapshot => {
@@ -376,18 +377,18 @@ async function cargarDatos() {
             .catch(error => {
                 console.error("Error al cargar datos:", error);
             });
-        
+
         promesas.push(promesa);
     });
-    
+
     // Esperar a que todo termine
     try {
         await Promise.all(promesas);
-        
+
         // Calcular horas usando el cache
         calcularHorasConCache(cantidadesCache);
         contDescansos();
-        
+
         document.body.removeChild(cargandoDiv);
     } catch (error) {
         console.error("Error en la carga de datos:", error);
@@ -399,7 +400,7 @@ async function cargarDatos() {
 
 
 function calcularHorasConCache(cantidadesCache, outputOffset = 11) {
-    const letras = ['A','B','C','D','E','F','G','H'];
+    const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     const contadores = Object.fromEntries(letras.map(l => [l, 0]));
 
     for (let i = 1; i < 32; i++) {
@@ -2403,3 +2404,370 @@ if (!document.querySelector('#estilos-historial')) {
     style.innerHTML = estilosHistorial;
     document.head.appendChild(style);
 }
+
+// ===== FUNCIONES PARA LA CRONOLOGÍA (VERSIÓN MEJORADA) =====
+
+let cacheTimeline = new Map(); // Estructura: "año-mes-dia" => datosPersonas
+let timelineCargado = false;
+
+// Obtener nombres de empleados desde la tabla
+function obtenerNombresEmpleados() {
+    const sourceTable = document.getElementById('Table');
+    const nombres = [];
+
+    if (sourceTable) {
+        const filas = sourceTable.querySelectorAll('tr');
+        filas.forEach((fila, index) => {
+            if (index >= 3) { // Saltar las primeras 3 filas
+                const primeracelda = fila.querySelector('td');
+                if (primeracelda) {
+                    const nombre = primeracelda.textContent.trim();
+                    if (nombre && nombre !== '') {
+                        nombres.push(nombre);
+                    }
+                }
+            }
+        });
+    }
+
+    return nombres;
+}
+
+// Función principal para cargar la cronología
+async function cargarCronologia() {
+    const container = document.getElementById('containerTimeline');
+    const fecha = new Date(document.getElementById('dateInput').value);
+    const dia = fecha.getDate() + 2;
+    const mes = fecha.getMonth() + 1;
+    const año = fecha.getFullYear();
+
+    // Crear clave única para esta fecha
+    const claveCache = `${año}-${mes}-${dia}`;
+
+    // Verificar si ya existe en caché
+    if (cacheTimeline.has(claveCache)) {
+        console.log('✅ Cargando timeline desde caché');
+        renderTimelineCronologia(cacheTimeline.get(claveCache));
+        return;
+    }
+
+    // Si no está en caché, cargar desde Firebase
+    container.innerHTML = '<div class="loading">Cargando horarios...</div>';
+
+    const nombresEmpleados = obtenerNombresEmpleados();
+
+    if (nombresEmpleados.length === 0) {
+        container.innerHTML = '<div class="error">No se encontraron empleados en la tabla</div>';
+        return;
+    }
+
+    try {
+        const datosPersonas = [];
+
+        for (const nombreFila of nombresEmpleados) {
+            const snapshot = await db.ref(`celdas/${nombreFila}/${dia}/${año}/${mes}`).once('value');
+            const datos = snapshot.val();
+
+            if (datos && datos.texto) {
+                const turnoId = datos.texto.trim();
+
+                if (turnoId && turnoId !== '') {
+                    const turnoSnapshot = await db.ref(`Turnos/${turnoId}`).once('value');
+                    const turnoData = turnoSnapshot.val();
+
+                    if (turnoData && turnoData.Apertura && turnoData.Cierre) {
+                        const horaInicio = convertirHoraADecimalTimeline(turnoData.Apertura);
+                        const horaFin = convertirHoraADecimalTimeline(turnoData.Cierre);
+
+                        const esDescanso = (turnoData.Apertura === "12:00 AM" && turnoData.Cierre === "12:00 AM") ||
+                            (horaInicio === 0 && horaFin === 0);
+
+                        datosPersonas.push({
+                            nombre: nombreFila,
+                            turno: turnoId,
+                            inicio: horaInicio,
+                            fin: horaFin,
+                            aperturaStr: turnoData.Apertura,
+                            cierreStr: turnoData.Cierre,
+                            colorF: turnoData.ColorF ? `#${turnoData.ColorF}` : '#4a9eff',
+                            colorT: turnoData.ColorT ? `#${turnoData.ColorT}` : '#ffffff',
+                            esDescanso: esDescanso,
+                            descripcion: turnoData.Descripcion || ''
+                        });
+                    }
+                }
+            }
+        }
+
+        if (datosPersonas.length === 0) {
+            container.innerHTML = '<div class="error">No hay datos para esta fecha</div>';
+            return;
+        }
+
+        datosPersonas.sort((a, b) => {
+            if (a.esDescanso && !b.esDescanso) return 1;
+            if (!a.esDescanso && b.esDescanso) return -1;
+            return a.inicio - b.inicio;
+        });
+
+        // Guardar en caché antes de renderizar
+        cacheTimeline.set(claveCache, datosPersonas);
+        console.log(`✅ Timeline guardado en caché: ${claveCache}`);
+
+        renderTimelineCronologia(datosPersonas);
+    } catch (error) {
+        console.error('Error al cargar datos:', error);
+        container.innerHTML = '<div class="error">Error al cargar los datos de Firebase</div>';
+    }
+}
+
+function limpiarCacheTimeline() {
+    cacheTimeline.clear();
+    console.log('🗑️ Caché del timeline limpiado');
+}
+
+// Convertir hora a decimal (función específica para cronología)
+function convertirHoraADecimalTimeline(horaStr) {
+    const match = horaStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if (!match) return 0;
+
+    let horas = parseInt(match[1]);
+    const minutos = parseInt(match[2]);
+    const periodo = match[3].toUpperCase();
+
+    if (periodo === 'PM' && horas !== 12) horas += 12;
+    if (periodo === 'AM' && horas === 12) horas = 0;
+
+    return horas + (minutos / 60);
+}
+
+// Convertir decimal a hora legible
+function decimalAHoraTimeline(decimal) {
+    const horas = Math.floor(decimal);
+    const minutos = Math.round((decimal - horas) * 60);
+    return `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`;
+}
+
+// Renderizar la cronología
+// Renderizar la cronología
+function renderTimelineCronologia(datosPersonas) {
+    // Calcular rango de horas SOLO de personas que trabajan
+    let minHora = 24;
+    let maxHora = 0;
+
+    const personasQueTrabajan = datosPersonas.filter(p => !p.esDescanso);
+
+    if (personasQueTrabajan.length > 0) {
+        personasQueTrabajan.forEach(p => {
+            if (p.inicio < minHora) minHora = Math.floor(p.inicio);
+            if (p.fin > maxHora) maxHora = Math.ceil(p.fin);
+        });
+    } else {
+        // Si todos descansan, usar rango por defecto
+        minHora = 0;
+        maxHora = 24;
+    }
+
+    const totalHoras = maxHora - minHora;
+    const container = document.getElementById('containerTimeline');
+    container.innerHTML = '';
+    container.className = 'timeline-container';
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'timeline-header-row';
+
+    const nameColumn = document.createElement('div');
+    nameColumn.className = 'name-column';
+    nameColumn.textContent = 'Nombre del asesor';
+
+    const timelineHeader = document.createElement('div');
+    timelineHeader.className = 'timeline-header';
+
+    // Calcular el ancho de cada hora dinámicamente
+    const anchoDisponible = container.offsetWidth - 200; // 200px es el ancho de la columna de nombres
+    const anchoHora = anchoDisponible / totalHoras;
+    timelineHeader.style.width = `${anchoDisponible}px`;
+    timelineHeader.style.minWidth = `${anchoDisponible}px`;
+
+    for (let i = minHora; i < maxHora; i++) {
+        const marker = document.createElement('div');
+        marker.className = 'hour-marker';
+        marker.style.width = `${anchoHora - 1}px`;
+        marker.style.minWidth = `${anchoHora - 1}px`;
+        marker.style.flex = 'none';
+        marker.textContent = convertirA12Horas(i);
+        timelineHeader.appendChild(marker);
+    }
+
+    header.appendChild(nameColumn);
+    header.appendChild(timelineHeader);
+    container.appendChild(header);
+
+    // Crear líneas de fondo con ancho fijo
+    const gridBackground = [];
+    for (let i = 0; i < totalHoras; i++) {
+        gridBackground.push(`transparent ${i * anchoHora}px`);
+        gridBackground.push(`transparent ${(i + 1) * anchoHora - 1}px`);
+        gridBackground.push(`#e8e8e7 ${(i + 1) * anchoHora - 1}px`);
+        gridBackground.push(`#e8e8e7 ${(i + 1) * anchoHora}px`);
+    }
+
+    // Filas de personas
+    datosPersonas.forEach(persona => {
+        const row = document.createElement('div');
+        row.className = 'person-row';
+
+        const nameCell = document.createElement('div');
+        nameCell.className = 'person-name';
+        nameCell.textContent = persona.nombre;
+
+        const timelineArea = document.createElement('div');
+        timelineArea.className = 'timeline-area';
+        timelineArea.style.width = `${anchoDisponible}px`;
+        timelineArea.style.minWidth = `${anchoDisponible}px`;
+        timelineArea.style.backgroundImage = `linear-gradient(to right, ${gridBackground.join(', ')})`;
+
+        if (persona.esDescanso) {
+            // Mostrar bloque de descanso que ocupa todo el ancho
+            const blockDescanso = document.createElement('div');
+            blockDescanso.className = 'time-block time-block-descanso';
+            blockDescanso.style.backgroundColor = persona.colorF;
+            blockDescanso.style.color = persona.colorT;
+            blockDescanso.style.left = '0px';
+            blockDescanso.style.width = `${(totalHoras * anchoHora) - 4}px`;
+            blockDescanso.style.opacity = '0.7';
+            blockDescanso.style.fontStyle = 'italic';
+
+            // Mostrar descripción del turno si existe, sino mostrar "Descanso"
+            const textoDescanso = persona.descripcion || 'Descanso';
+            blockDescanso.textContent = `${persona.turno}: ${textoDescanso}`;
+
+            timelineArea.appendChild(blockDescanso);
+        } else {
+            // Mostrar bloque de turno normal
+            const block = document.createElement('div');
+            block.className = 'time-block';
+            block.style.backgroundColor = persona.colorF;
+            block.style.color = persona.colorT;
+
+            // Calcular posición y ancho en píxeles
+            const leftPx = (persona.inicio - minHora) * anchoHora;
+            const widthPx = (persona.fin - persona.inicio) * anchoHora;
+
+            block.style.left = `${leftPx}px`;
+            block.style.width = `${widthPx}px`;
+            block.textContent = `${persona.turno}: ${persona.aperturaStr} - ${persona.cierreStr}`;
+
+            timelineArea.appendChild(block);
+        }
+
+        row.appendChild(nameCell);
+        row.appendChild(timelineArea);
+        container.appendChild(row);
+    });
+}
+
+// Función para convertir hora de 24h a 12h con AM/PM
+function convertirA12Horas(hora24) {
+    if (hora24 === 0) return '12:00 AM';
+    if (hora24 === 12) return '12:00 PM';
+    if (hora24 < 12) return `${hora24}:00 AM`;
+    return `${hora24 - 12}:00 PM`;
+}
+
+// Mostrar controles de cronología
+function mostrarCronologia() {
+    const controles = document.getElementById('controlesTimeline');
+    const dateInput = document.getElementById('dateInput');
+
+    controles.style.display = 'flex';
+    dateInput.valueAsDate = new Date();
+
+    cargarCronologia();
+}
+
+// Cerrar cronología
+function cerrarCronologia() {
+    const controles = document.getElementById('controlesTimeline');
+    const container = document.getElementById('containerTimeline');
+
+    controles.style.display = 'none';
+    container.innerHTML = '';
+}
+
+// Event listener para el botón de cronología
+document.addEventListener('DOMContentLoaded', function () {
+    const btnCronologia = document.getElementById('btnCronologia');
+    if (btnCronologia) {
+        btnCronologia.addEventListener('click', mostrarCronologia);
+    }
+});
+
+// ------------------------------
+
+// ===== CONTROL DE VISTAS =====
+
+let vistaActual = 'timeline';
+let tablaCargada = false;
+
+// Función para cambiar entre vistas
+function cambiarVista(vista) {
+    const vistaTimeline = document.getElementById('vistaTimeline');
+    const vistaTabla = document.getElementById('vistaTabla');
+    const btnTimeline = document.getElementById('btnVistaTimeline');
+    const btnTabla = document.getElementById('btnVistaTabla');
+
+    if (vista === 'timeline') {
+        // Mostrar cronología
+        vistaTimeline.classList.add('active');
+        vistaTabla.classList.remove('active');
+        btnTimeline.classList.add('active');
+        btnTabla.classList.remove('active');
+        vistaActual = 'timeline';
+
+        // Cargar cronología (usará caché si ya está cargada)
+        const dateInput = document.getElementById('dateInput');
+        if (dateInput && !dateInput.value) {
+            dateInput.valueAsDate = new Date();
+        }
+        cargarCronologia(); // Ahora usa caché automáticamente
+
+    } else if (vista === 'tabla') {
+        // Mostrar tabla
+        vistaTabla.classList.add('active');
+        vistaTimeline.classList.remove('active');
+        btnTabla.classList.add('active');
+        btnTimeline.classList.remove('active');
+        vistaActual = 'tabla';
+
+        // Cargar datos de la tabla SOLO la primera vez
+        if (!tablaCargada) {
+            cargarDatos(); // Tu función existente
+            tablaCargada = true;
+        }
+    }
+}
+
+// Modificar la función window.onload para que NO cargue los datos automáticamente
+const originalOnload = window.onload;
+window.onload = function () {
+    ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
+    CuentaAsesor();
+    diaSemana();
+    // cargarDatos(); // COMENTAR O ELIMINAR ESTA LÍNEA
+    Festivos();
+    cambiarBordeColumna();
+    colorCelda();
+
+    // Cargar cronología al inicio
+    const dateInput = document.getElementById('dateInput');
+    if (dateInput) {
+        dateInput.valueAsDate = new Date();
+        cargarCronologia();
+    }
+};
+
+// Hacer funciones globales para que funcionen con onclick
+window.cambiarVista = cambiarVista;
+window.cargarCronologia = cargarCronologia;

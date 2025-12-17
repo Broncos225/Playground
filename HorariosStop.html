@@ -68,505 +68,498 @@
             </div>
         </div>
         <h1 id="Titulo">Horarios Stop Jeans</h1>
+        <!-- Controles para alternar vistas -->
+        <div class="toggle-view-controls">
+            <button id="btnVistaTimeline" class="active" onclick="cambiarVista('timeline')">
+                <i class="fa-solid fa-chart-gantt"></i> Vista Cronología
+            </button>
+            <button id="btnVistaTabla" onclick="cambiarVista('tabla')">
+                <i class="fa-solid fa-table"></i> Vista Tabla Horarios
+            </button>
+        </div>
+
+        <!-- Vista de Cronología (por defecto visible) -->
+        <div id="vistaTimeline" class="vista-container active">
+            <div class="controls" id="controlesTimeline">
+                <label for="dateInput">Fecha:</label>
+                <input type="date" id="dateInput" />
+                <button onclick="cargarCronologia()">Cargar Horarios</button>
+            </div>
+            <div id="containerTimeline" style="width: 100%;"></div>
+        </div>
+
+        <!-- Vista de Tabla (inicialmente oculta) -->
+        <div id="vistaTabla" class="vista-container">
+            <div
+                style="display: flex; width: 100%; flex-direction: row; gap: 20px; justify-content: center; align-items: center;">
 
 
-        <div
-            style="display: flex; width: 100%; flex-direction: row; gap: 20px; justify-content: center; align-items: center;">
+                <div style="display: flex; gap: 10px;">
+                    <div style="display: flex; flex-direction: column;">
 
+                        <label for="Mes" style="display: flex; align-items: flex-start;">Mes:</label>
+                        <select id="Mes" class="custom-select">
+                            <option class="1">Enero</option>
+                            <option class="2">Febrero</option>
+                            <option class="3">Marzo</option>
+                            <option class="4">Abril</option>
+                            <option class="5">Mayo</option>
+                            <option class="6">Junio</option>
+                            <option class="7">Julio</option>
+                            <option class="8">Agosto</option>
+                            <option class="9">Septiembre</option>
+                            <option class="10">Octubre</option>
+                            <option class="11">Noviembre</option>
+                            <option class="12">Diciembre</option>
+                        </select>
 
-            <div style="display: flex; gap: 10px;">
-                <div style="display: flex; flex-direction: column;">
-
-                    <label for="Mes" style="display: flex; align-items: flex-start;">Mes:</label>
-                    <select id="Mes" class="custom-select">
-                        <option class="1">Enero</option>
-                        <option class="2">Febrero</option>
-                        <option class="3">Marzo</option>
-                        <option class="4">Abril</option>
-                        <option class="5">Mayo</option>
-                        <option class="6">Junio</option>
-                        <option class="7">Julio</option>
-                        <option class="8">Agosto</option>
-                        <option class="9">Septiembre</option>
-                        <option class="10">Octubre</option>
-                        <option class="11">Noviembre</option>
-                        <option class="12">Diciembre</option>
-                    </select>
-
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <button id="Izq"><i class="fas fa-arrow-left"></i></i></button>
-                        <button id="Hoy"><i class="fas fa-calendar-day"></i></i></button>
-                        <button id="Der"><i class="fas fa-arrow-right"></i></button>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <button id="Izq"><i class="fas fa-arrow-left"></i></i></button>
+                            <button id="Hoy"><i class="fas fa-calendar-day"></i></i></button>
+                            <button id="Der"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; height: fit-content;">
+                        <label for="Año" style="display: flex; align-items: flex-start;">Año:</label>
+                        <select id="Año" class="custom-select">
+                            <option class="2024">2024</option>
+                            <option class="2025">2025</option>
+                            <option class="2026">2026</option>
+                            <option class="2027">2027</option>
+                            <option class="2028">2028</option>
+                        </select>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: column; height: fit-content;">
-                    <label for="Año" style="display: flex; align-items: flex-start;">Año:</label>
-                    <select id="Año" class="custom-select">
-                        <option class="2024">2024</option>
-                        <option class="2025">2025</option>
-                        <option class="2026">2026</option>
-                        <option class="2027">2027</option>
-                        <option class="2028">2028</option>
-                    </select>
+                <div>
+                    <button id="menuButton" style="height: fit-content;">
+                        <i class="fa-solid fa-bars"></i> Opciones
+                    </button>
                 </div>
             </div>
-            <div>
-                <button id="menuButton" style="height: fit-content;">
-                    <i class="fa-solid fa-bars"></i> Opciones
-                </button>
-            </div>
-        </div>
-        <div id="BotonesHerramientas"
-            style="display: flex; justify-content: center; flex-direction: row; gap: 13px; align-items: flex-end; flex-wrap: wrap;">
+            <div id="BotonesHerramientas"
+                style="display: flex; justify-content: center; flex-direction: row; gap: 13px; align-items: flex-end; flex-wrap: wrap;">
 
-            <form id="form">
-                <input type="password" id="pass" placeholder="Contraseña">
-                <button id="btnGuardar"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
-            </form>
+                <form id="form">
+                    <input type="password" id="pass" placeholder="Contraseña">
+                    <button id="btnGuardar"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                </form>
 
-            <div class="vertical-bar"></div>
+                <div class="vertical-bar"></div>
 
-            <div>
-                <button id="btnExportar"><i class="fa-solid fa-file-export"></i> Exportar</button>
-                <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar</button>
-                <button id="btnPincelTurnos"><i class="fa-solid fa-paintbrush"></i> Pincel de turnos</button>
-                <button id="btnLimpiar"><i class="fa-solid fa-broom"></i> Limpiar</button>
-            </div>
+                <div>
+                    <button id="btnExportar"><i class="fa-solid fa-file-export"></i> Exportar</button>
+                    <button id="btnImportar"><i class="fa-solid fa-file-import"></i> Importar</button>
+                    <button id="btnPincelTurnos"><i class="fa-solid fa-paintbrush"></i> Pincel de turnos</button>
+                    <button id="btnLimpiar"><i class="fa-solid fa-broom"></i> Limpiar</button>
+                </div>
 
-            <div class="vertical-bar"></div>
+                <div class="vertical-bar"></div>
 
-            <div>
-                <button id="btnExportarTexto"><i class="fa-solid fa-file-lines"></i> Exportar a texto</button>
-                <button id="consultaSemana"><i class="fa-solid fa-calendar-week"></i> Consultar semanas</button>
-                <button id="btnHistorial"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
+                <div>
+                    <button id="btnExportarTexto"><i class="fa-solid fa-file-lines"></i> Exportar a texto</button>
+                    <button id="consultaSemana"><i class="fa-solid fa-calendar-week"></i> Consultar semanas</button>
+                    <button id="btnHistorial"><i class="fa-solid fa-clock-rotate-left"></i> Historial</button>
+                </div>
+
             </div>
 
-        </div>
+            <div id="ListaTurnos"></div>
 
-        <div id="ListaTurnos"></div>
+            <div class="Contenedor" class="custom-select">
 
-        <div class="Contenedor" class="custom-select">
+                <div class="table-container" id="Tabla">
 
-            <div class="table-container" id="Tabla">
+                    <table id="Table">
+                        <tr>
+                            <th class="titulos" id="titulos" colspan="32" style="text-align: center; font-size: 25px;">
+                            </th>
 
-                <table id="Table">
-                    <tr>
-                        <th class="titulos" id="titulos" colspan="32" style="text-align: center; font-size: 25px;"></th>
+                        </tr>
+                        <tr class="titulos">
+                            <th>Días de la semana</th>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                            <td class="titulos DiaSemana"></td>
+                        </tr>
+                        <tr class="titulos" id="Dias">
+                            <th>Nombre del asesor</th>
+                            <th id="Dia1">1</th>
+                            <th id="Dia2">2</th>
+                            <th id="Dia3">3</th>
+                            <th id="Dia4">4</th>
+                            <th id="Dia5">5</th>
+                            <th id="Dia6">6</th>
+                            <th id="Dia7">7</th>
+                            <th id="Dia8">8</th>
+                            <th id="Dia9">9</th>
+                            <th id="Dia10">10</th>
+                            <th id="Dia11">11</th>
+                            <th id="Dia12">12</th>
+                            <th id="Dia13">13</th>
+                            <th id="Dia14">14</th>
+                            <th id="Dia15">15</th>
+                            <th id="Dia16">16</th>
+                            <th id="Dia17">17</th>
+                            <th id="Dia18">18</th>
+                            <th id="Dia19">19</th>
+                            <th id="Dia20">20</th>
+                            <th id="Dia21">21</th>
+                            <th id="Dia22">22</th>
+                            <th id="Dia23">23</th>
+                            <th id="Dia24">24</th>
+                            <th id="Dia25">25</th>
+                            <th id="Dia26">26</th>
+                            <th id="Dia27">27</th>
+                            <th id="Dia28">28</th>
+                            <th id="Dia29">29</th>
+                            <th id="Dia30">30</th>
+                            <th id="Dia31">31</th>
+                        </tr>
+                        <tbody>
+                            <tr>
+                                <td style="background-color: white;">Diego Alejandro Úsuga Yepes</td>
+                                <td contenteditable="true" id="A1"></td>
+                                <td contenteditable="true" id="A2"></td>
+                                <td contenteditable="true" id="A3"></td>
+                                <td contenteditable="true" id="A4"></td>
+                                <td contenteditable="true" id="A5"></td>
+                                <td contenteditable="true" id="A6"></td>
+                                <td contenteditable="true" id="A7"></td>
+                                <td contenteditable="true" id="A8"></td>
+                                <td contenteditable="true" id="A9"></td>
+                                <td contenteditable="true" id="A10"></td>
+                                <td contenteditable="true" id="A11"></td>
+                                <td contenteditable="true" id="A12"></td>
+                                <td contenteditable="true" id="A13"></td>
+                                <td contenteditable="true" id="A14"></td>
+                                <td contenteditable="true" id="A15"></td>
+                                <td contenteditable="true" id="A16"></td>
+                                <td contenteditable="true" id="A17"></td>
+                                <td contenteditable="true" id="A18"></td>
+                                <td contenteditable="true" id="A19"></td>
+                                <td contenteditable="true" id="A20"></td>
+                                <td contenteditable="true" id="A21"></td>
+                                <td contenteditable="true" id="A22"></td>
+                                <td contenteditable="true" id="A23"></td>
+                                <td contenteditable="true" id="A24"></td>
+                                <td contenteditable="true" id="A25"></td>
+                                <td contenteditable="true" id="A26"></td>
+                                <td contenteditable="true" id="A27"></td>
+                                <td contenteditable="true" id="A28"></td>
+                                <td contenteditable="true" id="A29"></td>
+                                <td contenteditable="true" id="A30"></td>
+                                <td contenteditable="true" id="A31"></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: white;">Johan Guzman Alarcon</td>
+                                <td contenteditable="true" id="B1"></td>
+                                <td contenteditable="true" id="B2"></td>
+                                <td contenteditable="true" id="B3"></td>
+                                <td contenteditable="true" id="B4"></td>
+                                <td contenteditable="true" id="B5"></td>
+                                <td contenteditable="true" id="B6"></td>
+                                <td contenteditable="true" id="B7"></td>
+                                <td contenteditable="true" id="B8"></td>
+                                <td contenteditable="true" id="B9"></td>
+                                <td contenteditable="true" id="B10"></td>
+                                <td contenteditable="true" id="B11"></td>
+                                <td contenteditable="true" id="B12"></td>
+                                <td contenteditable="true" id="B13"></td>
+                                <td contenteditable="true" id="B14"></td>
+                                <td contenteditable="true" id="B15"></td>
+                                <td contenteditable="true" id="B16"></td>
+                                <td contenteditable="true" id="B17"></td>
+                                <td contenteditable="true" id="B18"></td>
+                                <td contenteditable="true" id="B19"></td>
+                                <td contenteditable="true" id="B20"></td>
+                                <td contenteditable="true" id="B21"></td>
+                                <td contenteditable="true" id="B22"></td>
+                                <td contenteditable="true" id="B23"></td>
+                                <td contenteditable="true" id="B24"></td>
+                                <td contenteditable="true" id="B25"></td>
+                                <td contenteditable="true" id="B26"></td>
+                                <td contenteditable="true" id="B27"></td>
+                                <td contenteditable="true" id="B28"></td>
+                                <td contenteditable="true" id="B29"></td>
+                                <td contenteditable="true" id="B30"></td>
+                                <td contenteditable="true" id="B31"></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: white;">Andrés Felipe Yepes Tascón</td>
+                                <td contenteditable="true" id="C1"></td>
+                                <td contenteditable="true" id="C2"></td>
+                                <td contenteditable="true" id="C3"></td>
+                                <td contenteditable="true" id="C4"></td>
+                                <td contenteditable="true" id="C5"></td>
+                                <td contenteditable="true" id="C6"></td>
+                                <td contenteditable="true" id="C7"></td>
+                                <td contenteditable="true" id="C8"></td>
+                                <td contenteditable="true" id="C9"></td>
+                                <td contenteditable="true" id="C10"></td>
+                                <td contenteditable="true" id="C11"></td>
+                                <td contenteditable="true" id="C12"></td>
+                                <td contenteditable="true" id="C13"></td>
+                                <td contenteditable="true" id="C14"></td>
+                                <td contenteditable="true" id="C15"></td>
+                                <td contenteditable="true" id="C16"></td>
+                                <td contenteditable="true" id="C17"></td>
+                                <td contenteditable="true" id="C18"></td>
+                                <td contenteditable="true" id="C19"></td>
+                                <td contenteditable="true" id="C20"></td>
+                                <td contenteditable="true" id="C21"></td>
+                                <td contenteditable="true" id="C22"></td>
+                                <td contenteditable="true" id="C23"></td>
+                                <td contenteditable="true" id="C24"></td>
+                                <td contenteditable="true" id="C25"></td>
+                                <td contenteditable="true" id="C26"></td>
+                                <td contenteditable="true" id="C27"></td>
+                                <td contenteditable="true" id="C28"></td>
+                                <td contenteditable="true" id="C29"></td>
+                                <td contenteditable="true" id="C30"></td>
+                                <td contenteditable="true" id="C31"></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: white;">Yeison Torres Ochoa</td>
+                                <td contenteditable="true" id="D1"></td>
+                                <td contenteditable="true" id="D2"></td>
+                                <td contenteditable="true" id="D3"></td>
+                                <td contenteditable="true" id="D4"></td>
+                                <td contenteditable="true" id="D5"></td>
+                                <td contenteditable="true" id="D6"></td>
+                                <td contenteditable="true" id="D7"></td>
+                                <td contenteditable="true" id="D8"></td>
+                                <td contenteditable="true" id="D9"></td>
+                                <td contenteditable="true" id="D10"></td>
+                                <td contenteditable="true" id="D11"></td>
+                                <td contenteditable="true" id="D12"></td>
+                                <td contenteditable="true" id="D13"></td>
+                                <td contenteditable="true" id="D14"></td>
+                                <td contenteditable="true" id="D15"></td>
+                                <td contenteditable="true" id="D16"></td>
+                                <td contenteditable="true" id="D17"></td>
+                                <td contenteditable="true" id="D18"></td>
+                                <td contenteditable="true" id="D19"></td>
+                                <td contenteditable="true" id="D20"></td>
+                                <td contenteditable="true" id="D21"></td>
+                                <td contenteditable="true" id="D22"></td>
+                                <td contenteditable="true" id="D23"></td>
+                                <td contenteditable="true" id="D24"></td>
+                                <td contenteditable="true" id="D25"></td>
+                                <td contenteditable="true" id="D26"></td>
+                                <td contenteditable="true" id="D27"></td>
+                                <td contenteditable="true" id="D28"></td>
+                                <td contenteditable="true" id="D29"></td>
+                                <td contenteditable="true" id="D30"></td>
+                                <td contenteditable="true" id="D31"></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: white;">Ocaris David Arango Aguilar</td>
+                                <td contenteditable="true" id="E1"></td>
+                                <td contenteditable="true" id="E2"></td>
+                                <td contenteditable="true" id="E3"></td>
+                                <td contenteditable="true" id="E4"></td>
+                                <td contenteditable="true" id="E5"></td>
+                                <td contenteditable="true" id="E6"></td>
+                                <td contenteditable="true" id="E7"></td>
+                                <td contenteditable="true" id="E8"></td>
+                                <td contenteditable="true" id="E9"></td>
+                                <td contenteditable="true" id="E10"></td>
+                                <td contenteditable="true" id="E11"></td>
+                                <td contenteditable="true" id="E12"></td>
+                                <td contenteditable="true" id="E13"></td>
+                                <td contenteditable="true" id="E14"></td>
+                                <td contenteditable="true" id="E15"></td>
+                                <td contenteditable="true" id="E16"></td>
+                                <td contenteditable="true" id="E17"></td>
+                                <td contenteditable="true" id="E18"></td>
+                                <td contenteditable="true" id="E19"></td>
+                                <td contenteditable="true" id="E20"></td>
+                                <td contenteditable="true" id="E21"></td>
+                                <td contenteditable="true" id="E22"></td>
+                                <td contenteditable="true" id="E23"></td>
+                                <td contenteditable="true" id="E24"></td>
+                                <td contenteditable="true" id="E25"></td>
+                                <td contenteditable="true" id="E26"></td>
+                                <td contenteditable="true" id="E27"></td>
+                                <td contenteditable="true" id="E28"></td>
+                                <td contenteditable="true" id="E29"></td>
+                                <td contenteditable="true" id="E30"></td>
+                                <td contenteditable="true" id="E31"></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: white;">Maria Susana Ospina Vanegas</td>
+                                <td contenteditable="true" id="F1"></td>
+                                <td contenteditable="true" id="F2"></td>
+                                <td contenteditable="true" id="F3"></td>
+                                <td contenteditable="true" id="F4"></td>
+                                <td contenteditable="true" id="F5"></td>
+                                <td contenteditable="true" id="F6"></td>
+                                <td contenteditable="true" id="F7"></td>
+                                <td contenteditable="true" id="F8"></td>
+                                <td contenteditable="true" id="F9"></td>
+                                <td contenteditable="true" id="F10"></td>
+                                <td contenteditable="true" id="F11"></td>
+                                <td contenteditable="true" id="F12"></td>
+                                <td contenteditable="true" id="F13"></td>
+                                <td contenteditable="true" id="F14"></td>
+                                <td contenteditable="true" id="F15"></td>
+                                <td contenteditable="true" id="F16"></td>
+                                <td contenteditable="true" id="F17"></td>
+                                <td contenteditable="true" id="F18"></td>
+                                <td contenteditable="true" id="F19"></td>
+                                <td contenteditable="true" id="F20"></td>
+                                <td contenteditable="true" id="F21"></td>
+                                <td contenteditable="true" id="F22"></td>
+                                <td contenteditable="true" id="F23"></td>
+                                <td contenteditable="true" id="F24"></td>
+                                <td contenteditable="true" id="F25"></td>
+                                <td contenteditable="true" id="F26"></td>
+                                <td contenteditable="true" id="F27"></td>
+                                <td contenteditable="true" id="F28"></td>
+                                <td contenteditable="true" id="F29"></td>
+                                <td contenteditable="true" id="F30"></td>
+                                <td contenteditable="true" id="F31"></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: white;">Santiago Ramirez Guzman</td>
+                                <td contenteditable="true" id="G1"></td>
+                                <td contenteditable="true" id="G2"></td>
+                                <td contenteditable="true" id="G3"></td>
+                                <td contenteditable="true" id="G4"></td>
+                                <td contenteditable="true" id="G5"></td>
+                                <td contenteditable="true" id="G6"></td>
+                                <td contenteditable="true" id="G7"></td>
+                                <td contenteditable="true" id="G8"></td>
+                                <td contenteditable="true" id="G9"></td>
+                                <td contenteditable="true" id="G10"></td>
+                                <td contenteditable="true" id="G11"></td>
+                                <td contenteditable="true" id="G12"></td>
+                                <td contenteditable="true" id="G13"></td>
+                                <td contenteditable="true" id="G14"></td>
+                                <td contenteditable="true" id="G15"></td>
+                                <td contenteditable="true" id="G16"></td>
+                                <td contenteditable="true" id="G17"></td>
+                                <td contenteditable="true" id="G18"></td>
+                                <td contenteditable="true" id="G19"></td>
+                                <td contenteditable="true" id="G20"></td>
+                                <td contenteditable="true" id="G21"></td>
+                                <td contenteditable="true" id="G22"></td>
+                                <td contenteditable="true" id="G23"></td>
+                                <td contenteditable="true" id="G24"></td>
+                                <td contenteditable="true" id="G25"></td>
+                                <td contenteditable="true" id="G26"></td>
+                                <td contenteditable="true" id="G27"></td>
+                                <td contenteditable="true" id="G28"></td>
+                                <td contenteditable="true" id="G29"></td>
+                                <td contenteditable="true" id="G30"></td>
+                                <td contenteditable="true" id="G31"></td>
+                            </tr>
+                            <tr>
+                                <td style="background-color: white;">Juan Manuel Cano Benítez</td>
+                                <td contenteditable="true" id="H1"></td>
+                                <td contenteditable="true" id="H2"></td>
+                                <td contenteditable="true" id="H3"></td>
+                                <td contenteditable="true" id="H4"></td>
+                                <td contenteditable="true" id="H5"></td>
+                                <td contenteditable="true" id="H6"></td>
+                                <td contenteditable="true" id="H7"></td>
+                                <td contenteditable="true" id="H8"></td>
+                                <td contenteditable="true" id="H9"></td>
+                                <td contenteditable="true" id="H10"></td>
+                                <td contenteditable="true" id="H11"></td>
+                                <td contenteditable="true" id="H12"></td>
+                                <td contenteditable="true" id="H13"></td>
+                                <td contenteditable="true" id="H14"></td>
+                                <td contenteditable="true" id="H15"></td>
+                                <td contenteditable="true" id="H16"></td>
+                                <td contenteditable="true" id="H17"></td>
+                                <td contenteditable="true" id="H18"></td>
+                                <td contenteditable="true" id="H19"></td>
+                                <td contenteditable="true" id="H20"></td>
+                                <td contenteditable="true" id="H21"></td>
+                                <td contenteditable="true" id="H22"></td>
+                                <td contenteditable="true" id="H23"></td>
+                                <td contenteditable="true" id="H24"></td>
+                                <td contenteditable="true" id="H25"></td>
+                                <td contenteditable="true" id="H26"></td>
+                                <td contenteditable="true" id="H27"></td>
+                                <td contenteditable="true" id="H28"></td>
+                                <td contenteditable="true" id="H29"></td>
+                                <td contenteditable="true" id="H30"></td>
+                                <td contenteditable="true" id="H31"></td>
+                            </tr>
 
-                    </tr>
-                    <tr class="titulos">
-                        <th>Días de la semana</th>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                        <td class="titulos DiaSemana"></td>
-                    </tr>
-                    <tr class="titulos" id="Dias">
-                        <th>Nombre del asesor</th>
-                        <th id="Dia1">1</th>
-                        <th id="Dia2">2</th>
-                        <th id="Dia3">3</th>
-                        <th id="Dia4">4</th>
-                        <th id="Dia5">5</th>
-                        <th id="Dia6">6</th>
-                        <th id="Dia7">7</th>
-                        <th id="Dia8">8</th>
-                        <th id="Dia9">9</th>
-                        <th id="Dia10">10</th>
-                        <th id="Dia11">11</th>
-                        <th id="Dia12">12</th>
-                        <th id="Dia13">13</th>
-                        <th id="Dia14">14</th>
-                        <th id="Dia15">15</th>
-                        <th id="Dia16">16</th>
-                        <th id="Dia17">17</th>
-                        <th id="Dia18">18</th>
-                        <th id="Dia19">19</th>
-                        <th id="Dia20">20</th>
-                        <th id="Dia21">21</th>
-                        <th id="Dia22">22</th>
-                        <th id="Dia23">23</th>
-                        <th id="Dia24">24</th>
-                        <th id="Dia25">25</th>
-                        <th id="Dia26">26</th>
-                        <th id="Dia27">27</th>
-                        <th id="Dia28">28</th>
-                        <th id="Dia29">29</th>
-                        <th id="Dia30">30</th>
-                        <th id="Dia31">31</th>
-                    </tr>
-                    <tbody>
+                        </tbody>
+                        <!-- Agrega más filas para cada trabajador -->
+                    </table>
+                </div>
+                <div class="TablaDescansos" id="TablaDescansos">
+                    <table id="Descansos">
                         <tr>
-                            <td style="background-color: white;">Diego Alejandro Úsuga Yepes</td>
-                            <td contenteditable="true" id="A1"></td>
-                            <td contenteditable="true" id="A2"></td>
-                            <td contenteditable="true" id="A3"></td>
-                            <td contenteditable="true" id="A4"></td>
-                            <td contenteditable="true" id="A5"></td>
-                            <td contenteditable="true" id="A6"></td>
-                            <td contenteditable="true" id="A7"></td>
-                            <td contenteditable="true" id="A8"></td>
-                            <td contenteditable="true" id="A9"></td>
-                            <td contenteditable="true" id="A10"></td>
-                            <td contenteditable="true" id="A11"></td>
-                            <td contenteditable="true" id="A12"></td>
-                            <td contenteditable="true" id="A13"></td>
-                            <td contenteditable="true" id="A14"></td>
-                            <td contenteditable="true" id="A15"></td>
-                            <td contenteditable="true" id="A16"></td>
-                            <td contenteditable="true" id="A17"></td>
-                            <td contenteditable="true" id="A18"></td>
-                            <td contenteditable="true" id="A19"></td>
-                            <td contenteditable="true" id="A20"></td>
-                            <td contenteditable="true" id="A21"></td>
-                            <td contenteditable="true" id="A22"></td>
-                            <td contenteditable="true" id="A23"></td>
-                            <td contenteditable="true" id="A24"></td>
-                            <td contenteditable="true" id="A25"></td>
-                            <td contenteditable="true" id="A26"></td>
-                            <td contenteditable="true" id="A27"></td>
-                            <td contenteditable="true" id="A28"></td>
-                            <td contenteditable="true" id="A29"></td>
-                            <td contenteditable="true" id="A30"></td>
-                            <td contenteditable="true" id="A31"></td>
+                            <th class="titulos">D</th>
+                            <th class="titulos">H</th>
                         </tr>
                         <tr>
-                            <td style="background-color: white;">Johan Guzman Alarcon</td>
-                            <td contenteditable="true" id="B1"></td>
-                            <td contenteditable="true" id="B2"></td>
-                            <td contenteditable="true" id="B3"></td>
-                            <td contenteditable="true" id="B4"></td>
-                            <td contenteditable="true" id="B5"></td>
-                            <td contenteditable="true" id="B6"></td>
-                            <td contenteditable="true" id="B7"></td>
-                            <td contenteditable="true" id="B8"></td>
-                            <td contenteditable="true" id="B9"></td>
-                            <td contenteditable="true" id="B10"></td>
-                            <td contenteditable="true" id="B11"></td>
-                            <td contenteditable="true" id="B12"></td>
-                            <td contenteditable="true" id="B13"></td>
-                            <td contenteditable="true" id="B14"></td>
-                            <td contenteditable="true" id="B15"></td>
-                            <td contenteditable="true" id="B16"></td>
-                            <td contenteditable="true" id="B17"></td>
-                            <td contenteditable="true" id="B18"></td>
-                            <td contenteditable="true" id="B19"></td>
-                            <td contenteditable="true" id="B20"></td>
-                            <td contenteditable="true" id="B21"></td>
-                            <td contenteditable="true" id="B22"></td>
-                            <td contenteditable="true" id="B23"></td>
-                            <td contenteditable="true" id="B24"></td>
-                            <td contenteditable="true" id="B25"></td>
-                            <td contenteditable="true" id="B26"></td>
-                            <td contenteditable="true" id="B27"></td>
-                            <td contenteditable="true" id="B28"></td>
-                            <td contenteditable="true" id="B29"></td>
-                            <td contenteditable="true" id="B30"></td>
-                            <td contenteditable="true" id="B31"></td>
+                            <td id="1"></td>
+                            <td id="11"></td>
                         </tr>
                         <tr>
-                            <td style="background-color: white;">Andrés Felipe Yepes Tascón</td>
-                            <td contenteditable="true" id="C1"></td>
-                            <td contenteditable="true" id="C2"></td>
-                            <td contenteditable="true" id="C3"></td>
-                            <td contenteditable="true" id="C4"></td>
-                            <td contenteditable="true" id="C5"></td>
-                            <td contenteditable="true" id="C6"></td>
-                            <td contenteditable="true" id="C7"></td>
-                            <td contenteditable="true" id="C8"></td>
-                            <td contenteditable="true" id="C9"></td>
-                            <td contenteditable="true" id="C10"></td>
-                            <td contenteditable="true" id="C11"></td>
-                            <td contenteditable="true" id="C12"></td>
-                            <td contenteditable="true" id="C13"></td>
-                            <td contenteditable="true" id="C14"></td>
-                            <td contenteditable="true" id="C15"></td>
-                            <td contenteditable="true" id="C16"></td>
-                            <td contenteditable="true" id="C17"></td>
-                            <td contenteditable="true" id="C18"></td>
-                            <td contenteditable="true" id="C19"></td>
-                            <td contenteditable="true" id="C20"></td>
-                            <td contenteditable="true" id="C21"></td>
-                            <td contenteditable="true" id="C22"></td>
-                            <td contenteditable="true" id="C23"></td>
-                            <td contenteditable="true" id="C24"></td>
-                            <td contenteditable="true" id="C25"></td>
-                            <td contenteditable="true" id="C26"></td>
-                            <td contenteditable="true" id="C27"></td>
-                            <td contenteditable="true" id="C28"></td>
-                            <td contenteditable="true" id="C29"></td>
-                            <td contenteditable="true" id="C30"></td>
-                            <td contenteditable="true" id="C31"></td>
+                            <td id="2"></td>
+                            <td id="12"></td>
                         </tr>
                         <tr>
-                            <td style="background-color: white;">Yeison Torres Ochoa</td>
-                            <td contenteditable="true" id="D1"></td>
-                            <td contenteditable="true" id="D2"></td>
-                            <td contenteditable="true" id="D3"></td>
-                            <td contenteditable="true" id="D4"></td>
-                            <td contenteditable="true" id="D5"></td>
-                            <td contenteditable="true" id="D6"></td>
-                            <td contenteditable="true" id="D7"></td>
-                            <td contenteditable="true" id="D8"></td>
-                            <td contenteditable="true" id="D9"></td>
-                            <td contenteditable="true" id="D10"></td>
-                            <td contenteditable="true" id="D11"></td>
-                            <td contenteditable="true" id="D12"></td>
-                            <td contenteditable="true" id="D13"></td>
-                            <td contenteditable="true" id="D14"></td>
-                            <td contenteditable="true" id="D15"></td>
-                            <td contenteditable="true" id="D16"></td>
-                            <td contenteditable="true" id="D17"></td>
-                            <td contenteditable="true" id="D18"></td>
-                            <td contenteditable="true" id="D19"></td>
-                            <td contenteditable="true" id="D20"></td>
-                            <td contenteditable="true" id="D21"></td>
-                            <td contenteditable="true" id="D22"></td>
-                            <td contenteditable="true" id="D23"></td>
-                            <td contenteditable="true" id="D24"></td>
-                            <td contenteditable="true" id="D25"></td>
-                            <td contenteditable="true" id="D26"></td>
-                            <td contenteditable="true" id="D27"></td>
-                            <td contenteditable="true" id="D28"></td>
-                            <td contenteditable="true" id="D29"></td>
-                            <td contenteditable="true" id="D30"></td>
-                            <td contenteditable="true" id="D31"></td>
+                            <td id="3"></td>
+                            <td id="13"></td>
                         </tr>
                         <tr>
-                            <td style="background-color: white;">Ocaris David Arango Aguilar</td>
-                            <td contenteditable="true" id="E1"></td>
-                            <td contenteditable="true" id="E2"></td>
-                            <td contenteditable="true" id="E3"></td>
-                            <td contenteditable="true" id="E4"></td>
-                            <td contenteditable="true" id="E5"></td>
-                            <td contenteditable="true" id="E6"></td>
-                            <td contenteditable="true" id="E7"></td>
-                            <td contenteditable="true" id="E8"></td>
-                            <td contenteditable="true" id="E9"></td>
-                            <td contenteditable="true" id="E10"></td>
-                            <td contenteditable="true" id="E11"></td>
-                            <td contenteditable="true" id="E12"></td>
-                            <td contenteditable="true" id="E13"></td>
-                            <td contenteditable="true" id="E14"></td>
-                            <td contenteditable="true" id="E15"></td>
-                            <td contenteditable="true" id="E16"></td>
-                            <td contenteditable="true" id="E17"></td>
-                            <td contenteditable="true" id="E18"></td>
-                            <td contenteditable="true" id="E19"></td>
-                            <td contenteditable="true" id="E20"></td>
-                            <td contenteditable="true" id="E21"></td>
-                            <td contenteditable="true" id="E22"></td>
-                            <td contenteditable="true" id="E23"></td>
-                            <td contenteditable="true" id="E24"></td>
-                            <td contenteditable="true" id="E25"></td>
-                            <td contenteditable="true" id="E26"></td>
-                            <td contenteditable="true" id="E27"></td>
-                            <td contenteditable="true" id="E28"></td>
-                            <td contenteditable="true" id="E29"></td>
-                            <td contenteditable="true" id="E30"></td>
-                            <td contenteditable="true" id="E31"></td>
+                            <td id="4"></td>
+                            <td id="14"></td>
                         </tr>
                         <tr>
-                            <td style="background-color: white;">Maria Susana Ospina Vanegas</td>
-                            <td contenteditable="true" id="F1"></td>
-                            <td contenteditable="true" id="F2"></td>
-                            <td contenteditable="true" id="F3"></td>
-                            <td contenteditable="true" id="F4"></td>
-                            <td contenteditable="true" id="F5"></td>
-                            <td contenteditable="true" id="F6"></td>
-                            <td contenteditable="true" id="F7"></td>
-                            <td contenteditable="true" id="F8"></td>
-                            <td contenteditable="true" id="F9"></td>
-                            <td contenteditable="true" id="F10"></td>
-                            <td contenteditable="true" id="F11"></td>
-                            <td contenteditable="true" id="F12"></td>
-                            <td contenteditable="true" id="F13"></td>
-                            <td contenteditable="true" id="F14"></td>
-                            <td contenteditable="true" id="F15"></td>
-                            <td contenteditable="true" id="F16"></td>
-                            <td contenteditable="true" id="F17"></td>
-                            <td contenteditable="true" id="F18"></td>
-                            <td contenteditable="true" id="F19"></td>
-                            <td contenteditable="true" id="F20"></td>
-                            <td contenteditable="true" id="F21"></td>
-                            <td contenteditable="true" id="F22"></td>
-                            <td contenteditable="true" id="F23"></td>
-                            <td contenteditable="true" id="F24"></td>
-                            <td contenteditable="true" id="F25"></td>
-                            <td contenteditable="true" id="F26"></td>
-                            <td contenteditable="true" id="F27"></td>
-                            <td contenteditable="true" id="F28"></td>
-                            <td contenteditable="true" id="F29"></td>
-                            <td contenteditable="true" id="F30"></td>
-                            <td contenteditable="true" id="F31"></td>
+                            <td id="5"></td>
+                            <td id="15"></td>
                         </tr>
                         <tr>
-                            <td style="background-color: white;">Santiago Ramirez Guzman</td>
-                            <td contenteditable="true" id="G1"></td>
-                            <td contenteditable="true" id="G2"></td>
-                            <td contenteditable="true" id="G3"></td>
-                            <td contenteditable="true" id="G4"></td>
-                            <td contenteditable="true" id="G5"></td>
-                            <td contenteditable="true" id="G6"></td>
-                            <td contenteditable="true" id="G7"></td>
-                            <td contenteditable="true" id="G8"></td>
-                            <td contenteditable="true" id="G9"></td>
-                            <td contenteditable="true" id="G10"></td>
-                            <td contenteditable="true" id="G11"></td>
-                            <td contenteditable="true" id="G12"></td>
-                            <td contenteditable="true" id="G13"></td>
-                            <td contenteditable="true" id="G14"></td>
-                            <td contenteditable="true" id="G15"></td>
-                            <td contenteditable="true" id="G16"></td>
-                            <td contenteditable="true" id="G17"></td>
-                            <td contenteditable="true" id="G18"></td>
-                            <td contenteditable="true" id="G19"></td>
-                            <td contenteditable="true" id="G20"></td>
-                            <td contenteditable="true" id="G21"></td>
-                            <td contenteditable="true" id="G22"></td>
-                            <td contenteditable="true" id="G23"></td>
-                            <td contenteditable="true" id="G24"></td>
-                            <td contenteditable="true" id="G25"></td>
-                            <td contenteditable="true" id="G26"></td>
-                            <td contenteditable="true" id="G27"></td>
-                            <td contenteditable="true" id="G28"></td>
-                            <td contenteditable="true" id="G29"></td>
-                            <td contenteditable="true" id="G30"></td>
-                            <td contenteditable="true" id="G31"></td>
+                            <td id="6"></td>
+                            <td id="16"></td>
                         </tr>
                         <tr>
-                            <td style="background-color: white;">Juan Manuel Cano Benítez</td>
-                            <td contenteditable="true" id="H1"></td>
-                            <td contenteditable="true" id="H2"></td>
-                            <td contenteditable="true" id="H3"></td>
-                            <td contenteditable="true" id="H4"></td>
-                            <td contenteditable="true" id="H5"></td>
-                            <td contenteditable="true" id="H6"></td>
-                            <td contenteditable="true" id="H7"></td>
-                            <td contenteditable="true" id="H8"></td>
-                            <td contenteditable="true" id="H9"></td>
-                            <td contenteditable="true" id="H10"></td>
-                            <td contenteditable="true" id="H11"></td>
-                            <td contenteditable="true" id="H12"></td>
-                            <td contenteditable="true" id="H13"></td>
-                            <td contenteditable="true" id="H14"></td>
-                            <td contenteditable="true" id="H15"></td>
-                            <td contenteditable="true" id="H16"></td>
-                            <td contenteditable="true" id="H17"></td>
-                            <td contenteditable="true" id="H18"></td>
-                            <td contenteditable="true" id="H19"></td>
-                            <td contenteditable="true" id="H20"></td>
-                            <td contenteditable="true" id="H21"></td>
-                            <td contenteditable="true" id="H22"></td>
-                            <td contenteditable="true" id="H23"></td>
-                            <td contenteditable="true" id="H24"></td>
-                            <td contenteditable="true" id="H25"></td>
-                            <td contenteditable="true" id="H26"></td>
-                            <td contenteditable="true" id="H27"></td>
-                            <td contenteditable="true" id="H28"></td>
-                            <td contenteditable="true" id="H29"></td>
-                            <td contenteditable="true" id="H30"></td>
-                            <td contenteditable="true" id="H31"></td>
+                            <td id="7"></td>
+                            <td id="17"></td>
                         </tr>
-
-                    </tbody>
-                    <!-- Agrega más filas para cada trabajador -->
-                </table>
-            </div>
-            <div class="TablaDescansos" id="TablaDescansos">
-                <table id="Descansos">
-                    <tr>
-                        <th class="titulos">D</th>
-                        <th class="titulos">H</th>
-                    </tr>
-                    <tr>
-                        <td id="1"></td>
-                        <td id="11"></td>
-                    </tr>
-                    <tr>
-                        <td id="2"></td>
-                        <td id="12"></td>
-                    </tr>
-                    <tr>
-                        <td id="3"></td>
-                        <td id="13"></td>
-                    </tr>
-                    <tr>
-                        <td id="4"></td>
-                        <td id="14"></td>
-                    </tr>
-                    <tr>
-                        <td id="5"></td>
-                        <td id="15"></td>
-                    </tr>
-                    <tr>
-                        <td id="6"></td>
-                        <td id="16"></td>
-                    </tr>
-                    <tr>
-                        <td id="7"></td>
-                        <td id="17"></td>
-                    </tr>
-                    <tr>
-                        <td id="8"></td>
-                        <td id="18"></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div style="display: none;" id="Estadisticas">
-            <h2>Estadísticas</h2>
-            <div id="EstadisticasContenedor">
-                <div id="Estadisticas1">
-                    <h3>Estadísticas de asesores</h3>
-                    <div style="overflow-x: auto;">
-                        <table id="Table1">
-                            <thead>
-                                <tr>
-                                    <th id="NombreAsesor">Nombre del asesor</th>
-                                    <th id="TurnosTrabajados">Turnos trabajados</th>
-                                    <th id="Turno1">T1</th>
-                                    <th id="Turno2">T2</th>
-                                    <th id="Turno3">T3</th>
-                                    <th id="Turno4">T4</th>
-                                    <th id="Turno5">T5</th>
-                                    <th id="Turno6">T6</th>
-                                    <th id="Descanso">Descansos</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Las filas de datos irán aquí -->
-                            </tbody>
-                        </table>
-                    </div>
+                        <tr>
+                            <td id="8"></td>
+                            <td id="18"></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -581,6 +574,7 @@
                 </table>
             </div>
         </div>
+
 
         <div id="Informacion">
             <div class="Turnos">
@@ -684,7 +678,7 @@
     <script src="ics.js"></script>
     <script src="FirebaseMonitor.js"></script>
     <script src="FirebaseWrapper.js"></script>
-    <script src="scriptHorariosStop.js" type="module"></script>
+    <script src="scriptHorariosStop.js" type="module" defer></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
