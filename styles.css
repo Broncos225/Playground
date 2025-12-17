@@ -2123,7 +2123,7 @@ select {
     text-align: center;
     min-width: 165px;
     padding: 8px;
-    color: var(--color-texto-fondo-primario);
+    color: black;
     font-weight: 400;
     border-right: 1px solid #e0e0e0;
     display: flex;
