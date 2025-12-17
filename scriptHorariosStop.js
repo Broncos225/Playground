@@ -2669,51 +2669,54 @@ function renderTimelineCronologia(datosPersonas) {
 
     // Agregar línea de hora actual
     const horaActual = obtenerHoraActualDecimal();
+    const lineaActual = document.createElement('div');
+    lineaActual.className = 'linea-hora-actual';
 
-    // Solo mostrar la línea si la hora actual está dentro del rango visible
-    if (horaActual >= minHora && horaActual <= maxHora) {
-        const lineaActual = document.createElement('div');
-        lineaActual.className = 'linea-hora-actual';
+    // Guardar datos en el elemento para actualizaciones posteriores
+    lineaActual.dataset.minHora = minHora;
+    lineaActual.dataset.maxHora = maxHora;
+    lineaActual.dataset.anchoHora = anchoHora;
 
-        const posicionPx = (horaActual - minHora) * anchoHora;
+    const posicionPx = (horaActual - minHora) * anchoHora;
 
-        lineaActual.style.cssText = `
-            position: absolute;
-            left: ${200 + posicionPx}px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: #ff4444;
-            z-index: 10;
-            pointer-events: none;
-        `;
+    lineaActual.style.cssText = `
+        position: absolute;
+        left: ${200 + posicionPx}px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #ff4444;
+        z-index: 10;
+        pointer-events: none;
+        display: ${(horaActual >= minHora && horaActual <= maxHora) ? 'block' : 'none'};
+    `;
 
-        // Agregar etiqueta con la hora
-        const etiquetaHora = document.createElement('div');
-        etiquetaHora.style.cssText = `
-            position: absolute;
-            top: -25px;
-            left: -30px;
-            background-color: #ff4444;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-        `;
+    // Agregar etiqueta con la hora
+    const etiquetaHora = document.createElement('div');
+    etiquetaHora.style.cssText = `
+        position: absolute;
+        top: -25px;
+        left: -30px;
+        background-color: #ff4444;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 11px;
+        font-weight: bold;
+        white-space: nowrap;
+    `;
 
-        const ahora = new Date();
-        const horaFormateada = ahora.toLocaleTimeString('es-CO', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-        });
-        etiquetaHora.textContent = horaFormateada;
+    const ahora = new Date();
+    const horaFormateada = ahora.toLocaleTimeString('es-CO', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+    etiquetaHora.textContent = horaFormateada;
 
-        lineaActual.appendChild(etiquetaHora);
-        container.appendChild(lineaActual);
-    }
+    lineaActual.appendChild(etiquetaHora);
+    container.appendChild(lineaActual);
+
 }
 // Función para convertir hora de 24h a 12h con AM/PM
 function convertirA12Horas(hora24) {
@@ -2732,6 +2735,12 @@ function mostrarCronologia() {
     dateInput.valueAsDate = new Date();
 
     cargarCronologia();
+
+    // Iniciar actualización de la línea cada minuto
+    if (intervaloActualizacionLinea) {
+        clearInterval(intervaloActualizacionLinea);
+    }
+    intervaloActualizacionLinea = setInterval(actualizarLineaHoraActual, 60000); // Cada 60 segundos
 }
 
 // Cerrar cronología
@@ -2741,6 +2750,12 @@ function cerrarCronologia() {
 
     controles.style.display = 'none';
     container.innerHTML = '';
+
+    // Detener actualización de la línea
+    if (intervaloActualizacionLinea) {
+        clearInterval(intervaloActualizacionLinea);
+        intervaloActualizacionLinea = null;
+    }
 }
 
 // Event listener para el botón de cronología
@@ -2757,6 +2772,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 let vistaActual = 'timeline';
 let tablaCargada = false;
+let intervaloActualizacionLinea = null;
 
 // Función para cambiar entre vistas
 function cambiarVista(vista) {
@@ -2772,7 +2788,11 @@ function cambiarVista(vista) {
         btnTimeline.classList.add('active');
         btnTabla.classList.remove('active');
         vistaActual = 'timeline';
-
+        // Reiniciar actualización de la línea
+        if (intervaloActualizacionLinea) {
+            clearInterval(intervaloActualizacionLinea);
+        }
+        intervaloActualizacionLinea = setInterval(actualizarLineaHoraActual, 60000);
         // Cargar cronología (usará caché si ya está cargada)
         const dateInput = document.getElementById('dateInput');
         if (dateInput && !dateInput.value) {
@@ -2787,6 +2807,11 @@ function cambiarVista(vista) {
         btnTabla.classList.add('active');
         btnTimeline.classList.remove('active');
         vistaActual = 'tabla';
+        // Detener actualización de línea del timeline
+        if (intervaloActualizacionLinea) {
+            clearInterval(intervaloActualizacionLinea);
+            intervaloActualizacionLinea = null;
+        }
 
         // Cargar datos de la tabla SOLO la primera vez
         if (!tablaCargada) {
@@ -2825,4 +2850,40 @@ function obtenerHoraActualDecimal() {
     const horas = ahora.getHours();
     const minutos = ahora.getMinutes();
     return horas + (minutos / 60);
+}
+
+// Función para actualizar la posición de la línea de hora actual
+function actualizarLineaHoraActual() {
+    const lineaActual = document.querySelector('.linea-hora-actual');
+    if (!lineaActual) return;
+
+    const container = document.getElementById('containerTimeline');
+    const horaActual = obtenerHoraActualDecimal();
+
+    // Obtener los datos del timeline desde el contenedor
+    const minHora = parseFloat(lineaActual.dataset.minHora);
+    const maxHora = parseFloat(lineaActual.dataset.maxHora);
+    const anchoHora = parseFloat(lineaActual.dataset.anchoHora);
+
+    // Solo actualizar si la hora está en el rango
+    if (horaActual >= minHora && horaActual <= maxHora) {
+        const posicionPx = (horaActual - minHora) * anchoHora;
+        lineaActual.style.left = `${200 + posicionPx}px`;
+        lineaActual.style.display = 'block';
+
+        // Actualizar la etiqueta de hora
+        const etiquetaHora = lineaActual.querySelector('div');
+        if (etiquetaHora) {
+            const ahora = new Date();
+            const horaFormateada = ahora.toLocaleTimeString('es-CO', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+            etiquetaHora.textContent = horaFormateada;
+        }
+    } else {
+        // Ocultar la línea si la hora actual está fuera del rango
+        lineaActual.style.display = 'none';
+    }
 }
