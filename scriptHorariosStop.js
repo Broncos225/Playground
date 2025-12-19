@@ -2789,17 +2789,19 @@ function cambiarVista(vista) {
         btnTimeline.classList.add('active');
         btnTabla.classList.remove('active');
         vistaActual = 'timeline';
+        
         // Reiniciar actualización de la línea
         if (intervaloActualizacionLinea) {
             clearInterval(intervaloActualizacionLinea);
         }
         intervaloActualizacionLinea = setInterval(actualizarLineaHoraActual, 60000);
+        
         // Cargar cronología (usará caché si ya está cargada)
         const dateInput = document.getElementById('dateInput');
         if (dateInput && !dateInput.value) {
             dateInput.valueAsDate = new Date();
         }
-        cargarCronologia(); // Ahora usa caché automáticamente
+        cargarCronologia();
 
     } else if (vista === 'tabla') {
         // Mostrar tabla
@@ -2808,6 +2810,7 @@ function cambiarVista(vista) {
         btnTabla.classList.add('active');
         btnTimeline.classList.remove('active');
         vistaActual = 'tabla';
+        
         // Detener actualización de línea del timeline
         if (intervaloActualizacionLinea) {
             clearInterval(intervaloActualizacionLinea);
@@ -2816,28 +2819,58 @@ function cambiarVista(vista) {
 
         // Cargar datos de la tabla SOLO la primera vez
         if (!tablaCargada) {
-            cargarDatos(); // Tu función existente
-            tablaCargada = true;
+            cargarDatos();
+            tablaCargada = true; // MARCAR COMO CARGADA DESPUÉS DE CARGAR
         }
     }
 }
 
 // Modificar la función window.onload para que NO cargue los datos automáticamente
+// Función para obtener la preferencia de vista principal
+function obtenerPreferenciaVistaPrincipal() {
+    const nombreUsuario = localStorage.getItem("nombreAsesorActual") || "usuario_anonimo";
+    const clave = `preferencias_${nombreUsuario}`;
+    const preferenciasGuardadas = localStorage.getItem(clave);
+    
+    if (preferenciasGuardadas) {
+        try {
+            const preferencias = JSON.parse(preferenciasGuardadas);
+            return preferencias.vistaHorariosPrincipal || false;
+        } catch (error) {
+            return false;
+        }
+    }
+    return false;
+}
+
+// Modificar la función window.onload
 const originalOnload = window.onload;
 window.onload = function () {
     ocultarFilas("Nuevo", ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]);
     CuentaAsesor();
     diaSemana();
-    // cargarDatos(); // COMENTAR O ELIMINAR ESTA LÍNEA
     Festivos();
     cambiarBordeColumna();
     colorCelda();
 
-    // Cargar cronología al inicio
-    const dateInput = document.getElementById('dateInput');
-    if (dateInput) {
-        dateInput.valueAsDate = new Date();
-        cargarCronologia();
+    // OBTENER LA PREFERENCIA Y CARGAR LA VISTA CORRESPONDIENTE
+    const vistaTimelinePorDefecto = obtenerPreferenciaVistaPrincipal();
+    
+    if (vistaTimelinePorDefecto) {
+        // Cargar cronología al inicio
+        const dateInput = document.getElementById('dateInput');
+        if (dateInput) {
+            dateInput.valueAsDate = new Date();
+        }
+        // Cambiar a vista timeline
+        cambiarVista('timeline');
+        // NO cargar la tabla todavía
+        tablaCargada = false;
+    } else {
+        // Vista tabla por defecto (comportamiento original)
+        cargarDatos();
+        tablaCargada = true; // MARCAR COMO CARGADA
+        cambiarVista('tabla');
     }
 };
 

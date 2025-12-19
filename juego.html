@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mascota virtual</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            width: 320px;
+            margin: 20px auto;
+        }
+
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="game-container"></div>
+
+    <div style="text-align:center;">
+        <button onclick="feed()">Dar comida</button>
+        <button onclick="sleep()">Dormir</button>
+        <button onclick="play()">Jugar</button>
+    </div>
+
+    <script src="juego.js"></script>
+</body>
+
+</html>

@@ -10,7 +10,9 @@ class PreferenciasColores {
             fuente: 'Nunito, sans-serif',
             imagenFondo: null,
             blurFondo: 0,
-            usarColorTextoFondoPrimario: false
+            usarColorTextoFondoPrimario: false,
+            vistaHorariosPrincipal: false,
+            busquedaPlantillas: false
         };
         this.fuentesDisponibles = [
             // Google Fonts (Requieren ser importadas en tu CSS/HTML, como ya haces con Open Sans y Nunito)
@@ -75,7 +77,9 @@ class PreferenciasColores {
                     usarColorTextoFondoPrimario: preferencias.usarColorTextoFondoPrimario || false,
                     fuente: preferencias.fuente || this.configuracionDefecto.fuente,
                     imagenFondo: preferencias.imagenFondo || this.configuracionDefecto.imagenFondo,
-                    blurFondo: preferencias.blurFondo !== undefined ? preferencias.blurFondo : this.configuracionDefecto.blurFondo
+                    blurFondo: preferencias.blurFondo !== undefined ? preferencias.blurFondo : this.configuracionDefecto.blurFondo,
+                    vistaHorariosPrincipal: preferencias.vistaHorariosPrincipal || false,
+                    busquedaPlantillas: preferencias.busquedaPlantillas || false
                 };
             } catch (error) {
                 console.error('Error al cargar preferencias:', error);
@@ -99,6 +103,8 @@ class PreferenciasColores {
         const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
         const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
         const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
+        const switchVistaHorarios = document.getElementById('vistaHorariosPrincipal');
+        const switchBusquedaPlantillas = document.getElementById('busquedaPlantillas');
 
 
         if (inputPrimario) inputPrimario.value = this.configuracionActual.primario;
@@ -124,6 +130,8 @@ class PreferenciasColores {
         if (selectFuente) selectFuente.value = this.configuracionActual.fuente;
         if (inputBlur) inputBlur.value = this.configuracionActual.blurFondo;
         if (blurValue) blurValue.textContent = `${this.configuracionActual.blurFondo}%`;
+        if (switchVistaHorarios) switchVistaHorarios.checked = this.configuracionActual.vistaHorariosPrincipal;
+        if (switchBusquedaPlantillas) switchBusquedaPlantillas.checked = this.configuracionActual.busquedaPlantillas;
 
         this.mostrarPreviewImagenActual();
     }
@@ -334,6 +342,8 @@ class PreferenciasColores {
             fuente: selectFuente ? selectFuente.value : this.configuracionDefecto.fuente,
             imagenFondo: this.configuracionActual.imagenFondo,
             blurFondo: inputBlur ? parseInt(inputBlur.value) : 0,
+            vistaHorariosPrincipal: document.getElementById('vistaHorariosPrincipal')?.checked || false,
+            busquedaPlantillas: document.getElementById('busquedaPlantillas')?.checked || false,
             fechaGuardado: new Date().toISOString(),
             usuario: this.nombreUsuario
         };
@@ -529,6 +539,20 @@ class PreferenciasColores {
             });
         }
 
+        const switchVistaHorarios = document.getElementById('vistaHorariosPrincipal');
+        const switchBusquedaPlantillas = document.getElementById('busquedaPlantillas');
+
+        if (switchVistaHorarios) {
+            switchVistaHorarios.addEventListener('change', () => {
+                this.configuracionActual.vistaHorariosPrincipal = switchVistaHorarios.checked;
+            });
+        }
+
+        if (switchBusquedaPlantillas) {
+            switchBusquedaPlantillas.addEventListener('change', () => {
+                this.configuracionActual.busquedaPlantillas = switchBusquedaPlantillas.checked;
+            });
+        }
         const btnEliminarImagen = document.getElementById('eliminarImagen');
         if (btnEliminarImagen) {
             btnEliminarImagen.addEventListener('click', () => this.eliminarImagenFondo());

@@ -2219,3 +2219,72 @@ select {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(74, 158, 255, 0.3);
 }
+
+.preference-item {
+    display: flex;
+    padding-bottom: 10px;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--color-texto);
+}
+
+/* Contenedor principal */
+.checkbox-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start; /* Fuerza todo hacia la izquierda */
+    margin: 10px 0;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinea contenido interno a la izquierda */
+    gap: 10px; /* Espacio fijo entre el cuadro y el texto */
+    cursor: pointer;
+    user-select: none;
+    width: auto; /* IMPORTANTE: Cambia a auto para que no crezca de más */
+    text-align: left;
+}
+
+/* Ocultamos el input */
+.checkbox-label input {
+    display: none;
+}
+
+/* El cuadro (Estilo original recuperado) */
+.checkmark {
+    min-width: 25px; /* Mantiene el tamaño constante */
+    height: 25px;
+    width: 25px;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 4px;
+    position: relative;
+    flex-shrink: 0; /* Evita que el flexbox lo deforme */
+}
+
+/* Color al marcar */
+input:checked + .checkmark {
+    background-color: var(--color-secundario);
+}
+
+/* La marca blanca */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+input:checked + .checkmark:after {
+    display: block;
+}

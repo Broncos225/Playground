@@ -772,6 +772,7 @@ function normalizarTexto(texto) {
 }
 
 // Modifica la función configurarBusqueda para incluir búsqueda en contenido
+// Modifica la función configurarBusqueda para incluir búsqueda en contenido CONDICIONALMENTE
 function configurarBusqueda() {
     var input = document.getElementById('busqueda');
     var clearButton = document.getElementById('LimpiarP');
@@ -792,25 +793,48 @@ function configurarBusqueda() {
         return texto.replace(regex, '<mark>$1</mark>');
     }
 
+    // AGREGAR ESTA FUNCIÓN PARA OBTENER LA PREFERENCIA
+    function obtenerPreferenciaBusquedaPlantillas() {
+        const nombreUsuario = localStorage.getItem("nombreAsesorActual") || "usuario_anonimo";
+        const clave = `preferencias_${nombreUsuario}`;
+        const preferenciasGuardadas = localStorage.getItem(clave);
+        
+        if (preferenciasGuardadas) {
+            try {
+                const preferencias = JSON.parse(preferenciasGuardadas);
+                return preferencias.busquedaPlantillas || false;
+            } catch (error) {
+                return false;
+            }
+        }
+        return false;
+    }
+
     input.addEventListener('keyup', function () {
         var busqueda = input.value;
         var busquedaNormalizada = normalizarTexto(busqueda.trim());
         var tipoSeleccionado = document.getElementById('Tipos').value;
+        
+        // OBTENER LA PREFERENCIA
+        var buscarEnContenido = obtenerPreferenciaBusquedaPlantillas();
 
         pdfs.forEach(function (pdf) {
             var fileName = pdf.getAttribute('data-name');
             var key = pdf.getElementsByTagName('h2')[0].innerText;
             var tituloNormalizado = normalizarTexto(key);
 
-            // Obtener contenido de la plantilla
-            var plantilla = plantillasCache[fileName];
-            var contenidoApertura = extraerTextoPlano(plantilla?.Apertura || '');
-            var contenidoCierre = extraerTextoPlano(plantilla?.Cierre || '');
-            var contenidoCompleto = contenidoApertura + ' ' + contenidoCierre;
-            var contenidoNormalizado = normalizarTexto(contenidoCompleto);
-
             var coincidenciasEnTitulo = tituloNormalizado.includes(busquedaNormalizada);
-            var coincidenciasEnContenido = contenidoNormalizado.includes(busquedaNormalizada);
+            var coincidenciasEnContenido = false;
+
+            // SOLO BUSCAR EN CONTENIDO SI ESTÁ ACTIVADA LA PREFERENCIA
+            if (buscarEnContenido) {
+                var plantilla = plantillasCache[fileName];
+                var contenidoApertura = extraerTextoPlano(plantilla?.Apertura || '');
+                var contenidoCierre = extraerTextoPlano(plantilla?.Cierre || '');
+                var contenidoCompleto = contenidoApertura + ' ' + contenidoCierre;
+                var contenidoNormalizado = normalizarTexto(contenidoCompleto);
+                coincidenciasEnContenido = contenidoNormalizado.includes(busquedaNormalizada);
+            }
 
             var type = pdf.getAttribute('data-type');
             var typeMatches = tipoSeleccionado === "0" || type === tipoSeleccionado;

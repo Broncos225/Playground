@@ -483,9 +483,10 @@
                     </div>
 
                     <div class="checkbox-container">
-                        <label class="checkbox-label">
+                        <label class="checkbox-label" ">
                             <input type="checkbox" id="activarColorTextoFondoPrimario">
-                            <span style="text-wrap:nowrap;">Usar color de texto diferente para fondo primario</span>
+                            <span class="checkmark"></span>
+                            Usar color de texto diferente para fondo primario
                         </label>
                     </div>
 
@@ -541,63 +542,30 @@
                 </div>
             </div>
 
-            <!-- Tarjeta de Notificaciones -->
+            <!-- Tarjeta de Preferencias -->
             <div class="config-card">
                 <div class="card-header">
-                    <i class="fas fa-bell"></i>
-                    <h2>Notificaciones Push</h2>
+                    <i class="fas fa-cog"></i>
+                    <h2>Preferencias</h2>
                 </div>
                 <div class="card-body">
-                    <!-- Estado de permisos -->
-                    <div id="estadoPermisos" class="alert-info"
-                        style="padding: 10px; border-radius: 8px; margin-bottom: 15px; background: rgba(52, 152, 219, 0.1); color: var(--color-texto); font-size: 13px;">
-                        <span id="mensajePermiso">Verifica el estado de las notificaciones</span>
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <span>Vista línea de tiempo en horarios</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="vistaHorariosPrincipal">
+                            <span class="slider"></span>
+                        </label>
                     </div>
-
-                    <!-- Botón activar/desactivar -->
-                    <button type="button" id="btnActivarNotificaciones" class="btn-secondary"
-                        style="width: 100%; margin-bottom: 20px;">
-                        <i class="fas fa-bell-slash"></i> Activar Notificaciones
-                    </button>
-
-                    <!-- Opciones de notificación -->
-                    <div id="opcionesNotificaciones" style="display: none; opacity: 0; transition: opacity 0.3s;">
-                        <h3
-                            style="font-size: 15px; margin-bottom: 15px; color: var(--color-texto); display: flex; align-items: center; gap: 8px;">
-                            <i class="fas fa-sliders"></i> Configurar Alertas
-                        </h3>
-
-                        <!-- Notificar turno mañana -->
-                        <div class="checkbox-container">
-                            <label class="checkbox-label" style="width: auto;">
-                                <input type="checkbox" id="notificarTurnoManana">
-                                <span>Notificar turno del día siguiente</span>
-                            </label>
+                    <div class="preference-item">
+                        <div class="preference-label">
+                            <span>Búsqueda en contenido en plantillas</span>
                         </div>
-
-                        <!-- Notificar almuerzo -->
-                        <div class="checkbox-container">
-                            <label class="checkbox-label" style="width: auto;">
-                                <input type="checkbox" id="notificarAlmuerzo">
-                                <span>Notificar si tengo almuerzo asignado</span>
-                            </label>
-                        </div>
-
-                        <!-- Hora de notificación -->
-                        <div class="input-group" style="margin-top: 15px;">
-                            <label for="horaNotificacion" style="display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-clock"></i> Hora de notificación
-                            </label>
-                            <input type="time" id="horaNotificacion" value="07:00"
-                                style="padding: 8px 12px; border: 2px solid var(--color-primario); border-radius: 8px; font-family: var(--font-family); font-size: 14px;">
-                        </div>
-
-                        <!-- Información adicional -->
-                        <div
-                            style="margin-top: 15px; padding: 10px; background: rgba(46, 204, 113, 0.1); border-radius: 8px; font-size: 12px; color: var(--color-texto);">
-                            <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
-                            <strong>Activo:</strong> Recibirás notificaciones según tu configuración.
-                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="busquedaPlantillas">
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
             </div>
