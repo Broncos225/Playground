@@ -34,6 +34,23 @@ class PreferenciasColores {
         this.init();
     }
 
+    cargarImagenDesdeURL(url) {
+        const img = new Image();
+
+        img.onload = () => {
+            this.configuracionActual.imagenFondo = url;
+            this.aplicarConfiguracion();
+            this.mostrarPreviewImagenActual();
+            this.mostrarNotificacion('Imagen cargada desde URL correctamente', 'exito');
+        };
+
+        img.onerror = () => {
+            this.mostrarNotificacion('Error al cargar la imagen desde la URL. Verifica que sea válida y accesible.', 'error');
+        };
+
+        img.src = url;
+    }
+
     obtenerNombreUsuario() {
         return localStorage.getItem("nombreAsesorActual") || "usuario_anonimo";
     }
@@ -134,6 +151,28 @@ class PreferenciasColores {
         if (switchBusquedaPlantillas) switchBusquedaPlantillas.checked = this.configuracionActual.busquedaPlantillas;
 
         this.mostrarPreviewImagenActual();
+        // Detectar si la imagen actual es URL o archivo y ajustar el selector
+        const selectMetodo = document.getElementById('metodoImagen');
+        const contenedorArchivo = document.getElementById('contenedorArchivo');
+        const contenedorURL = document.getElementById('contenedorURL');
+        const inputURL = document.getElementById('urlImagenFondo');
+
+        if (selectMetodo && contenedorArchivo && contenedorURL && this.configuracionActual.imagenFondo) {
+            // Si la imagen empieza con http, es una URL
+            if (this.configuracionActual.imagenFondo.startsWith('http')) {
+                selectMetodo.value = 'url';
+                contenedorArchivo.style.display = 'none';
+                contenedorURL.style.display = 'block';
+                if (inputURL) {
+                    inputURL.value = this.configuracionActual.imagenFondo;
+                }
+            } else {
+                // Es un archivo (base64)
+                selectMetodo.value = 'archivo';
+                contenedorArchivo.style.display = 'block';
+                contenedorURL.style.display = 'none';
+            }
+        }
     }
 
     mostrarPreviewImagenActual() {
@@ -535,7 +574,7 @@ class PreferenciasColores {
         if (inputColorTextoFondoPrimario) {
             inputColorTextoFondoPrimario.addEventListener('input', () => {
                 this.configuracionActual.colorTextoFondoPrimario = inputColorTextoFondoPrimario.value;
-                this.previsualizarCambios(); // Cambia esto para que use previsualizarCambios
+                this.previsualizarCambios();
             });
         }
 
@@ -553,6 +592,7 @@ class PreferenciasColores {
                 this.configuracionActual.busquedaPlantillas = switchBusquedaPlantillas.checked;
             });
         }
+
         const btnEliminarImagen = document.getElementById('eliminarImagen');
         if (btnEliminarImagen) {
             btnEliminarImagen.addEventListener('click', () => this.eliminarImagenFondo());
@@ -584,6 +624,45 @@ class PreferenciasColores {
                 if (archivo) {
                     this.importarConfiguracionCompleta(archivo);
                 }
+            });
+        }
+
+        // Cambiar entre archivo y URL
+        const selectMetodo = document.getElementById('metodoImagen');
+        const contenedorArchivo = document.getElementById('contenedorArchivo');
+        const contenedorURL = document.getElementById('contenedorURL');
+
+        if (selectMetodo && contenedorArchivo && contenedorURL) {
+            selectMetodo.addEventListener('change', () => {
+                if (selectMetodo.value === 'url') {
+                    contenedorArchivo.style.display = 'none';
+                    contenedorURL.style.display = 'block';
+                } else {
+                    contenedorArchivo.style.display = 'block';
+                    contenedorURL.style.display = 'none';
+                }
+            });
+        }
+
+        // Cargar imagen desde URL
+        const btnCargarURL = document.getElementById('btnCargarURL');
+        const inputURL = document.getElementById('urlImagenFondo');
+
+        if (btnCargarURL && inputURL) {
+            btnCargarURL.addEventListener('click', () => {
+                const url = inputURL.value.trim();
+                if (!url) {
+                    this.mostrarNotificacion('Por favor ingresa una URL', 'error');
+                    return;
+                }
+
+                // Validar que sea una URL de imagen
+                if (!url.match(/\.(jpeg|jpg|gif|png|webp|svg)$/i) && !url.includes('imgur') && !url.includes('cloudinary')) {
+                    const confirmacion = confirm('La URL no parece ser una imagen. ¿Deseas continuar?');
+                    if (!confirmacion) return;
+                }
+
+                this.cargarImagenDesdeURL(url);
             });
         }
     }

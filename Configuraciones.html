@@ -483,7 +483,7 @@
                     </div>
 
                     <div class="checkbox-container">
-                        <label class="checkbox-label" ">
+                        <label class="checkbox-label">
                             <input type="checkbox" id="activarColorTextoFondoPrimario">
                             <span class="checkmark"></span>
                             Usar color de texto diferente para fondo primario
@@ -519,11 +519,30 @@
                     <h2>Imagen de Fondo</h2>
                 </div>
                 <div class="card-body">
-                    <div class="file-input-container">
+                    <!-- Selector de método -->
+                    <div class="input-group" style="margin-bottom: 15px; text-wrap: nowrap;">
+                        <label>Método de carga</label>
+                        <select id="metodoImagen" style="flex: 1;">
+                            <option value="archivo">Subir archivo</option>
+                            <option value="url">URL de imagen</option>
+                        </select>
+                    </div>
+
+                    <!-- Contenedor para subir archivo -->
+                    <div id="contenedorArchivo" class="file-input-container">
                         <label for="ImagenFondo" class="file-input-label">
                             <i class="fas fa-upload"></i> Seleccionar imagen
                         </label>
                         <input type="file" id="ImagenFondo" accept="image/*">
+                    </div>
+
+                    <!-- Contenedor para URL -->
+                    <div id="contenedorURL" class="file-input-container" style="display: none;">
+                        <input type="text" id="urlImagenFondo" placeholder="https://ejemplo.com/imagen.jpg"
+                            style="width: 95%; padding: 10px; border: 2px solid var(--color-primario); margin-bottom: 10px; border-radius: 8px;">
+                        <button id="btnCargarURL" style="width: 100%;">
+                            <i class="fas fa-link"></i> Cargar desde URL
+                        </button>
                     </div>
 
                     <div id="previewImagenFondo" class="preview-container"></div>
