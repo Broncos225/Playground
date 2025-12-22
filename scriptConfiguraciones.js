@@ -9,6 +9,7 @@ class PreferenciasColores {
             colorTextoFondoPrimario: null,
             fuente: 'Nunito, sans-serif',
             imagenFondo: null,
+            parallaxActivo: false,
             blurFondo: 0,
             usarColorTextoFondoPrimario: false,
             vistaHorariosPrincipal: false,
@@ -94,6 +95,7 @@ class PreferenciasColores {
                     usarColorTextoFondoPrimario: preferencias.usarColorTextoFondoPrimario || false,
                     fuente: preferencias.fuente || this.configuracionDefecto.fuente,
                     imagenFondo: preferencias.imagenFondo || this.configuracionDefecto.imagenFondo,
+                    parallaxActivo: preferencias.parallaxActivo || false,
                     blurFondo: preferencias.blurFondo !== undefined ? preferencias.blurFondo : this.configuracionDefecto.blurFondo,
                     vistaHorariosPrincipal: preferencias.vistaHorariosPrincipal || false,
                     busquedaPlantillas: preferencias.busquedaPlantillas || false
@@ -122,7 +124,8 @@ class PreferenciasColores {
         const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
         const switchVistaHorarios = document.getElementById('vistaHorariosPrincipal');
         const switchBusquedaPlantillas = document.getElementById('busquedaPlantillas');
-
+        const checkboxParallax = document.getElementById('activarParallax');
+        if (checkboxParallax) checkboxParallax.checked = this.configuracionActual.parallaxActivo;
 
         if (inputPrimario) inputPrimario.value = this.configuracionActual.primario;
         if (inputSecundario) inputSecundario.value = this.configuracionActual.secundario;
@@ -241,6 +244,28 @@ class PreferenciasColores {
         }
     }
 
+    activarEfectoParallax() {
+        // Remover listener anterior si existe
+        if (this.parallaxListener) {
+            document.removeEventListener('mousemove', this.parallaxListener);
+        }
+
+        this.parallaxListener = (e) => {
+            const parallaxLayer = document.querySelector('.parallax-layer');
+            if (!parallaxLayer) return;
+
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            const moveX = (mouseX - 0.5) * 20;
+            const moveY = (mouseY - 0.5) * 20;
+
+            parallaxLayer.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+        };
+
+        document.addEventListener('mousemove', this.parallaxListener);
+    }
+
     aplicarConfiguracion() {
         const root = document.documentElement;
         root.style.setProperty('--color-primario', this.configuracionActual.primario);
@@ -254,12 +279,38 @@ class PreferenciasColores {
         }
         root.style.setProperty('--font-family', this.configuracionActual.fuente);
 
+        // Limpiar parallax existente
+        const parallaxExistente = document.querySelector('.parallax-background');
+        if (parallaxExistente) {
+            parallaxExistente.remove();
+        }
+
         if (this.configuracionActual.imagenFondo) {
-            document.body.style.backgroundImage = `url(${this.configuracionActual.imagenFondo})`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundPosition = 'center';
-            document.body.style.backgroundRepeat = 'no-repeat';
-            document.body.style.backgroundAttachment = 'fixed';
+            if (this.configuracionActual.parallaxActivo) {
+                // Crear estructura parallax
+                const parallaxContainer = document.createElement('div');
+                parallaxContainer.className = 'parallax-background';
+
+                const parallaxLayer = document.createElement('div');
+                parallaxLayer.className = 'parallax-layer';
+                parallaxLayer.style.backgroundImage = `url(${this.configuracionActual.imagenFondo})`;
+
+                parallaxContainer.appendChild(parallaxLayer);
+                document.body.insertBefore(parallaxContainer, document.body.firstChild);
+
+                // Activar efecto parallax
+                this.activarEfectoParallax();
+
+                // Limpiar background normal del body
+                document.body.style.backgroundImage = 'none';
+            } else {
+                // Aplicar imagen normal
+                document.body.style.backgroundImage = `url(${this.configuracionActual.imagenFondo})`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundRepeat = 'no-repeat';
+                document.body.style.backgroundAttachment = 'fixed';
+            }
         } else {
             document.body.style.backgroundImage = 'none';
         }
@@ -380,6 +431,7 @@ class PreferenciasColores {
             usarColorTextoFondoPrimario: checkboxColorTextoFondoPrimario ? checkboxColorTextoFondoPrimario.checked : false,
             fuente: selectFuente ? selectFuente.value : this.configuracionDefecto.fuente,
             imagenFondo: this.configuracionActual.imagenFondo,
+            parallaxActivo: document.getElementById('activarParallax')?.checked || false,
             blurFondo: inputBlur ? parseInt(inputBlur.value) : 0,
             vistaHorariosPrincipal: document.getElementById('vistaHorariosPrincipal')?.checked || false,
             busquedaPlantillas: document.getElementById('busquedaPlantillas')?.checked || false,
@@ -400,6 +452,7 @@ class PreferenciasColores {
                 usarColorTextoFondoPrimario: nuevasPreferencias.usarColorTextoFondoPrimario,
                 fuente: nuevasPreferencias.fuente,
                 imagenFondo: nuevasPreferencias.imagenFondo,
+                parallaxActivo: nuevasPreferencias.parallaxActivo,
                 blurFondo: nuevasPreferencias.blurFondo
             };
 
@@ -433,6 +486,8 @@ class PreferenciasColores {
             const checkboxColorTextoFondoPrimario = document.getElementById('activarColorTextoFondoPrimario');
             const inputColorTextoFondoPrimario = document.getElementById('ColorTextoFondoPrimario');
             const contenedorColorTextoFondoPrimario = document.getElementById('contenedorColorTextoFondoPrimario');
+            const checkboxParallax = document.getElementById('activarParallax');
+            if (checkboxParallax) checkboxParallax.checked = this.configuracionDefecto.parallaxActivo;
 
             if (inputPrimario) inputPrimario.value = this.configuracionDefecto.primario;
             if (inputSecundario) inputSecundario.value = this.configuracionDefecto.secundario;
@@ -593,6 +648,14 @@ class PreferenciasColores {
             });
         }
 
+        const checkboxParallax = document.getElementById('activarParallax');
+        if (checkboxParallax) {
+            checkboxParallax.addEventListener('change', () => {
+                this.configuracionActual.parallaxActivo = checkboxParallax.checked;
+                this.aplicarConfiguracion();
+            });
+        }
+
         const btnEliminarImagen = document.getElementById('eliminarImagen');
         if (btnEliminarImagen) {
             btnEliminarImagen.addEventListener('click', () => this.eliminarImagenFondo());
@@ -711,12 +774,48 @@ class PreferenciasColores {
                     root.style.setProperty('--font-family', preferencias.fuente);
                 }
 
+                const parallaxExistente = document.querySelector('.parallax-background');
+                if (parallaxExistente) {
+                    parallaxExistente.remove();
+                }
+
                 if (preferencias.imagenFondo) {
-                    document.body.style.backgroundImage = `url(${preferencias.imagenFondo})`;
-                    document.body.style.backgroundSize = 'cover';
-                    document.body.style.backgroundPosition = 'center';
-                    document.body.style.backgroundRepeat = 'no-repeat';
-                    document.body.style.backgroundAttachment = 'fixed';
+                    if (preferencias.parallaxActivo) {
+                        // Crear estructura parallax
+                        const parallaxContainer = document.createElement('div');
+                        parallaxContainer.className = 'parallax-background';
+
+                        const parallaxLayer = document.createElement('div');
+                        parallaxLayer.className = 'parallax-layer';
+                        parallaxLayer.style.backgroundImage = `url(${preferencias.imagenFondo})`;
+
+                        parallaxContainer.appendChild(parallaxLayer);
+                        document.body.insertBefore(parallaxContainer, document.body.firstChild);
+
+                        // Activar efecto parallax
+                        document.addEventListener('mousemove', (e) => {
+                            const parallaxLayer = document.querySelector('.parallax-layer');
+                            if (!parallaxLayer) return;
+
+                            const mouseX = e.clientX / window.innerWidth;
+                            const mouseY = e.clientY / window.innerHeight;
+
+                            const moveX = (mouseX - 0.5) * 20;
+                            const moveY = (mouseY - 0.5) * 20;
+
+                            parallaxLayer.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+                        });
+
+                        // Limpiar background normal del body
+                        document.body.style.backgroundImage = 'none';
+                    } else {
+                        // Imagen normal (sin parallax)
+                        document.body.style.backgroundImage = `url(${preferencias.imagenFondo})`;
+                        document.body.style.backgroundSize = 'cover';
+                        document.body.style.backgroundPosition = 'center';
+                        document.body.style.backgroundRepeat = 'no-repeat';
+                        document.body.style.backgroundAttachment = 'fixed';
+                    }
                 } else {
                     document.body.style.backgroundImage = 'none';
                 }

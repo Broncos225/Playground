@@ -2299,6 +2299,7 @@ input:checked + .checkmark:after {
     z-index: -1;
     perspective: 1000px;
     pointer-events: none;
+    overflow: hidden;
 }
 
 .parallax-layer {
@@ -2306,24 +2307,10 @@ input:checked + .checkmark:after {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 110%;
-    height: 110%;
+    width: 105%;
+    height: 105%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     transition: transform 0.1s ease-out;
-}
-
-.layer-back {
-    transform: translate(-50%, -50%) translateZ(-50px) scale(1.05);
-}
-
-.layer-front {
-    transform: translate(-50%, -50%) translateZ(0px);
-}
-
-/* Ocultar inputs de archivo nativos */
-#ImagenFondo,
-#ImagenFrente {
-    display: none;
 }
