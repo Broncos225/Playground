@@ -858,17 +858,17 @@ function Festivos() {
     var mes = document.getElementById("Mes").value;
     var ano = document.getElementById("Año").value;
     var festivos = {
-        "Enero": [1, 6],
+        "Enero": [1, 12],
         "Febrero": [],
-        "Marzo": [24],
-        "Abril": [17, 18],
-        "Mayo": [1],
-        "Junio": [2, 23, 30],
+        "Marzo": [23],
+        "Abril": [2, 3],
+        "Mayo": [1,18],
+        "Junio": [8, 15, 29],
         "Julio": [20],
-        "Agosto": [7, 18],
+        "Agosto": [7, 17],
         "Septiembre": [],
-        "Octubre": [13],
-        "Noviembre": [3, 17],
+        "Octubre": [12],
+        "Noviembre": [2, 16],
         "Diciembre": [8, 25]
     };
 
