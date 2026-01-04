@@ -173,6 +173,3 @@ if (!window.fbMonitor) {
 
 console.log('%c🔥 Firebase Monitor Global activado', 'color: #FF6B35; font-weight: bold; font-size: 16px');
 console.log(`Página actual: ${window.fbMonitor.getCurrentPage()}`);
-console.log('Usa fbMonitor.showConsoleReport() para ver el reporte completo');
-console.log('Usa fbMonitor.exportToExcel() para exportar a Excel');
-console.log('Usa fbMonitor.reset() para reiniciar contadores');
