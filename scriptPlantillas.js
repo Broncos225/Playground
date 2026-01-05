@@ -67,9 +67,9 @@ if (timerPreference === 'true') {
     timerSwitch.checked = true;
 }
 
-timerSwitch.addEventListener('change', function () {
-    localStorage.setItem('timerActive', this.checked);
-});
+// timerSwitch.addEventListener('change', function () {
+//     localStorage.setItem('timerActive', this.checked);
+// });
 
 let plantillasCache = JSON.parse(localStorage.getItem('plantillasCache')) || null;
 let favoritosCache = JSON.parse(localStorage.getItem('favoritosCache')) || null;

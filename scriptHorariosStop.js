@@ -2801,6 +2801,7 @@ function cambiarVista(vista) {
         if (dateInput && !dateInput.value) {
             dateInput.valueAsDate = new Date();
         }
+        console.log('fecha', dateInput.value);
         cargarCronologia();
 
     } else if (vista === 'tabla') {
