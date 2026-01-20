@@ -862,7 +862,7 @@ function Festivos() {
         "Febrero": [],
         "Marzo": [23],
         "Abril": [2, 3],
-        "Mayo": [1,18],
+        "Mayo": [1, 18],
         "Junio": [8, 15, 29],
         "Julio": [20],
         "Agosto": [7, 17],
@@ -1238,7 +1238,7 @@ function generateWeekColumns() {
         "Febrero": [],
         "Marzo": [23],
         "Abril": [2, 3],
-        "Mayo": [1,18],
+        "Mayo": [1, 18],
         "Junio": [8, 15, 29],
         "Julio": [20],
         "Agosto": [7, 17],
@@ -2789,13 +2789,13 @@ function cambiarVista(vista) {
         btnTimeline.classList.add('active');
         btnTabla.classList.remove('active');
         vistaActual = 'timeline';
-        
+
         // Reiniciar actualización de la línea
         if (intervaloActualizacionLinea) {
             clearInterval(intervaloActualizacionLinea);
         }
         intervaloActualizacionLinea = setInterval(actualizarLineaHoraActual, 60000);
-        
+
         // Cargar cronología (usará caché si ya está cargada)
         const dateInput = document.getElementById('dateInput');
         if (dateInput && !dateInput.value) {
@@ -2811,7 +2811,7 @@ function cambiarVista(vista) {
         btnTabla.classList.add('active');
         btnTimeline.classList.remove('active');
         vistaActual = 'tabla';
-        
+
         // Detener actualización de línea del timeline
         if (intervaloActualizacionLinea) {
             clearInterval(intervaloActualizacionLinea);
@@ -2832,7 +2832,7 @@ function obtenerPreferenciaVistaPrincipal() {
     const nombreUsuario = localStorage.getItem("nombreAsesorActual") || "usuario_anonimo";
     const clave = `preferencias_${nombreUsuario}`;
     const preferenciasGuardadas = localStorage.getItem(clave);
-    
+
     if (preferenciasGuardadas) {
         try {
             const preferencias = JSON.parse(preferenciasGuardadas);
@@ -2856,7 +2856,7 @@ window.onload = function () {
 
     // OBTENER LA PREFERENCIA Y CARGAR LA VISTA CORRESPONDIENTE
     const vistaTimelinePorDefecto = obtenerPreferenciaVistaPrincipal();
-    
+
     if (vistaTimelinePorDefecto) {
         // Cargar cronología al inicio
         const dateInput = document.getElementById('dateInput');
@@ -2922,3 +2922,94 @@ function actualizarLineaHoraActual() {
         lineaActual.style.display = 'none';
     }
 }
+
+async function descargarCSV() {
+    const mesTexto = selectMes.value;
+    const año = Number(selectAño.value);
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const mesNumero = meses.indexOf(mesTexto) + 1;
+    const diasEnMes = new Date(año, mesNumero, 0).getDate();
+    console.log('Días en mes:', diasEnMes, 'Mes:', mesNumero, 'Año:', año);
+
+    const nombresEmpleados = obtenerNombresEmpleados();
+
+    if (nombresEmpleados.length === 0) {
+        alert('No se encontraron empleados');
+        return;
+    }
+
+    const cacheTurnos = {};
+
+    async function obtenerDatosTurno(turnoId) {
+        if (!turnoId) return '';
+        if (cacheTurnos[turnoId]) return cacheTurnos[turnoId];
+
+        const turnoSnapshot = await db.ref(`Turnos/${turnoId}`).once('value');
+        const turnoData = turnoSnapshot.val();
+        let nombreTurno = '';
+
+        if (turnoData) {
+            if (turnoData.Apertura !== "12:00 AM") {
+                nombreTurno = `${turnoData.Apertura} a ${turnoData.Cierre}`;
+            } else {
+                nombreTurno = turnoData.Descripcion || '';
+            }
+        }
+
+        cacheTurnos[turnoId] = nombreTurno;
+        return nombreTurno;
+    }
+
+    try {
+        let csvContent = 'Identificación,"Tipo (Cedula=1, Cedula de extranjeria=2, Tarjeta de identidad=3)",Nombre,Fecha inicial (aaaa-mm-dd),Fecha final (aaaa-mm-dd),Turno,Centro costo,Actividad,Reemplazar,MOTIVO\n';
+
+        const promesasEmpleados = nombresEmpleados.map(async (nombreFila) => {
+            const nombreConGuion = nombreFila.replace(/ /g, '_');
+            const preferenciaSnapshot = await db.ref(`Preferencias/${nombreConGuion}/ID`).once('value');
+            const identificacion = preferenciaSnapshot.val();
+
+            if (!identificacion) return null;
+
+            const promesasDias = [];
+            for (let dia = 1; dia <= diasEnMes; dia++) {
+                promesasDias.push((async () => {
+                    const snapshot = await db.ref(`celdas/${nombreFila}/${dia + 1}/${año}/${mesNumero}`).once('value');
+                    const datos = snapshot.val();
+
+                    let turnoNombre = '';
+                    if (datos && datos.texto) {
+                        const turnoId = datos.texto.trim();
+                        if (turnoId) {
+                            turnoNombre = await obtenerDatosTurno(turnoId);
+                        }
+                    }
+
+                    const fechaFormateada = `${año}-${mesNumero.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+                    return `${identificacion},1,${nombreFila},${fechaFormateada},${fechaFormateada},${turnoNombre},C-U768-01,,,\n`;
+                })());
+            }
+
+            const lineasDias = await Promise.all(promesasDias);
+            return lineasDias.join('');
+        });
+
+        const resultadosEmpleados = await Promise.all(promesasEmpleados);
+        csvContent += resultadosEmpleados.filter(r => r !== null).join('');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `Turnos de ${mesTexto} ${año}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    } catch (error) {
+        console.error('Error al generar CSV:', error);
+        alert('Error al generar el archivo CSV');
+    }
+}
+
+document.getElementById('btnArchivo').addEventListener('click', descargarCSV);
