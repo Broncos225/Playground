@@ -2961,7 +2961,9 @@ async function descargarCSV() {
     }
 
     try {
-        let csvContent = 'Identificación,"Tipo (Cedula=1, Cedula de extranjeria=2, Tarjeta de identidad=3)",Nombre,Fecha inicial (aaaa-mm-dd),Fecha final (aaaa-mm-dd),Turno,Centro costo,Actividad,Reemplazar,MOTIVO\n';
+        const datos = [
+            ['Identificación', 'Tipo (Cedula=1, Cedula de extranjeria=2, Tarjeta de identidad=3)', 'Nombre', 'Fecha inicial (aaaa-mm-dd)', 'Fecha final (aaaa-mm-dd)', 'Turno', 'Centro costo', 'Actividad', 'Reemplazar', 'MOTIVO']
+        ];
 
         const promesasEmpleados = nombresEmpleados.map(async (nombreFila) => {
             const nombreConGuion = nombreFila.replace(/ /g, '_');
@@ -2985,30 +2987,29 @@ async function descargarCSV() {
                     }
 
                     const fechaFormateada = `${año}-${mesNumero.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
-                    return `${identificacion},1,${nombreFila},${fechaFormateada},${fechaFormateada},${turnoNombre},C-U768-01,,,\n`;
+                    return [identificacion, 1, nombreFila, fechaFormateada, fechaFormateada, turnoNombre, 'C-U768-01', '', '', ''];
                 })());
             }
 
-            const lineasDias = await Promise.all(promesasDias);
-            return lineasDias.join('');
+            const filasDias = await Promise.all(promesasDias);
+            return filasDias;
         });
 
         const resultadosEmpleados = await Promise.all(promesasEmpleados);
-        csvContent += resultadosEmpleados.filter(r => r !== null).join('');
+        resultadosEmpleados.forEach(resultado => {
+            if (resultado !== null) {
+                datos.push(...resultado);
+            }
+        });
 
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `Turnos de ${mesTexto} ${año}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(datos);
+        XLSX.utils.book_append_sheet(wb, ws, 'Turnos');
+        XLSX.writeFile(wb, `Turnos de ${mesTexto} ${año}.xlsx`);
 
     } catch (error) {
-        console.error('Error al generar CSV:', error);
-        alert('Error al generar el archivo CSV');
+        console.error('Error al generar Excel:', error);
+        alert('Error al generar el archivo Excel');
     }
 }
 
