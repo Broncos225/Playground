@@ -1185,7 +1185,7 @@ async function verificarEncargadosEspeciales() {
         }
 
         const encargadosEspeciales = [];
-        const usuariosEspeciales = ["Juan Manuel Cano Benítez"];
+        const usuariosEspeciales = [""];
 
         for (const usuario of usuariosEspeciales) {
             try {

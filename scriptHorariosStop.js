@@ -554,10 +554,6 @@ let agentes = {
         nombre: "Maria Susana Ospina Vanegas",
         contraseña: ""
     },
-    Juan_Manuel_Cano_Benítez: {
-        nombre: "Juan Manuel Cano Benítez",
-        contraseña: ""
-    },
     Diego_Alejandro_Úsuga_Yepes: {
         nombre: "Diego Alejandro Úsuga Yepes",
         contraseña: ""
