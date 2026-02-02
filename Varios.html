@@ -1,17 +1,337 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cuenta Gotas</title>
-    <style></style>
-  </head>
-  <body>
-    <iframe
-      src="https://www.minijuegos.com/embed/pokepath-td"
-      style="width: 100%; height: 100%"
-      frameborder="0"
-      allowfullscreen
-    ></iframe>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabla de Pagos Interactiva</title>
+  <style>
+    /* Estilo para ocultar el contenido inicialmente */
+    #content-protector {
+      display: none;
+    }
+
+    body {
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    /* --- TUS ESTILOS ORIGINALES --- */
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid #000;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      min-width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 5px;
+      font-size: 14px;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .col-nombre {
+      width: 250px;
+      min-width: 250px;
+      max-width: 250px;
+      text-align: left;
+      position: sticky;
+      left: 0;
+      background-color: #fff;
+      z-index: 10;
+      font-weight: bold;
+      padding-left: 10px;
+      cursor: default;
+    }
+
+    .efectivo {
+      background-color: #d4edda !important;
+      color: #155724;
+      font-weight: bold;
+    }
+
+    .transferencia {
+      background-color: #cce5ff !important;
+      color: #004085;
+      font-weight: bold;
+    }
+
+    .deber {
+      background-color: #fff3cd !important;
+      color: #856404;
+      font-weight: bold;
+    }
+
+    td:not(.col-nombre):hover {
+      background-color: #f0f0f0;
+    }
+
+    /* Modales */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 300px;
+    }
+
+    .modal-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      transition: 0.2s;
+    }
+
+    .btn-efectivo {
+      border-left: 5px solid #28a745;
+      color: #28a745;
+      font-weight: bold;
+    }
+
+    .btn-transfer {
+      border-left: 5px solid #007bff;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .btn-deber {
+      border-left: 5px solid #ffc107;
+      color: #856404;
+      font-weight: bold;
+    }
+
+    .btn-borrar {
+      border-left: 5px solid #dc3545;
+      color: #dc3545;
+    }
+
+    .btn-cancelar {
+      background-color: #666;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="window.location.href='index.html'">Volver a la página principal</button>
+  <script>
+    (function () {
+      const usuarioAutorizado = "Ocaris_David_Arango_Aguilar";
+      const loginActual = localStorage.getItem("nombreAsesorActual");
+
+      if (loginActual !== usuarioAutorizado) {
+        // Bloqueo inmediato con centrado absoluto
+        document.body.innerHTML = `
+          <div style="
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            width: 100vw; 
+            font-family: sans-serif; 
+            margin: 0; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            background-color: white;">
+            <h1 style="color: red; margin-bottom: 10px;">Acceso Denegado</h1>
+            <p style="color: #666; font-size: 1.2rem;">No tienes permisos para ver esta tabla de control.</p>
+            <button onclick="window.location.href='index.html'" style="margin-top: 20px; padding: 10px 20px; cursor: pointer;">
+              Volver al inicio
+            </button>
+          </div>
+        `;
+        window.stop();
+      } else {
+        // Si es correcto, mostramos el contenido al cargar el DOM
+        window.addEventListener('DOMContentLoaded', () => {
+          document.getElementById('content-protector').style.display = 'block';
+        });
+      }
+    })();
+  </script>
+
+  <div id="content-protector">
+    <h3>Control de Pagos 2026</h3>
+
+    <div class="table-wrapper">
+      <table id="tablaPagos">
+        <thead>
+          <tr>
+            <th rowspan="2" class="col-nombre">Nombre del Asesor</th>
+            <th colspan="2">Ene</th>
+            <th colspan="2">Feb</th>
+            <th colspan="2">Mar</th>
+            <th colspan="2">Abr</th>
+            <th colspan="2">May</th>
+            <th colspan="2">Jun</th>
+            <th colspan="2">Jul</th>
+            <th colspan="2">Ago</th>
+            <th colspan="2">Sep</th>
+            <th colspan="2">Oct</th>
+            <th colspan="2">Nov</th>
+            <th colspan="2">Dic</th>
+          </tr>
+          <tr>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+            <th>1</th>
+            <th>2</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <button class="btn-reset" onclick="borrarTodo()" style="margin-top: 15px;">Borrar Todo</button>
+
+    <div id="modalPago" class="modal-overlay">
+      <div class="modal-content">
+        <h3 id="modalTitle">Seleccionar Pago</h3>
+        <p id="modalSubtitle" style="font-size: 12px; color: #666; margin-bottom: 15px;"></p>
+        <button class="modal-btn btn-efectivo" onclick="guardarSeleccion('efectivo')">💵 Efectivo</button>
+        <button class="modal-btn btn-transfer" onclick="guardarSeleccion('transferencia')">🏦 Transferencia</button>
+        <button class="modal-btn btn-deber" onclick="guardarSeleccion('deber')">💸 Deber</button>
+        <hr>
+        <button class="modal-btn btn-borrar" onclick="guardarSeleccion('borrar')">❌ Borrar Pago</button>
+        <button class="modal-btn btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- TU LÓGICA DE TABLA ---
+    const asesores = [
+      "Diego Alejandro Úsuga Yepes", "Johan Guzman Alarcon", "Andres Felipe Yepes Tascon",
+      "Yeison Torres Ochoa", "Ocaris David Arango Aguilar", "Maria Susana Ospina Vanegas",
+      "Santiago Ramirez Guzman", "Judy Andrea Buitrago Solis"
+    ];
+
+    const mesesIds = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    const tbody = document.querySelector("#tablaPagos tbody");
+    let celdaActual = null;
+    let idActual = null;
+
+    asesores.forEach((nombre, index) => {
+      const tr = document.createElement("tr");
+      const tdNombre = document.createElement("td");
+      tdNombre.textContent = nombre;
+      tdNombre.classList.add("col-nombre");
+      tr.appendChild(tdNombre);
+
+      mesesIds.forEach(mes => {
+        for (let q = 1; q <= 2; q++) {
+          const td = document.createElement("td");
+          const idUnico = `pago_${index}_${mes}_q${q}`;
+          const tituloCelda = `${nombre} - ${mes.toUpperCase()} Q${q}`;
+          const estadoGuardado = localStorage.getItem(idUnico);
+          aplicarEstilo(td, estadoGuardado);
+          td.addEventListener('click', () => abrirModal(td, idUnico, tituloCelda));
+          tr.appendChild(td);
+        }
+      });
+      tbody.appendChild(tr);
+    });
+
+    function abrirModal(td, id, titulo) {
+      celdaActual = td;
+      idActual = id;
+      document.getElementById('modalSubtitle').textContent = titulo;
+      document.getElementById('modalPago').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalPago').style.display = 'none';
+    }
+
+    function guardarSeleccion(tipo) {
+      if (!celdaActual || !idActual) return;
+      if (tipo === 'borrar') {
+        localStorage.removeItem(idActual);
+        aplicarEstilo(celdaActual, null);
+      } else {
+        localStorage.setItem(idActual, tipo);
+        aplicarEstilo(celdaActual, tipo);
+      }
+      cerrarModal();
+    }
+
+    function aplicarEstilo(td, tipo) {
+      td.className = '';
+      td.textContent = '';
+      if (tipo) {
+        td.classList.add(tipo);
+        td.textContent = tipo === 'efectivo' ? '💵' : tipo === 'transferencia' ? '🏦' : '💸';
+      }
+    }
+
+    function borrarTodo() {
+      if (confirm("¿Seguro que quieres borrar TODOS los registros?")) {
+        // Ojo: Esto borra TODO, incluyendo el nombreAsesorActual
+        // Vamos a proteger la sesión:
+        const sesion = localStorage.getItem("nombreAsesorActual");
+        localStorage.clear();
+        localStorage.setItem("nombreAsesorActual", sesion);
+        location.reload();
+      }
+    }
+
+    window.onclick = (e) => { if (e.target.id === 'modalPago') cerrarModal(); }
+  </script>
+</body>
+
 </html>
