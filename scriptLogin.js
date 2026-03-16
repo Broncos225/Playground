@@ -88,7 +88,7 @@ function getErrorMessage(error) {
 
 let agentesA = {
     "andres.yepes": { nombre: "Andrés_Felipe_Yepes_Tascón" },
-    "judy.buitrago": { nombre: "Judy_Andrea_Buitrago_Solis" },
+    "jorge.gallego": { nombre: "Jorge Andres Gallego" },
     "yeison.torres": { nombre: "Yeison_Torres_Ochoa" },
     "maria.ospina": { nombre: "Maria_Susana_Ospina_Vanegas" },
     "ocaris.arango": { nombre: "Ocaris_David_Arango_Aguilar" },

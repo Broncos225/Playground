@@ -12,9 +12,9 @@ let agentes = {
     nombre: "Andrés Yepes",
     cumpleaños: [2, 5]
   },
-  Judy_Andrea_Buitrago_Solis: {
-    nombre: "Judy",
-    cumpleaños: [6, 12]
+  Jorge_Andres_Gallego: {
+    nombre: "Jorge",
+    cumpleaños: [21, 1]
   },
   Ocaris_David_Arango_Aguilar: {
     nombre: "David",
