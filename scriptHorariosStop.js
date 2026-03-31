@@ -3010,3 +3010,251 @@ async function descargarCSV() {
 }
 
 document.getElementById('btnArchivo').addEventListener('click', descargarCSV);
+async function generarResumenTurnos() {
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    const mesTexto = document.getElementById('Mes').value;
+    const año = Number(document.getElementById('Año').value);
+    const mesNumero = meses.indexOf(mesTexto) + 1;
+    const diasEnMes = new Date(año, mesNumero, 0).getDate();
+
+    const filas = document.querySelectorAll('#Table tbody tr');
+    const personas = [];
+    filas.forEach(fila => {
+        if (fila.classList.contains('titulos')) return;
+        if (fila.cells?.[0]?.tagName === 'TH') return;
+        const nombre = fila.cells?.[0]?.textContent?.trim();
+        if (nombre) personas.push(nombre);
+    });
+
+    if (personas.length === 0) {
+        alert('No se encontraron personas en la tabla.');
+        return;
+    }
+
+    const overlay = document.createElement('div');
+    overlay.id = 'overlayResumen';
+    overlay.style.cssText = `
+        position:fixed; top:0; left:0; width:100%; height:100%;
+        background:rgba(0,0,0,0.55); z-index:9998;
+        display:flex; align-items:center; justify-content:center;
+    `;
+    overlay.innerHTML = `<div style="background:white; padding:20px 30px;
+        border-radius:8px; font-size:15px; color:#2c3e50;">
+        ⏳ Cargando resumen de turnos...
+    </div>`;
+    document.body.appendChild(overlay);
+
+    function obtenerRaizTurno(turno) {
+        if (!turno) return null;
+        const match = turno.match(/^([A-Za-z]+\d*)/);
+        return match ? match[1].toUpperCase() : turno.toUpperCase();
+    }
+
+    try {
+        await precargarColoresTurnos();
+
+        const snapTurnos = await firebase.database().ref('Turnos').once('value');
+        const datosTurnos = snapTurnos.val() || {};
+
+        const infoTurnos = {};
+        Object.entries(datosTurnos).forEach(([tipo, vals]) => {
+            const raiz = obtenerRaizTurno(tipo);
+            if (!infoTurnos[raiz]) {
+                infoTurnos[raiz] = {
+                    colorFondo: vals.ColorF ? `#${vals.ColorF}` : '#eeeeee',
+                    colorTexto: vals.ColorT ? `#${vals.ColorT}` : '#000000',
+                };
+            }
+        });
+
+        const promesas = personas.map(persona =>
+            firebase.database().ref(`celdas/${persona}`).once('value')
+                .then(snap => ({ persona, datos: snap.val() || {} }))
+        );
+        const resultados = await Promise.all(promesas);
+
+        const conteoPersonas = {};
+        const raicesUsadas = new Set();
+        const diasSemana = new Set(['L', 'M', 'X', 'J', 'V', 'S', 'D', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do']);
+
+        resultados.forEach(({ persona, datos }) => {
+            conteoPersonas[persona] = {};
+            for (let dia = 1; dia <= diasEnMes; dia++) {
+                const col = dia + 1;
+                const turno = datos?.[col]?.[año]?.[mesNumero]?.texto?.trim();
+                if (!turno || diasSemana.has(turno)) continue;
+                const raiz = obtenerRaizTurno(turno);
+                if (!raiz) continue;
+                raicesUsadas.add(raiz);
+                conteoPersonas[persona][raiz] = (conteoPersonas[persona][raiz] || 0) + 1;
+            }
+        });
+
+        const tiposOrdenados = [...raicesUsadas].sort();
+
+        document.body.removeChild(overlay);
+
+        let thTipos = '';
+        tiposOrdenados.forEach(tipo => {
+            const col = infoTurnos[tipo] || { colorFondo: '#eeeeee', colorTexto: '#000000' };
+            thTipos += `
+                <th style="
+                    min-width:52px; padding:6px 4px; text-align:center;
+                    font-size:12px; font-weight:bold;
+                    background-color:${col.colorFondo};
+                    color:${col.colorTexto};
+                    border:1px solid #ccc;
+                ">${tipo}</th>`;
+        });
+
+        let filasHTML = '';
+        personas.forEach((persona, idx) => {
+            const bgFila = idx % 2 === 0 ? '#f4f6f8' : '#ffffff';
+            let celdas = '';
+            let totalPersona = 0;
+
+            tiposOrdenados.forEach(tipo => {
+                const cantidad = conteoPersonas[persona]?.[tipo] || 0;
+                const col = infoTurnos[tipo] || { colorFondo: '#ffffff', colorTexto: '#000000' };
+                totalPersona += cantidad;
+
+                const bgCelda = cantidad > 0 ? col.colorFondo : bgFila;
+                const txtCelda = cantidad > 0 ? col.colorTexto : '#bbbbbb';
+
+                celdas += `
+                    <td style="
+                        text-align:center; font-size:13px; font-weight:${cantidad > 0 ? 'bold' : 'normal'};
+                        background-color:${bgCelda}; color:${txtCelda};
+                        border:1px solid #e0e0e0; padding:5px 4px;
+                    ">${cantidad > 0 ? cantidad : '—'}</td>`;
+            });
+
+            filasHTML += `
+                <tr>
+                    <td style="
+                        position:sticky; left:0; z-index:2; background:#ecf0f1;
+                        font-weight:bold; font-size:12px;
+                        padding:6px 12px; border:1px solid #ccc;
+                        white-space:nowrap; min-width:160px;
+                    ">${persona}</td>
+                    ${celdas}
+                    <td style="
+                        text-align:center; font-size:13px; font-weight:bold;
+                        background:#2c3e50; color:white;
+                        border:1px solid #ccc; padding:5px 8px;
+                    ">${totalPersona}</td>
+                </tr>`;
+        });
+
+        let filaTotales = '';
+        tiposOrdenados.forEach(tipo => {
+            const col = infoTurnos[tipo] || { colorFondo: '#eeeeee', colorTexto: '#000000' };
+            const totalTipo = personas.reduce((sum, p) => sum + (conteoPersonas[p]?.[tipo] || 0), 0);
+            filaTotales += `
+                <td style="
+                    text-align:center; font-size:12px; font-weight:bold;
+                    background-color:${col.colorFondo}; color:${col.colorTexto};
+                    border:1px solid #ccc; padding:5px 4px; opacity:0.85;
+                ">${totalTipo}</td>`;
+        });
+
+        const granTotal = personas.reduce((sum, p) =>
+            sum + Object.values(conteoPersonas[p] || {}).reduce((s, v) => s + v, 0), 0);
+
+        const modal = document.createElement('div');
+        modal.id = 'modalResumenTurnos';
+        modal.style.cssText = `
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.6); z-index:9999;
+            display:flex; align-items:flex-start; justify-content:center;
+            overflow-y:auto; padding:24px; box-sizing:border-box;
+        `;
+
+        modal.innerHTML = `
+            <div style="
+                background:white; border-radius:12px; padding:24px;
+                max-width:98vw; width:fit-content;
+                box-shadow:0 12px 48px rgba(0,0,0,0.35);
+            ">
+                <div style="display:flex; justify-content:space-between;
+                    align-items:center; margin-bottom:18px; gap:20px;">
+                    <h2 style="margin:0; font-size:18px; color:#2c3e50;">
+                        📊 Resumen de Turnos — ${mesTexto} ${año}
+                    </h2>
+                    <button onclick="document.body.removeChild(document.getElementById('modalResumenTurnos'))"
+                        style="background:#e74c3c; color:white; border:none;
+                        border-radius:6px; padding:7px 16px; cursor:pointer;
+                        font-size:14px; font-weight:bold; white-space:nowrap;">
+                        ✕ Cerrar
+                    </button>
+                </div>
+                <div style="overflow-x:auto; max-height:72vh; overflow-y:auto;">
+                    <table style="border-collapse:collapse; font-family:Arial,sans-serif;">
+                        <thead>
+                            <tr>
+                                <th style="
+                                    position:sticky; left:0; top:0; z-index:3;
+                                    background:#2c3e50; color:white;
+                                    padding:8px 12px; border:1px solid #ccc;
+                                    font-size:12px; min-width:160px;
+                                ">Asesor</th>
+                                ${thTipos}
+                                <th style="
+                                    min-width:60px; padding:6px 8px; text-align:center;
+                                    font-size:12px; background:#2c3e50; color:white;
+                                    border:1px solid #ccc;
+                                ">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>${filasHTML}</tbody>
+                        <tfoot>
+                            <tr>
+                                <td style="
+                                    position:sticky; left:0;
+                                    background:#2c3e50; color:white;
+                                    font-weight:bold; font-size:12px;
+                                    padding:6px 12px; border:1px solid #ccc;
+                                ">TOTAL</td>
+                                ${filaTotales}
+                                <td style="
+                                    text-align:center; font-weight:bold;
+                                    font-size:13px; background:#1a252f; color:white;
+                                    border:1px solid #ccc; padding:5px 8px;
+                                ">${granTotal}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', e => {
+            if (e.target === modal) document.body.removeChild(modal);
+        });
+
+    } catch (error) {
+        console.error('Error al generar resumen:', error);
+        const ov = document.getElementById('overlayResumen');
+        if (ov) document.body.removeChild(ov);
+        alert('Error al generar el resumen. Revisa la consola.');
+    }
+}
+
+window.generarResumenTurnos = generarResumenTurnos;
+
+document.addEventListener("DOMContentLoaded", function () {
+    const nombreGuardado = localStorage.getItem('nombreAsesorActual');
+    const nombreAutorizado = "Andrés_Felipe_Yepes_Tascón";
+    const botonResumen = document.getElementById('btnResumenTurnos');
+    if (nombreGuardado === nombreAutorizado) {
+        botonResumen.style.display = "inline-block";
+    } else {
+        console.warn("Acceso restringido: El asesor no coincide.");
+        botonResumen.remove();
+    }
+});
