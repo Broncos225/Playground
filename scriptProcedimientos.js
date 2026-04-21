@@ -51,7 +51,7 @@ db.ref = function (path) {
     return ref;
 };
 
-const usuario = ["Andrés_Felipe_Yepes_Tascón", "Ocaris_David_Arango_Aguilar"];
+const usuario = ["Andrés_Felipe_Yepes_Tascón"];
 
 const itemsRef = firebase.database().ref('procedimientos');
 

@@ -16,10 +16,6 @@ let agentes = {
     nombre: "Jorge",
     cumpleaños: [21, 1]
   },
-  Ocaris_David_Arango_Aguilar: {
-    nombre: "David",
-    cumpleaños: [8, 3]
-  },
   Yeison_Torres_Ochoa: {
     nombre: "Yeison",
     cumpleaños: [22, 5]

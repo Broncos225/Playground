@@ -1225,7 +1225,7 @@ async function obtenerEncargadoActual() {
             "Andrés Felipe Yepes Tascón",
             "Yeison Torres Ochoa",
             "Maria Susana Ospina Vanegas",
-            "Ocaris David Arango Aguilar",
+            "Samuel David Giraldo Barrera",
             "Johan Guzman Alarcon",
             "Diego Alejandro Úsuga Yepes",
             "Santiago Ramirez Guzman"
