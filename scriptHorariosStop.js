@@ -2145,6 +2145,10 @@ async function cargarHistorial() {
             registrosHistorial.push(registro);
         });
 
+        const fechaLimite = new Date();
+        fechaLimite.setMonth(fechaLimite.getMonth() - 2);
+
+        registrosHistorial = registrosHistorial.filter(r => new Date(r.timestamp) >= fechaLimite);
         registrosHistorial.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
         paginaActual = 1;
@@ -2925,7 +2929,22 @@ async function descargarCSV() {
     const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const mesNumero = meses.indexOf(mesTexto) + 1;
     const diasEnMes = new Date(año, mesNumero, 0).getDate();
-    console.log('Días en mes:', diasEnMes, 'Mes:', mesNumero, 'Año:', año);
+
+    const JORNADA_MAP = {
+        '7:00 AM a 3:00 PM': '68 | 07:00 - 15:00 D 1h',
+        '7:00 AM a 3:30 PM': '69 | 07:00 - 15:30 D 1h',
+        '8:00 AM a 4:30 PM': '70 | 08:00 - 16:30 D 1h',
+        '9:00 AM a 5:00 PM': '71 | 09:00 - 17:00 D 1h',
+        '9:00 AM a 5:30 PM': '72 | 09:00 - 17:30 D 1h',
+        '10:00 AM a 6:00 PM': '73 | 10:00 - 18:00 D 1h',
+        '10:00 AM a 6:30 PM': '74 | 10:00 - 18:30 D 1h',
+        '10:30 AM a 7:00 PM': '75 | 10:30 - 19:00 D 1h',
+        '11:00 AM a 7:00 PM': '76 | 11:00 - 19:00 D 1h',
+        '11:30 AM a 8:00 PM': '77 | 11:30 - 20:00 D 1h',
+        '12:00 PM a 8:00 PM': '78 | 12:00 - 20:00 D 1h',
+        '1:00 PM a 9:30 PM': '80 | 13:00 - 21:30 D 1h',
+        '1:30 PM a 9:30 PM': '81 | 13:30 - 21:30 D 1h',
+    };
 
     const nombresEmpleados = obtenerNombresEmpleados();
 
@@ -2937,28 +2956,30 @@ async function descargarCSV() {
     const cacheTurnos = {};
 
     async function obtenerDatosTurno(turnoId) {
-        if (!turnoId) return '';
+        if (!turnoId) return { jornada: '', horario: '' };
         if (cacheTurnos[turnoId]) return cacheTurnos[turnoId];
 
         const turnoSnapshot = await db.ref(`Turnos/${turnoId}`).once('value');
         const turnoData = turnoSnapshot.val();
-        let nombreTurno = '';
+        let horario = '';
 
         if (turnoData) {
             if (turnoData.Apertura !== "12:00 AM") {
-                nombreTurno = `${turnoData.Apertura} a ${turnoData.Cierre}`;
+                horario = `${turnoData.Apertura} a ${turnoData.Cierre}`;
             } else {
-                nombreTurno = turnoData.Descripcion || '';
+                horario = turnoData.Descripcion || '';
             }
         }
 
-        cacheTurnos[turnoId] = nombreTurno;
-        return nombreTurno;
+        const jornada = JORNADA_MAP[horario] || horario;
+        const resultado = { jornada, horario };
+        cacheTurnos[turnoId] = resultado;
+        return resultado;
     }
 
     try {
         const datos = [
-            ['Identificación', 'Tipo (Cedula=1, Cedula de extranjeria=2, Tarjeta de identidad=3)', 'Nombre', 'Fecha inicial (aaaa-mm-dd)', 'Fecha final (aaaa-mm-dd)', 'Turno', 'Centro costo', 'Actividad', 'Reemplazar', 'MOTIVO']
+            ['Cédula', 'Contrato', 'Jornada', 'Fecha', '']
         ];
 
         const promesasEmpleados = nombresEmpleados.map(async (nombreFila) => {
@@ -2972,23 +2993,28 @@ async function descargarCSV() {
             for (let dia = 1; dia <= diasEnMes; dia++) {
                 promesasDias.push((async () => {
                     const snapshot = await db.ref(`celdas/${nombreFila}/${dia + 1}/${año}/${mesNumero}`).once('value');
-                    const datos = snapshot.val();
+                    const datosCelda = snapshot.val();
 
-                    let turnoNombre = '';
-                    if (datos && datos.texto) {
-                        const turnoId = datos.texto.trim();
+                    let jornada = '';
+                    let horario = '';
+                    if (datosCelda && datosCelda.texto) {
+                        const turnoId = datosCelda.texto.trim();
                         if (turnoId) {
-                            turnoNombre = await obtenerDatosTurno(turnoId);
+                            const resultado = await obtenerDatosTurno(turnoId);
+                            jornada = resultado.jornada;
+                            horario = resultado.horario;
                         }
                     }
 
-                    const fechaFormateada = `${año}-${mesNumero.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
-                    return [identificacion, 1, nombreFila, fechaFormateada, fechaFormateada, turnoNombre, 'C-U768-01', '', '', ''];
+                    if (horario === 'Descanso' || horario === 'Día Vacaciones') return null;
+
+                    const fechaFormateada = `${dia.toString().padStart(2, '0')}/${mesNumero.toString().padStart(2, '0')}/${año}`;
+                    return [identificacion, '3 | C-U768-01-SET_STOP_MESATI', jornada, fechaFormateada, horario];
                 })());
             }
 
             const filasDias = await Promise.all(promesasDias);
-            return filasDias;
+            return filasDias.filter(fila => fila !== null);
         });
 
         const resultadosEmpleados = await Promise.all(promesasEmpleados);
@@ -3010,6 +3036,7 @@ async function descargarCSV() {
 }
 
 document.getElementById('btnArchivo').addEventListener('click', descargarCSV);
+
 async function generarResumenTurnos() {
     const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
