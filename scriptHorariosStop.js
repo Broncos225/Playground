@@ -546,8 +546,8 @@ let agentes = {
         nombre: "Santiago Ramirez Guzman",
         contraseña: ""
     },
-    Samuel_David_Giraldo_Barrera: {
-        nombre: "Samuel David Giraldo Barrera",
+    Daniel_Diaz_Pinillos: {
+        nombre: "Daniel Diaz Pinillos",
         contraseña: ""
     },
     Maria_Susana_Ospina_Vanegas: {
