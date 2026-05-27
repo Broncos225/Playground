@@ -1,48 +1,24 @@
 <button id="btnAbrirModalIA"
     style="background: var(--color-primario); color: white; border: none; border-radius: 50%; cursor: pointer; box-shadow: none; font-size: 16px; padding: 8px; width: 40px; height: 40px; position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
-    <i class="fa-solid fa-wand-sparkles"></i>
+    <i class="fa-solid fa-envelope-open-text"></i>
 </button>
 
 <div id="ModalIA" class="modal" style="display: none;">
-    <div class="modal-content" style="text-wrap: nowrap;">
+    <div class="modal-content" style="max-width: 650px; width: 90%;">
         <span class="close" onclick="cerrarModalIA()">&times;</span>
-        <h2>Mejorar texto con IA</h2>
-
-        <div class="container-ia" style="max-width: 300px; display: flex; flex-direction: column; gap: 15px;">
+        <h2>Analizador de correos</h2>
+        <div class="container-ia" style="display: flex; flex-direction: column; gap: 15px;">
             <div class="text-input-section" style="display: flex; flex-direction: column; gap: 5px;">
-                <label for="textoOriginal">Texto original:</label>
-                <textarea id="textoOriginal" rows="6" placeholder="Escribe o pega tu texto aquí..."
+                <label for="textoOriginal" style="width: 100%; text-align: left;">Pega aquí toda la conversación del correo:</label>
+                <textarea id="textoOriginal" rows="8" placeholder="Pega la conversación completa del correo electrónico..."
                     style="width: 100%; resize: vertical;"></textarea>
             </div>
-            <label for="tipoMejora">Opciones de mejora:</label>
-            <div class="buttons-section" style="display: flex; flex-direction: row; gap: 8px;">
-
-                <select id="tipoMejora" style="width: 100%; padding: 8px;">
-                    <option value="mejorar">Mejorar con IA</option>
-                    <option value="corregir">Corregir ortografía</option>
-                    <option value="conciso">Hacer más conciso</option>
-                    <option value="ampliar">Ampliar y detallar</option>
-                    <option value="pedir_info">Pedir información</option>
-                    <option value="seguimiento">Dar seguimiento</option>
-                    <option value="solucion">Explicar solución</option>
-                    <option value="escalamiento">Escalamiento</option>
-                </select>
-                <button onclick="aplicarMejora()" style="width: auto; padding: 10px;">Aplicar</button>
-            </div>
-
             <div id="loadingIA" style="display: none; text-align: center; padding: 10px;">
-                <p style="margin: 0;">Procesando con IA...</p>
+                <p style="margin: 0;">Analizando correo...</p>
             </div>
-
-            <div class="text-output-section" style="display: flex; flex-direction: column; gap: 5px;">
-                <label for="textoMejorado">Texto mejorado:</label>
-                <textarea id="textoMejorado" rows="6" readonly placeholder="El texto mejorado aparecerá aquí..."
-                    style="width: 100%; resize: vertical;"></textarea>
-            </div>
-
-            <div class="output-actions" style="display: flex; gap: 10px;">
-                <button onclick="copiarTextoIA()" style="flex: 1; padding: 10px;">Copiar resultado</button>
-                <button onclick="reemplazarTexto()" style="flex: 1; padding: 10px;">Usar este texto</button>
+            <div id="resultadoIA" style="display: none; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
+            <div class="output-actions" id="outputActions" style="display: none; gap: 10px;">
+                <button onclick="copiarTextoIA()" style="flex: 1; padding: 10px;">Copiar análisis</button>
             </div>
         </div>
     </div>

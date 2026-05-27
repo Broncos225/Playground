@@ -2128,7 +2128,10 @@ async function filtrarCambiosReales(cambios) {
 async function cargarHistorial() {
     const historialContent = document.getElementById('historialContent');
     historialContent.innerHTML = '<p>Cargando historial...</p>';
-
+    if (!turnosCache) {
+        const turnosSnap = await db.ref('Turnos').once('value');
+        turnosCache = turnosSnap.val() || {};
+    }
     try {
         const snapshot = await db.ref('Historial').orderByChild('timestamp').once('value');
 
@@ -2164,7 +2167,17 @@ async function cargarHistorial() {
 let registrosHistorial = [];
 let paginaActual = 1;
 const registrosPorPagina = 10;
+let turnosCache = null;
 
+const agentesH = [
+    { nombre: "Maria Susana Ospina Vanegas", cc: "1021802449" },
+    { nombre: "Yeison Torres Ochoa", cc: "1007893862" },
+    { nombre: "Johan Guzman Alarcon", cc: "1013457207" },
+    { nombre: "Santiago Ramirez Guzman", cc: "1020475921" },
+    { nombre: "Andres Felipe Yepes Tascon", cc: "1000441419" },
+    { nombre: "Diego Alejandro Úsuga Yepes", cc: "1025648729" },
+    { nombre: "Daniel Diaz Pinillos", cc: "1000532840" }
+];
 
 function mostrarPagina() {
     const historialContent = document.getElementById('historialContent');
@@ -2188,8 +2201,11 @@ function mostrarPagina() {
             <div class="historial-item">
                 <div class="historial-header" style="cursor: pointer; background: var(--color-fondo);" onclick="window.toggleCambios('${registro.id}')">
                     <span><strong>Usuario:</strong> ${usuarioLimpio} | <strong>Fecha:</strong> ${fecha}</span>
-                    <span class="cambios-count">${cantidadCambios} cambio${cantidadCambios !== 1 ? 's' : ''}</span>
-                    <span class="toggle-icon" id="icon-${registro.id}">▼</span>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <button onclick="event.stopPropagation(); window.copiarRegistro('${registro.id}')" style="padding:2px 10px; border:1px solid var(--color-texto); background:var(--color-fondo); color:var(--color-texto); border-radius:4px; cursor:pointer; font-size:12px;">Copiar</button>
+                        <span class="cambios-count">${cantidadCambios} cambio${cantidadCambios !== 1 ? 's' : ''}</span>
+                        <span class="toggle-icon" id="icon-${registro.id}">▼</span>
+                    </div>
                 </div>
                 <div class="historial-cambios" id="cambios-${registro.id}" style="display: none; background: var(--color-fondo);">
         `;
@@ -2232,6 +2248,58 @@ function toggleCambios(registroId) {
         icon.textContent = '▼';
     }
 }
+
+function copiarRegistro(registroId) {
+    const registro = registrosHistorial.find(r => r.id === registroId);
+    if (!registro) return;
+
+    const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    const grupos = {};
+    registro.cambios.forEach(cambio => {
+        const dia = cambio.celda - 1;
+        const clave = `${cambio.año}-${String(cambio.mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+        if (!grupos[clave]) grupos[clave] = { dia, mes: parseInt(cambio.mes), año: parseInt(cambio.año), cambios: [] };
+        grupos[clave].cambios.push(cambio);
+    });
+
+    const clavesOrdenadas = Object.keys(grupos).sort();
+    let texto = '';
+
+    clavesOrdenadas.forEach((clave, idx) => {
+        const grupo = grupos[clave];
+        const fecha = new Date(grupo.año, grupo.mes - 1, grupo.dia);
+        const nombreDia = diasSemana[fecha.getDay()];
+        const nombreMes = nombresMeses[grupo.mes - 1];
+
+        texto += `${nombreDia} ${grupo.dia} ${nombreMes}\n`;
+
+        grupo.cambios.forEach((cambio, i) => {
+            const agenteData = agentesH.find(a => a.nombre === cambio.agente);
+            const cc = agenteData ? ' - CC ' + agenteData.cc : '';
+            const turno = turnosCache ? turnosCache[cambio.nuevoValor] : null;
+
+            let horario = cambio.nuevoValor;
+            if (turno) {
+                horario = (turno.Apertura === '12:00 AM' && turno.Cierre === '12:00 AM' && turno.Descripcion && turno.Descripcion.trim() !== '')
+                    ? turno.Descripcion
+                    : `${turno.Apertura.toLowerCase()} a ${turno.Cierre.toLowerCase()}`;
+            }
+
+            texto += `    ${cambio.agente}${cc}\n`;
+            texto += `    ${horario}`;
+
+            if (i < grupo.cambios.length - 1) texto += '\n\n';
+        });
+
+        if (idx < clavesOrdenadas.length - 1) texto += '\n\n';
+    });
+
+    navigator.clipboard.writeText(texto.trim());
+}
+
+window.copiarRegistro = copiarRegistro;
 
 function crearControlesPaginacion() {
     const totalPaginas = Math.ceil(registrosHistorial.length / registrosPorPagina);
