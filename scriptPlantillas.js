@@ -1327,8 +1327,8 @@ async function actualizarDivEncargado() {
 
 function inicializarSistemaEncargado() {
     actualizarDivEncargado();
-    setInterval(actualizarDivEncargado, 60000);
-    console.log('Sistema de encargado iniciado - Se actualiza cada minuto');
+    setInterval(actualizarDivEncargado, 600000);
+    console.log('Sistema de encargado iniciado - Se actualiza cada 10 minutos');
 }
 
 inicializarSistemaEncargado();
