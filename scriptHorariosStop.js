@@ -860,7 +860,7 @@ function Festivos() {
         "Abril": [2, 3],
         "Mayo": [1, 18],
         "Junio": [8, 15, 29],
-        "Julio": [20],
+        "Julio": [13, 20],
         "Agosto": [7, 17],
         "Septiembre": [],
         "Octubre": [12],
