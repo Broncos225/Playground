@@ -1516,16 +1516,16 @@ async function calcularValoresPorSemanaFirebase() {
             cell.textContent = valorFormateado;
             cell.style.textAlign = 'right';
 
-            if (totalSemana === 44) {
+            if (totalSemana === 42) {
                 cell.style.backgroundColor = '#a6fda6ff'; // verde
                 cell.style.fontWeight = 'bold';
             } else if (totalSemana === 0) {
                 cell.style.backgroundColor = '#ffb3b9ff'; // rojo
                 cell.style.fontWeight = 'normal';
-            } else if (totalSemana > 0 && totalSemana < 44) {
+            } else if (totalSemana > 0 && totalSemana < 42) {
                 cell.style.backgroundColor = '#ffd9a6'; // naranja suave
                 cell.style.fontWeight = 'normal';
-            } else if (totalSemana > 44) {
+            } else if (totalSemana > 42) {
                 cell.style.backgroundColor = '#fffda6'; // amarillo suave
                 cell.style.fontWeight = 'bold';
             }
