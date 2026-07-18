@@ -220,7 +220,7 @@ function renderizarPlantillas(plantillas, favoritos, asesorActual) {
             mostrarSelectorColor(fileName, typeSpan);
         };
 
-        if (moduleType === '2' && creador === asesorActual) {
+        if (asesorActual === 'Andrés_Felipe_Yepes_Tascón' || (moduleType === '2' && creador === asesorActual)) {
             var optionsContainer = document.createElement("div");
             optionsContainer.className = "options-container";
 
@@ -419,6 +419,7 @@ function configurarModalCreacion(asesorActual) {
         var colorPlantilla = document.getElementById('colorPlantilla').value;
         var isEditing = form.hasAttribute('data-editing');
         var originalName = form.getAttribute('data-original-name');
+        var originalType = form.getAttribute('data-original-type');
 
         // Validación final antes de guardar
         var validacion = validarNombrePlantilla(nombrePlantilla);
@@ -434,7 +435,7 @@ function configurarModalCreacion(asesorActual) {
         }
 
         var plantillaData = {
-            Tipo: '2',
+            Tipo: isEditing && originalType ? originalType : '2',
             Apertura: apertura,
             Cierre: cierre,
             Creador: creador
@@ -458,6 +459,7 @@ function configurarModalCreacion(asesorActual) {
                     form.reset();
                     form.removeAttribute('data-editing');
                     form.removeAttribute('data-original-name');
+                    form.removeAttribute('data-original-type');
                     validationMessage.textContent = '';
                     nombreInput.style.borderColor = '';
                     modal.style.display = "none";
@@ -482,6 +484,7 @@ function configurarModalCreacion(asesorActual) {
                     form.reset();
                     form.removeAttribute('data-editing');
                     form.removeAttribute('data-original-name');
+                    form.removeAttribute('data-original-type');
                     validationMessage.textContent = '';
                     nombreInput.style.borderColor = '';
                     modal.style.display = "none";
@@ -597,6 +600,7 @@ function editTemplate(fileName, moduleData) {
 
     form.setAttribute('data-editing', 'true');
     form.setAttribute('data-original-name', fileName);
+    form.setAttribute('data-original-type', moduleData.Tipo);
 
     document.querySelector('#createTemplateModal h2').textContent = 'Editar Plantilla';
     document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Actualizar Plantilla';
