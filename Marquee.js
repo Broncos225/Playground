@@ -34,7 +34,7 @@ let agentes = {
   },
   Santiago_Ramirez_Guzman: {
     nombre: "Santiago",
-    cumpleaños: [0, 0]
+    cumpleaños: [23, 7]
   }
 };
 
