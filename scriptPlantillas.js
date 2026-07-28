@@ -344,6 +344,11 @@ function configurarModalCreacion(asesorActual) {
 
     var colorSelector = document.getElementById('colorPlantilla');
     if (colorSelector && colorSelector.options.length === 0) {
+        var opcionVacia = document.createElement('option');
+        opcionVacia.value = '';
+        opcionVacia.textContent = 'Sin color';
+        colorSelector.appendChild(opcionVacia);
+
         Object.keys(COLORES_DISPONIBLES).forEach(function (nombreColor) {
             var option = document.createElement('option');
             option.value = COLORES_DISPONIBLES[nombreColor];
@@ -399,13 +404,10 @@ function configurarModalCreacion(asesorActual) {
         document.querySelector('#crearPlantillaForm button[type="submit"]').textContent = 'Crear Plantilla';
         validationMessage.textContent = '';
         nombreInput.style.borderColor = '';
-        modal.style.display = "block";
-    }
-
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        if (colorSelector) {
+            colorSelector.value = '';
         }
+        modal.style.display = "block";
     }
 
     var form = document.getElementById('crearPlantillaForm');
@@ -476,6 +478,8 @@ function configurarModalCreacion(asesorActual) {
                     plantillasCache[targetName] = plantillaData;
                     if (colorPlantilla) {
                         coloresCache[targetName] = colorPlantilla;
+                    } else {
+                        delete coloresCache[targetName];
                     }
                     localStorage.setItem('plantillasCache', JSON.stringify(plantillasCache));
                     localStorage.setItem('coloresPlantillas', JSON.stringify(coloresCache));
@@ -594,9 +598,7 @@ function editTemplate(fileName, moduleData) {
     document.getElementById('cierre').value = moduleData.Cierre || '';
 
     var colorSelector = document.getElementById('colorPlantilla');
-    if (coloresCache[fileName]) {
-        colorSelector.value = coloresCache[fileName];
-    }
+    colorSelector.value = coloresCache[fileName] || '';
 
     form.setAttribute('data-editing', 'true');
     form.setAttribute('data-original-name', fileName);
@@ -905,6 +907,11 @@ function verificarResultados() {
     document.getElementById('NoResultados').style.display = hayResultados ? 'none' : 'block';
 }
 
+function normalizarSaltosLinea(texto) {
+    if (!texto) return texto;
+    return texto.replace(/\r\n|\r|\n/g, '<br>');
+}
+
 function showModal(fileName) {
     const root = document.documentElement;
     const styles = getComputedStyle(root);
@@ -928,12 +935,15 @@ function showModal(fileName) {
 
     modalTitulo.innerHTML = `
     <hr>
-    <h2 style="text-align: center;">${fileName}</h2>
+    <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
+        <h2 style="margin-right: auto; text-align: center;" id="textoTitulo">${fileName}</h2>
+        <button onclick="copiarTexto('textoTitulo')" style="height: 40px;">Copiar texto</button>
+    </div>
     <hr>
     `;
 
     if (plantillasCache && plantillasCache[fileName]) {
-        var textoA = plantillasCache[fileName].Apertura;
+        var textoA = normalizarSaltosLinea(plantillasCache[fileName].Apertura);
         modalApertura.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Apertura</h2>
@@ -942,7 +952,7 @@ function showModal(fileName) {
         <div id="textoA"><p>${saludo}<br></p><p>${textoA}</p><p>Saludos.</p></div>
         <hr>`;
 
-        var textoC = plantillasCache[fileName].Cierre;
+        var textoC = normalizarSaltosLinea(plantillasCache[fileName].Cierre);
         modalCierre.innerHTML = `
         <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
             <h2 style="margin-right: auto;">Cierre</h2>
@@ -1018,6 +1028,9 @@ function closeModal() {
 window.addEventListener('click', function (event) {
     var modals = document.querySelectorAll('.modal');
     modals.forEach(function (modal) {
+        if (modal.id === 'createTemplateModal') {
+            return;
+        }
         if (event.target == modal) {
             modal.style.display = "none";
             document.body.classList.remove('modal-open');
