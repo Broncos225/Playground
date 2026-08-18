@@ -2174,7 +2174,7 @@ const agentesH = [
     { nombre: "Yeison Torres Ochoa", cc: "1007893862" },
     { nombre: "Johan Guzman Alarcon", cc: "1013457207" },
     { nombre: "Santiago Ramirez Guzman", cc: "1020475921" },
-    { nombre: "Andres Felipe Yepes Tascon", cc: "1000441419" },
+    { nombre: "Andrés Felipe Yepes Tascón", cc: "1000441419" },
     { nombre: "Diego Alejandro Úsuga Yepes", cc: "1025648729" },
     { nombre: "Daniel Diaz Pinillos", cc: "1000532840" }
 ];
