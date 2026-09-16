@@ -542,10 +542,6 @@ let agentes = {
         nombre: "Yeison Torres Ochoa",
         contraseña: ""
     },
-    Santiago_Ramirez_Guzman: {
-        nombre: "Santiago Ramirez Guzman",
-        contraseña: ""
-    },
     Daniel_Diaz_Pinillos: {
         nombre: "Daniel Diaz Pinillos",
         contraseña: ""
@@ -2173,7 +2169,6 @@ const agentesH = [
     { nombre: "Maria Susana Ospina Vanegas", cc: "1021802449" },
     { nombre: "Yeison Torres Ochoa", cc: "1007893862" },
     { nombre: "Johan Guzman Alarcon", cc: "1013457207" },
-    { nombre: "Santiago Ramirez Guzman", cc: "1020475921" },
     { nombre: "Andrés Felipe Yepes Tascón", cc: "1000441419" },
     { nombre: "Diego Alejandro Úsuga Yepes", cc: "1025648729" },
     { nombre: "Daniel Diaz Pinillos", cc: "1000532840" }
