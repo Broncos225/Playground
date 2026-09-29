@@ -554,6 +554,10 @@ let agentes = {
         nombre: "Diego Alejandro Úsuga Yepes",
         contraseña: ""
     },
+    Alejandro_Gonzalez_Yepes: {
+        nombre: "Alejandro Gonzalez Yepes",
+        contraseña: ""
+    },
     D: {
         nombre: "Descanso",
         contraseña: "D"

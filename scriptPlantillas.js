@@ -1244,7 +1244,8 @@ async function obtenerEncargadoActual() {
             "Maria Susana Ospina Vanegas",
             "Daniel Diaz Pinillos",
             "Johan Guzman Alarcon",
-            "Diego Alejandro Úsuga Yepes"
+            "Diego Alejandro Úsuga Yepes",
+            "Alejandro Gonzalez Yepes"
         ];
 
         const hoy = new Date();
