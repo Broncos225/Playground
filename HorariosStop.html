@@ -216,13 +216,16 @@
                     .cmd-turnos {
                         display: flex;
                         align-items: center;
+                        flex-wrap: wrap;
                         gap: 8px;
                         margin-top: 8px;
                     }
 
                     .cmd-turnos code {
-                        flex: 1;
-                        white-space: nowrap;
+                        flex: 1 1 auto;
+                        min-width: 0;
+                        white-space: normal;
+                        overflow-wrap: anywhere;
                     }
                 </style>
                 <div class="vertical-bar"></div>
