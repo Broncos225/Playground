@@ -152,7 +152,79 @@
                     <button id="btnPincelTurnos"><i class="fa-solid fa-paintbrush"></i> Pincel de turnos</button>
                     <button id="btnLimpiar"><i class="fa-solid fa-broom"></i> Limpiar</button>
                 </div>
+                <span class="turnos">
+                    <button type="button" class="btn-turnos" onclick="abrirTurnos()">
+                        <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i>
+                        Abrir generador de turnos
+                    </button>
+                    <button type="button" class="info-turnos" aria-label="¿No abre?" aria-expanded="false"
+                        onclick="infoTurnos(event)">?</button>
+                    <span class="tip-turnos" role="tooltip">
+                        ¿No abre? Inicia el servidor en la carpeta del proyecto:
+                        <span class="cmd-turnos">
+                            <code>uvicorn main:app</code>
+                            <button type="button" onclick="copiarComando(this)">Copiar</button>
+                        </span>
+                    </span>
+                </span>
+                <style>
+                    /* Solo ancla el tooltip junto a los botones */
+                    .turnos {
+                        position: relative;
+                        display: inline-block;
+                    }
 
+                    .tip-turnos {
+                        display: none;
+                        position: absolute;
+                        top: calc(100% + 8px);
+                        right: 0;
+                        z-index: 10;
+                        width: max-content;
+                        max-width: 230px;
+                        padding: 10px 12px;
+                        border: 1px solid currentColor;
+                        border-radius: 6px;
+                        background: Canvas;
+                        /* colores del sistema: se adaptan a tu página (claro/oscuro) */
+                        color: CanvasText;
+                        font-size: 13px;
+                        line-height: 1.4;
+                        text-align: left;
+                        user-select: text;
+                        /* permite seleccionar y copiar */
+                    }
+
+                    /* Puente invisible para que no se cierre al mover el mouse hacia el tooltip */
+                    .tip-turnos::before {
+                        content: "";
+                        position: absolute;
+                        top: -10px;
+                        left: 0;
+                        right: 0;
+                        height: 10px;
+                    }
+
+                    .info-turnos:hover~.tip-turnos,
+                    .info-turnos:focus-visible~.tip-turnos,
+                    .tip-turnos:hover,
+                    .tip-turnos:focus-within,
+                    .turnos.abierto .tip-turnos {
+                        display: block;
+                    }
+
+                    .cmd-turnos {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        margin-top: 8px;
+                    }
+
+                    .cmd-turnos code {
+                        flex: 1;
+                        white-space: nowrap;
+                    }
+                </style>
                 <div class="vertical-bar"></div>
 
                 <div>
@@ -636,6 +708,42 @@
     <footer>
         <p>© 2024 Andrés Felipe Yepes Tascón</p>
     </footer>
+    <script>
+        function abrirTurnos() {
+            window.open("http://localhost:8000", "_blank", "noopener");
+        }
+
+        function infoTurnos(e) {
+            e.stopPropagation();
+            const caja = e.currentTarget.parentElement;
+            const abierto = caja.classList.toggle("abierto");
+            e.currentTarget.setAttribute("aria-expanded", abierto);
+        }
+        function cerrarInfoTurnos() {
+            document.querySelectorAll(".turnos.abierto").forEach(c => {
+                c.classList.remove("abierto");
+                c.querySelector(".info-turnos").setAttribute("aria-expanded", "false");
+            });
+        }
+        document.addEventListener("click", e => {
+            if (!e.target.closest(".tip-turnos")) cerrarInfoTurnos();
+        });
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") cerrarInfoTurnos();
+        });
+
+        function copiarComando(btn) {
+            const code = btn.parentElement.querySelector("code");
+            const listo = () => {
+                btn.textContent = "¡Copiado!";
+                setTimeout(() => (btn.textContent = "Copiar"), 1500);
+            };
+            // Si el navegador no deja copiar, deja el comando seleccionado para Ctrl+C.
+            const seleccionar = () => window.getSelection().selectAllChildren(code);
+            if (navigator.clipboard) navigator.clipboard.writeText(code.textContent).then(listo, seleccionar);
+            else seleccionar();
+        }
+    </script>
     <script src="Notificador.js"></script>
     <script src="scriptConfiguraciones.js" type="module" defer></script>
     <script src="PreferenciasGlobales.js" type="module" defer></script>
