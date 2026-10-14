@@ -2175,7 +2175,8 @@ const agentesH = [
     { nombre: "Johan Guzman Alarcon", cc: "1013457207" },
     { nombre: "Andrés Felipe Yepes Tascón", cc: "1000441419" },
     { nombre: "Diego Alejandro Úsuga Yepes", cc: "1025648729" },
-    { nombre: "Daniel Diaz Pinillos", cc: "1000532840" }
+    { nombre: "Daniel Diaz Pinillos", cc: "1000532840" },
+    { nombre: "Alejandro Gonzalez Yepes", cc: "1040749349" }
 ];
 
 function mostrarPagina() {
