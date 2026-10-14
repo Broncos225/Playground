@@ -2523,7 +2523,7 @@ async function cargarCronologia() {
     container.innerHTML = '<div class="loading">Cargando horarios...</div>';
 
     const nombresEmpleados = obtenerNombresEmpleados();
-
+    console.log(nombresEmpleados);
     if (nombresEmpleados.length === 0) {
         container.innerHTML = '<div class="error">No se encontraron empleados en la tabla</div>';
         return;
@@ -3055,7 +3055,10 @@ async function descargarCSV() {
             const preferenciaSnapshot = await db.ref(`Preferencias/${nombreConGuion}/ID`).once('value');
             const identificacion = preferenciaSnapshot.val();
 
-            if (!identificacion) return null;
+            if (!identificacion) {
+                console.warn('Sin ID en Preferencias:', nombreConGuion);
+                return null;
+            }
 
             const promesasDias = [];
             for (let dia = 1; dia <= diasEnMes; dia++) {
@@ -3082,7 +3085,9 @@ async function descargarCSV() {
             }
 
             const filasDias = await Promise.all(promesasDias);
-            return filasDias.filter(fila => fila !== null);
+            const filasValidas = filasDias.filter(fila => fila !== null);
+            console.log(nombreFila, 'ID:', identificacion, 'filas:', filasValidas.length);
+            return filasValidas;
         });
 
         const resultadosEmpleados = await Promise.all(promesasEmpleados);
